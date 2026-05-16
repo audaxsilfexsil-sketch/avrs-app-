@@ -1,0 +1,28 @@
+{
+  "name": "AVR–S | A Vida Sem Rascunho",
+  "short_name": "AVR–S",
+  "description": "O método AVR–S em sua versão digital. Diário de decisões conscientes.",
+  "start_url": "/avrs-app-/",
+  "scope": "/avrs-app-/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0908",
+  "theme_color": "#0a0908",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["lifestyle", "productivity"],
+  "screenshots": []
+}

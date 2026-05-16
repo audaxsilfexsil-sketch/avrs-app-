@@ -4,6 +4,21 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <title>AVR–S | A Vida Sem Rascunho</title>
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="AVR–S"/>
+<meta name="theme-color" content="#0a0908"/>
+<meta name="description" content="O método AVR–S em sua versão digital. Diário de decisões conscientes."/>
+
+<!-- Apple Touch Icons -->
+<link rel="apple-touch-icon" href="icon-192.png"/>
+<link rel="apple-touch-icon" sizes="192x192" href="icon-192.png"/>
+<link rel="apple-touch-icon" sizes="512x512" href="icon-512.png"/>
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
@@ -837,9 +852,55 @@ body{font-family:'DM Sans',sans-serif;color:var(--text)}
   <button class="detail-delete" id="detailDelete" onclick="deleteCurrentEntry()">
     <i class="ti ti-trash"></i> Apagar registro
   </button>
+
+<!-- Install Banner -->
+<div id="installBanner" style="display:none;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+width:calc(100% - 40px);max-width:390px;background:#1d1b18;border:1px solid rgba(200,169,109,0.3);
+border-radius:16px;padding:16px 18px;z-index:500;
+display:none;align-items:center;justify-content:space-between;gap:12px;">
+  <div>
+    <div style="font-size:13px;font-weight:500;color:#ede8df;margin-bottom:3px">Instalar AVR–S</div>
+    <div style="font-size:11px;color:#9a9088">Adicionar à tela inicial</div>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button onclick="dismissInstall()" style="background:transparent;border:1px solid #2d2d2d;color:#9a9088;
+    padding:8px 12px;border-radius:10px;font-size:12px;cursor:pointer;">Agora não</button>
+    <button onclick="installApp()" style="background:#c8a96d;border:none;color:#0a0908;
+    padding:8px 14px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;">Instalar</button>
+  </div>
+</div>
 </div>
 
 <script>
+
+// PWA Install
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const banner = document.getElementById('installBanner');
+  if (banner) { banner.style.display = 'flex'; }
+});
+
+function installApp() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(choice => {
+    deferredPrompt = null;
+    document.getElementById('installBanner').style.display = 'none';
+  });
+}
+
+function dismissInstall() {
+  document.getElementById('installBanner').style.display = 'none';
+  localStorage.setItem('avrs_install_dismissed', '1');
+}
+
+window.addEventListener('appinstalled', () => {
+  document.getElementById('installBanner').style.display = 'none';
+});
+
 const QUOTES = [
   'Clareza não é pensar mais. É distorcer menos.',
   'Você decide a versão da realidade que percebe.',
@@ -1100,6 +1161,16 @@ function confirmReset(){
 }
 
 init();
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(() => console.log('AVR-S: Service Worker registrado'))
+      .catch(e => console.log('SW error:', e));
+  });
+}
 </script>
 </body>
 </html>
