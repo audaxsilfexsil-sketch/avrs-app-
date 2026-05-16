@@ -1,1 +1,1494 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>AVR–S | A Vida Sem Rascunho</title>
 
+<!-- PWA -->
+<link rel="manifest" href="manifest.json"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="AVR–S"/>
+<meta name="theme-color" content="#0a0908"/>
+<meta name="description" content="O método AVR–S em sua versão digital. Diário de decisões conscientes."/>
+
+<link rel="apple-touch-icon" href="icon-192.png"/>
+<link rel="apple-touch-icon" sizes="192x192" href="icon-192.png"/>
+<link rel="apple-touch-icon" sizes="512x512" href="icon-512.png"/>
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0a0908;
+  --bg2:#100f0d;
+  --bg3:#161412;
+  --bg4:#1d1b18;
+  --bg5:#242220;
+  --gold:#c8a96d;
+  --gold2:#e2c48a;
+  --gold3:#f0d9a8;
+  --cream:#f5f0e8;
+  --text:#ede8df;
+  --text2:#9a9088;
+  --text3:#4a4640;
+  --border:rgba(200,169,109,0.12);
+  --border2:rgba(200,169,109,0.22);
+  --ok:#1D9E75;--ok-bg:rgba(29,158,117,.12);--ok-text:#5DCAA5;
+  --warn:#BA7517;--warn-bg:rgba(186,117,23,.12);--warn-text:#EF9F27;
+  --danger:#A32D2D;--danger-bg:rgba(163,45,45,.12);--danger-text:#F09595;
+  --r:18px;
+  --r2:14px;
+}
+html,body{height:100%;overflow:hidden;background:var(--bg)}
+body{font-family:'DM Sans',sans-serif;color:var(--text)}
+
+.app{
+  max-width:430px;margin:0 auto;
+  height:100vh;height:100dvh;
+  display:flex;flex-direction:column;
+  background:var(--bg);
+  position:relative;overflow:hidden;
+}
+
+/* SPLASH */
+.splash{
+  position:absolute;inset:0;
+  background:var(--bg);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:48px 40px;z-index:999;
+  transition:opacity 1.2s ease;
+}
+.splash.hide{opacity:0;pointer-events:none}
+.splash-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:52px;font-weight:300;
+  letter-spacing:.3em;color:var(--gold);
+  margin-bottom:4px;
+}
+.splash-subtitle{
+  font-size:10px;letter-spacing:.25em;
+  text-transform:uppercase;color:var(--text3);
+  margin-bottom:48px;
+}
+.splash-quote{
+  font-family:'Cormorant Garamond',serif;
+  font-size:18px;font-weight:300;font-style:italic;
+  color:var(--text2);text-align:center;
+  line-height:1.8;max-width:280px;
+  margin-bottom:48px;
+}
+.breath-ring{
+  width:80px;height:80px;border-radius:50%;
+  border:1px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  animation:breathe 4s ease-in-out infinite;
+}
+.breath-inner{
+  width:48px;height:48px;border-radius:50%;
+  border:1px solid rgba(200,169,109,.4);
+  display:flex;align-items:center;justify-content:center;
+}
+.breath-dot{width:6px;height:6px;border-radius:50%;background:var(--gold)}
+@keyframes breathe{
+  0%,100%{transform:scale(1);opacity:.6}
+  50%{transform:scale(1.15);opacity:1}
+}
+.breath-label{
+  margin-top:16px;font-size:11px;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--text3);
+}
+
+/* TOPBAR */
+.topbar{
+  padding:16px 20px 14px;
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.brand{
+  font-family:'Cormorant Garamond',serif;
+  font-size:20px;font-weight:400;letter-spacing:.1em;
+  color:var(--gold);
+}
+.topbar-right{display:flex;align-items:center;gap:14px}
+.date-text{font-size:11px;color:var(--text3);letter-spacing:.04em}
+.icon-btn{
+  background:none;border:none;color:var(--text3);
+  cursor:pointer;font-size:18px;padding:2px;
+  transition:color .2s;
+}
+.icon-btn:hover{color:var(--gold)}
+
+/* NAV */
+.nav{
+  display:flex;border-top:1px solid var(--border);
+  flex-shrink:0;
+}
+.nav-btn{
+  flex:1;padding:14px 8px 12px;
+  background:none;border:none;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  cursor:pointer;color:var(--text3);font-size:9px;
+  letter-spacing:.1em;text-transform:uppercase;
+  transition:color .2s;
+}
+.nav-btn i{font-size:20px}
+.nav-btn.active{color:var(--gold)}
+
+/* SCROLL AREA */
+.screens{flex:1;overflow:hidden;position:relative}
+.screen{
+  position:absolute;inset:0;
+  overflow-y:auto;overflow-x:hidden;
+  padding:20px 20px 32px;
+  display:none;
+  -webkit-overflow-scrolling:touch;
+}
+.screen.active{display:block}
+.screen::-webkit-scrollbar{display:none}
+
+/* ── HOME ── */
+.today-state{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--r);padding:20px;
+  margin-bottom:16px;
+}
+.today-label{
+  font-size:10px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--text3);margin-bottom:14px;
+}
+.state-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;
+  margin-bottom:16px;
+}
+.state-chip{
+  background:var(--bg4);border:1px solid var(--border);
+  border-radius:10px;padding:14px 12px;
+  cursor:pointer;transition:all .25s;
+  display:flex;flex-direction:column;align-items:flex-start;gap:6px;
+}
+.state-chip i{font-size:18px;color:var(--text3);transition:color .25s}
+.state-chip span{font-size:12px;color:var(--text2);transition:color .25s}
+.state-chip.active{border-color:var(--gold);background:rgba(200,169,109,.07)}
+.state-chip.active i,.state-chip.active span{color:var(--gold2)}
+
+.question-card{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--r);padding:22px;
+  margin-bottom:16px;
+}
+.qcard-eyebrow{
+  font-size:10px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--text3);margin-bottom:12px;
+}
+.qcard-question{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:400;line-height:1.4;
+  color:var(--text);margin-bottom:12px;
+}
+.qcard-hint{font-size:13px;color:var(--text2);line-height:1.7}
+
+.stats-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.stat-card{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--r2);padding:16px;
+}
+.stat-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.stat-number{
+  font-family:'Cormorant Garamond',serif;
+  font-size:38px;font-weight:300;color:var(--gold);line-height:1;
+}
+.stat-sub{font-size:11px;color:var(--text3);margin-top:6px;line-height:1.5}
+
+.primary-btn{
+  width:100%;background:var(--gold);color:#0a0908;
+  border:none;border-radius:var(--r2);padding:16px;
+  font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+  font-weight:500;cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  transition:background .2s,transform .1s;
+}
+.primary-btn:active{transform:scale(.98);background:var(--gold2)}
+
+.ghost-btn{
+  width:100%;background:transparent;
+  border:1px solid var(--border2);color:var(--text2);
+  border-radius:var(--r2);padding:14px;
+  font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  cursor:pointer;font-family:'DM Sans',sans-serif;
+  transition:all .2s;margin-top:10px;
+}
+.ghost-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+.quote-strip{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--r2);padding:18px;
+  margin-bottom:16px;position:relative;overflow:hidden;
+}
+.quote-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:16px;font-style:italic;font-weight:300;
+  color:var(--gold2);line-height:1.8;
+  transition:opacity .4s;
+}
+.quote-mark{
+  position:absolute;top:10px;left:16px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:64px;font-weight:300;
+  color:rgba(200,169,109,.08);line-height:1;
+}
+
+/* ── CHECKLIST OVERLAY ── */
+.cl-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.85);
+  z-index:850;display:none;align-items:flex-end;justify-content:center;
+}
+.cl-overlay.open{display:flex}
+.cl-panel{
+  background:var(--bg2);width:100%;max-width:430px;
+  border-radius:28px 28px 0 0;
+  padding:0 0 40px;
+  transform:translateY(100%);
+  transition:transform .35s cubic-bezier(.32,.72,0,1);
+  max-height:92vh;overflow-y:auto;
+}
+.cl-panel::-webkit-scrollbar{display:none}
+.cl-overlay.open .cl-panel{transform:translateY(0)}
+.cl-handle{width:36px;height:3px;border-radius:2px;background:var(--bg5);margin:14px auto 0}
+.cl-header{padding:20px 24px 16px;border-bottom:1px solid var(--border)}
+.cl-state-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:26px;font-weight:400;color:var(--gold);margin-bottom:4px;
+}
+.cl-state-desc{font-size:13px;color:var(--text3)}
+.cl-body{padding:20px 24px 0}
+
+/* progress bar */
+.cl-progress{height:2px;background:var(--bg5);border-radius:1px;margin-bottom:20px;overflow:hidden}
+.cl-progress-fill{height:100%;background:var(--gold);border-radius:1px;transition:width .4s ease}
+
+/* phase containers */
+.cl-phase{display:none}
+.cl-phase.active{display:block}
+
+/* question block */
+.cl-q-block{margin-bottom:20px}
+.cl-q-text{
+  font-size:14px;color:var(--text);line-height:1.6;
+  margin-bottom:4px;font-weight:500;
+}
+.cl-q-hint{font-size:12px;color:var(--text3);margin-bottom:12px;line-height:1.5}
+.scale-wrap{display:flex;align-items:center;gap:12px}
+.scale-wrap input[type=range]{
+  flex:1;-webkit-appearance:none;appearance:none;
+  height:3px;border-radius:2px;
+  background:linear-gradient(to right, var(--gold) 0%, var(--gold) 50%, var(--bg5) 50%, var(--bg5) 100%);
+  outline:none;cursor:pointer;
+}
+.scale-wrap input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:20px;height:20px;border-radius:50%;
+  background:var(--gold);border:2px solid var(--bg2);cursor:pointer;
+}
+.scale-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:300;color:var(--gold);
+  min-width:22px;text-align:center;
+}
+.scale-labels{
+  display:flex;justify-content:space-between;
+  font-size:10px;color:var(--text3);margin-top:6px;
+  letter-spacing:.06em;text-transform:uppercase;
+}
+
+/* diagnosis */
+.diag-ring-wrap{text-align:center;margin:8px 0 16px}
+.diag-score{
+  font-family:'Cormorant Garamond',serif;
+  font-size:52px;font-weight:300;color:var(--gold);line-height:1;
+}
+.diag-score-label{font-size:11px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-top:4px}
+.diag-card{
+  border-radius:var(--r2);padding:16px;margin-bottom:10px;
+  border-left:3px solid;
+}
+.diag-card.ok{background:var(--ok-bg);border-color:var(--ok)}
+.diag-card.warn{background:var(--warn-bg);border-color:var(--warn)}
+.diag-card.danger{background:var(--danger-bg);border-color:var(--danger)}
+.diag-tag{font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;font-weight:500}
+.diag-card.ok .diag-tag{color:var(--ok-text)}
+.diag-card.warn .diag-tag{color:var(--warn-text)}
+.diag-card.danger .diag-tag{color:var(--danger-text)}
+.diag-title{font-size:14px;font-weight:500;color:var(--text);margin-bottom:4px}
+.diag-text{font-size:13px;color:var(--text2);line-height:1.6}
+
+/* protocol steps */
+.proto-step-info{
+  display:flex;align-items:center;gap:14px;
+  padding:16px 0;border-bottom:1px solid var(--border);
+  margin-bottom:20px;
+}
+.proto-letter{
+  font-family:'Cormorant Garamond',serif;
+  font-size:32px;font-weight:300;color:var(--gold);
+  width:36px;text-align:center;flex-shrink:0;
+}
+.proto-name{font-size:16px;font-weight:500;color:var(--text)}
+.proto-desc{font-size:13px;color:var(--text2);margin-top:2px;line-height:1.5}
+.proto-q{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:10px;padding:14px;margin-bottom:12px;
+}
+.proto-q-text{font-size:13px;color:var(--text);margin-bottom:8px;line-height:1.5}
+.proto-q textarea{
+  width:100%;background:var(--bg4);border:1px solid var(--border);
+  color:var(--text);padding:12px;border-radius:8px;
+  font-size:13px;font-family:'DM Sans',sans-serif;
+  resize:none;min-height:64px;outline:none;
+  transition:border-color .2s;
+}
+.proto-q textarea:focus{border-color:var(--gold)}
+
+/* step nav */
+.cl-nav{display:flex;gap:10px;padding:16px 24px 0}
+.cl-back{
+  flex:1;background:transparent;border:1px solid var(--border);
+  color:var(--text2);padding:14px;border-radius:12px;
+  cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;
+  transition:border-color .2s;
+}
+.cl-back:hover{border-color:var(--border2)}
+.cl-next{
+  flex:2;background:var(--gold);border:none;
+  color:#0a0908;padding:14px;border-radius:12px;
+  font-weight:500;cursor:pointer;font-size:13px;
+  font-family:'DM Sans',sans-serif;letter-spacing:.04em;
+  transition:background .2s,transform .1s;
+}
+.cl-next:active{transform:scale(.98);background:var(--gold2)}
+
+/* final decision */
+.final-decision-box{
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:var(--r2);padding:4px 16px;
+  margin:16px 0;
+}
+.final-decision-box textarea{
+  width:100%;background:transparent;border:none;
+  color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;
+  resize:none;min-height:100px;outline:none;
+  padding:14px 0;line-height:1.7;
+}
+
+/* ── DIÁRIO ── */
+.diary-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.section-title{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3)}
+.filter-row{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:2px}
+.filter-row::-webkit-scrollbar{display:none}
+.filter-chip{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:30px;padding:7px 14px;
+  font-size:11px;color:var(--text2);
+  cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.filter-chip.active{border-color:var(--gold);color:var(--gold);background:rgba(200,169,109,.07)}
+.entry-card{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--r2);padding:18px;margin-bottom:10px;
+  cursor:pointer;transition:border-color .2s;
+}
+.entry-card:hover{border-color:var(--border2)}
+.entry-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.entry-situation{font-size:15px;font-weight:500;color:var(--text);flex:1;padding-right:12px;line-height:1.4}
+.entry-date{font-size:11px;color:var(--text3);white-space:nowrap}
+.entry-body{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px}
+.entry-footer{display:flex;align-items:center;gap:8px}
+.entry-state-badge{padding:4px 10px;border-radius:30px;font-size:10px;letter-spacing:.06em;background:rgba(200,169,109,.1);color:var(--gold)}
+.entry-distortion-badge{padding:4px 10px;border-radius:30px;font-size:10px;letter-spacing:.06em;background:var(--bg4);color:var(--text3)}
+.empty-state{text-align:center;padding:48px 24px}
+.empty-icon{font-size:40px;color:var(--text3);margin-bottom:16px}
+.empty-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--text2);margin-bottom:8px}
+.empty-sub{font-size:13px;color:var(--text3);line-height:1.7}
+
+/* ── PROTOCOLO ── */
+.protocol-intro{
+  font-family:'Cormorant Garamond',serif;
+  font-size:17px;font-weight:300;font-style:italic;
+  color:var(--text2);line-height:1.8;
+  margin-bottom:24px;padding-bottom:24px;
+  border-bottom:1px solid var(--border);
+}
+.layer-card{border:1px solid var(--border);border-radius:var(--r2);margin-bottom:10px;overflow:hidden}
+.layer-header{
+  padding:16px 18px;display:flex;justify-content:space-between;
+  align-items:center;cursor:pointer;
+  background:var(--bg3);transition:background .2s;
+}
+.layer-header:hover{background:var(--bg4)}
+.layer-left{display:flex;align-items:center;gap:12px}
+.layer-num{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--gold);width:28px}
+.layer-name{font-size:14px;font-weight:500;color:var(--text)}
+.layer-chevron{font-size:16px;color:var(--text3);transition:transform .3s}
+.layer-card.open .layer-chevron{transform:rotate(180deg)}
+.layer-body{display:none;padding:18px;background:var(--bg2);border-top:1px solid var(--border)}
+.layer-card.open .layer-body{display:block}
+.layer-desc{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:14px}
+.layer-q{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.layer-q:last-child{border:none}
+.layer-q-icon{font-size:16px;color:var(--gold);flex-shrink:0;margin-top:1px}
+.layer-q-text{font-size:13px;color:var(--text);line-height:1.6}
+.distortion-section{margin-top:24px;padding-top:24px;border-top:1px solid var(--border)}
+.distortion-title{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:14px}
+.distortion-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.distortion-item{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px}
+.distortion-name{font-size:12px;font-weight:500;color:var(--gold2);margin-bottom:4px}
+.distortion-def{font-size:11px;color:var(--text3);line-height:1.5}
+
+/* ── CONFIGURAÇÕES ── */
+.settings-section{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:12px}
+.settings-section-title{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:14px}
+.settings-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)}
+.settings-row:last-child{border:none}
+.settings-label{font-size:14px;color:var(--text)}
+.settings-value{font-size:13px;color:var(--text3)}
+.settings-action{font-size:13px;color:var(--gold);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif}
+.danger-btn{
+  width:100%;background:transparent;
+  border:1px solid rgba(200,60,60,.3);color:rgba(200,100,100,.8);
+  border-radius:var(--r2);padding:14px;
+  font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;
+}
+.danger-btn:hover{border-color:rgba(200,60,60,.6);color:rgba(220,100,100,1)}
+
+/* ── MODAL NOVA DECISÃO ── */
+.overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0);
+  z-index:800;transition:background .35s;
+  display:none;align-items:flex-end;justify-content:center;
+}
+.overlay.open{display:flex;background:rgba(0,0,0,.75)}
+.modal{
+  background:var(--bg2);width:100%;max-width:430px;
+  border-radius:28px 28px 0 0;
+  padding:0 0 32px;
+  transform:translateY(100%);
+  transition:transform .35s cubic-bezier(.32,.72,0,1);
+  max-height:92vh;overflow-y:auto;
+}
+.modal::-webkit-scrollbar{display:none}
+.overlay.open .modal{transform:translateY(0)}
+.modal-handle{width:36px;height:3px;border-radius:2px;background:var(--bg5);margin:14px auto 0}
+.modal-header{padding:20px 24px 16px;border-bottom:1px solid var(--border)}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--text)}
+.modal-body{padding:20px 24px 0}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.field input,.field textarea,.field select{
+  width:100%;background:var(--bg3);
+  border:1px solid var(--border);color:var(--text);
+  padding:14px 16px;border-radius:12px;
+  font-size:14px;font-family:'DM Sans',sans-serif;
+  -webkit-appearance:none;appearance:none;
+  transition:border-color .2s;outline:none;
+}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold)}
+.field textarea{min-height:80px;resize:none}
+.field select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%234a4640' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;
+  padding-right:36px;cursor:pointer;
+}
+.field select option{background:var(--bg3)}
+.modal-actions{display:flex;gap:10px;padding:16px 24px 0}
+.cancel-btn{
+  flex:1;background:transparent;border:1px solid var(--border);
+  color:var(--text2);padding:14px;border-radius:12px;
+  cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;transition:border-color .2s;
+}
+.cancel-btn:hover{border-color:var(--border2)}
+.save-btn{
+  flex:2;background:var(--gold);border:none;
+  color:#0a0908;padding:14px;border-radius:12px;
+  font-weight:500;cursor:pointer;font-size:13px;
+  font-family:'DM Sans',sans-serif;letter-spacing:.04em;transition:background .2s,transform .1s;
+}
+.save-btn:active{transform:scale(.98);background:var(--gold2)}
+
+/* ENTRY DETAIL */
+.detail-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:900;display:none}
+.detail-panel{
+  position:fixed;bottom:0;left:50%;
+  transform:translateX(-50%) translateY(100%);
+  width:100%;max-width:430px;
+  background:var(--bg2);border-radius:28px 28px 0 0;
+  padding:0 0 40px;max-height:88vh;overflow-y:auto;
+  transition:transform .35s cubic-bezier(.32,.72,0,1);z-index:901;
+}
+.detail-panel::-webkit-scrollbar{display:none}
+.detail-panel.open{transform:translateX(-50%) translateY(0)}
+.detail-panel .modal-handle{margin-bottom:0}
+.detail-header{padding:16px 24px 20px;border-bottom:1px solid var(--border)}
+.detail-situation{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;line-height:1.4;color:var(--text);margin-bottom:10px}
+.detail-meta{display:flex;gap:8px;flex-wrap:wrap}
+.detail-body{padding:20px 24px}
+.detail-section{margin-bottom:20px}
+.detail-section-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.detail-section-text{font-size:14px;color:var(--text2);line-height:1.7}
+.detail-delete{
+  margin:0 24px;background:transparent;
+  border:1px solid rgba(200,60,60,.25);color:rgba(200,100,100,.7);
+  border-radius:12px;padding:12px;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+  cursor:pointer;font-family:'DM Sans',sans-serif;
+  width:calc(100% - 48px);transition:all .2s;
+}
+.detail-delete:hover{border-color:rgba(200,60,60,.5);color:rgba(220,100,100,1)}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- SPLASH -->
+<div class="splash" id="splash">
+  <div class="splash-logo">AVR–S</div>
+  <div class="splash-subtitle">A Vida Sem Rascunho</div>
+  <div class="splash-quote" id="splashQuote"></div>
+  <div class="breath-ring">
+    <div class="breath-inner"><div class="breath-dot"></div></div>
+  </div>
+  <div class="breath-label">Respire</div>
+</div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="brand">AVR–S</div>
+  <div class="topbar-right">
+    <span class="date-text" id="dateText"></span>
+    <button class="icon-btn" onclick="openModal()" aria-label="Nova decisão">
+      <i class="ti ti-plus"></i>
+    </button>
+  </div>
+</div>
+
+<!-- SCREENS -->
+<div class="screens">
+
+  <!-- HOME -->
+  <div class="screen active" id="screen-home">
+    <div class="today-state">
+      <div class="today-label">Estado interno agora</div>
+      <div class="state-grid">
+        <div class="state-chip" onclick="selectState(this,'Presente')">
+          <i class="ti ti-eye"></i><span>Presente</span>
+        </div>
+        <div class="state-chip" onclick="selectState(this,'Focado')">
+          <i class="ti ti-target"></i><span>Focado</span>
+        </div>
+        <div class="state-chip" onclick="selectState(this,'Ansioso')">
+          <i class="ti ti-bolt"></i><span>Ansioso</span>
+        </div>
+        <div class="state-chip" onclick="selectState(this,'Sobrecarregado')">
+          <i class="ti ti-cloud-storm"></i><span>Sobrecarregado</span>
+        </div>
+        <div class="state-chip" onclick="selectState(this,'Reativo')">
+          <i class="ti ti-flame"></i><span>Reativo</span>
+        </div>
+        <div class="state-chip" onclick="selectState(this,'Claro')">
+          <i class="ti ti-sun"></i><span>Claro</span>
+        </div>
+      </div>
+      <button class="primary-btn" id="checklistBtn" onclick="tryOpenChecklist()" style="display:none">
+        <i class="ti ti-list-check" style="margin-right:6px"></i>Iniciar checklist do estado
+      </button>
+      <button class="primary-btn" id="registerBtn" onclick="openModal()">Registrar decisão consciente</button>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Dias conscientes</div>
+        <div class="stat-number" id="streak">0</div>
+        <div class="stat-sub">sequência atual</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Decisões</div>
+        <div class="stat-number" id="totalEntries">0</div>
+        <div class="stat-sub">registros totais</div>
+      </div>
+    </div>
+
+    <div class="question-card" id="dailyQuestion">
+      <div class="qcard-eyebrow">Pergunta do dia</div>
+      <div class="qcard-question" id="qcardText"></div>
+      <div class="qcard-hint" id="qcardHint"></div>
+    </div>
+
+    <div class="quote-strip">
+      <div class="quote-mark">"</div>
+      <div class="quote-text" id="quoteText"></div>
+    </div>
+  </div>
+
+  <!-- DIÁRIO -->
+  <div class="screen" id="screen-diary">
+    <div class="diary-header">
+      <div class="section-title">Diário de decisões</div>
+    </div>
+    <div class="filter-row" id="filterRow">
+      <div class="filter-chip active" onclick="filterBy('todos',this)">Todos</div>
+      <div class="filter-chip" onclick="filterBy('Presente',this)">Presente</div>
+      <div class="filter-chip" onclick="filterBy('Focado',this)">Focado</div>
+      <div class="filter-chip" onclick="filterBy('Ansioso',this)">Ansioso</div>
+      <div class="filter-chip" onclick="filterBy('Sobrecarregado',this)">Sobrecarregado</div>
+      <div class="filter-chip" onclick="filterBy('Reativo',this)">Reativo</div>
+      <div class="filter-chip" onclick="filterBy('Claro',this)">Claro</div>
+    </div>
+    <div id="entriesList"></div>
+  </div>
+
+  <!-- PROTOCOLO -->
+  <div class="screen" id="screen-protocol">
+    <div class="protocol-intro">
+      O AVR–S não é uma técnica.<br>É uma forma de perceber antes de agir.
+    </div>
+    <div class="layer-card" onclick="toggleLayer(this)">
+      <div class="layer-header">
+        <div class="layer-left"><div class="layer-num">R</div><div class="layer-name">Regular</div></div>
+        <i class="ti ti-chevron-down layer-chevron"></i>
+      </div>
+      <div class="layer-body">
+        <div class="layer-desc">Antes de qualquer decisão, ajuste o estado interno. A decisão nasce do estado de quem decide. Estado ruim → decisão distorcida.</div>
+        <div class="layer-questions">
+          <div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Meu estado está regulado agora?</div></div>
+          <div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Estou decidindo sob pressão ou com clareza?</div></div>
+          <div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">O que preciso fazer para reduzir a intensidade emocional?</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="layer-card" onclick="toggleLayer(this)">
+      <div class="layer-header">
+        <div class="layer-left"><div class="layer-num">A</div><div class="layer-name">Atenção</div></div>
+        <i class="ti ti-chevron-down layer-chevron"></i>
+      </div>
+      <div class="layer-body">
+        <div class="layer-desc">Para onde você está olhando determina o que você percebe. Atenção não é neutra — ela é disputada e pode ser escolhida.</div>
+        <div class="layer-questions">
+          <div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Onde está meu foco agora?</div></div>
+          <div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Estou vendo o fato ou a história que construí?</div></div>
+          <div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Minha atenção foi capturada ou escolhida?</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="layer-card" onclick="toggleLayer(this)">
+      <div class="layer-header">
+        <div class="layer-left"><div class="layer-num">V</div><div class="layer-name">Visão</div></div>
+        <i class="ti ti-chevron-down layer-chevron"></i>
+      </div>
+      <div class="layer-body">
+        <div class="layer-desc">Você não reage ao que acontece. Você reage ao significado que constrói sobre o que acontece. Separar fato de interpretação é o início da clareza.</div>
+        <div class="layer-questions">
+          <div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">O que de fato aconteceu?</div></div>
+          <div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">O que estou assumindo sobre isso?</div></div>
+          <div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Minha percepção está limpa ou distorcida?</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="layer-card" onclick="toggleLayer(this)">
+      <div class="layer-header">
+        <div class="layer-left"><div class="layer-num">R</div><div class="layer-name">Resposta</div></div>
+        <i class="ti ti-chevron-down layer-chevron"></i>
+      </div>
+      <div class="layer-body">
+        <div class="layer-desc">Entre o estímulo e a resposta existe um espaço. É nesse espaço que a escolha real acontece. Reação é automática. Resposta é consciente.</div>
+        <div class="layer-questions">
+          <div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Estou reagindo ou escolhendo minha resposta?</div></div>
+          <div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Esta resposta está alinhada com quem quero ser?</div></div>
+          <div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Posso criar um espaço antes de agir?</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="layer-card" onclick="toggleLayer(this)">
+      <div class="layer-header">
+        <div class="layer-left"><div class="layer-num">S</div><div class="layer-name">Sistema</div></div>
+        <i class="ti ti-chevron-down layer-chevron"></i>
+      </div>
+      <div class="layer-body">
+        <div class="layer-desc">Você não vive decisões isoladas. Vive ciclos. O sistema é o conjunto de repetições que te conduz — consciente ou não.</div>
+        <div class="layer-questions">
+          <div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Consigo sustentar essa decisão ao longo do tempo?</div></div>
+          <div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Ela cria um padrão que quero repetir?</div></div>
+          <div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">O que quero que se torne automático em mim?</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="distortion-section">
+      <div class="distortion-title">Mapa de distorções</div>
+      <div class="distortion-grid">
+        <div class="distortion-item"><div class="distortion-name">Urgência falsa</div><div class="distortion-def">Sensação de que tudo precisa ser resolvido agora</div></div>
+        <div class="distortion-item"><div class="distortion-name">Ego</div><div class="distortion-def">Necessidade de estar certo ou não perder</div></div>
+        <div class="distortion-item"><div class="distortion-name">Escassez</div><div class="distortion-def">Medo de perder oportunidades</div></div>
+        <div class="distortion-item"><div class="distortion-name">Excesso de confiança</div><div class="distortion-def">Achar que já sabe sem validar</div></div>
+        <div class="distortion-item"><div class="distortion-name">Fadiga mental</div><div class="distortion-def">Decidir cansado ou sobrecarregado</div></div>
+        <div class="distortion-item"><div class="distortion-name">Medo</div><div class="distortion-def">Evitar desconforto em vez de buscar clareza</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIGURAÇÕES -->
+  <div class="screen" id="screen-settings">
+    <div class="settings-section">
+      <div class="settings-section-title">Estatísticas</div>
+      <div class="settings-row"><div class="settings-label">Decisões registradas</div><div class="settings-value" id="settingsTotal">0</div></div>
+      <div class="settings-row"><div class="settings-label">Sequência atual</div><div class="settings-value" id="settingsStreak">0 dias</div></div>
+      <div class="settings-row"><div class="settings-label">Membro desde</div><div class="settings-value" id="settingsSince">—</div></div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-section-title">Sobre</div>
+      <div class="settings-row"><div class="settings-label">Livro</div><div class="settings-value">A Vida Sem Rascunho</div></div>
+      <div class="settings-row"><div class="settings-label">Método</div><div class="settings-value">AVR–S</div></div>
+      <div class="settings-row"><div class="settings-label">Versão</div><div class="settings-value">2.1</div></div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-section-title">Dados</div>
+      <div class="settings-row"><div class="settings-label">Exportar diário</div><button class="settings-action" onclick="exportData()">Exportar JSON</button></div>
+    </div>
+    <div style="margin-top:8px">
+      <button class="danger-btn" onclick="confirmReset()">Apagar todos os dados</button>
+    </div>
+  </div>
+
+</div><!-- /screens -->
+
+<!-- NAV -->
+<div class="nav">
+  <button class="nav-btn active" id="nav-home" onclick="goTo('home')"><i class="ti ti-home"></i>Início</button>
+  <button class="nav-btn" id="nav-diary" onclick="goTo('diary')"><i class="ti ti-notebook"></i>Diário</button>
+  <button class="nav-btn" id="nav-protocol" onclick="goTo('protocol')"><i class="ti ti-layers-intersect"></i>Protocolo</button>
+  <button class="nav-btn" id="nav-settings" onclick="goTo('settings')"><i class="ti ti-settings"></i>Ajustes</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     CHECKLIST DE ESTADO
+══════════════════════════════════════ -->
+<div class="cl-overlay" id="clOverlay" onclick="clOverlayClick(event)">
+  <div class="cl-panel" id="clPanel">
+    <div class="cl-handle"></div>
+    <div class="cl-header">
+      <div class="cl-state-name" id="clStateName">—</div>
+      <div class="cl-state-desc" id="clStateDesc">—</div>
+    </div>
+    <div class="cl-body">
+      <div class="cl-progress"><div class="cl-progress-fill" id="clProgressFill" style="width:0%"></div></div>
+      <!-- Fase 1: Checklist -->
+      <div class="cl-phase active" id="clPhaseCheck"></div>
+      <!-- Fase 2: Diagnóstico -->
+      <div class="cl-phase" id="clPhaseDiag"></div>
+      <!-- Fases 3–7: Protocolo R-A-V-R-S -->
+      <div class="cl-phase" id="clPhaseProto"></div>
+      <!-- Fase final: Decisão -->
+      <div class="cl-phase" id="clPhaseFinal"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NOVA DECISÃO -->
+<div class="overlay" id="overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header"><div class="modal-title">Nova decisão consciente</div></div>
+    <div class="modal-body">
+      <div class="field"><label>Situação</label><input type="text" id="inpSituation" placeholder="O que está acontecendo?"/></div>
+      <div class="field"><label>Fato observável</label><textarea id="inpFact" placeholder="O que realmente aconteceu, sem interpretação?"></textarea></div>
+      <div class="field">
+        <label>Distorção percebida</label>
+        <select id="inpDistortion">
+          <option value="Nenhuma">Nenhuma</option>
+          <option value="Urgência falsa">Urgência falsa</option>
+          <option value="Escassez">Escassez</option>
+          <option value="Ego">Ego</option>
+          <option value="Medo">Medo</option>
+          <option value="Excesso de confiança">Excesso de confiança</option>
+          <option value="Fadiga mental">Fadiga mental</option>
+        </select>
+      </div>
+      <div class="field"><label>Decisão consciente</label><textarea id="inpDecision" placeholder="O que você escolhe fazer, com clareza?"></textarea></div>
+      <div class="field"><label>Evolução — o que aprendeu</label><textarea id="inpLesson" placeholder="Que padrão você reconheceu? O que ajustar?"></textarea></div>
+    </div>
+    <div class="modal-actions">
+      <button class="cancel-btn" onclick="closeModal()">Cancelar</button>
+      <button class="save-btn" onclick="saveEntry()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL PANEL -->
+<div class="detail-overlay" id="detailOverlay" onclick="closeDetail()"></div>
+<div class="detail-panel" id="detailPanel">
+  <div class="modal-handle" style="margin-top:14px"></div>
+  <div class="detail-header">
+    <div class="detail-situation" id="detailSituation"></div>
+    <div class="detail-meta" id="detailMeta"></div>
+  </div>
+  <div class="detail-body" id="detailBody"></div>
+  <button class="detail-delete" id="detailDelete" onclick="deleteCurrentEntry()">
+    <i class="ti ti-trash"></i> Apagar registro
+  </button>
+</div>
+
+<!-- Install Banner -->
+<div id="installBanner" style="display:none;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+width:calc(100% - 40px);max-width:390px;background:#1d1b18;border:1px solid rgba(200,169,109,0.3);
+border-radius:16px;padding:16px 18px;z-index:500;
+align-items:center;justify-content:space-between;gap:12px;">
+  <div>
+    <div style="font-size:13px;font-weight:500;color:#ede8df;margin-bottom:3px">Instalar AVR–S</div>
+    <div style="font-size:11px;color:#9a9088">Adicionar à tela inicial</div>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button onclick="dismissInstall()" style="background:transparent;border:1px solid #2d2d2d;color:#9a9088;padding:8px 12px;border-radius:10px;font-size:12px;cursor:pointer;">Agora não</button>
+    <button onclick="installApp()" style="background:#c8a96d;border:none;color:#0a0908;padding:8px 14px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;">Instalar</button>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════
+   DADOS DO CHECKLIST POR ESTADO
+══════════════════════════════════════ */
+const CL_STATES = {
+  Presente:{
+    desc:'Atento ao momento real',
+    questions:[
+      {q:'Consigo descrever o que está acontecendo agora sem julgamento?',hint:'Fato puro × narrativa'},
+      {q:'Minha atenção está no presente ou em projeções futuras?',hint:'Aqui × lá'},
+      {q:'Consigo sentir meu corpo e minha respiração agora?',hint:'Ancoragem física'},
+      {q:'Estou percebendo o que é real ou o que imagino sobre a situação?',hint:'Real × imaginado'},
+      {q:'O nível de presença que sinto é suficiente para decidir com clareza?',hint:'Prontidão para decidir'}
+    ],
+    tip:{level:'ok',tag:'Estado favorável',title:'Presença como vantagem',text:'Você está num estado ideal de percepção. Mantenha essa ancoragem ao longo do protocolo e registre sua decisão enquanto a presença está ativa.'}
+  },
+  Focado:{
+    desc:'Direcionado a um objetivo',
+    questions:[
+      {q:'Meu foco está no que realmente importa agora?',hint:'Essencial × urgente falso'},
+      {q:'Consigo sustentar a atenção sem dispersão significativa?',hint:'Continuidade de foco'},
+      {q:'Esse foco veio de uma escolha consciente ou de pressão externa?',hint:'Interno × externo'},
+      {q:'Estou focado no problema certo ou num sintoma superficial?',hint:'Causa × sintoma'},
+      {q:'Meu nível de foco me permite ver o cenário completo?',hint:'Visão ampla × visão de túnel'}
+    ],
+    tip:{level:'ok',tag:'Estado funcional',title:'Foco bem direcionado',text:'Foco é recurso — verifique se está direcionado ao problema certo, não apenas ao mais urgente. O protocolo vai ajudar a confirmar o alinhamento.'}
+  },
+  Ansioso:{
+    desc:'Acelerado, antecipando',
+    questions:[
+      {q:'Consigo identificar a fonte concreta da minha ansiedade?',hint:'Real × imaginada'},
+      {q:'Estou reagindo a um fato ou a uma história que construí?',hint:'Fato × narrativa'},
+      {q:'Meu corpo está em tensão — respiração curta, músculos contraídos?',hint:'Sinal físico'},
+      {q:'A urgência que sinto é real ou uma distorção?',hint:'Urgência falsa × real'},
+      {q:'Consigo criar uma pausa antes de agir neste estado?',hint:'Espaço entre estímulo e resposta'}
+    ],
+    tip:{level:'danger',tag:'Atenção — distorção ativa',title:'Urgência falsa em operação',text:'A ansiedade cria a ilusão de que tudo precisa ser resolvido agora. Antes de decidir, regule o estado: respire, mova o corpo, aguarde. Decisões ansiosas tendem a ser distorcidas.'}
+  },
+  Sobrecarregado:{
+    desc:'Excesso de demandas',
+    questions:[
+      {q:'Consigo distinguir o que é realmente urgente do que parece urgente?',hint:'Prioridade real × percebida'},
+      {q:'Estou carregando demandas que não são minhas?',hint:'Limites × ausência deles'},
+      {q:'Meu estado físico está comprometendo minha capacidade de pensar?',hint:'Fadiga × clareza'},
+      {q:'Tenho clareza sobre o que posso deixar de lado agora?',hint:'Essencial × descartável'},
+      {q:'Decidiria diferente se estivesse descansado?',hint:'Estado contaminado × limpo'}
+    ],
+    tip:{level:'danger',tag:'Estado crítico',title:'Fadiga comprometendo a percepção',text:'Decidir sobrecarregado é como dirigir com o vidro embaçado. Reduza a carga antes de avançar. O protocolo vai ajudar a identificar o que é real e o que é ruído do excesso.'}
+  },
+  Reativo:{
+    desc:'Respondendo por impulso',
+    questions:[
+      {q:'Consigo identificar o gatilho que me colocou em reação?',hint:'Gatilho × decisão'},
+      {q:'Essa resposta é minha ou é uma reação ao outro?',hint:'Autoria × reatividade'},
+      {q:'Se eu esperar 5 minutos, essa decisão mudaria?',hint:'Impulso × reflexão'},
+      {q:'Há emoção não processada guiando minha resposta?',hint:'Emoção × clareza'},
+      {q:'Estou respondendo à realidade ou à interpretação que fiz dela?',hint:'Fato × história'}
+    ],
+    tip:{level:'danger',tag:'Estado crítico',title:'Reatividade é ausência de escolha',text:'Quando reativo, você não decide — você executa o que o gatilho determina. Pause. O protocolo começa pela regulação justamente para criar o espaço que a reatividade elimina.'}
+  },
+  Claro:{
+    desc:'Percepção limpa e ampla',
+    questions:[
+      {q:'Minha percepção desta situação está livre de distorções evidentes?',hint:'Limpa × contaminada'},
+      {q:'Consigo ver múltiplos ângulos sem defender um ponto de vista fixo?',hint:'Flexibilidade × rigidez'},
+      {q:'Meu estado interno apoia uma decisão alinhada com quem quero ser?',hint:'Identidade × impulso'},
+      {q:'O nível de clareza que sinto é suficiente para agir?',hint:'Pronto × não pronto'},
+      {q:'Posso sustentar essa decisão além do momento de clareza?',hint:'Consistência × flutuação'}
+    ],
+    tip:{level:'ok',tag:'Estado ideal',title:'Clareza é rara — use bem',text:'Este é o estado mais favorável para decidir. Registre a decisão agora, enquanto a clareza está ativa. O protocolo vai solidificar e estruturar o que você já está percebendo.'}
+  }
+};
+
+const PROTO_STEPS = [
+  {letter:'R',name:'Regular',desc:'Ajuste o estado interno antes de tudo.',
+   questions:['O que estou sentindo no corpo agora?','O que precisa ser liberado antes de eu avançar?','Consigo respirar fundo e criar um espaço interno agora?']},
+  {letter:'A',name:'Atenção',desc:'Direcione o foco para o que é real e verificável.',
+   questions:['Onde está minha atenção neste momento?','Estou olhando para um fato ou para uma história?','O que é observável e verificável nesta situação?']},
+  {letter:'V',name:'Visão',desc:'Limpe a percepção de distorções ativas.',
+   questions:['Que distorção pode estar ativa agora (urgência, ego, medo, escassez)?','Como descreveria esta situação sem julgamento?','Existe uma perspectiva que ainda não considerei?']},
+  {letter:'R',name:'Resposta',desc:'Escolha conscientemente — não reaja.',
+   questions:['Estou respondendo ou reagindo?','Esta resposta está alinhada com quem quero ser?','O que eu faria se estivesse no melhor estado possível?']},
+  {letter:'S',name:'Sistema',desc:'Estruture para que a decisão se sustente.',
+   questions:['Consigo manter essa decisão além deste momento?','Ela cria um padrão que quero repetir?','O que preciso estruturar para que isso se torne consistente?']}
+];
+
+/* ── estado do checklist ── */
+let clState = null;
+let clAnswers = {};
+let clScore = 0;
+let clProtoStep = 0;
+let clProtoAnswers = {};
+const TOTAL_PHASES = 4; // check, diag, proto, final
+
+function openChecklist(stateName) {
+  clState = stateName;
+  clAnswers = {};
+  clScore = 0;
+  clProtoStep = 0;
+  clProtoAnswers = {};
+
+  const s = CL_STATES[stateName];
+  document.getElementById('clStateName').textContent = stateName;
+  document.getElementById('clStateDesc').textContent = s.desc;
+
+  renderClCheck();
+  clShowPhase('clPhaseCheck');
+  clSetProgress(1, TOTAL_PHASES);
+
+  document.getElementById('clOverlay').classList.add('open');
+}
+
+function tryOpenChecklist() {
+  if (!selectedState || !CL_STATES[selectedState]) {
+    alert('Selecione um estado primeiro.');
+    return;
+  }
+  openChecklist(selectedState);
+}
+
+function clOverlayClick(e) {
+  if (e.target === document.getElementById('clOverlay')) closeChecklist();
+}
+
+function closeChecklist() {
+  document.getElementById('clOverlay').classList.remove('open');
+}
+
+function clShowPhase(id) {
+  document.querySelectorAll('.cl-phase').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('clPanel').scrollTop = 0;
+}
+
+function clSetProgress(step, total) {
+  document.getElementById('clProgressFill').style.width = Math.round((step / total) * 100) + '%';
+}
+
+/* ── FASE 1: Checklist ── */
+function renderClCheck() {
+  const qs = CL_STATES[clState].questions;
+  let html = '';
+  qs.forEach((item, i) => {
+    html += `
+    <div class="cl-q-block">
+      <div class="cl-q-text">${item.q}</div>
+      <div class="cl-q-hint">${item.hint}</div>
+      <div class="scale-wrap">
+        <input type="range" min="1" max="5" value="3" step="1" id="clq${i}"
+          oninput="clUpdateThumb(this,document.getElementById('clv${i}'))">
+        <span class="scale-num" id="clv${i}">3</span>
+      </div>
+      <div class="scale-labels"><span>Baixo</span><span>Alto</span></div>
+    </div>`;
+  });
+  html += `<div style="padding-bottom:4px">
+    <button class="primary-btn" onclick="clSubmitCheck()">Ver diagnóstico</button>
+    <button class="ghost-btn" onclick="closeChecklist()">Cancelar</button>
+  </div>`;
+  document.getElementById('clPhaseCheck').innerHTML = html;
+}
+
+function clUpdateThumb(input, numEl) {
+  numEl.textContent = input.value;
+  const pct = ((input.value - 1) / 4) * 100;
+  input.style.background = `linear-gradient(to right, var(--gold) ${pct}%, var(--bg5) ${pct}%)`;
+}
+
+function clSubmitCheck() {
+  const qs = CL_STATES[clState].questions;
+  let total = 0;
+  qs.forEach((_, i) => {
+    const v = parseInt(document.getElementById('clq' + i).value);
+    clAnswers[i] = v;
+    total += v;
+  });
+  clScore = Math.round((total / (qs.length * 5)) * 100);
+  renderClDiag();
+  clShowPhase('clPhaseDiag');
+  clSetProgress(2, TOTAL_PHASES);
+}
+
+/* ── FASE 2: Diagnóstico ── */
+function renderClDiag() {
+  const tip = CL_STATES[clState].tip;
+  let mainLevel, mainTag, mainTitle, mainText;
+
+  if (clScore >= 70) {
+    mainLevel = 'ok'; mainTag = 'Estado favorável';
+    mainTitle = 'Percepção relativamente limpa';
+    mainText = 'Suas respostas indicam que o estado interno está suficientemente regulado. O protocolo vai refinar e ancorar a decisão.';
+  } else if (clScore >= 40) {
+    mainLevel = 'warn'; mainTag = 'Atenção necessária';
+    mainTitle = 'Há distorções ativas — pause antes de decidir';
+    mainText = 'Algumas respostas indicam interferências no estado. O protocolo vai ajudar a identificar e neutralizar as distorções antes de agir.';
+  } else {
+    mainLevel = 'danger'; mainTag = 'Estado crítico';
+    mainTitle = 'Não decida agora — regule primeiro';
+    mainText = 'Seu estado interno está comprometendo a percepção. Respire, mova o corpo ou aguarde. Decisões neste estado tendem a ser profundamente distorcidas.';
+  }
+
+  document.getElementById('clPhaseDiag').innerHTML = `
+    <div class="diag-ring-wrap">
+      <div class="diag-score">${clScore}</div>
+      <div class="diag-score-label">score de clareza</div>
+    </div>
+    <div class="diag-card ${mainLevel}">
+      <div class="diag-tag">${mainTag}</div>
+      <div class="diag-title">${mainTitle}</div>
+      <div class="diag-text">${mainText}</div>
+    </div>
+    <div class="diag-card ${tip.level}">
+      <div class="diag-tag">${tip.tag} · ${clState}</div>
+      <div class="diag-title">${tip.title}</div>
+      <div class="diag-text">${tip.text}</div>
+    </div>
+    <div style="padding-bottom:4px;margin-top:4px">
+      <button class="primary-btn" onclick="clStartProto()">Iniciar protocolo AVR–S</button>
+      <button class="ghost-btn" onclick="closeChecklist()">Fechar</button>
+    </div>`;
+}
+
+/* ── FASE 3: Protocolo ── */
+function clStartProto() {
+  clProtoStep = 0;
+  clProtoAnswers = {};
+  renderClProto();
+  clShowPhase('clPhaseProto');
+  clSetProgress(3, TOTAL_PHASES);
+}
+
+function renderClProto() {
+  const s = PROTO_STEPS[clProtoStep];
+  const total = PROTO_STEPS.length;
+  const saved = clProtoAnswers[clProtoStep] || ['', '', ''];
+
+  let html = `
+    <div class="proto-step-info">
+      <div class="proto-letter">${s.letter}</div>
+      <div>
+        <div class="proto-name">${s.name}</div>
+        <div class="proto-desc">${s.desc}</div>
+      </div>
+    </div>`;
+
+  s.questions.forEach((q, i) => {
+    html += `
+    <div class="proto-q">
+      <div class="proto-q-text">${q}</div>
+      <textarea id="pq${clProtoStep}_${i}" placeholder="Escreva sua resposta..." rows="2">${saved[i]}</textarea>
+    </div>`;
+  });
+
+  html += `<div class="cl-nav">
+    ${clProtoStep > 0 ? `<button class="cl-back" onclick="clProtoBack()">Voltar</button>` : `<button class="cl-back" onclick="clShowPhase('clPhaseDiag');clSetProgress(2,${TOTAL_PHASES})">Voltar</button>`}
+    <button class="cl-next" onclick="clProtoNext()">
+      ${clProtoStep < total - 1 ? 'Próximo →' : 'Finalizar protocolo →'}
+    </button>
+  </div>
+  <div style="text-align:center;padding:12px 0">
+    <span style="font-size:11px;color:var(--text3);letter-spacing:.06em">${clProtoStep + 1} de ${total}</span>
+  </div>`;
+
+  document.getElementById('clPhaseProto').innerHTML = html;
+}
+
+function clSaveProtoAnswers() {
+  const s = PROTO_STEPS[clProtoStep];
+  clProtoAnswers[clProtoStep] = s.questions.map((_, i) => {
+    const el = document.getElementById(`pq${clProtoStep}_${i}`);
+    return el ? el.value : '';
+  });
+}
+
+function clProtoNext() {
+  clSaveProtoAnswers();
+  if (clProtoStep < PROTO_STEPS.length - 1) {
+    clProtoStep++;
+    renderClProto();
+    document.getElementById('clPanel').scrollTop = 0;
+  } else {
+    renderClFinal();
+    clShowPhase('clPhaseFinal');
+    clSetProgress(4, TOTAL_PHASES);
+  }
+}
+
+function clProtoBack() {
+  clSaveProtoAnswers();
+  if (clProtoStep > 0) { clProtoStep--; renderClProto(); }
+}
+
+/* ── FASE 4: Decisão final ── */
+function renderClFinal() {
+  document.getElementById('clPhaseFinal').innerHTML = `
+    <div class="diag-card ok" style="margin-bottom:16px">
+      <div class="diag-tag">Protocolo completo</div>
+      <div class="diag-title">Você passou por todas as etapas</div>
+      <div class="diag-text">Score de clareza: ${clScore}/100 · Estado: ${clState}. Agora registre sua decisão consciente.</div>
+    </div>
+    <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:8px">Sua decisão consciente</div>
+    <div class="final-decision-box">
+      <textarea id="clFinalDecision" placeholder="A partir do que percebi e do protocolo que percorri, decido..."></textarea>
+    </div>
+    <div style="padding-bottom:4px;margin-top:4px">
+      <button class="primary-btn" onclick="clSaveFinal()">Salvar no diário</button>
+      <button class="ghost-btn" onclick="closeChecklist()">Fechar sem salvar</button>
+    </div>`;
+}
+
+function clSaveFinal() {
+  const dec = document.getElementById('clFinalDecision').value.trim();
+  if (!dec) { document.getElementById('clFinalDecision').focus(); return; }
+
+  const entry = {
+    id: Date.now(),
+    situation: 'Checklist — estado: ' + clState,
+    fact: 'Score de clareza: ' + clScore + '/100',
+    distortion: detectDistortion(clState, clScore),
+    decision: dec,
+    lesson: buildLesson(),
+    state: clState,
+    date: new Date().toLocaleDateString('pt-BR', {day:'numeric', month:'short', year:'numeric'})
+  };
+
+  entries.unshift(entry);
+  save();
+  renderEntries();
+  renderStats();
+  closeChecklist();
+  goTo('diary');
+}
+
+function detectDistortion(state, score) {
+  if (score >= 70) return 'Nenhuma';
+  const map = { Ansioso:'Urgência falsa', Sobrecarregado:'Fadiga mental', Reativo:'Ego', Focado:'Excesso de confiança', Presente:'Nenhuma', Claro:'Nenhuma' };
+  return map[state] || 'Nenhuma';
+}
+
+function buildLesson() {
+  const answers = [];
+  PROTO_STEPS.forEach((s, si) => {
+    if (clProtoAnswers[si]) {
+      s.questions.forEach((q, qi) => {
+        const a = clProtoAnswers[si][qi];
+        if (a && a.trim()) answers.push(q + ' → ' + a.trim());
+      });
+    }
+  });
+  return answers.slice(0, 3).join('\n\n');
+}
+
+/* ══════════════════════════════════════
+   APP PRINCIPAL (código original)
+══════════════════════════════════════ */
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const banner = document.getElementById('installBanner');
+  if (banner) banner.style.display = 'flex';
+});
+function installApp() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(() => {
+    deferredPrompt = null;
+    document.getElementById('installBanner').style.display = 'none';
+  });
+}
+function dismissInstall() {
+  document.getElementById('installBanner').style.display = 'none';
+  localStorage.setItem('avrs_install_dismissed', '1');
+}
+window.addEventListener('appinstalled', () => {
+  document.getElementById('installBanner').style.display = 'none';
+});
+
+const QUOTES = [
+  'Clareza não é pensar mais. É distorcer menos.',
+  'Você decide a versão da realidade que percebe.',
+  'Toda decisão carrega o estado de quem decide.',
+  'A vida não tem rascunho. Só execução.',
+  'Entre o estímulo e a resposta existe a sua liberdade.',
+  'Você não vive o que aprende. Vive o que repete.',
+  'Consciência sem estrutura não sustenta transformação.',
+  'O automático continua existindo até que algo consciente o interrompa.',
+  'Quem não escolhe onde colocar a atenção vive respondendo ao que aparece.',
+  'Você não reage ao fato. Reage à interpretação.',
+  'Mudar o comportamento sem mudar o comando é consertar o efeito sem tocar na causa.',
+  'Percepção limpa. Decisão consciente.'
+];
+
+const QUESTIONS = [
+  {q:'Onde está sua atenção agora?', h:'Você está presente no que importa ou conduzido pelo que apareceu?'},
+  {q:'O que é fato e o que é interpretação?', h:'Separe o que aconteceu do que você construiu sobre isso.'},
+  {q:'Que comando invisível está ativo em você?', h:'Qual frase interna está conduzindo sua percepção hoje?'},
+  {q:'Você está decidindo ou reagindo?', h:'Existe um espaço entre o estímulo e sua resposta. Você o está usando?'},
+  {q:'O que você tem repetido sem perceber?', h:'Repetição não percebida vira padrão. Padrão vira identidade.'},
+  {q:'Seu estado está regulado para decidir?', h:'Decisão boa em estado ruim tende a dar resultado ruim.'},
+  {q:'Que ciclo você está dentro agora?', h:'Todo comportamento tem uma instrução na origem. Qual é a sua?'}
+];
+
+let entries = [];
+let streak = 0;
+let currentFilter = 'todos';
+let currentEntryId = null;
+let selectedState = '';
+
+function load() {
+  try { entries = JSON.parse(localStorage.getItem('avrs2_entries')) || []; } catch(e) { entries = []; }
+  streak = Number(localStorage.getItem('avrs2_streak')) || 0;
+  selectedState = localStorage.getItem('avrs2_state') || '';
+}
+
+function save() {
+  localStorage.setItem('avrs2_entries', JSON.stringify(entries));
+}
+
+function updateStreak() {
+  const today = new Date().toDateString();
+  const last = localStorage.getItem('avrs2_last');
+  if (last !== today) {
+    streak++;
+    localStorage.setItem('avrs2_streak', streak);
+    localStorage.setItem('avrs2_last', today);
+  }
+}
+
+function init() {
+  load();
+  updateStreak();
+
+  const sq = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+  document.getElementById('splashQuote').textContent = '"' + sq + '"';
+  setTimeout(() => document.getElementById('splash').classList.add('hide'), 2800);
+
+  const now = new Date();
+  document.getElementById('dateText').textContent = now.toLocaleDateString('pt-BR', {day:'numeric', month:'long'});
+
+  const q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+  document.getElementById('quoteText').textContent = '"' + q + '"';
+
+  const dq = QUESTIONS[now.getDate() % QUESTIONS.length];
+  document.getElementById('qcardText').textContent = dq.q;
+  document.getElementById('qcardHint').textContent = dq.h;
+
+  renderStats();
+
+  if (selectedState) {
+    document.querySelectorAll('.state-chip').forEach(c => {
+      if (c.querySelector('span').textContent === selectedState) c.classList.add('active');
+    });
+    showChecklistBtn(true);
+  }
+
+  renderEntries();
+
+  setInterval(() => {
+    const el = document.getElementById('quoteText');
+    el.style.opacity = '0';
+    setTimeout(() => {
+      el.textContent = '"' + QUOTES[Math.floor(Math.random() * QUOTES.length)] + '"';
+      el.style.opacity = '1';
+    }, 400);
+  }, 8000);
+}
+
+function renderStats() {
+  document.getElementById('streak').textContent = streak;
+  document.getElementById('totalEntries').textContent = entries.length;
+  document.getElementById('settingsTotal').textContent = entries.length;
+  document.getElementById('settingsStreak').textContent = streak + ' dias';
+  if (entries.length > 0) {
+    const oldest = new Date(entries[entries.length - 1].id);
+    document.getElementById('settingsSince').textContent = oldest.toLocaleDateString('pt-BR', {month:'long', year:'numeric'});
+  }
+}
+
+function showChecklistBtn(show) {
+  document.getElementById('checklistBtn').style.display = show ? 'block' : 'none';
+  document.getElementById('registerBtn').style.marginTop = show ? '10px' : '0';
+}
+
+function selectState(el, state) {
+  document.querySelectorAll('.state-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  selectedState = state;
+  localStorage.setItem('avrs2_state', state);
+  showChecklistBtn(true);
+}
+
+function goTo(screen) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('screen-' + screen).classList.add('active');
+  document.getElementById('nav-' + screen).classList.add('active');
+}
+
+function openModal() {
+  document.getElementById('overlay').classList.add('open');
+  setTimeout(() => document.getElementById('inpSituation').focus(), 400);
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('overlay')) return;
+  document.getElementById('overlay').classList.remove('open');
+}
+
+function saveEntry() {
+  const situation = document.getElementById('inpSituation').value.trim();
+  if (!situation) { document.getElementById('inpSituation').focus(); return; }
+  const entry = {
+    id: Date.now(),
+    situation,
+    fact: document.getElementById('inpFact').value.trim(),
+    distortion: document.getElementById('inpDistortion').value,
+    decision: document.getElementById('inpDecision').value.trim(),
+    lesson: document.getElementById('inpLesson').value.trim(),
+    state: selectedState || 'Não definido',
+    date: new Date().toLocaleDateString('pt-BR', {day:'numeric', month:'short', year:'numeric'})
+  };
+  entries.unshift(entry);
+  save();
+  renderEntries();
+  renderStats();
+  document.getElementById('overlay').classList.remove('open');
+  ['inpSituation','inpFact','inpDecision','inpLesson'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('inpDistortion').selectedIndex = 0;
+}
+
+function filterBy(filter, el) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  currentFilter = filter;
+  renderEntries();
+}
+
+function renderEntries() {
+  const container = document.getElementById('entriesList');
+  const filtered = currentFilter === 'todos' ? entries : entries.filter(e => e.state === currentFilter);
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon"><i class="ti ti-notebook"></i></div>
+        <div class="empty-title">Nenhum registro ainda</div>
+        <div class="empty-sub">Comece registrando uma decisão consciente.<br>A clareza nasce quando você observa padrões.</div>
+      </div>`;
+    return;
+  }
+  container.innerHTML = filtered.map(entry => `
+    <div class="entry-card" onclick="openDetail(${entry.id})">
+      <div class="entry-top">
+        <div class="entry-situation">${esc(entry.situation)}</div>
+        <div class="entry-date">${entry.date}</div>
+      </div>
+      ${entry.decision ? `<div class="entry-body">${esc(entry.decision)}</div>` : ''}
+      <div class="entry-footer">
+        ${entry.state !== 'Não definido' ? `<span class="entry-state-badge">${esc(entry.state)}</span>` : ''}
+        ${entry.distortion && entry.distortion !== 'Nenhuma' ? `<span class="entry-distortion-badge">${esc(entry.distortion)}</span>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+function esc(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function openDetail(id) {
+  const entry = entries.find(e => e.id === id);
+  if (!entry) return;
+  currentEntryId = id;
+  document.getElementById('detailSituation').textContent = entry.situation;
+  document.getElementById('detailMeta').innerHTML = `
+    ${entry.state !== 'Não definido' ? `<span class="entry-state-badge">${esc(entry.state)}</span>` : ''}
+    ${entry.distortion && entry.distortion !== 'Nenhuma' ? `<span class="entry-distortion-badge">${esc(entry.distortion)}</span>` : ''}
+    <span style="font-size:11px;color:var(--text3)">${entry.date}</span>`;
+  let body = '';
+  if (entry.fact) body += `<div class="detail-section"><div class="detail-section-label">Fato observável</div><div class="detail-section-text">${esc(entry.fact)}</div></div>`;
+  if (entry.decision) body += `<div class="detail-section"><div class="detail-section-label">Decisão consciente</div><div class="detail-section-text">${esc(entry.decision)}</div></div>`;
+  if (entry.lesson) body += `<div class="detail-section"><div class="detail-section-label">Evolução</div><div class="detail-section-text">${esc(entry.lesson)}</div></div>`;
+  document.getElementById('detailBody').innerHTML = body;
+  document.getElementById('detailOverlay').style.display = 'block';
+  setTimeout(() => document.getElementById('detailPanel').classList.add('open'), 10);
+}
+
+function closeDetail() {
+  document.getElementById('detailPanel').classList.remove('open');
+  setTimeout(() => document.getElementById('detailOverlay').style.display = 'none', 350);
+}
+
+function deleteCurrentEntry() {
+  if (!currentEntryId) return;
+  if (!confirm('Apagar este registro?')) return;
+  entries = entries.filter(e => e.id !== currentEntryId);
+  save();
+  renderEntries();
+  renderStats();
+  closeDetail();
+}
+
+function toggleLayer(card) {
+  card.classList.toggle('open');
+}
+
+function exportData() {
+  const blob = new Blob([JSON.stringify({entries, streak, exportedAt: new Date().toISOString()}, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'avrs-diario.json';
+  a.click();
+}
+
+function confirmReset() {
+  if (!confirm('Apagar todos os dados? Esta ação não pode ser desfeita.')) return;
+  localStorage.clear();
+  entries = [];
+  streak = 0;
+  renderEntries();
+  renderStats();
+}
+
+init();
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(() => console.log('AVR-S: Service Worker registrado'))
+      .catch(e => console.log('SW error:', e));
+  });
+}
+</script>
+</body>
+</html>
