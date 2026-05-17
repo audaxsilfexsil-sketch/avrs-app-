@@ -8,12 +8,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
-<link rel="manifest" href="manifest.json"/>
-<meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<meta name="apple-mobile-web-app-title" content="AVR–S"/>
-<meta name="theme-color" content="#0a0908"/>
-<link rel="apple-touch-icon" href="icon-192.png"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
@@ -21,6 +15,7 @@
   --gold:#c8a96d;--gold2:#e2c48a;
   --cream:#ede8df;--text2:#9a9088;--text3:#4a4640;
   --border:rgba(200,169,109,0.12);--border2:rgba(200,169,109,0.25);
+  --ai:#1a2a1a;--ai-border:rgba(100,180,100,0.2);--ai-text:#90c890;
   --r:18px;--r2:14px;
 }
 html,body{height:100%;overflow:hidden;background:var(--bg)}
@@ -90,6 +85,35 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream)}
 .quote-text{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;font-weight:300;color:var(--gold2);line-height:1.8;transition:opacity .4s}
 .quote-mark{position:absolute;top:10px;left:16px;font-family:'Cormorant Garamond',serif;font-size:64px;font-weight:300;color:rgba(200,169,109,.06);line-height:1}
 
+/* ══ MENTOR IA ══ */
+.mentor-card{background:var(--ai);border:1px solid var(--ai-border);border-radius:var(--r);padding:20px;margin-bottom:16px}
+.mentor-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.mentor-dot{width:8px;height:8px;border-radius:50%;background:var(--ai-text);animation:pulse-dot 2s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.2)}}
+.mentor-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--ai-text)}
+.mentor-text{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:300;color:var(--cream);line-height:1.8}
+.mentor-typing{display:flex;gap:4px;align-items:center;padding:4px 0}
+.mentor-typing span{width:5px;height:5px;border-radius:50%;background:var(--ai-text);animation:typing 1.2s ease-in-out infinite}
+.mentor-typing span:nth-child(2){animation-delay:.2s}
+.mentor-typing span:nth-child(3){animation-delay:.4s}
+@keyframes typing{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
+.mentor-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.mentor-pill{background:rgba(100,180,100,.08);border:1px solid var(--ai-border);border-radius:20px;padding:7px 14px;font-size:11px;color:var(--ai-text);cursor:pointer;transition:all .2s}
+.mentor-pill:hover{background:rgba(100,180,100,.15)}
+
+/* ANÁLISE SEMANAL */
+.analysis-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:16px}
+.analysis-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.analysis-title{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3)}
+.analysis-btn{background:none;border:1px solid var(--border2);border-radius:20px;padding:6px 12px;font-size:11px;color:var(--gold);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.analysis-btn:hover{background:rgba(200,169,109,.08)}
+.pattern-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.pattern-row:last-child{border:none}
+.pattern-bar-wrap{flex:1;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.pattern-bar{height:100%;border-radius:2px;background:var(--gold);transition:width .6s ease}
+.pattern-label{font-size:12px;color:var(--text2);width:110px;flex-shrink:0}
+.pattern-pct{font-size:11px;color:var(--text3);width:32px;text-align:right;flex-shrink:0}
+
 /* DIARY */
 .diary-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
 .section-title{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3)}
@@ -107,6 +131,7 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream)}
 .badge{padding:4px 10px;border-radius:30px;font-size:10px;letter-spacing:.06em}
 .badge-gold{background:rgba(200,169,109,.1);color:var(--gold)}
 .badge-dark{background:var(--bg4);color:var(--text3)}
+.badge-ai{background:rgba(100,180,100,.1);color:var(--ai-text)}
 .empty-state{text-align:center;padding:48px 24px}
 .empty-icon{font-size:40px;color:var(--text3);margin-bottom:16px}
 .empty-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--text2);margin-bottom:8px}
@@ -161,7 +186,7 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream)}
 .cancel-btn{flex:1;background:transparent;border:1px solid var(--border);color:var(--text2);padding:14px;border-radius:12px;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif}
 .save-btn{flex:2;background:var(--gold);border:none;color:#0a0908;padding:14px;border-radius:12px;font-weight:500;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;letter-spacing:.04em}
 
-/* ══ CHECKLIST ══ */
+/* CHECKLIST */
 .cl-overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:850;display:none;align-items:flex-end;justify-content:center}
 .cl-overlay.open{display:flex}
 .cl-panel{background:var(--bg2);width:100%;max-width:430px;border-radius:28px 28px 0 0;transform:translateY(100%);transition:transform .4s cubic-bezier(.32,.72,0,1);max-height:90vh;overflow:hidden;display:flex;flex-direction:column}
@@ -214,6 +239,13 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream)}
 .sug-reflection-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
 .sug-reflection-text{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:var(--text2);line-height:1.7}
 
+/* AI INSIGHT no checklist */
+.ai-insight{background:var(--ai);border:1px solid var(--ai-border);border-radius:14px;padding:16px;margin-bottom:14px}
+.ai-insight-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ai-text);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.ai-insight-label i{font-size:14px}
+.ai-insight-text{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;color:var(--cream);line-height:1.75}
+.ai-insight-sub{font-size:12px;color:var(--text2);line-height:1.6;margin-top:8px}
+
 /* DETAIL */
 .det-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:900;display:none}
 .det-panel{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:430px;background:var(--bg2);border-radius:28px 28px 0 0;padding:0 0 40px;max-height:88vh;overflow-y:auto;transition:transform .35s cubic-bezier(.32,.72,0,1);z-index:901}
@@ -228,6 +260,28 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream)}
 .det-section-text{font-size:14px;color:var(--text2);line-height:1.7}
 .det-sug{background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:14px;margin-top:8px}
 .det-delete{margin:0 24px;background:transparent;border:1px solid rgba(200,60,60,.25);color:rgba(200,100,100,.7);border-radius:12px;padding:12px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;width:calc(100% - 48px)}
+
+/* MENTOR CHAT */
+.mentor-chat-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:950;display:none;align-items:flex-end;justify-content:center}
+.mentor-chat-overlay.open{display:flex}
+.mentor-chat-panel{background:var(--bg2);width:100%;max-width:430px;border-radius:28px 28px 0 0;max-height:88vh;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .4s cubic-bezier(.32,.72,0,1)}
+.mentor-chat-overlay.open .mentor-chat-panel{transform:translateY(0)}
+.mentor-chat-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0}
+.mentor-avatar{width:36px;height:36px;border-radius:50%;background:var(--ai);border:1px solid var(--ai-border);display:flex;align-items:center;justify-content:center}
+.mentor-avatar i{font-size:18px;color:var(--ai-text)}
+.mentor-chat-name{font-size:14px;font-weight:500;color:var(--cream)}
+.mentor-chat-status{font-size:11px;color:var(--ai-text)}
+.mentor-close{margin-left:auto;background:none;border:none;color:var(--text3);cursor:pointer;font-size:20px}
+.chat-msgs{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px}
+.chat-msgs::-webkit-scrollbar{display:none}
+.msg{max-width:86%;padding:12px 16px;border-radius:16px;font-size:13px;line-height:1.7}
+.msg-ai{background:var(--ai);border:1px solid var(--ai-border);color:var(--cream);align-self:flex-start;border-bottom-left-radius:4px;font-family:'Cormorant Garamond',serif;font-size:15px}
+.msg-user{background:rgba(200,169,109,.1);border:1px solid var(--border2);color:var(--cream);align-self:flex-end;border-bottom-right-radius:4px}
+.chat-input-row{display:flex;gap:10px;padding:14px 20px 32px;border-top:1px solid var(--border);flex-shrink:0}
+.chat-input{flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--cream);padding:12px 16px;border-radius:12px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
+.chat-input:focus{border-color:var(--gold)}
+.chat-send{background:var(--gold);border:none;color:#0a0908;width:40px;height:40px;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.chat-send i{font-size:18px}
 </style>
 </head>
 <body>
@@ -247,6 +301,7 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream)}
   <div class="brand">AVR–S</div>
   <div class="topbar-right">
     <span class="date-text" id="dateText"></span>
+    <button class="icon-btn" onclick="openMentorChat()" title="Mentor IA"><i class="ti ti-brain"></i></button>
     <button class="icon-btn" onclick="openModal()"><i class="ti ti-plus"></i></button>
   </div>
 </div>
@@ -256,6 +311,19 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream)}
 
   <!-- HOME -->
   <div class="screen active" id="screen-home">
+
+    <!-- MENTOR IA -->
+    <div class="mentor-card" id="mentorCard">
+      <div class="mentor-header">
+        <div class="mentor-dot"></div>
+        <div class="mentor-label">Mentor AVR–S · IA</div>
+      </div>
+      <div class="mentor-text" id="mentorText">
+        <div class="mentor-typing"><span></span><span></span><span></span></div>
+      </div>
+      <div class="mentor-actions" id="mentorActions"></div>
+    </div>
+
     <div class="today-state">
       <div class="today-label">Estado interno agora</div>
       <div class="today-hint">Toque em um estado para iniciar o diagnóstico AVR–S</div>
@@ -285,6 +353,15 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream)}
     <div class="stats-row">
       <div class="stat-card"><div class="stat-label">Dias conscientes</div><div class="stat-number" id="streak">0</div><div class="stat-sub">sequência atual</div></div>
       <div class="stat-card"><div class="stat-label">Decisões</div><div class="stat-number" id="totalEntries">0</div><div class="stat-sub">registros totais</div></div>
+    </div>
+
+    <!-- ANÁLISE SEMANAL -->
+    <div class="analysis-card" id="analysisCard" style="display:none">
+      <div class="analysis-header">
+        <div class="analysis-title">Padrões detectados · 7 dias</div>
+        <button class="analysis-btn" onclick="requestWeeklyAnalysis()"><i class="ti ti-sparkles"></i> Analisar</button>
+      </div>
+      <div id="patternBars"></div>
     </div>
 
     <div class="question-card">
@@ -368,10 +445,16 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream)}
       <div class="settings-row"><div class="settings-label">Membro desde</div><div class="settings-value" id="settingsSince">—</div></div>
     </div>
     <div class="settings-section">
+      <div class="settings-section-title">Inteligência AVR–S</div>
+      <div class="settings-row"><div class="settings-label">Perfil adaptativo</div><div class="settings-value" id="profileStatus">Construindo...</div></div>
+      <div class="settings-row"><div class="settings-label">Padrão dominante</div><div class="settings-value" id="dominantPattern">—</div></div>
+      <div class="settings-row"><div class="settings-label">Gatilho recorrente</div><div class="settings-value" id="mainTrigger">—</div></div>
+    </div>
+    <div class="settings-section">
       <div class="settings-section-title">Sobre</div>
       <div class="settings-row"><div class="settings-label">Livro</div><div class="settings-value">A Vida Sem Rascunho</div></div>
       <div class="settings-row"><div class="settings-label">Método</div><div class="settings-value">AVR–S</div></div>
-      <div class="settings-row"><div class="settings-label">Versão</div><div class="settings-value">3.0</div></div>
+      <div class="settings-row"><div class="settings-label">Versão</div><div class="settings-value">4.0 · IA</div></div>
     </div>
     <div class="settings-section">
       <div class="settings-section-title">Dados</div>
@@ -380,7 +463,7 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream)}
     <button class="danger-btn" onclick="confirmReset()">Apagar todos os dados</button>
   </div>
 
-</div><!-- /screens -->
+</div>
 
 <!-- NAV -->
 <div class="nav">
@@ -437,12 +520,31 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream)}
   <button class="det-delete" onclick="deleteEntry()"><i class="ti ti-trash"></i> Apagar registro</button>
 </div>
 
+<!-- MENTOR CHAT -->
+<div class="mentor-chat-overlay" id="mentorChatOverlay">
+  <div class="mentor-chat-panel">
+    <div class="modal-handle" style="margin-top:14px;margin-bottom:0"></div>
+    <div class="mentor-chat-header">
+      <div class="mentor-avatar"><i class="ti ti-brain"></i></div>
+      <div>
+        <div class="mentor-chat-name">Mentor AVR–S</div>
+        <div class="mentor-chat-status" id="mentorChatStatus">online</div>
+      </div>
+      <button class="mentor-close" onclick="closeMentorChat()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="chat-msgs" id="chatMsgs"></div>
+    <div class="chat-input-row">
+      <input class="chat-input" id="chatInput" placeholder="Escreva algo..." onkeydown="if(event.key==='Enter')sendChat()"/>
+      <button class="chat-send" onclick="sendChat()"><i class="ti ti-send"></i></button>
+    </div>
+  </div>
+</div>
+
 <script>
-// ── DATA ──
+// ── DATA ESTÁTICA ──
 const QUOTES = ['Clareza não é pensar mais. É distorcer menos.','Você decide a versão da realidade que percebe.','Toda decisão carrega o estado de quem decide.','A vida não tem rascunho. Só execução.','Entre o estímulo e a resposta existe a sua liberdade.','Você não vive o que aprende. Vive o que repete.','O automático continua até que algo consciente o interrompa.','Quem não escolhe onde colocar a atenção responde ao que aparece.','Percepção limpa. Decisão consciente.'];
 const QUESTIONS = [{q:'Onde está sua atenção agora?',h:'Você está presente no que importa ou conduzido pelo que apareceu?'},{q:'O que é fato e o que é interpretação?',h:'Separe o que aconteceu do que você construiu sobre isso.'},{q:'Que comando invisível está ativo em você?',h:'Qual frase interna está conduzindo sua percepção hoje?'},{q:'Você está decidindo ou reagindo?',h:'Existe um espaço entre o estímulo e sua resposta. Você o está usando?'},{q:'O que você tem repetido sem perceber?',h:'Repetição não percebida vira padrão. Padrão vira identidade.'},{q:'Seu estado está regulado para decidir?',h:'Decisão boa em estado ruim tende a dar resultado ruim.'},{q:'Que ciclo você está dentro agora?',h:'Todo comportamento tem uma instrução na origem. Qual é a sua?'}];
 
-// ── CHECKLISTS ──
 const CL = {
   Presente:{intro:'Você está presente. Vamos verificar a qualidade dessa presença.',steps:[
     {q:'Sua atenção está onde você quer que esteja?',opts:['Sim, estou totalmente focado','Sim, mas com algum esforço','Não, estou dividido','Não sei dizer']},
@@ -482,89 +584,340 @@ const CL = {
   ]}
 };
 
-// ── SUGESTÕES ──
 const SUBS = {
-  Presente:{
-    default:{icon:'ti-eye',name:'Presença Qualificada',dist:null,body:'Você está presente — isso é raro. Agora a pergunta é: sua presença está servindo ao que realmente importa?',actions:[{n:'01',t:'Nomeie em voz baixa o que está observando — sem julgamento, apenas o fato.'},{n:'02',t:'Pergunte: "O que este momento está pedindo de mim?" Responda com uma ação simples.'},{n:'03',t:'Registre essa clareza — presença consciente é o início de qualquer decisão bem tomada.'}]}
-  },
+  Presente:{default:{icon:'ti-eye',name:'Presença Qualificada',dist:null,body:'Você está presente — isso é raro. Agora a pergunta é: sua presença está servindo ao que realmente importa?',actions:[{n:'01',t:'Nomeie em voz baixa o que está observando — sem julgamento, apenas o fato.'},{n:'02',t:'Pergunte: "O que este momento está pedindo de mim?" Responda com uma ação simples.'},{n:'03',t:'Registre essa clareza — presença consciente é o início de qualquer decisão bem tomada.'}]}},
   Focado:{
     capturado:{icon:'ti-target',name:'Foco Capturado',dist:'Atenção capturada: você está respondendo ao que aparece, não ao que escolheu.',body:'Seu foco foi sequestrado por algo externo. O que parece urgente nem sempre é importante.',actions:[{n:'01',t:'Pause por 60 segundos. Respire. Recupere a escolha de onde colocar sua atenção.'},{n:'02',t:'Pergunte: "O que eu escolheria focar se não houvesse pressão externa?"'},{n:'03',t:'Retorne ao que é importante — não ao que é barulhento.'}]},
     desalinhado:{icon:'ti-target',name:'Foco Desalinhado',dist:'Urgência falsa: atividade intensa não é sinônimo de avanço real.',body:'Você está focado, mas possivelmente em algo que não é o mais importante agora.',actions:[{n:'01',t:'Liste as 3 coisas mais importantes para você hoje.'},{n:'02',t:'Compare com o que está ocupando seu foco agora.'},{n:'03',t:'Realinhe — transfira sua atenção para o que realmente importa.'}]},
     default:{icon:'ti-target',name:'Foco Consciente',dist:null,body:'Seu foco está alinhado e escolhido. Use esse estado para avançar nas decisões que importam.',actions:[{n:'01',t:'Defina uma única entrega para as próximas 2 horas.'},{n:'02',t:'Bloqueie interrupções enquanto esse estado durar.'},{n:'03',t:'Ao final, registre o que esse foco produziu.'}]}
   },
   Ansioso:{
-    urgencia:{icon:'ti-bolt',name:'Distorção: Urgência Falsa',dist:'Urgência falsa ativa: a emoção está criando pressão onde a situação não exige.',body:'A ansiedade está sendo alimentada por uma sensação de urgência que pode não ser real. A maioria das coisas que parecem urgentes pode esperar.',actions:[{n:'01',t:'Pergunte: "Se eu agir amanhã em vez de agora, o que de fato muda?" Se nada muda — não é urgente.'},{n:'02',t:'Respire por 4 tempos. A urgência falsa perde força quando o sistema nervoso se regula.'},{n:'03',t:'Decida conscientemente quando agir — não por pressão da ansiedade.'}]},
-    escassez:{icon:'ti-bolt',name:'Distorção: Escassez',dist:'Escassez ativa: o medo de perder está se passando por raciocínio lógico.',body:'O medo de perder está distorcendo sua percepção. Decisões tomadas sob escassez tendem a ser precipitadas.',actions:[{n:'01',t:'Pergunte: "O que realmente perco se não agir agora?" Seja específico — não genérico.'},{n:'02',t:'Identifique outras oportunidades semelhantes — escassez real é rara.'},{n:'03',t:'Tome a decisão baseado em clareza, não em medo de perder.'}]},
-    medo:{icon:'ti-bolt',name:'Ansiedade por Evitação',dist:'Evitação ativa: o desconforto do enfrentamento parece maior do que o custo de evitar — mas não é.',body:'Você está ansioso porque está evitando algo que precisa ser enfrentado. Evitar aumenta a ansiedade — nunca a resolve.',actions:[{n:'01',t:'Nomeie o que está evitando. Exatamente: o que é, quando acontece, o que você teme.'},{n:'02',t:'Identifique a menor ação possível em direção ao que está evitando.'},{n:'03',t:'Faça essa ação agora. A ansiedade diminui com movimento, não com espera.'}]},
-    default:{icon:'ti-bolt',name:'Regulando a Ansiedade',dist:null,body:'Ansiedade é informação — não uma ordem. Ela sinaliza algo que merece atenção, mas não exige reação imediata.',actions:[{n:'01',t:'Separe o fato concreto da história que você está contando sobre ele.'},{n:'02',t:'Respire profundamente por 4 tempos — isso ativa o sistema nervoso parassimpático.'},{n:'03',t:'Decida uma ação pequena e concreta que você tem controle de fazer agora.'}]}
+    urgencia:{icon:'ti-bolt',name:'Distorção: Urgência Falsa',dist:'Urgência falsa ativa: a emoção está criando pressão onde a situação não exige.',body:'A ansiedade está sendo alimentada por uma sensação de urgência que pode não ser real.',actions:[{n:'01',t:'Pergunte: "Se eu agir amanhã em vez de agora, o que de fato muda?"'},{n:'02',t:'Respire por 4 tempos. A urgência falsa perde força quando o sistema nervoso se regula.'},{n:'03',t:'Decida conscientemente quando agir — não por pressão da ansiedade.'}]},
+    escassez:{icon:'ti-bolt',name:'Distorção: Escassez',dist:'Escassez ativa: o medo de perder está se passando por raciocínio lógico.',body:'O medo de perder está distorcendo sua percepção. Decisões tomadas sob escassez tendem a ser precipitadas.',actions:[{n:'01',t:'Pergunte: "O que realmente perco se não agir agora?"'},{n:'02',t:'Identifique outras oportunidades semelhantes.'},{n:'03',t:'Tome a decisão baseado em clareza, não em medo.'}]},
+    medo:{icon:'ti-bolt',name:'Ansiedade por Evitação',dist:'Evitação ativa: o desconforto do enfrentamento parece maior do que o custo de evitar.',body:'Você está ansioso porque está evitando algo que precisa ser enfrentado.',actions:[{n:'01',t:'Nomeie o que está evitando. Exatamente.'},{n:'02',t:'Identifique a menor ação possível em direção ao que está evitando.'},{n:'03',t:'Faça essa ação agora. A ansiedade diminui com movimento.'}]},
+    default:{icon:'ti-bolt',name:'Regulando a Ansiedade',dist:null,body:'Ansiedade é informação — não uma ordem. Ela sinaliza algo que merece atenção.',actions:[{n:'01',t:'Separe o fato concreto da história que você está contando sobre ele.'},{n:'02',t:'Respire profundamente por 4 tempos.'},{n:'03',t:'Decida uma ação pequena e concreta que você tem controle de fazer agora.'}]}
   },
   Sobrecarregado:{
-    controle:{icon:'ti-cloud-storm',name:'Sobrecarga por Controle Excessivo',dist:'Ilusão de controle: tentando gerenciar o incontrolável gasta energia real sem retorno.',body:'Você está tentando controlar o que não pode. Isso drena energia sem gerar resultado.',actions:[{n:'01',t:'Faça duas listas: "O que depende de mim" e "O que não depende de mim". Foque apenas na primeira.'},{n:'02',t:'Solte conscientemente o que está na segunda lista — não é abandono, é sabedoria.'},{n:'03',t:'Direcione toda a energia para uma única ação que está no seu controle.'}]},
-    default:{icon:'ti-cloud-storm',name:'Organizando a Sobrecarga',dist:null,body:'Quando tudo parece urgente, nada é prioritário. A clareza começa com uma escolha.',actions:[{n:'01',t:'Escolha UMA coisa que se concluída hoje geraria mais valor.'},{n:'02',t:'Elimine, delegue ou adie tudo o que não é essa coisa por enquanto.'},{n:'03',t:'Avance nessa uma coisa por 25 minutos sem interrupção.'}]}
+    controle:{icon:'ti-cloud-storm',name:'Sobrecarga por Controle Excessivo',dist:'Ilusão de controle: tentando gerenciar o incontrolável.',body:'Você está tentando controlar o que não pode. Isso drena energia sem gerar resultado.',actions:[{n:'01',t:'Faça duas listas: "O que depende de mim" e "O que não depende de mim".'},{n:'02',t:'Solte conscientemente o que está na segunda lista.'},{n:'03',t:'Direcione toda a energia para uma única ação no seu controle.'}]},
+    default:{icon:'ti-cloud-storm',name:'Organizando a Sobrecarga',dist:null,body:'Quando tudo parece urgente, nada é prioritário. A clareza começa com uma escolha.',actions:[{n:'01',t:'Escolha UMA coisa que se concluída hoje geraria mais valor.'},{n:'02',t:'Elimine, delegue ou adie tudo o mais.'},{n:'03',t:'Avance nessa uma coisa por 25 minutos sem interrupção.'}]}
   },
   Reativo:{
-    raiva:{icon:'ti-flame',name:'Reação Emocional Ativa',dist:'Sequestro da amígdala ativo: o córtex pré-frontal está momentaneamente comprometido. Não é hora de decidir.',body:'Raiva e frustração desativam temporariamente o raciocínio. Qualquer decisão tomada agora vai carregar esse estado.',actions:[{n:'01',t:'Não decida agora. Estabeleça um tempo mínimo de espera — 10, 30 minutos ou até amanhã.'},{n:'02',t:'Mova o corpo: caminhe, respire fundo, mude de ambiente. O estado muda com o físico.'},{n:'03',t:'Quando o estado baixar, pergunte: "O que realmente aconteceu?" — sem a história emocional.'}]},
-    ego:{icon:'ti-flame',name:'Reação do Ego',dist:'Ego ativo: a necessidade de validação está se passando por raciocínio lógico.',body:'A necessidade de estar certo ou de não perder está conduzindo a reação.',actions:[{n:'01',t:'Pergunte: "Quero estar certo ou quero o melhor resultado?" — às vezes são coisas diferentes.'},{n:'02',t:'Considere que a outra perspectiva pode conter informação útil.'},{n:'03',t:'Responda com base no objetivo, não na necessidade de vencer.'}]},
-    medo:{icon:'ti-flame',name:'Reação Guiada pelo Medo',dist:'Medo ativo: você está respondendo a uma ameaça percebida, não necessariamente real.',body:'O medo está conduzindo sua resposta. Reações por medo tendem a evitar o enfrentamento necessário.',actions:[{n:'01',t:'Nomeie o medo específico: o que exatamente você teme que vai acontecer?'},{n:'02',t:'Avalie a probabilidade real: isso é provável ou apenas possível?'},{n:'03',t:'Responda à situação real — não à situação temida.'}]},
-    default:{icon:'ti-flame',name:'Identificando o Gatilho',dist:'Fadiga mental pode estar ativa: decisões tomadas esgotado tendem a ser reativas.',body:'Reação automática significa que algo ativou um padrão sem passagem pela consciência.',actions:[{n:'01',t:'Pause antes de qualquer ação ou resposta.'},{n:'02',t:'Identifique o gatilho real — o que exatamente ativou essa reação?'},{n:'03',t:'Escolha conscientemente como responder, em vez de apenas reagir.'}]}
+    raiva:{icon:'ti-flame',name:'Reação Emocional Ativa',dist:'Sequestro da amígdala ativo: não é hora de decidir.',body:'Raiva e frustração desativam temporariamente o raciocínio. Qualquer decisão agora vai carregar esse estado.',actions:[{n:'01',t:'Não decida agora. Mínimo 10-30 minutos de espera.'},{n:'02',t:'Mova o corpo: caminhe, respire, mude de ambiente.'},{n:'03',t:'Quando o estado baixar, pergunte: "O que realmente aconteceu?"'}]},
+    ego:{icon:'ti-flame',name:'Reação do Ego',dist:'Ego ativo: necessidade de validação se passando por raciocínio.',body:'A necessidade de estar certo está conduzindo a reação.',actions:[{n:'01',t:'Pergunte: "Quero estar certo ou quero o melhor resultado?"'},{n:'02',t:'Considere que a outra perspectiva pode conter informação útil.'},{n:'03',t:'Responda com base no objetivo, não na necessidade de vencer.'}]},
+    medo:{icon:'ti-flame',name:'Reação Guiada pelo Medo',dist:'Medo ativo: respondendo a uma ameaça percebida.',body:'O medo está conduzindo sua resposta.',actions:[{n:'01',t:'Nomeie o medo específico: o que exatamente você teme?'},{n:'02',t:'Avalie a probabilidade real: é provável ou apenas possível?'},{n:'03',t:'Responda à situação real — não à situação temida.'}]},
+    default:{icon:'ti-flame',name:'Identificando o Gatilho',dist:'Fadiga mental pode estar ativa.',body:'Reação automática significa que algo ativou um padrão sem passagem pela consciência.',actions:[{n:'01',t:'Pause antes de qualquer ação ou resposta.'},{n:'02',t:'Identifique o gatilho real.'},{n:'03',t:'Escolha conscientemente como responder.'}]}
   },
-  Claro:{
-    default:{icon:'ti-sun',name:'Estado de Clareza',dist:null,body:'Clareza é um ativo raro. Use esse momento para registrar insights, tomar decisões e solidificar o padrão.',actions:[{n:'01',t:'Registre o que você está enxergando com clareza — insights têm prazo de validade curto.'},{n:'02',t:'Tome as decisões que vinha adiando — esse é o momento para isso.'},{n:'03',t:'Identifique o que gerou essa clareza e como recriar esse estado intencionalmente.'}]}
-  }
+  Claro:{default:{icon:'ti-sun',name:'Estado de Clareza',dist:null,body:'Clareza é um ativo raro. Use esse momento para registrar insights, tomar decisões e solidificar o padrão.',actions:[{n:'01',t:'Registre o que você está enxergando com clareza.'},{n:'02',t:'Tome as decisões que vinha adiando.'},{n:'03',t:'Identifique o que gerou essa clareza e como recriar esse estado.'}]}}
 };
 
 function getSuggestion(state, answers) {
   const pool = SUBS[state];
-  if (!pool) return pool.default;
-  const a0 = answers[0]||'', a2 = answers[2]||'';
-  if (state==='Ansioso') {
-    if (a2.includes('Urgência')) return pool.urgencia;
-    if (a2.includes('Escassez')) return pool.escassez;
-    if (a2.includes('Medo')) return pool.medo;
-  }
-  if (state==='Reativo') {
-    if (a2.includes('Raiva')) return pool.raiva;
-    if (a2.includes('Ego')) return pool.ego;
-    if (a2.includes('Medo')) return pool.medo;
-  }
-  if (state==='Focado') {
-    if (a0.includes('capturado')||a0.includes('Completamente')) return pool.capturado;
-    if (a0.includes('Tenho')||a0.includes('Provavel')) return pool.desalinhado;
-  }
-  if (state==='Sobrecarregado') {
-    if ((answers[1]||'').includes('tudo')) return pool.controle;
-  }
+  if (!pool) return null;
+  const a0=answers[0]||'',a2=answers[2]||'';
+  if(state==='Ansioso'){if(a2.includes('Urgência'))return pool.urgencia;if(a2.includes('Escassez'))return pool.escassez;if(a2.includes('Medo'))return pool.medo;}
+  if(state==='Reativo'){if(a2.includes('Raiva'))return pool.raiva;if(a2.includes('Ego'))return pool.ego;if(a2.includes('Medo'))return pool.medo;}
+  if(state==='Focado'){if(a0.includes('capturado')||a0.includes('Completamente'))return pool.capturado;if(a0.includes('Tenho')||a0.includes('Provavel'))return pool.desalinhado;}
+  if(state==='Sobrecarregado'){if((answers[1]||'').includes('tudo'))return pool.controle;}
   return pool.default;
 }
 
 // ── STATE ──
 let entries=[], streak=0, currentFilter='todos', currentEntryId=null;
 let clState='', clIcon='', clStep=0, clAnswers=[], clSteps=[];
+let chatHistory=[], mentorProfile={};
 
-function load(){try{entries=JSON.parse(localStorage.getItem('avrs3_e'))||[];}catch(e){entries=[];}streak=Number(localStorage.getItem('avrs3_s'))||0;}
-function saveData(){localStorage.setItem('avrs3_e',JSON.stringify(entries));}
-function updateStreak(){const t=new Date().toDateString(),l=localStorage.getItem('avrs3_l');if(l!==t){streak++;localStorage.setItem('avrs3_s',streak);localStorage.setItem('avrs3_l',t);}}
-
-function init(){
-  load();updateStreak();
-  document.getElementById('splashQuote').textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';
-  setTimeout(()=>document.getElementById('splash').classList.add('hide'),2800);
-  const now=new Date();
-  document.getElementById('dateText').textContent=now.toLocaleDateString('pt-BR',{day:'numeric',month:'long'});
-  document.getElementById('quoteText').textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';
-  const dq=QUESTIONS[now.getDate()%QUESTIONS.length];
-  document.getElementById('qcardText').textContent=dq.q;
-  document.getElementById('qcardHint').textContent=dq.h;
-  renderStats();renderEntries();
-  setInterval(()=>{const el=document.getElementById('quoteText');el.style.opacity='0';setTimeout(()=>{el.textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';el.style.opacity='1';},400);},9000);
+function load(){
+  try{entries=JSON.parse(localStorage.getItem('avrs4_e'))||[];}catch(e){entries=[];}
+  streak=Number(localStorage.getItem('avrs4_s'))||0;
+  try{mentorProfile=JSON.parse(localStorage.getItem('avrs4_profile'))||{};}catch(e){mentorProfile={};}
+  try{chatHistory=JSON.parse(localStorage.getItem('avrs4_chat'))||[];}catch(e){chatHistory=[];}
+}
+function saveData(){
+  localStorage.setItem('avrs4_e',JSON.stringify(entries));
+  localStorage.setItem('avrs4_profile',JSON.stringify(mentorProfile));
+}
+function updateStreak(){
+  const t=new Date().toDateString(),l=localStorage.getItem('avrs4_l');
+  if(l!==t){streak++;localStorage.setItem('avrs4_s',streak);localStorage.setItem('avrs4_l',t);}
 }
 
-function renderStats(){
-  document.getElementById('streak').textContent=streak;
-  document.getElementById('totalEntries').textContent=entries.length;
-  document.getElementById('settingsTotal').textContent=entries.length;
-  document.getElementById('settingsStreak').textContent=streak+' dias';
-  if(entries.length>0){const o=new Date(entries[entries.length-1].id);document.getElementById('settingsSince').textContent=o.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});}
+// ── PERFIL ADAPTATIVO ──
+function buildProfile() {
+  const last30 = entries.slice(0,30);
+  if (!last30.length) return {};
+  const stateCounts={};
+  const distCounts={};
+  last30.forEach(e=>{
+    if(e.state&&e.state!=='Não definido') stateCounts[e.state]=(stateCounts[e.state]||0)+1;
+    if(e.distortion&&e.distortion!=='Nenhuma') distCounts[e.distortion]=(distCounts[e.distortion]||0)+1;
+  });
+  const dominantState=Object.entries(stateCounts).sort((a,b)=>b[1]-a[1])[0]?.[0]||'';
+  const mainDistortion=Object.entries(distCounts).sort((a,b)=>b[1]-a[1])[0]?.[0]||'';
+  const profile={dominantState,mainDistortion,totalEntries:last30.length,stateCounts,distCounts};
+  mentorProfile=profile;
+  saveData();
+  return profile;
+}
+
+function getProfileSummary() {
+  const p=buildProfile();
+  if (!p.totalEntries) return null;
+  const lines=[];
+  if(p.dominantState) lines.push(`Estado mais frequente: ${p.dominantState}`);
+  if(p.mainDistortion) lines.push(`Distorção recorrente: ${p.mainDistortion}`);
+  lines.push(`${p.totalEntries} registros analisados`);
+  return lines.join('\n');
+}
+
+// ── CLAUDE API ──
+async function callClaude(messages, systemPrompt) {
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system: systemPrompt,
+        messages: messages
+      })
+    });
+    const data = await resp.json();
+    const text = data.content?.map(c=>c.type==='text'?c.text:'').join('').trim();
+    return text || null;
+  } catch(e) {
+    return null;
+  }
+}
+
+function getMentorSystem() {
+  const profile = buildProfile();
+  const recentEntries = entries.slice(0,10).map(e=>
+    `[${e.date}] Estado: ${e.state} | Situação: ${e.situation} | Distorção: ${e.distortion} | Decisão: ${e.decision||'—'} | Aprendizado: ${e.lesson||'—'}`
+  ).join('\n');
+
+  return `Você é o Mentor AVR–S, um guia de consciência e decisão baseado no método AVR–S do livro "A Vida Sem Rascunho".
+
+O método AVR–S tem 5 camadas:
+- R (Regular): ajustar o estado interno antes de decidir
+- A (Atenção): perceber para onde o foco está indo
+- V (Visão): separar fato de interpretação
+- R (Resposta): criar espaço entre estímulo e resposta
+- S (Sistema): construir padrões sustentáveis
+
+PERFIL ADAPTATIVO DO USUÁRIO:
+${profile.dominantState ? `Estado dominante: ${profile.dominantState}` : 'Perfil em construção'}
+${profile.mainDistortion ? `Distorção mais frequente: ${profile.mainDistortion}` : ''}
+Total de registros: ${profile.totalEntries||0}
+
+ÚLTIMOS REGISTROS:
+${recentEntries || 'Nenhum registro ainda.'}
+
+INSTRUÇÕES:
+- Responda SEMPRE em português brasileiro
+- Seja direto, profundo e personalizado
+- Use o perfil e histórico para adaptar sua resposta
+- Evite respostas genéricas — use os dados reais da pessoa
+- Máximo 3-4 parágrafos curtos
+- Se o usuário tem padrão de ansiedade, ajude a desacelerar
+- Se tende à reatividade, ajude a criar espaço antes de agir
+- Se tem clareza, ajude a solidificar e agir
+- Tom: mentoria filosófica, não terapia`;
+}
+
+// ── MENTOR HOME ──
+async function loadMentorMessage() {
+  const el = document.getElementById('mentorText');
+  const actEl = document.getElementById('mentorActions');
+
+  const profile = buildProfile();
+  let prompt;
+
+  if (!entries.length) {
+    prompt = 'Dê uma mensagem de boas-vindas ao usuário que está começando o app AVR–S. Máximo 2 frases. Seja direto e acolhedor.';
+  } else {
+    const last = entries[0];
+    const profileSummary = getProfileSummary();
+    prompt = `Com base no perfil e histórico do usuário, dê uma mensagem personalizada de diagnóstico para hoje. 
+Última entrada: Estado "${last.state}", Situação: "${last.situation}".
+${profileSummary ? 'Perfil:\n'+profileSummary : ''}
+Máximo 3 frases. Seja específico ao padrão detectado.`;
+  }
+
+  const system = getMentorSystem();
+  const response = await callClaude([{role:'user',content:prompt}], system);
+
+  if (response) {
+    el.innerHTML = response;
+    // Ações contextuais
+    const pills = [];
+    if (profile.dominantState==='Ansioso') pills.push('Como regular a ansiedade?');
+    if (profile.dominantState==='Reativo') pills.push('Como criar mais espaço?');
+    if (profile.mainDistortion) pills.push(`O que é ${profile.mainDistortion}?`);
+    pills.push('Meu padrão desta semana');
+    actEl.innerHTML = pills.slice(0,3).map(p=>`<div class="mentor-pill" onclick="quickChat('${p}')">${p}</div>`).join('');
+  } else {
+    el.innerHTML = entries.length
+      ? 'Seu diário está crescendo. Que padrão você quer transformar hoje?'
+      : 'Bem-vindo ao AVR–S. Comece registrando seu estado agora.';
+    actEl.innerHTML = `<div class="mentor-pill" onclick="openMentorChat()">Conversar com o Mentor</div>`;
+  }
+}
+
+// ── ANÁLISE SEMANAL ──
+async function requestWeeklyAnalysis() {
+  const btn = document.querySelector('.analysis-btn');
+  btn.innerHTML = '<i class="ti ti-loader"></i> Analisando...';
+  btn.disabled = true;
+
+  const week = entries.slice(0,7);
+  if (!week.length) { btn.innerHTML='<i class="ti ti-sparkles"></i> Analisar'; btn.disabled=false; return; }
+
+  const stateCounts={};
+  week.forEach(e=>{if(e.state&&e.state!=='Não definido') stateCounts[e.state]=(stateCounts[e.state]||0)+1;});
+  const total=week.length;
+
+  const bars = document.getElementById('patternBars');
+  bars.innerHTML = Object.entries(stateCounts).sort((a,b)=>b[1]-a[1]).map(([s,c])=>`
+    <div class="pattern-row">
+      <div class="pattern-label">${s}</div>
+      <div class="pattern-bar-wrap"><div class="pattern-bar" style="width:${Math.round((c/total)*100)}%"></div></div>
+      <div class="pattern-pct">${Math.round((c/total)*100)}%</div>
+    </div>
+  `).join('');
+
+  btn.innerHTML = '<i class="ti ti-sparkles"></i> Analisar';
+  btn.disabled = false;
+}
+
+// ── ANÁLISE IA NO CHECKLIST ──
+async function getAIInsight(state, answers) {
+  const textAns = answers[answers.length-1] || '';
+  const profile = buildProfile();
+  const prompt = `O usuário está no estado "${state}" e respondeu as perguntas do diagnóstico AVR–S.
+Respostas: ${answers.join(' | ')}
+${textAns ? 'Reflexão escrita: '+textAns : ''}
+${profile.dominantState ? 'Padrão recorrente do usuário: '+profile.dominantState : ''}
+
+Dê um insight personalizado de 2-3 frases sobre o padrão específico detectado neste diagnóstico. Seja cirúrgico e profundo.`;
+
+  return await callClaude([{role:'user',content:prompt}], getMentorSystem());
+}
+
+// ── CHAT MENTOR ──
+let isChatLoading = false;
+
+function openMentorChat() {
+  document.getElementById('mentorChatOverlay').classList.add('open');
+  const msgs = document.getElementById('chatMsgs');
+  if (!msgs.children.length) {
+    if (chatHistory.length) {
+      chatHistory.forEach(m => appendMsg(m.role, m.content, false));
+    } else {
+      const welcome = entries.length
+        ? `Olá. Estou analisando seu histórico — ${entries.length} registros. O que você quer trabalhar hoje?`
+        : 'Bem-vindo ao Mentor AVR–S. Sou sua IA de consciência e decisão. O que está passando agora?';
+      appendMsg('assistant', welcome, false);
+      chatHistory.push({role:'assistant',content:welcome});
+    }
+  }
+  scrollChat();
+}
+
+function closeMentorChat() {
+  document.getElementById('mentorChatOverlay').classList.remove('open');
+  localStorage.setItem('avrs4_chat', JSON.stringify(chatHistory.slice(-20)));
+}
+
+function quickChat(msg) {
+  openMentorChat();
+  setTimeout(()=>{document.getElementById('chatInput').value=msg; sendChat();},300);
+}
+
+function appendMsg(role, text, scroll=true) {
+  const msgs = document.getElementById('chatMsgs');
+  const div = document.createElement('div');
+  div.className = 'msg ' + (role==='assistant' ? 'msg-ai' : 'msg-user');
+  div.textContent = text;
+  msgs.appendChild(div);
+  if (scroll) scrollChat();
+}
+
+function appendTyping() {
+  const msgs = document.getElementById('chatMsgs');
+  const div = document.createElement('div');
+  div.className = 'msg msg-ai';
+  div.id = 'typingIndicator';
+  div.innerHTML = '<div class="mentor-typing"><span></span><span></span><span></span></div>';
+  msgs.appendChild(div);
+  scrollChat();
+}
+
+function removeTyping() {
+  const el = document.getElementById('typingIndicator');
+  if (el) el.remove();
+}
+
+function scrollChat() {
+  const msgs = document.getElementById('chatMsgs');
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+async function sendChat() {
+  if (isChatLoading) return;
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  input.value = '';
+  appendMsg('user', text);
+  chatHistory.push({role:'user',content:text});
+
+  isChatLoading = true;
+  document.getElementById('mentorChatStatus').textContent = 'digitando...';
+  appendTyping();
+
+  const messages = chatHistory.slice(-12).map(m=>({role:m.role,content:m.content}));
+  const response = await callClaude(messages, getMentorSystem());
+
+  removeTyping();
+  isChatLoading = false;
+  document.getElementById('mentorChatStatus').textContent = 'online';
+
+  const reply = response || 'Algo deu errado. Tente novamente.';
+  appendMsg('assistant', reply);
+  chatHistory.push({role:'assistant',content:reply});
+  localStorage.setItem('avrs4_chat', JSON.stringify(chatHistory.slice(-20)));
+}
+
+// ── NAV ──
+function goTo(s){
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('screen-'+s).classList.add('active');
+  document.getElementById('nav-'+s).classList.add('active');
+  if(s==='settings') updateSettingsProfile();
+}
+
+// ── MODAL ──
+function openModal(){document.getElementById('overlay').classList.add('open');setTimeout(()=>document.getElementById('inpSit').focus(),400);}
+function closeModal(e){if(e&&e.target!==document.getElementById('overlay'))return;document.getElementById('overlay').classList.remove('open');}
+function saveEntry(){
+  const sit=document.getElementById('inpSit').value.trim();
+  if(!sit){document.getElementById('inpSit').focus();return;}
+  const entry={id:Date.now(),situation:sit,fact:document.getElementById('inpFact').value.trim(),distortion:document.getElementById('inpDist').value,decision:document.getElementById('inpDec').value.trim(),lesson:document.getElementById('inpLes').value.trim(),state:clState||'Não definido',answers:[...clAnswers],date:new Date().toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'})};
+  entries.unshift(entry);saveData();renderEntries();renderStats();
+  document.getElementById('overlay').classList.remove('open');
+  ['inpSit','inpFact','inpDec','inpLes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('inpDist').selectedIndex=0;
+  clState='';clAnswers=[];
+  document.querySelectorAll('.state-chip').forEach(c=>c.classList.remove('active'));
+  // Atualiza análise
+  const ac = document.getElementById('analysisCard');
+  if(entries.length>=3) ac.style.display='block';
+  requestWeeklyAnalysis();
+  // Recarrega mentor após novo registro
+  setTimeout(()=>loadMentorMessage(),500);
 }
 
 // ── CHECKLIST ──
@@ -595,7 +948,6 @@ function renderStep(){
     const sug=getSuggestion(clState,clAnswers);
     const lastStep=clSteps[clSteps.length-1];
     const lastAns=clAnswers[clSteps.length-1]||'';
-
     let distHtml=sug&&sug.dist?`<div class="sug-distortion"><i class="ti ti-alert-triangle"></i><div class="sug-distortion-text"><strong>Distorção detectada:</strong> ${sug.dist}</div></div>`:'';
     let actHtml=sug?sug.actions.map(a=>`<div class="sug-action"><div class="sug-action-n">${a.n}</div><div class="sug-action-t">${a.t}</div></div>`).join(''):'';
     let refHtml=lastStep.type==='text'&&lastAns?`<div class="sug-reflection"><div class="sug-reflection-label">Sua reflexão</div><div class="sug-reflection-text">"${esc(lastAns)}"</div></div>`:'';
@@ -608,7 +960,22 @@ function renderStep(){
         <div class="sug-actions">${actHtml}</div>
       </div>
       ${refHtml}
+      <div class="ai-insight" id="aiInsightBox">
+        <div class="ai-insight-label"><i class="ti ti-brain"></i>Análise personalizada · IA</div>
+        <div class="mentor-typing"><span></span><span></span><span></span></div>
+      </div>
     `;
+
+    // Carrega insight IA
+    getAIInsight(clState, clAnswers).then(insight=>{
+      const box = document.getElementById('aiInsightBox');
+      if(box && insight){
+        box.innerHTML=`<div class="ai-insight-label"><i class="ti ti-brain"></i>Análise personalizada · IA</div><div class="ai-insight-text">${insight}</div>`;
+      } else if(box){
+        box.style.display='none';
+      }
+    });
+
     nav.innerHTML=`
       <button class="cl-prev" onclick="clStep=clSteps.length-1;renderStep()">← Rever</button>
       <button class="cl-next" onclick="finishChecklist()">Registrar decisão</button>
@@ -618,7 +985,6 @@ function renderStep(){
     let inp=step.type==='text'
       ?`<textarea class="cl-textarea" id="clTA" placeholder="${step.ph||''}" oninput="clAnswers[${clStep}]=this.value">${clAnswers[clStep]||''}</textarea>`
       :`<div class="cl-options">${step.opts.map(o=>`<div class="cl-option ${clAnswers[clStep]===o?'sel':''}" onclick="selOpt(this,'${o.replace(/'/g,"\\'")}')"><div class="cl-circle"></div><div class="cl-opt-text">${o}</div></div>`).join('')}</div>`;
-
     body.innerHTML=`<div><div class="cl-step-label">Pergunta ${clStep+1}</div><div class="cl-question">${step.q}</div>${inp}</div>`;
     nav.innerHTML=`
       ${clStep>0?'<button class="cl-prev" onclick="prevStep()">← Anterior</button>':'<div style="flex:1"></div>'}
@@ -632,33 +998,30 @@ function nextStep(){if(clSteps[clStep].type==='text'){const el=document.getEleme
 function prevStep(){if(clStep>0){clStep--;renderStep();}}
 function finishChecklist(){document.getElementById('clOverlay').classList.remove('open');setTimeout(()=>openModal(),300);}
 
-// ── NAV ──
-function goTo(s){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById('screen-'+s).classList.add('active');document.getElementById('nav-'+s).classList.add('active');}
-
-// ── MODAL ──
-function openModal(){document.getElementById('overlay').classList.add('open');setTimeout(()=>document.getElementById('inpSit').focus(),400);}
-function closeModal(e){if(e&&e.target!==document.getElementById('overlay'))return;document.getElementById('overlay').classList.remove('open');}
-function saveEntry(){
-  const sit=document.getElementById('inpSit').value.trim();
-  if(!sit){document.getElementById('inpSit').focus();return;}
-  const entry={id:Date.now(),situation:sit,fact:document.getElementById('inpFact').value.trim(),distortion:document.getElementById('inpDist').value,decision:document.getElementById('inpDec').value.trim(),lesson:document.getElementById('inpLes').value.trim(),state:clState||'Não definido',answers:[...clAnswers],date:new Date().toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'})};
-  entries.unshift(entry);saveData();renderEntries();renderStats();
-  document.getElementById('overlay').classList.remove('open');
-  ['inpSit','inpFact','inpDec','inpLes'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('inpDist').selectedIndex=0;
-  clState='';clAnswers=[];
-  document.querySelectorAll('.state-chip').forEach(c=>c.classList.remove('active'));
-}
-
 // ── ENTRIES ──
 function filterBy(f,el){document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');currentFilter=f;renderEntries();}
 function renderEntries(){
   const c=document.getElementById('entriesList');
   const list=currentFilter==='todos'?entries:entries.filter(e=>e.state===currentFilter);
   if(!list.length){c.innerHTML=`<div class="empty-state"><div class="empty-icon"><i class="ti ti-notebook"></i></div><div class="empty-title">Nenhum registro ainda</div><div class="empty-sub">Toque em um estado acima para iniciar o diagnóstico,<br>ou registre uma decisão diretamente.</div></div>`;return;}
-  c.innerHTML=list.map(e=>`<div class="entry-card" onclick="openDetail(${e.id})"><div class="entry-top"><div class="entry-situation">${esc(e.situation)}</div><div class="entry-date">${e.date}</div></div>${e.decision?`<div class="entry-body">${esc(e.decision)}</div>`:''}<div class="entry-footer">${e.state!=='Não definido'?`<span class="badge badge-gold">${esc(e.state)}</span>`:''} ${e.distortion&&e.distortion!=='Nenhuma'?`<span class="badge badge-dark">${esc(e.distortion)}</span>`:''} ${e.answers&&e.answers.length?'<span class="badge badge-dark"><i class="ti ti-checklist" style="font-size:10px;margin-right:3px"></i>diagnóstico</span>':''}</div></div>`).join('');
+  c.innerHTML=list.map(e=>`<div class="entry-card" onclick="openDetail(${e.id})"><div class="entry-top"><div class="entry-situation">${esc(e.situation)}</div><div class="entry-date">${e.date}</div></div>${e.decision?`<div class="entry-body">${esc(e.decision)}</div>`:''}<div class="entry-footer">${e.state!=='Não definido'?`<span class="badge badge-gold">${esc(e.state)}</span>`:''} ${e.distortion&&e.distortion!=='Nenhuma'?`<span class="badge badge-dark">${esc(e.distortion)}</span>`:''} ${e.answers&&e.answers.length?'<span class="badge badge-ai"><i class="ti ti-brain" style="font-size:10px;margin-right:3px"></i>IA</span>':''}</div></div>`).join('');
 }
 function esc(s){if(!s)return '';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function renderStats(){
+  document.getElementById('streak').textContent=streak;
+  document.getElementById('totalEntries').textContent=entries.length;
+}
+
+function updateSettingsProfile(){
+  document.getElementById('settingsTotal').textContent=entries.length;
+  document.getElementById('settingsStreak').textContent=streak+' dias';
+  if(entries.length>0){const o=new Date(entries[entries.length-1].id);document.getElementById('settingsSince').textContent=o.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});}
+  const p=buildProfile();
+  document.getElementById('profileStatus').textContent = entries.length>=5 ? 'Ativo — '+entries.length+' registros' : 'Construindo... ('+entries.length+'/5)';
+  document.getElementById('dominantPattern').textContent = p.dominantState || '—';
+  document.getElementById('mainTrigger').textContent = p.mainDistortion || '—';
+}
 
 // ── DETAIL ──
 function openDetail(id){
@@ -682,10 +1045,34 @@ function openDetail(id){
 function closeDetail(){document.getElementById('detPanel').classList.remove('open');setTimeout(()=>document.getElementById('detOverlay').style.display='none',350);}
 function deleteEntry(){if(!currentEntryId||!confirm('Apagar este registro?'))return;entries=entries.filter(e=>e.id!==currentEntryId);saveData();renderEntries();renderStats();closeDetail();}
 function toggleLayer(card){card.classList.toggle('open');}
-function exportData(){const b=new Blob([JSON.stringify({entries,streak,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='avrs-diario.json';a.click();}
-function confirmReset(){if(!confirm('Apagar todos os dados?'))return;localStorage.clear();entries=[];streak=0;renderEntries();renderStats();}
+function exportData(){const b=new Blob([JSON.stringify({entries,streak,mentorProfile,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='avrs-diario.json';a.click();}
+function confirmReset(){if(!confirm('Apagar todos os dados?'))return;localStorage.clear();entries=[];streak=0;mentorProfile={};chatHistory=[];renderEntries();renderStats();}
 
-if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+// ── INIT ──
+async function init(){
+  load();updateStreak();
+  document.getElementById('splashQuote').textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';
+  setTimeout(()=>document.getElementById('splash').classList.add('hide'),2800);
+  const now=new Date();
+  document.getElementById('dateText').textContent=now.toLocaleDateString('pt-BR',{day:'numeric',month:'long'});
+  document.getElementById('quoteText').textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';
+  const dq=QUESTIONS[now.getDate()%QUESTIONS.length];
+  document.getElementById('qcardText').textContent=dq.q;
+  document.getElementById('qcardHint').textContent=dq.h;
+  renderStats();renderEntries();
+
+  // Análise semanal
+  if(entries.length>=3){
+    document.getElementById('analysisCard').style.display='block';
+    requestWeeklyAnalysis();
+  }
+
+  // Mentor IA
+  loadMentorMessage();
+
+  setInterval(()=>{const el=document.getElementById('quoteText');el.style.opacity='0';setTimeout(()=>{el.textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';el.style.opacity='1';},400);},9000);
+}
+
 init();
 </script>
 </body>
