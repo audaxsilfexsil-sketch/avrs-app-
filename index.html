@@ -261,6 +261,17 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream)}
 .det-sug{background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:14px;margin-top:8px}
 .det-delete{margin:0 24px;background:transparent;border:1px solid rgba(200,60,60,.25);color:rgba(200,100,100,.7);border-radius:12px;padding:12px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;width:calc(100% - 48px)}
 
+/* AVRS DAY CARD */
+.avrs-day-card{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:18px 20px;margin-bottom:16px;cursor:pointer;transition:border-color .2s,background .2s}
+.avrs-day-card:hover{background:var(--bg4)}
+.avrs-day-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.avrs-day-icon{width:34px;height:34px;border-radius:50%;background:rgba(200,169,109,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.avrs-day-icon i{font-size:17px;color:var(--gold)}
+.avrs-day-label{font-size:13px;font-weight:500;color:var(--gold2);flex:1;line-height:1.3}
+.avrs-day-text{font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:12px}
+.avrs-day-pills{display:flex;gap:6px;flex-wrap:wrap}
+.avrs-day-pill{background:rgba(200,169,109,.07);border:1px solid var(--border);border-radius:20px;padding:5px 10px;font-size:10px;color:var(--text2);letter-spacing:.04em}
+
 /* GUIA */
 .guia-intro{margin-bottom:20px}
 .guia-intro-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--cream);line-height:1.4;margin-bottom:10px}
@@ -378,7 +389,21 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream)}
           <i class="ti ti-sun"></i><span>Claro</span><i class="ti ti-chevron-right chip-arrow"></i>
         </div>
       </div>
-      <button class="primary-btn" onclick="openModal()">Registrar decisão consciente</button>
+    </div>
+
+    <!-- COMO O AVR-S ATUA -->
+    <div class="avrs-day-card" onclick="goTo('guia')">
+      <div class="avrs-day-top">
+        <div class="avrs-day-icon"><i class="ti ti-route"></i></div>
+        <div class="avrs-day-label">Como o AVR–S atua ao longo do dia</div>
+        <i class="ti ti-chevron-right" style="color:var(--text3);font-size:16px;flex-shrink:0"></i>
+      </div>
+      <div class="avrs-day-text">O AVR–S não existe apenas para grandes decisões. Ele atua nos pequenos momentos invisíveis que moldam a direção da vida.</div>
+      <div class="avrs-day-pills">
+        <span class="avrs-day-pill">Antes de reagir</span>
+        <span class="avrs-day-pill">Antes de decidir</span>
+        <span class="avrs-day-pill">Antes de interpretar</span>
+      </div>
     </div>
 
     <div class="stats-row">
@@ -400,6 +425,8 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream)}
       <div class="qcard-question" id="qcardText"></div>
       <div class="qcard-hint" id="qcardHint"></div>
     </div>
+
+    <button class="primary-btn" style="margin-bottom:16px" onclick="openModal()">Registrar decisão consciente</button>
 
     <div class="quote-strip">
       <div class="quote-mark">"</div>
