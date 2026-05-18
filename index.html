@@ -324,6 +324,47 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream)}
 .chat-input:focus{border-color:var(--gold)}
 .chat-send{background:var(--gold);border:none;color:#0a0908;width:40px;height:40px;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .chat-send i{font-size:18px}
+
+/* ══ PAYWALL ══ */
+.paywall-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:980;display:none;align-items:flex-end;justify-content:center}
+.paywall-overlay.open{display:flex}
+.paywall-panel{background:var(--bg2);width:100%;max-width:430px;border-radius:28px 28px 0 0;padding:0 0 40px;transform:translateY(100%);transition:transform .4s cubic-bezier(.32,.72,0,1);max-height:92vh;overflow-y:auto}
+.paywall-panel::-webkit-scrollbar{display:none}
+.paywall-overlay.open .paywall-panel{transform:translateY(0)}
+.paywall-handle{width:36px;height:3px;border-radius:2px;background:var(--bg5);margin:14px auto 0}
+.paywall-hero{padding:28px 24px 20px;text-align:center;border-bottom:1px solid var(--border)}
+.paywall-icon{width:56px;height:56px;border-radius:50%;background:rgba(200,169,109,.1);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.paywall-icon i{font-size:26px;color:var(--gold)}
+.paywall-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:var(--cream);margin-bottom:8px;line-height:1.3}
+.paywall-sub{font-size:13px;color:var(--text2);line-height:1.7}
+.paywall-features{padding:20px 24px;border-bottom:1px solid var(--border)}
+.paywall-features-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:14px}
+.paywall-feature{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.paywall-feature:last-child{border:none}
+.paywall-feature-icon{width:32px;height:32px;border-radius:8px;background:rgba(200,169,109,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.paywall-feature-icon i{font-size:16px;color:var(--gold)}
+.paywall-feature-title{font-size:13px;font-weight:500;color:var(--cream);margin-bottom:3px}
+.paywall-feature-desc{font-size:12px;color:var(--text3);line-height:1.5}
+.paywall-pricing{padding:20px 24px}
+.paywall-price-card{background:var(--bg3);border:1px solid var(--border2);border-radius:16px;padding:20px;margin-bottom:14px;text-align:center}
+.paywall-price-badge{display:inline-block;background:rgba(200,169,109,.1);border:1px solid var(--border2);border-radius:20px;padding:4px 12px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.paywall-price-value{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:var(--gold);line-height:1}
+.paywall-price-period{font-size:12px;color:var(--text3);margin-top:4px;margin-bottom:16px}
+.paywall-cta{width:100%;background:var(--gold);color:#0a0908;border:none;border-radius:12px;padding:16px;font-size:13px;font-weight:500;letter-spacing:.06em;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s}
+.paywall-cta:active{background:var(--gold2)}
+.paywall-dismiss{display:block;text-align:center;margin-top:12px;font-size:12px;color:var(--text3);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;width:100%}
+.paywall-free-label{font-size:11px;color:var(--text3);text-align:center;margin-top:8px}
+
+/* PRO BADGE */
+.pro-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(200,169,109,.1);border:1px solid var(--border2);border-radius:20px;padding:3px 8px;font-size:9px;letter-spacing:.08em;color:var(--gold);text-transform:uppercase;vertical-align:middle;margin-left:6px}
+.pro-badge i{font-size:10px}
+
+/* LOCK OVERLAY nos cards bloqueados */
+.locked-card{position:relative;overflow:hidden}
+.locked-card::after{content:'';position:absolute;inset:0;background:rgba(10,9,8,.7);border-radius:inherit;backdrop-filter:blur(2px)}
+.lock-badge{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer}
+.lock-badge i{font-size:28px;color:var(--gold);opacity:.8}
+.lock-badge span{font-size:11px;color:var(--gold2);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -503,7 +544,7 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream)}
       <div class="settings-row"><div class="settings-label">Membro desde</div><div class="settings-value" id="settingsSince">—</div></div>
     </div>
     <div class="settings-section">
-      <div class="settings-section-title">Inteligência AVR–S</div>
+      <div class="settings-section-title">Inteligência AVR–S <span class="pro-badge" id="proNavBadge" style="display:none"><i class="ti ti-crown"></i>PRO</span></div>
       <div class="settings-row"><div class="settings-label">Perfil adaptativo</div><div class="settings-value" id="profileStatus">Construindo...</div></div>
       <div class="settings-row"><div class="settings-label">Padrão dominante</div><div class="settings-value" id="dominantPattern">—</div></div>
       <div class="settings-row"><div class="settings-label">Gatilho recorrente</div><div class="settings-value" id="mainTrigger">—</div></div>
@@ -1122,6 +1163,7 @@ function renderStep(){
     `;
 
     // Carrega insight IA
+    if(!isPro){const box=document.getElementById("aiInsightBox");if(box){box.innerHTML='<div class="ai-insight-label"><i class="ti ti-lock"></i>Análise personalizada · Pro</div><div class="ai-insight-text" style="font-size:13px;color:var(--text3)">Desbloqueie o AVR–S Pro para receber insights personalizados ao final de cada diagnóstico.</div><div style="margin-top:12px"><div class="mentor-pill" style="display:inline-flex" onclick="closeChecklist();openPaywall()"><i class="ti ti-crown" style="margin-right:4px"></i>Ver plano Pro</div></div>';} return;}
     getAIInsight(clState, clAnswers).then(insight=>{
       const box = document.getElementById('aiInsightBox');
       if(box && insight){
@@ -1148,6 +1190,7 @@ function renderStep(){
   }
 }
 
+function closeChecklist(){document.getElementById("clOverlay").classList.remove("open");}
 function selOpt(el,opt){clAnswers[clStep]=opt;document.querySelectorAll('.cl-option').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');}
 function nextStep(){if(clSteps[clStep].type==='text'){const el=document.getElementById('clTA');if(el)clAnswers[clStep]=el.value.trim();}clStep++;renderStep();}
 function prevStep(){if(clStep>0){clStep--;renderStep();}}
@@ -1204,9 +1247,91 @@ function toggleMomento(card){card.classList.toggle('open');}
 function exportData(){const b=new Blob([JSON.stringify({entries,streak,mentorProfile,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='avrs-diario.json';a.click();}
 function confirmReset(){if(!confirm('Apagar todos os dados?'))return;localStorage.clear();entries=[];streak=0;mentorProfile={};chatHistory=[];renderEntries();renderStats();}
 
+
+// ── PAYWALL ──
+let isPro = false;
+
+function loadProStatus() {
+  isPro = localStorage.getItem('avrs4_pro') === 'true';
+}
+
+function activatePro() {
+  // Aqui futuramente integra com Stripe/PagSeguro
+  // Por ora simula ativação
+  localStorage.setItem('avrs4_pro', 'true');
+  isPro = true;
+  closePaywall();
+  showProActivated();
+  setTimeout(() => location.reload(), 1800);
+}
+
+function showProActivated() {
+  const toast = document.createElement('div');
+  toast.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--gold);color:#0a0908;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:500;z-index:9999;transition:opacity .3s';
+  toast.textContent = '✦ AVR–S Pro ativado!';
+  document.body.appendChild(toast);
+  setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 1500);
+}
+
+function openPaywall(feature) {
+  document.getElementById('paywallOverlay').classList.add('open');
+}
+
+function closePaywall() {
+  document.getElementById('paywallOverlay').classList.remove('open');
+}
+
+function requirePro(fn, feature) {
+  if (isPro) { fn(); return; }
+  openPaywall(feature);
+}
+
+function applyProGating() {
+  if (isPro) return;
+
+  // Bloqueia card do Mentor IA na home
+  const mentorCard = document.getElementById('mentorCard');
+  if (mentorCard) {
+    mentorCard.classList.add('locked-card');
+    const lockBadge = document.createElement('div');
+    lockBadge.className = 'lock-badge';
+    lockBadge.innerHTML = '<i class="ti ti-lock"></i><span>Recurso Pro</span>';
+    lockBadge.onclick = () => openPaywall('mentor');
+    mentorCard.appendChild(lockBadge);
+  }
+
+  // Bloqueia análise semanal
+  const analysisCard = document.getElementById('analysisCard');
+  if (analysisCard) {
+    analysisCard.classList.add('locked-card');
+    const lockBadge2 = document.createElement('div');
+    lockBadge2.className = 'lock-badge';
+    lockBadge2.innerHTML = '<i class="ti ti-lock"></i><span>Recurso Pro</span>';
+    lockBadge2.onclick = () => openPaywall('analysis');
+    analysisCard.appendChild(lockBadge2);
+  }
+
+  // Bloqueia botão do cérebro (chat mentor)
+  const brainBtn = document.querySelector('.icon-btn[title="Mentor IA"]');
+  if (brainBtn) {
+    brainBtn.onclick = () => openPaywall('chat');
+  }
+}
+
+function updateSettingsProStatus() {
+  const profileStatus = document.getElementById('profileStatus');
+  if (profileStatus) {
+    if (isPro) {
+      profileStatus.innerHTML = 'Pro ativo <span class="pro-badge"><i class="ti ti-crown"></i>PRO</span>';
+    } else {
+      profileStatus.innerHTML = 'Gratuito · <span style="color:var(--gold);cursor:pointer" onclick="openPaywall()">Upgrade para Pro</span>';
+    }
+  }
+}
+
 // ── INIT ──
 async function init(){
-  load();updateStreak();
+  load();loadProStatus();updateStreak();
   document.getElementById('splashQuote').textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';
   setTimeout(()=>document.getElementById('splash').classList.add('hide'),2800);
   const now=new Date();
@@ -1223,13 +1348,63 @@ async function init(){
     requestWeeklyAnalysis();
   }
 
+  // Pro gating
+  applyProGating();
+  updateSettingsProStatus();
+
   // Mentor IA
-  loadMentorMessage();
+  if(isPro) loadMentorMessage();
+  else {
+    document.getElementById("mentorText").innerHTML = 'Desbloqueie o Mentor IA para receber análises personalizadas baseadas no seu perfil.';
+    document.getElementById("mentorActions").innerHTML = '<div class="mentor-pill" onclick="openPaywall()"><i class="ti ti-crown" style="margin-right:4px"></i>Ativar Pro — R$19/mês</div>';
+  }
 
   setInterval(()=>{const el=document.getElementById('quoteText');el.style.opacity='0';setTimeout(()=>{el.textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';el.style.opacity='1';},400);},9000);
 }
 
 init();
 </script>
+
+<!-- PAYWALL -->
+<div class="paywall-overlay" id="paywallOverlay">
+  <div class="paywall-panel">
+    <div class="paywall-handle"></div>
+    <div class="paywall-hero">
+      <div class="paywall-icon"><i class="ti ti-brain"></i></div>
+      <div class="paywall-title">AVR–S Pro</div>
+      <div class="paywall-sub">Desbloqueie o Mentor IA personalizado e transforme a forma como você decide todos os dias.</div>
+    </div>
+    <div class="paywall-features">
+      <div class="paywall-features-label">O que você desbloqueia</div>
+      <div class="paywall-feature">
+        <div class="paywall-feature-icon"><i class="ti ti-brain"></i></div>
+        <div><div class="paywall-feature-title">Mentor AVR–S · IA</div><div class="paywall-feature-desc">Chat ilimitado com IA que aprende seus padrões e adapta cada resposta ao seu perfil.</div></div>
+      </div>
+      <div class="paywall-feature">
+        <div class="paywall-feature-icon"><i class="ti ti-chart-bar"></i></div>
+        <div><div class="paywall-feature-title">Análise de padrões</div><div class="paywall-feature-desc">A IA detecta seus gatilhos, distorções recorrentes e estados dominantes dos últimos 30 dias.</div></div>
+      </div>
+      <div class="paywall-feature">
+        <div class="paywall-feature-icon"><i class="ti ti-sparkles"></i></div>
+        <div><div class="paywall-feature-title">Diagnóstico avançado</div><div class="paywall-feature-desc">Ao final de cada checklist, a IA gera um insight personalizado baseado no seu histórico real.</div></div>
+      </div>
+      <div class="paywall-feature">
+        <div class="paywall-feature-icon"><i class="ti ti-user-circle"></i></div>
+        <div><div class="paywall-feature-title">Perfil adaptativo</div><div class="paywall-feature-desc">Quanto mais você usa, mais precisa fica a IA. Ela aprende sua linguagem e estilo emocional.</div></div>
+      </div>
+    </div>
+    <div class="paywall-pricing">
+      <div class="paywall-price-card">
+        <div class="paywall-price-badge">AVR–S Pro</div>
+        <div class="paywall-price-value">R$19</div>
+        <div class="paywall-price-period">por mês · cancele quando quiser</div>
+        <button class="paywall-cta" onclick="activatePro()">Assinar agora</button>
+      </div>
+      <div class="paywall-free-label">Versão gratuita: diário, protocolo e guia permanecem disponíveis</div>
+      <button class="paywall-dismiss" onclick="closePaywall()">Continuar com a versão gratuita</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
