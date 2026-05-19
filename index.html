@@ -868,7 +868,10 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream);-webkit-font-smoothing:
 <!-- CHECKLIST -->
 <div class="cl-overlay" id="clOverlay">
   <div class="cl-panel" id="clPanel">
-    <div class="cl-handle"></div>
+    <div style="display:flex;align-items:center;padding:14px 20px 0;flex-shrink:0">
+      <button onclick="closeChecklist()" style="background:none;border:none;color:#8a8278;cursor:pointer;font-size:20px;display:flex;align-items:center;gap:6px;font-family:'DM Sans',sans-serif;font-size:13px;padding:0"><i class="ti ti-arrow-left" style="font-size:18px"></i> Voltar</button>
+    </div>
+    <div class="cl-handle" style="margin-top:8px"></div>
     <div class="cl-progress"><div class="cl-progress-fill" id="clFill" style="width:0%"></div></div>
     <div class="cl-header" id="clHeader"></div>
     <div class="cl-body" id="clBody"></div>
