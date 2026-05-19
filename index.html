@@ -528,6 +528,90 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream);-webkit-font-smoothing:
 .dash-num-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:14px;text-align:center}
 .dash-num-value{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:300;color:var(--gold);line-height:1}
 .dash-num-label{font-size:10px;color:#6a6460;letter-spacing:.1em;text-transform:uppercase;margin-top:6px}
+
+
+.proto-tab{flex:1;background:none;border:none;border-bottom:2px solid transparent;padding:10px 4px;font-size:11px;color:#6a6460;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.06em;transition:all .2s}
+.proto-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+/* ══ ONBOARDING ══ */
+.onboard-overlay{position:fixed;inset:0;background:var(--bg);z-index:990;display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px}
+.onboard-overlay.open{display:flex}
+.onboard-step{display:none;flex-direction:column;align-items:center;text-align:center;max-width:360px;width:100%}
+.onboard-step.active{display:flex}
+.onboard-icon{width:80px;height:80px;border-radius:50%;background:rgba(200,169,109,.1);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;margin-bottom:28px}
+.onboard-icon i{font-size:36px;color:var(--gold)}
+.onboard-num{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#6a6460;margin-bottom:16px}
+.onboard-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--cream);line-height:1.3;margin-bottom:16px}
+.onboard-text{font-size:14px;color:#b8b0a4;line-height:1.8;margin-bottom:40px}
+.onboard-dots{display:flex;gap:8px;margin-bottom:32px}
+.onboard-dot{width:6px;height:6px;border-radius:50%;background:#4a4640;transition:all .3s}
+.onboard-dot.active{background:var(--gold);width:20px;border-radius:3px}
+.onboard-btn{width:100%;background:var(--gold);border:none;border-radius:14px;padding:16px;font-size:13px;font-weight:600;color:#0a0908;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.06em;margin-bottom:12px}
+.onboard-skip{background:none;border:none;color:#6a6460;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif}
+
+/* ══ MODO FOCO ══ */
+.focus-overlay{position:fixed;inset:0;background:#050403;z-index:930;display:none;flex-direction:column}
+.focus-overlay.open{display:flex}
+.focus-topbar{padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.focus-back{background:none;border:none;color:#6a6460;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:6px}
+.focus-back i{font-size:18px}
+.focus-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#4a4640}
+.focus-content{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 40px;text-align:center}
+.focus-date{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#4a4640;margin-bottom:20px}
+.focus-question{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:300;color:var(--cream);line-height:1.5;margin-bottom:16px;max-width:480px}
+.focus-hint{font-size:14px;color:#8a8278;line-height:1.7;max-width:380px;margin-bottom:48px}
+.focus-breath{width:64px;height:64px;border-radius:50%;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;animation:breathe 4s ease-in-out infinite;margin:0 auto 40px}
+.focus-breath-inner{width:38px;height:38px;border-radius:50%;border:1px solid rgba(200,169,109,.4)}
+.focus-actions{display:flex;gap:12px;width:100%;max-width:400px}
+.focus-action-btn{flex:1;padding:14px;border-radius:12px;font-size:12px;letter-spacing:.08em;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;transition:all .2s}
+.focus-primary{background:var(--gold);border:none;color:#0a0908}
+.focus-secondary{background:transparent;border:1px solid var(--border2);color:var(--gold)}
+
+/* ══ BIBLIOTECA ══ */
+.biblio-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:12px;cursor:pointer;transition:border-color .2s}
+.biblio-card:hover{border-color:var(--border2)}
+.biblio-tag{display:inline-block;background:rgba(200,169,109,.08);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:10px;color:var(--gold);letter-spacing:.06em;margin-bottom:10px}
+.biblio-situation{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--cream);line-height:1.4;margin-bottom:8px}
+.biblio-preview{font-size:13px;color:#b8b0a4;line-height:1.6}
+.biblio-detail-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:960;display:none}
+.biblio-detail-panel{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:860px;background:var(--bg2);border-radius:28px 28px 0 0;max-height:88vh;overflow-y:auto;transition:transform .35s cubic-bezier(.32,.72,0,1);z-index:961;padding:0 0 40px}
+.biblio-detail-panel::-webkit-scrollbar{display:none}
+.biblio-detail-panel.open{transform:translateX(-50%) translateY(0)}
+.biblio-detail-header{padding:20px 24px;border-bottom:1px solid var(--border)}
+.biblio-detail-body{padding:20px 24px}
+.biblio-detail-section{margin-bottom:18px}
+.biblio-detail-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#6a6460;margin-bottom:8px}
+.biblio-detail-text{font-size:14px;color:#c8c0b4;line-height:1.8}
+.biblio-detail-insight{background:rgba(200,169,109,.06);border:1px solid var(--border2);border-radius:12px;padding:14px;margin-top:8px}
+.biblio-detail-insight-text{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:var(--gold2);line-height:1.75}
+
+/* ══ FRASES FAVORITAS ══ */
+.frase-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:18px;margin-bottom:10px;position:relative}
+.frase-text{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;font-weight:300;color:var(--cream);line-height:1.8;margin-bottom:10px}
+.frase-actions{display:flex;justify-content:flex-end}
+.frase-fav-btn{background:none;border:none;cursor:pointer;font-size:18px;color:#6a6460;transition:color .2s;padding:4px}
+.frase-fav-btn.saved{color:var(--gold)}
+.frase-mark{position:absolute;top:14px;left:14px;font-family:'Cormorant Garamond',serif;font-size:40px;color:rgba(200,169,109,.08);line-height:1}
+
+/* ══ GLOSSÁRIO ══ */
+.glossario-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:8px;overflow:hidden}
+.glossario-header{padding:14px 18px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:background .2s}
+.glossario-header:hover{background:var(--bg4)}
+.glossario-term{font-size:14px;font-weight:600;color:var(--cream);letter-spacing:.02em}
+.glossario-chevron{font-size:16px;color:#6a6460;transition:transform .3s}
+.glossario-card.open .glossario-chevron{transform:rotate(180deg)}
+.glossario-body{display:none;padding:0 18px 16px;border-top:1px solid var(--border)}
+.glossario-card.open .glossario-body{display:block}
+.glossario-def{font-size:13px;color:#b8b0a4;line-height:1.8;padding-top:12px}
+.glossario-example{background:rgba(200,169,109,.05);border-left:2px solid var(--gold);padding:10px 14px;margin-top:10px;border-radius:0 8px 8px 0}
+.glossario-example-text{font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:var(--gold2);line-height:1.6}
+
+/* NOTIFICAÇÃO BANNER */
+.notif-banner{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:14px 16px;margin-bottom:16px;display:none;align-items:center;gap:12px}
+.notif-banner.show{display:flex}
+.notif-banner i{font-size:20px;color:var(--gold);flex-shrink:0}
+.notif-banner-text{flex:1;font-size:13px;color:#c8c0b4;line-height:1.5}
+.notif-banner-btn{background:var(--gold);border:none;border-radius:8px;padding:8px 14px;font-size:11px;font-weight:600;color:#0a0908;cursor:pointer;font-family:'DM Sans',sans-serif;flex-shrink:0}
+.notif-dismiss{background:none;border:none;color:#6a6460;cursor:pointer;font-size:16px;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -547,7 +631,7 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream);-webkit-font-smoothing:
   <div class="brand">AVR–S</div>
   <div class="topbar-right">
     <span class="date-text" id="dateText"></span>
-    <button class="icon-btn" onclick="openMentorChat()" title="Mentor IA"><i class="ti ti-brain"></i></button>
+    <button class="icon-btn" onclick="openFocus()" title="Modo Foco"><i class="ti ti-focus-2"></i></button><button class="icon-btn" onclick="openMentorChat()" title="Mentor IA"><i class="ti ti-brain"></i></button>
     <button class="icon-btn" onclick="openModal()"><i class="ti ti-plus"></i></button>
   </div>
 </div>
@@ -557,6 +641,14 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream);-webkit-font-smoothing:
 
   <!-- HOME -->
   <div class="screen active" id="screen-home">
+
+    <!-- NOTIFICAÇÃO -->
+    <div class="notif-banner" id="notifBanner">
+      <i class="ti ti-bell-ringing"></i>
+      <div class="notif-banner-text">Você ainda não registrou seu estado hoje. Como está sua percepção agora?</div>
+      <button class="notif-banner-btn" onclick="document.getElementById('notifBanner').classList.remove('show');openChecklist('Presente','ti-eye')">Registrar</button>
+      <button class="notif-dismiss" onclick="document.getElementById('notifBanner').classList.remove('show')"><i class="ti ti-x"></i></button>
+    </div>
 
     <!-- MENTOR IA -->
     <div class="mentor-card" id="mentorCard">
@@ -664,6 +756,15 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream);-webkit-font-smoothing:
 
   <!-- PROTOCOLO -->
   <div class="screen" id="screen-protocol">
+    <div style="display:flex;gap:0;margin-bottom:20px;border-bottom:1px solid var(--border)">
+      <button class="proto-tab active" id="ptab-protocolo" onclick="switchProtoTab('protocolo')">Protocolo</button>
+      <button class="proto-tab" id="ptab-biblioteca" onclick="switchProtoTab('biblioteca')">Biblioteca</button>
+      <button class="proto-tab" id="ptab-frases" onclick="switchProtoTab('frases')">Frases</button>
+      <button class="proto-tab" id="ptab-glossario" onclick="switchProtoTab('glossario')">Glossário</button>
+    </div>
+
+    <!-- TAB PROTOCOLO -->
+    <div id="proto-protocolo">
     <div class="protocol-intro">O AVR–S não é uma técnica.<br>É uma forma de perceber antes de agir.</div>
     <div class="layer-card" onclick="toggleLayer(this)">
       <div class="layer-header"><div class="layer-left"><div class="layer-num">R</div><div class="layer-name">Regular</div></div><i class="ti ti-chevron-down layer-chevron"></i></div>
@@ -999,6 +1100,7 @@ let chatHistory=[], mentorProfile={};
 
 function load(){
   try{entries=JSON.parse(localStorage.getItem('avrs4_e'))||[];}catch(e){entries=[];}
+  loadFrasesFav();
   streak=Number(localStorage.getItem('avrs4_s'))||0;
   try{mentorProfile=JSON.parse(localStorage.getItem('avrs4_profile'))||{};}catch(e){mentorProfile={};}
   try{chatHistory=JSON.parse(localStorage.getItem('avrs4_chat'))||[];}catch(e){chatHistory=[];}
@@ -1430,6 +1532,253 @@ function confirmReset(){if(!confirm('Apagar todos os dados?'))return;localStorag
 
 
 
+
+// ── DADOS ──
+const FRASES_LIVRO = [
+  'Clareza não é pensar mais. É distorcer menos.',
+  'Você decide a versão da realidade que percebe.',
+  'Toda decisão carrega o estado de quem decide.',
+  'A vida não tem rascunho. Só execução.',
+  'Entre o estímulo e a resposta existe a sua liberdade.',
+  'Você não vive o que aprende. Vive o que repete.',
+  'O automático continua até que algo consciente o interrompa.',
+  'Quem não escolhe onde colocar a atenção responde ao que aparece.',
+  'Percepção limpa. Decisão consciente.',
+  'Nem toda reação nasce do que aconteceu. Nasce do estado de quem interpreta.',
+  'A pressão reduz percepção. Estados acelerados criam distorções.',
+  'Você não reage ao que acontece. Reage ao significado que construiu.',
+  'Repetição não percebida vira padrão. Padrão vira identidade.',
+  'Decisão boa em estado ruim tende a dar resultado ruim.',
+  'O espaço entre o estímulo e a resposta é onde a escolha real acontece.',
+  'Não sofremos pelo fato. Sofremos pela interpretação que construímos sobre ele.',
+];
+
+const GLOSSARIO_DATA = [
+  {term:'Regulação', def:'Ajuste do estado interno antes de decidir ou agir. Decisões tomadas em estado desregulado tendem a carregar a distorção desse estado.', ex:'"Antes de responder ao e-mail que me irritou, pausei e regulei meu estado."'},
+  {term:'Distorção cognitiva', def:'Filtro mental que altera a percepção da realidade. As distorções mais comuns no AVR–S são: urgência falsa, escassez, ego, medo, excesso de confiança e fadiga mental.', ex:'"Percebi que a urgência que sentia era emocional, não real."'},
+  {term:'Atenção capturada', def:'Estado em que o foco foi sequestrado por algo externo sem escolha consciente. O oposto de atenção escolhida.', ex:'"Meu foco estava no que apareceu, não no que escolhi priorizar."'},
+  {term:'Resposta automática', def:'Comportamento gerado sem passagem pela consciência. Resultado de padrões consolidados por repetição não percebida.', ex:'"Reagi sem pensar — foi um automático que preciso trabalhar."'},
+  {term:'Espaço de escolha', def:'O intervalo entre o estímulo e a resposta. É nesse espaço que a decisão consciente acontece. Quanto maior o espaço, maior a liberdade.', ex:'"Aprendi a criar um espaço antes de responder."'},
+  {term:'Urgência falsa', def:'Distorção que faz uma situação parecer mais urgente do que realmente é. Geralmente alimentada por ansiedade ou pressão externa.', ex:'"A sensação de que precisava decidir agora era urgência falsa."'},
+  {term:'Estado interno', def:'Conjunto de condições emocionais, cognitivas e físicas que determinam a qualidade das decisões tomadas em dado momento.', ex:'"Meu estado interno estava ansioso — não era hora de decidir."'},
+  {term:'Padrão', def:'Comportamento repetido com frequência suficiente para se tornar automático. Padrões não percebidos definem identidade sem escolha consciente.', ex:'"Percebi que evitar conflito era um padrão que carrego há anos."'},
+  {term:'Ciclo', def:'Sequência de comportamentos que se retroalimenta. Todo ciclo tem uma instrução de origem. Identificar a instrução é o primeiro passo para mudar o ciclo.', ex:'"Entrei no ciclo de sobrecarga porque nunca dizia não."'},
+  {term:'Percepção limpa', def:'Estado em que a realidade é observada sem filtros emocionais ou narrativas construídas. Condição ideal para decisões conscientes.', ex:'"Com percepção limpa, vi que o problema era menor do que imaginei."'},
+];
+
+const BIBLIOTECA_DATA = [
+  {
+    tag:'Urgência falsa', state:'Ansioso',
+    situation:'A proposta que parecia expirar amanhã',
+    preview:'Um vendedor disse que a oferta acabava em 24h. A ansiedade tomou conta.',
+    fato:'A oferta existia há semanas. O prazo era uma técnica de pressão.',
+    distorcao:'Urgência falsa — a pressão era externa e emocional, não real.',
+    decisao:'Pausei, pesquisei, e negociei sem pressa. Consegui condições melhores.',
+    insight:'Urgência real é rara. Na maioria das vezes, é a emoção criando pressão onde não existe.'
+  },
+  {
+    tag:'Reatividade', state:'Reativo',
+    situation:'A mensagem que pareceu um ataque pessoal',
+    preview:'Um colega enviou um feedback crítico por mensagem. A primeira leitura pareceu agressiva.',
+    fato:'O texto era direto, não agressivo. O tom foi interpretado pelo meu estado irritado.',
+    distorcao:'Projeção emocional — o estado interno contaminou a leitura.',
+    decisao:'Esperei 30 minutos, reli a mensagem e respondi com clareza.',
+    insight:'Ler uma mensagem difícil no estado errado é garantia de interpretação errada.'
+  },
+  {
+    tag:'Escassez', state:'Ansioso',
+    situation:'A oportunidade que parecia única na vida',
+    preview:'Uma oportunidade de investimento surgiu. Parecia que nunca mais apareceria igual.',
+    fato:'Oportunidades similares existiam. O que era único era a pressão que sentia.',
+    distorcao:'Escassez — o medo de perder distorceu a avaliação real.',
+    decisao:'Pedi 48 horas para analisar. A oportunidade continuou disponível.',
+    insight:'Decisões tomadas sob escassez raramente são as melhores. A pressa beneficia quem vende, não quem compra.'
+  },
+  {
+    tag:'Automático', state:'Sobrecarregado',
+    situation:'O dia que funcionei no piloto automático',
+    preview:'Acordei, trabalhei 12 horas, dormi. Sem perceber o que fiz ou por que.',
+    fato:'Executei tarefas por hábito, sem questionar prioridade ou propósito.',
+    distorcao:'Piloto automático — ausência de presença e escolha consciente.',
+    decisao:'Passei a definir 3 prioridades reais no início de cada dia.',
+    insight:'Ser muito ocupado é frequentemente uma forma de evitar as questões que realmente importam.'
+  },
+  {
+    tag:'Ego', state:'Reativo',
+    situation:'A reunião em que precisava estar certo',
+    preview:'Um colega questionou minha ideia. Senti como um ataque à minha competência.',
+    fato:'Era um questionamento técnico legítimo, não uma crítica pessoal.',
+    distorcao:'Ego — a necessidade de validação se disfarçou de raciocínio lógico.',
+    decisao:'Ouvi, considerei e incorporei a sugestão. O projeto melhorou.',
+    insight:'Querer estar certo e querer o melhor resultado são coisas diferentes. Às vezes conflitam.'
+  },
+];
+
+// ── ONBOARDING ──
+function checkOnboarding() {
+  if (!localStorage.getItem('avrs4_onboard')) {
+    setTimeout(() => document.getElementById('onboardOverlay').classList.add('open'), 3000);
+  }
+}
+function nextOnboard(step) {
+  document.querySelectorAll('.onboard-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('onboard-'+step).classList.add('active');
+}
+function finishOnboard() {
+  localStorage.setItem('avrs4_onboard', '1');
+  document.getElementById('onboardOverlay').classList.remove('open');
+}
+
+// ── MODO FOCO ──
+function openFocus() {
+  const now = new Date();
+  const dq = QUESTIONS[now.getDate() % QUESTIONS.length];
+  document.getElementById('focusDate').textContent = now.toLocaleDateString('pt-BR', {weekday:'long', day:'numeric', month:'long'});
+  document.getElementById('focusQuestion').textContent = dq.q;
+  document.getElementById('focusHint').textContent = dq.h;
+  document.getElementById('focusOverlay').classList.add('open');
+}
+function closeFocus() {
+  document.getElementById('focusOverlay').classList.remove('open');
+}
+
+// ── NOTIFICAÇÃO DIÁRIA ──
+function checkDailyNotif() {
+  const today = new Date().toDateString();
+  const lastEntry = entries[0];
+  const lastEntryDate = lastEntry ? new Date(lastEntry.id).toDateString() : null;
+  if (lastEntryDate !== today && entries.length >= 0) {
+    setTimeout(() => document.getElementById('notifBanner').classList.add('show'), 4000);
+  }
+}
+
+// ── BIBLIOTECA ──
+function renderBiblioteca() {
+  const el = document.getElementById('biblioList');
+  if (!el) return;
+  el.innerHTML = BIBLIOTECA_DATA.map((c,i) => `
+    <div class="biblio-card" onclick="openBiblioDetail(${i})">
+      <div class="biblio-tag">${c.tag}</div>
+      <div class="biblio-situation">${c.situation}</div>
+      <div class="biblio-preview">${c.preview}</div>
+    </div>
+  `).join('');
+}
+
+function openBiblioDetail(i) {
+  const c = BIBLIOTECA_DATA[i];
+  document.getElementById('biblioDHeader').innerHTML = `
+    <div class="modal-handle" style="display:none"></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+      <span class="biblio-tag">${c.tag}</span>
+      <span class="badge badge-gold">${c.state}</span>
+    </div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--cream);line-height:1.4">${c.situation}</div>
+  `;
+  document.getElementById('biblioDBody').innerHTML = `
+    <div class="biblio-detail-section">
+      <div class="biblio-detail-label">O que aconteceu</div>
+      <div class="biblio-detail-text">${c.preview}</div>
+    </div>
+    <div class="biblio-detail-section">
+      <div class="biblio-detail-label">Fato observável</div>
+      <div class="biblio-detail-text">${c.fato}</div>
+    </div>
+    <div class="biblio-detail-section">
+      <div class="biblio-detail-label">Distorção identificada</div>
+      <div class="biblio-detail-text">${c.distorcao}</div>
+    </div>
+    <div class="biblio-detail-section">
+      <div class="biblio-detail-label">Decisão consciente</div>
+      <div class="biblio-detail-text">${c.decisao}</div>
+    </div>
+    <div class="biblio-detail-section">
+      <div class="biblio-detail-label">Insight do método</div>
+      <div class="biblio-detail-insight"><div class="biblio-detail-insight-text">"${c.insight}"</div></div>
+    </div>
+  `;
+  document.getElementById('biblioDO').style.display = 'block';
+  setTimeout(() => document.getElementById('biblioDPanel').classList.add('open'), 10);
+}
+
+function closeBiblioDetail() {
+  document.getElementById('biblioDPanel').classList.remove('open');
+  setTimeout(() => document.getElementById('biblioDO').style.display = 'none', 350);
+}
+
+// ── FRASES ──
+let frasesFav = [];
+function loadFrasesFav() {
+  try { frasesFav = JSON.parse(localStorage.getItem('avrs4_fav')) || []; } catch(e) { frasesFav = []; }
+}
+function saveFrasesFav() { localStorage.setItem('avrs4_fav', JSON.stringify(frasesFav)); }
+
+function renderFrases() {
+  const el = document.getElementById('frasesList');
+  const favEl = document.getElementById('frasesFavList');
+  if (!el) return;
+  el.innerHTML = FRASES_LIVRO.map((f,i) => {
+    const isFav = frasesFav.includes(i);
+    return `<div class="frase-card">
+      <div class="frase-mark">"</div>
+      <div class="frase-text">"${f}"</div>
+      <div class="frase-actions">
+        <button class="frase-fav-btn ${isFav?'saved':''}" onclick="toggleFav(${i})" title="${isFav?'Remover':'Salvar'}">
+          <i class="ti ${isFav?'ti-bookmark-filled':'ti-bookmark'}"></i>
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+  if (favEl) {
+    const favs = frasesFav.map(i => FRASES_LIVRO[i]);
+    favEl.innerHTML = favs.length
+      ? favs.map((f,idx) => `<div class="frase-card" style="border-color:var(--border2)">
+          <div class="frase-mark">"</div>
+          <div class="frase-text">"${f}"</div>
+        </div>`).join('')
+      : '<div style="font-size:13px;color:#6a6460;text-align:center;padding:20px">Nenhuma frase salva ainda.<br>Toque no marcador para salvar.</div>';
+  }
+}
+
+function toggleFav(i) {
+  if (frasesFav.includes(i)) {
+    frasesFav = frasesFav.filter(x => x !== i);
+  } else {
+    frasesFav.push(i);
+  }
+  saveFrasesFav();
+  renderFrases();
+}
+
+// ── GLOSSÁRIO ──
+function renderGlossario() {
+  const el = document.getElementById('glossarioList');
+  if (!el) return;
+  el.innerHTML = GLOSSARIO_DATA.map((g,i) => `
+    <div class="glossario-card" onclick="this.classList.toggle('open')">
+      <div class="glossario-header">
+        <div class="glossario-term">${g.term}</div>
+        <i class="ti ti-chevron-down glossario-chevron"></i>
+      </div>
+      <div class="glossario-body">
+        <div class="glossario-def">${g.def}</div>
+        <div class="glossario-example"><div class="glossario-example-text">${g.ex}</div></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── TABS PROTOCOLO ──
+function switchProtoTab(tab) {
+  ['protocolo','biblioteca','frases','glossario'].forEach(t => {
+    document.getElementById('proto-'+t).style.display = t===tab ? 'block' : 'none';
+    document.getElementById('ptab-'+t).classList.toggle('active', t===tab);
+  });
+  if (tab==='biblioteca') renderBiblioteca();
+  if (tab==='frases') { loadFrasesFav(); renderFrases(); }
+  if (tab==='glossario') renderGlossario();
+}
+
 // ── DASHBOARD EMOCIONAL ──
 const STATE_ICONS = {
   'Presente':'ti-eye','Focado':'ti-target','Ansioso':'ti-bolt',
@@ -1699,6 +2048,10 @@ async function init(){
     requestWeeklyAnalysis();
   }
 
+  // Onboarding
+  checkOnboarding();
+  // Notificação diária
+  checkDailyNotif();
   // Pro gating
   applyProGating();
   updateSettingsProStatus();
@@ -1766,6 +2119,70 @@ init();
     <div class="dash-badge"><i class="ti ti-chart-bar" style="font-size:12px"></i> AVR–S</div>
   </div>
   <div class="dash-content" id="dashContent"></div>
+</div>
+
+
+<!-- ONBOARDING -->
+<div class="onboard-overlay" id="onboardOverlay">
+  <div class="onboard-step active" id="onboard-1">
+    <div class="onboard-icon"><i class="ti ti-eye"></i></div>
+    <div class="onboard-num">01 de 03</div>
+    <div class="onboard-title">A Vida Sem Rascunho</div>
+    <div class="onboard-text">O AVR–S é um método de consciência e decisão. Ele ajuda você a perceber antes de agir — separando fato de interpretação, estado de resposta.</div>
+    <div class="onboard-dots">
+      <div class="onboard-dot active"></div><div class="onboard-dot"></div><div class="onboard-dot"></div>
+    </div>
+    <button class="onboard-btn" onclick="nextOnboard(2)">Continuar</button>
+    <button class="onboard-skip" onclick="finishOnboard()">Pular introdução</button>
+  </div>
+  <div class="onboard-step" id="onboard-2">
+    <div class="onboard-icon"><i class="ti ti-layers-intersect"></i></div>
+    <div class="onboard-num">02 de 03</div>
+    <div class="onboard-title">O Protocolo AVR–S</div>
+    <div class="onboard-text">Cinco camadas: <strong style="color:var(--gold)">Regular · Atenção · Visão · Resposta · Sistema.</strong><br><br>Cada uma existe para criar um espaço entre o estímulo e a sua ação.</div>
+    <div class="onboard-dots">
+      <div class="onboard-dot"></div><div class="onboard-dot active"></div><div class="onboard-dot"></div>
+    </div>
+    <button class="onboard-btn" onclick="nextOnboard(3)">Continuar</button>
+    <button class="onboard-skip" onclick="finishOnboard()">Pular introdução</button>
+  </div>
+  <div class="onboard-step" id="onboard-3">
+    <div class="onboard-icon"><i class="ti ti-notebook"></i></div>
+    <div class="onboard-num">03 de 03</div>
+    <div class="onboard-title">Como usar o app</div>
+    <div class="onboard-text">Toque em um estado emocional para iniciar o diagnóstico. Registre suas decisões conscientes. Acompanhe seus padrões no Dashboard Emocional.</div>
+    <div class="onboard-dots">
+      <div class="onboard-dot"></div><div class="onboard-dot"></div><div class="onboard-dot active"></div>
+    </div>
+    <button class="onboard-btn" onclick="finishOnboard()">Começar agora</button>
+  </div>
+</div>
+
+<!-- MODO FOCO -->
+<div class="focus-overlay" id="focusOverlay">
+  <div class="focus-topbar">
+    <button class="focus-back" onclick="closeFocus()"><i class="ti ti-arrow-left"></i> Voltar</button>
+    <div class="focus-label">Modo Foco</div>
+    <div style="width:60px"></div>
+  </div>
+  <div class="focus-content">
+    <div class="focus-date" id="focusDate"></div>
+    <div class="focus-question" id="focusQuestion"></div>
+    <div class="focus-hint" id="focusHint"></div>
+    <div class="focus-breath"><div class="focus-breath-inner"></div></div>
+    <div class="focus-actions">
+      <button class="focus-action-btn focus-secondary" onclick="closeFocus();openChecklist('Presente','ti-eye')">Iniciar diagnóstico</button>
+      <button class="focus-action-btn focus-primary" onclick="closeFocus();openModal()">Registrar decisão</button>
+    </div>
+  </div>
+</div>
+
+<!-- BIBLIOTECA DETALHE -->
+<div class="biblio-detail-overlay" id="biblioDO" onclick="closeBiblioDetail()"></div>
+<div class="biblio-detail-panel" id="biblioDPanel">
+  <div class="modal-handle" style="margin-top:14px"></div>
+  <div class="biblio-detail-header" id="biblioDHeader"></div>
+  <div class="biblio-detail-body" id="biblioDBody"></div>
 </div>
 
 </body>
