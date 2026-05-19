@@ -462,6 +462,72 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream);-webkit-font-smoothing:
   .layer-name{font-size:17px;}
   .guia-intro-title{font-size:32px;}
 }
+
+/* ══ DASHBOARD EMOCIONAL ══ */
+.dash-overlay{position:fixed;inset:0;background:var(--bg);z-index:920;display:none;flex-direction:column;overflow:hidden}
+.dash-overlay.open{display:flex}
+.dash-topbar{padding:16px 20px 14px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.dash-back{background:none;border:none;color:var(--text2);cursor:pointer;font-size:22px;padding:2px;transition:color .2s;display:flex;align-items:center}
+.dash-back:hover{color:var(--gold)}
+.dash-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--cream);letter-spacing:.05em}
+.dash-badge{margin-left:auto;display:inline-flex;align-items:center;gap:5px;background:rgba(200,169,109,.08);border:1px solid var(--border2);border-radius:20px;padding:4px 10px;font-size:10px;color:var(--gold);letter-spacing:.08em}
+.dash-content{flex:1;overflow-y:auto;padding:20px 20px 40px;}
+.dash-content::-webkit-scrollbar{display:none}
+@media(min-width:520px){.dash-content{padding:24px calc(50% - 420px) 48px;} .dash-topbar{padding:18px calc(50% - 420px) 16px;}}
+@media(min-width:1200px){.dash-content{padding:32px calc(50% - 500px) 48px;} .dash-topbar{padding:20px calc(50% - 500px) 18px;}}
+
+.dash-section{margin-bottom:20px}
+.dash-section-title{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#6a6460;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.dash-section-title i{font-size:14px;color:var(--gold)}
+
+/* Estado dominante */
+.dash-state-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:20px;display:flex;align-items:center;gap:16px}
+.dash-state-icon{width:52px;height:52px;border-radius:50%;background:rgba(200,169,109,.1);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dash-state-icon i{font-size:24px;color:var(--gold)}
+.dash-state-name{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;color:var(--gold);line-height:1}
+.dash-state-sub{font-size:12px;color:#8a8278;margin-top:4px}
+.dash-state-pct{margin-left:auto;text-align:right}
+.dash-state-pct-num{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:var(--gold)}
+.dash-state-pct-label{font-size:10px;color:#6a6460;letter-spacing:.08em}
+
+/* Distorção */
+.dash-dist-card{background:rgba(90,42,26,.25);border:1px solid rgba(200,100,60,.15);border-radius:var(--r);padding:18px;display:flex;gap:14px;align-items:flex-start}
+.dash-dist-icon{width:38px;height:38px;border-radius:10px;background:rgba(200,100,60,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dash-dist-icon i{font-size:18px;color:#c86040}
+.dash-dist-name{font-size:15px;font-weight:600;color:#e8b090;margin-bottom:4px}
+.dash-dist-desc{font-size:12px;color:#b09080;line-height:1.6}
+.dash-dist-freq{font-size:11px;color:#c86040;margin-top:6px;letter-spacing:.06em}
+
+/* Evolução da clareza */
+.dash-clarity-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:20px}
+.dash-clarity-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.dash-clarity-row:last-child{border:none}
+.dash-clarity-day{font-size:11px;color:#8a8278;width:36px;flex-shrink:0}
+.dash-clarity-bar-wrap{flex:1;height:6px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.dash-clarity-bar{height:100%;border-radius:3px;transition:width .8s ease}
+.dash-clarity-state{font-size:11px;color:#b8b0a4;width:100px;text-align:right;flex-shrink:0}
+.dash-clarity-empty{text-align:center;padding:20px;font-size:13px;color:#6a6460}
+
+/* Padrão semanal */
+.dash-pattern-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:20px}
+.dash-pattern-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.dash-pattern-row:last-child{border:none}
+.dash-pattern-label{font-size:13px;color:#c8c0b4;width:130px;flex-shrink:0;font-weight:500}
+.dash-pattern-bar-wrap{flex:1;height:8px;background:var(--bg4);border-radius:4px;overflow:hidden}
+.dash-pattern-bar{height:100%;border-radius:4px;background:var(--gold);transition:width .8s ease}
+.dash-pattern-pct{font-size:12px;color:#8a8278;width:36px;text-align:right;flex-shrink:0}
+.dash-pattern-count{font-size:11px;color:#6a6460;width:24px;text-align:right;flex-shrink:0}
+
+/* Insight IA no dashboard */
+.dash-insight-card{background:var(--ai);border:1px solid var(--ai-border);border-radius:var(--r);padding:20px}
+.dash-insight-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#b8e0b8;margin-bottom:12px;display:flex;align-items:center;gap:6px;font-weight:600}
+.dash-insight-text{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:400;color:#f0ebe2;line-height:1.8;-webkit-font-smoothing:antialiased}
+
+/* Resumo numérico */
+.dash-nums{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px}
+.dash-num-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:14px;text-align:center}
+.dash-num-value{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:300;color:var(--gold);line-height:1}
+.dash-num-label{font-size:10px;color:#6a6460;letter-spacing:.1em;text-transform:uppercase;margin-top:6px}
 </style>
 </head>
 <body>
@@ -550,6 +616,13 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream);-webkit-font-smoothing:
       <div class="stat-card stat-desktop"><div class="stat-label">Estado frequente</div><div class="stat-number" id="statState" style="font-size:20px;margin-top:6px">—</div><div class="stat-sub">últimos 7 dias</div></div>
       <div class="stat-card stat-desktop"><div class="stat-label">Distorção comum</div><div class="stat-number" id="statDist" style="font-size:16px;margin-top:8px">—</div><div class="stat-sub">padrão detectado</div></div>
     </div>
+
+    <!-- DASHBOARD BTN -->
+    <button class="dashboard-btn" onclick="openDashboard()">
+      <i class="ti ti-chart-bar"></i>
+      <span>Dashboard Emocional</span>
+      <i class="ti ti-chevron-right" style="margin-left:auto;font-size:14px;color:#6a6460"></i>
+    </button>
 
     <!-- ANÁLISE SEMANAL -->
     <div class="analysis-card" id="analysisCard" style="display:none">
@@ -1353,6 +1426,176 @@ function exportData(){const b=new Blob([JSON.stringify({entries,streak,mentorPro
 function confirmReset(){if(!confirm('Apagar todos os dados?'))return;localStorage.clear();entries=[];streak=0;mentorProfile={};chatHistory=[];renderEntries();renderStats();}
 
 
+
+// ── DASHBOARD EMOCIONAL ──
+const STATE_ICONS = {
+  'Presente':'ti-eye','Focado':'ti-target','Ansioso':'ti-bolt',
+  'Sobrecarregado':'ti-cloud-storm','Reativo':'ti-flame','Claro':'ti-sun'
+};
+const STATE_COLORS = {
+  'Presente':'#7ab8d4','Focado':'#d4b87a','Ansioso':'#d4a04a',
+  'Sobrecarregado':'#a07ad4','Reativo':'#d46a6a','Claro':'#7ad4a0'
+};
+const DIST_DESC = {
+  'Urgência falsa':'A pressão percebida é maior do que a situação exige.',
+  'Escassez':'O medo de perder está conduzindo as decisões.',
+  'Ego':'A necessidade de estar certo interfere no julgamento.',
+  'Medo':'Evitação de desconforto como padrão de resposta.',
+  'Excesso de confiança':'Subestimação de riscos e complexidade.',
+  'Fadiga mental':'Decisões tomadas com capacidade cognitiva reduzida.',
+  'Nenhuma':'Nenhuma distorção recorrente identificada.'
+};
+
+function openDashboard() {
+  document.getElementById('dashOverlay').classList.add('open');
+  renderDashboard();
+}
+
+function closeDashboard() {
+  document.getElementById('dashOverlay').classList.remove('open');
+}
+
+function renderDashboard() {
+  const container = document.getElementById('dashContent');
+  const last30 = entries.slice(0, 30);
+  const last7 = entries.slice(0, 7);
+
+  if (!last30.length) {
+    container.innerHTML = `<div style="text-align:center;padding:60px 24px">
+      <div style="font-size:40px;color:#6a6460;margin-bottom:16px"><i class="ti ti-chart-bar"></i></div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:#b8b0a4;margin-bottom:8px">Nenhum dado ainda</div>
+      <div style="font-size:13px;color:#6a6460">Registre algumas decisões para ver seu dashboard emocional.</div>
+    </div>`;
+    return;
+  }
+
+  // Calcular estados
+  const stateCounts = {};
+  const distCounts = {};
+  last30.forEach(e => {
+    if(e.state && e.state !== 'Não definido') stateCounts[e.state] = (stateCounts[e.state]||0)+1;
+    if(e.distortion && e.distortion !== 'Nenhuma') distCounts[e.distortion] = (distCounts[e.distortion]||0)+1;
+  });
+  const sortedStates = Object.entries(stateCounts).sort((a,b)=>b[1]-a[1]);
+  const dominantState = sortedStates[0]?.[0] || '—';
+  const dominantCount = sortedStates[0]?.[1] || 0;
+  const dominantPct = Math.round((dominantCount/last30.length)*100);
+  const mainDist = Object.entries(distCounts).sort((a,b)=>b[1]-a[1])[0]?.[0] || 'Nenhuma';
+  const mainDistCount = distCounts[mainDist] || 0;
+
+  // Clareza: mapear estados por dia (últimos 7)
+  const clarityMap = {'Claro':100,'Presente':85,'Focado':80,'Ansioso':35,'Reativo':25,'Sobrecarregado':20};
+  const last7Days = last7.map(e => ({
+    date: e.date,
+    state: e.state,
+    clarity: clarityMap[e.state] || 50
+  }));
+
+  // Padrão semanal
+  const weekPatternHtml = sortedStates.slice(0,5).map(([s,c]) => {
+    const pct = Math.round((c/last30.length)*100);
+    const color = STATE_COLORS[s] || 'var(--gold)';
+    return `<div class="dash-pattern-row">
+      <div class="dash-pattern-label">${s}</div>
+      <div class="dash-pattern-bar-wrap"><div class="dash-pattern-bar" style="width:${pct}%;background:${color}"></div></div>
+      <div class="dash-pattern-pct">${pct}%</div>
+      <div class="dash-pattern-count">${c}x</div>
+    </div>`;
+  }).join('');
+
+  // Evolução clareza
+  const clarityHtml = last7Days.length ? last7Days.map(d => {
+    const color = d.clarity >= 80 ? '#7ad4a0' : d.clarity >= 50 ? 'var(--gold)' : '#d46a6a';
+    return `<div class="dash-clarity-row">
+      <div class="dash-clarity-day">${d.date.split(' ')[0]}</div>
+      <div class="dash-clarity-bar-wrap"><div class="dash-clarity-bar" style="width:${d.clarity}%;background:${color}"></div></div>
+      <div class="dash-clarity-state">${d.state}</div>
+    </div>`;
+  }).join('') : '<div class="dash-clarity-empty">Sem dados suficientes</div>';
+
+  const stateIcon = STATE_ICONS[dominantState] || 'ti-brain';
+  const distFreq = mainDistCount > 0 ? `Apareceu ${mainDistCount}x nos últimos ${last30.length} registros` : 'Não detectada nos registros';
+
+  container.innerHTML = `
+    <!-- Resumo -->
+    <div class="dash-nums">
+      <div class="dash-num-card"><div class="dash-num-value">${last30.length}</div><div class="dash-num-label">Registros</div></div>
+      <div class="dash-num-card"><div class="dash-num-value">${streak}</div><div class="dash-num-label">Sequência</div></div>
+      <div class="dash-num-card"><div class="dash-num-value">${sortedStates.length}</div><div class="dash-num-label">Estados</div></div>
+    </div>
+
+    <!-- Estado dominante -->
+    <div class="dash-section">
+      <div class="dash-section-title"><i class="ti ti-radar"></i>Estado dominante</div>
+      <div class="dash-state-card">
+        <div class="dash-state-icon"><i class="ti ${stateIcon}"></i></div>
+        <div>
+          <div class="dash-state-name">${dominantState}</div>
+          <div class="dash-state-sub">Estado mais frequente nos últimos ${last30.length} registros</div>
+        </div>
+        <div class="dash-state-pct">
+          <div class="dash-state-pct-num">${dominantPct}%</div>
+          <div class="dash-state-pct-label">das entradas</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Distorção recorrente -->
+    <div class="dash-section">
+      <div class="dash-section-title"><i class="ti ti-alert-triangle"></i>Distorção recorrente</div>
+      <div class="dash-dist-card">
+        <div class="dash-dist-icon"><i class="ti ti-alert-triangle"></i></div>
+        <div style="flex:1">
+          <div class="dash-dist-name">${mainDist}</div>
+          <div class="dash-dist-desc">${DIST_DESC[mainDist] || ''}</div>
+          <div class="dash-dist-freq">${distFreq}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Evolução da clareza -->
+    <div class="dash-section">
+      <div class="dash-section-title"><i class="ti ti-trending-up"></i>Evolução da clareza · 7 dias</div>
+      <div class="dash-clarity-card">${clarityHtml}</div>
+    </div>
+
+    <!-- Padrão semanal -->
+    <div class="dash-section">
+      <div class="dash-section-title"><i class="ti ti-chart-bar"></i>Padrão semanal</div>
+      <div class="dash-pattern-card">${weekPatternHtml || '<div class="dash-clarity-empty">Sem dados suficientes</div>'}</div>
+    </div>
+
+    <!-- Insight IA -->
+    ${isPro ? `<div class="dash-section">
+      <div class="dash-section-title"><i class="ti ti-brain"></i>Análise IA</div>
+      <div class="dash-insight-card">
+        <div class="dash-insight-label"><i class="ti ti-brain"></i>Interpretação do padrão</div>
+        <div class="dash-insight-text" id="dashInsightText"><div class="mentor-typing"><span></span><span></span><span></span></div></div>
+      </div>
+    </div>` : `<div class="dash-section">
+      <div class="dash-insight-card" style="cursor:pointer" onclick="openPaywall()">
+        <div class="dash-insight-label"><i class="ti ti-lock"></i>Análise IA · Pro</div>
+        <div style="font-size:13px;color:#c0d8c0;line-height:1.6">Desbloqueie o AVR–S Pro para receber uma interpretação personalizada do seu padrão emocional.</div>
+        <div style="margin-top:12px"><span class="mentor-pill" style="display:inline-flex"><i class="ti ti-crown" style="margin-right:4px"></i>Ver plano Pro</span></div>
+      </div>
+    </div>`}
+  `;
+
+  // Carrega insight IA se Pro
+  if(isPro) {
+    const p = buildProfile();
+    const prompt = `Analise o padrão emocional do usuário dos últimos ${last30.length} registros:
+Estado dominante: ${dominantState} (${dominantPct}%)
+Distorção recorrente: ${mainDist} (${mainDistCount}x)
+Estados registrados: ${sortedStates.map(([s,c])=>s+':'+c+'x').join(', ')}
+Dê uma interpretação profunda de 3-4 frases sobre o que esse padrão revela e o que o usuário precisa trabalhar.`;
+    callClaude([{role:'user',content:prompt}], getMentorSystem()).then(r => {
+      const el = document.getElementById('dashInsightText');
+      if(el && r) el.textContent = r;
+    });
+  }
+}
+
 // ── PAYWALL ──
 let isPro = false;
 
@@ -1509,6 +1752,17 @@ init();
       <button class="paywall-dismiss" onclick="closePaywall()">Continuar com a versão gratuita</button>
     </div>
   </div>
+</div>
+
+
+<!-- DASHBOARD EMOCIONAL -->
+<div class="dash-overlay" id="dashOverlay">
+  <div class="dash-topbar">
+    <button class="dash-back" onclick="closeDashboard()"><i class="ti ti-arrow-left"></i></button>
+    <div class="dash-title">Dashboard Emocional</div>
+    <div class="dash-badge"><i class="ti ti-chart-bar" style="font-size:12px"></i> AVR–S</div>
+  </div>
+  <div class="dash-content" id="dashContent"></div>
 </div>
 
 </body>
