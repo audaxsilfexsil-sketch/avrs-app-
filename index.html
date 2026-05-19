@@ -67,7 +67,7 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream)}
 .state-chip.active{border-color:var(--gold);background:rgba(200,169,109,.07)}
 .state-chip.active i,.state-chip.active span{color:var(--gold2)}
 
-.stats-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px} @media(min-width:520px){.stats-row{grid-template-columns:1fr 1fr 1fr 1fr;}}
+.stats-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
 .stat-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:16px}
 .stat-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
 .stat-number{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;color:var(--gold);line-height:1}
@@ -361,11 +361,17 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream)}
 
 /* LOCK OVERLAY nos cards bloqueados */
 .locked-card{position:relative;overflow:hidden}
-.locked-card::after{content:'';position:absolute;inset:0;background:rgba(10,9,8,.7);border-radius:inherit;backdrop-filter:blur(2px)}
-.lock-badge{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer}
-.lock-badge i{font-size:28px;color:var(--gold);opacity:.8}
-.lock-badge span{font-size:11px;color:var(--gold2);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.locked-card::after{content:'';position:absolute;inset:0;background:rgba(10,9,8,.55);border-radius:inherit;backdrop-filter:blur(1px)}
+.lock-badge{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;display:flex;flex-direction:row;align-items:center;gap:6px;cursor:pointer;background:rgba(10,9,8,.6);padding:8px 16px;border-radius:20px;border:1px solid var(--border2)}
+.lock-badge i{font-size:14px;color:var(--gold);opacity:.9}
+.lock-badge span{font-size:11px;color:var(--gold2);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
 
+
+.stat-desktop{display:none;}
+@media(min-width:520px){
+  .stat-desktop{display:block;}
+  .stats-row{grid-template-columns:1fr 1fr 1fr 1fr;}
+}
 @media(min-width:520px){
   .desktop-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
   .mentor-card{font-size:15px;}
@@ -453,9 +459,11 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream)}
       </div>
     </div>
 
-    <div class="stats-row">
+    <div class="stats-row" id="statsRow">
       <div class="stat-card"><div class="stat-label">Dias conscientes</div><div class="stat-number" id="streak">0</div><div class="stat-sub">sequência atual</div></div>
       <div class="stat-card"><div class="stat-label">Decisões</div><div class="stat-number" id="totalEntries">0</div><div class="stat-sub">registros totais</div></div>
+      <div class="stat-card stat-desktop"><div class="stat-label">Estado frequente</div><div class="stat-number" id="statState" style="font-size:20px;margin-top:6px">—</div><div class="stat-sub">últimos 7 dias</div></div>
+      <div class="stat-card stat-desktop"><div class="stat-label">Distorção comum</div><div class="stat-number" id="statDist" style="font-size:16px;margin-top:8px">—</div><div class="stat-sub">padrão detectado</div></div>
     </div>
 
     <!-- ANÁLISE SEMANAL -->
@@ -1215,6 +1223,12 @@ function esc(s){if(!s)return '';return s.replace(/&/g,'&amp;').replace(/</g,'&lt
 function renderStats(){
   document.getElementById('streak').textContent=streak;
   document.getElementById('totalEntries').textContent=entries.length;
+  // Desktop extra stats
+  const p=buildProfile();
+  const stEl=document.getElementById('statState');
+  const dEl=document.getElementById('statDist');
+  if(stEl) stEl.textContent=p.dominantState||'—';
+  if(dEl) dEl.textContent=p.mainDistortion||'—';
 }
 
 function updateSettingsProfile(){
