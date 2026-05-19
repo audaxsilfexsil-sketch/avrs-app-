@@ -15,7 +15,7 @@
   --gold:#d4b87a;--gold2:#ebd49e;
   --cream:#f5f0e8;--text2:#b8b0a4;--text3:#6a6460;
   --border:rgba(200,169,109,0.12);--border2:rgba(200,169,109,0.25);
-  --ai:#1a2a1a;--ai-border:rgba(100,180,100,0.2);--ai-text:#90c890;
+  --ai:#152415;--ai-border:rgba(120,200,120,0.3);--ai-text:#a8d8a8;
   --r:18px;--r2:14px;
 }
 html,body{height:100%;overflow:hidden;background:#050403} @media(min-width:900px){body{background:radial-gradient(ellipse at 30% 20%, rgba(200,169,109,0.04) 0%, #050403 60%);}}
@@ -90,7 +90,7 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream);-webkit-font-smoothing:
 .mentor-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .mentor-dot{width:8px;height:8px;border-radius:50%;background:var(--ai-text);animation:pulse-dot 2s ease-in-out infinite}
 @keyframes pulse-dot{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.2)}}
-.mentor-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--ai-text)}
+.mentor-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#b8e0b8;font-weight:600}
 .mentor-text{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:400;color:var(--cream);line-height:1.8;-webkit-font-smoothing:antialiased}
 .mentor-typing{display:flex;gap:4px;align-items:center;padding:4px 0}
 .mentor-typing span{width:5px;height:5px;border-radius:50%;background:var(--ai-text);animation:typing 1.2s ease-in-out infinite}
@@ -98,7 +98,7 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream);-webkit-font-smoothing:
 .mentor-typing span:nth-child(3){animation-delay:.4s}
 @keyframes typing{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
 .mentor-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
-.mentor-pill{background:rgba(100,180,100,.08);border:1px solid var(--ai-border);border-radius:20px;padding:7px 14px;font-size:11px;color:var(--ai-text);cursor:pointer;transition:all .2s}
+.mentor-pill{background:rgba(100,180,100,.12);border:1px solid rgba(140,210,140,0.35);border-radius:20px;padding:7px 14px;font-size:11px;color:#b8e0b8;cursor:pointer;transition:all .2s;font-weight:500}
 .mentor-pill:hover{background:rgba(100,180,100,.15)}
 
 /* ANÁLISE SEMANAL */
@@ -237,14 +237,14 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream);-webkit-font-smoothing:
 .sug-action-t{font-size:13px;color:var(--cream);line-height:1.6}
 .sug-reflection{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px}
 .sug-reflection-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
-.sug-reflection-text{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:var(--text2);line-height:1.7}
+.sug-reflection-text{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:#c8c0b8;line-height:1.7;font-weight:400}
 
 /* AI INSIGHT no checklist */
-.ai-insight{background:var(--ai);border:1px solid var(--ai-border);border-radius:14px;padding:16px;margin-bottom:14px}
-.ai-insight-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ai-text);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.ai-insight{background:var(--ai);border:1px solid var(--ai-border);border-radius:14px;padding:16px;margin-bottom:14px;-webkit-font-smoothing:antialiased}
+.ai-insight-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#b8e0b8;margin-bottom:10px;display:flex;align-items:center;gap:6px;font-weight:600}
 .ai-insight-label i{font-size:14px}
-.ai-insight-text{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;color:var(--cream);line-height:1.75}
-.ai-insight-sub{font-size:12px;color:var(--text2);line-height:1.6;margin-top:8px}
+.ai-insight-text{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:500;color:#f0ebe2;line-height:1.75;-webkit-font-smoothing:antialiased}
+.ai-insight-sub{font-size:12px;color:#c0d8c0;line-height:1.6;margin-top:8px}
 
 /* DETAIL */
 .det-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:900;display:none}
