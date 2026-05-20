@@ -2153,11 +2153,17 @@ function handleLogin() {
   }
 }
 
+const ADMIN_EMAIL = 'audax2_cj@hotmail.com';
+
 function checkAuth() {
   const currentUser = localStorage.getItem('avrs4_current_user');
   if (!currentUser) {
     document.getElementById('loginOverlay').style.display = 'flex';
     return false;
+  }
+  // Admin sempre tem Pro ativo
+  if (currentUser === ADMIN_EMAIL) {
+    localStorage.setItem('avrs4_pro', 'true');
   }
   return true;
 }
