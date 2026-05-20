@@ -1643,16 +1643,13 @@ const BIBLIOTECA_DATA = [
 
 // ── ONBOARDING ──
 function checkOnboarding() {
-  if (!localStorage.getItem('avrs4_onboard')) {
-    setTimeout(() => document.getElementById('onboardOverlay').classList.add('open'), 3000);
-  }
+  setTimeout(() => document.getElementById('onboardOverlay').classList.add('open'), 2000);
 }
 function nextOnboard(step) {
   document.querySelectorAll('.onboard-step').forEach(s => s.classList.remove('active'));
   document.getElementById('onboard-'+step).classList.add('active');
 }
 function finishOnboard() {
-  localStorage.setItem('avrs4_onboard', '1');
   document.getElementById('onboardOverlay').classList.remove('open');
 }
 
