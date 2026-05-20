@@ -616,10 +616,45 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream);-webkit-font-smoothing:
 .dashboard-btn{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:14px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--gold2);font-size:13px;font-weight:500;margin-bottom:16px;transition:background .2s}
 .dashboard-btn:hover{background:var(--bg4)}
 .dashboard-btn i:first-child{font-size:18px;color:var(--gold)}
+
+/* ══ LOGIN ══ */
+.login-overlay{position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px}
+.login-box{width:100%;max-width:380px;display:flex;flex-direction:column;align-items:center}
+.login-logo{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;letter-spacing:.3em;color:var(--gold);margin-bottom:4px}
+.login-subtitle{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--text3);margin-bottom:48px}
+.login-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:var(--cream);margin-bottom:8px;text-align:center}
+.login-sub{font-size:13px;color:var(--text3);margin-bottom:32px;text-align:center;line-height:1.6}
+.login-field{width:100%;margin-bottom:14px}
+.login-field input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--cream);padding:14px 16px;border-radius:12px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
+.login-field input:focus{border-color:var(--gold)}
+.login-field input::placeholder{color:var(--text3)}
+.login-btn{width:100%;background:var(--gold);border:none;border-radius:12px;padding:16px;font-size:13px;font-weight:600;color:#0a0908;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.06em;margin-top:8px;transition:background .2s}
+.login-btn:active{background:var(--gold2)}
+.login-toggle{background:none;border:none;color:var(--text3);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:16px;text-decoration:underline}
+.login-error{font-size:12px;color:#d46a6a;margin-top:8px;text-align:center;min-height:18px}
+.login-version{font-size:10px;color:#3a3630;margin-top:32px;letter-spacing:.1em}
 </style>
 </head>
 <body>
 <div class="app">
+
+
+<!-- LOGIN -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <div class="login-logo">AVR–S</div>
+    <div class="login-subtitle">A Vida Sem Rascunho</div>
+    <div class="login-title" id="loginTitle">Bem-vindo</div>
+    <div class="login-sub" id="loginSub">Entre com sua conta para continuar</div>
+    <div class="login-field"><input type="email" id="loginEmail" placeholder="Seu e-mail"/></div>
+    <div class="login-field"><input type="password" id="loginPass" placeholder="Sua senha"/></div>
+    <div class="login-field" id="loginPassConfirmField" style="display:none"><input type="password" id="loginPassConfirm" placeholder="Confirme a senha"/></div>
+    <div class="login-error" id="loginError"></div>
+    <button class="login-btn" id="loginBtn" onclick="handleLogin()">Entrar</button>
+    <button class="login-toggle" id="loginToggle" onclick="toggleLoginMode()">Não tem conta? Cadastre-se</button>
+    <div class="login-version">v4.0 · IA</div>
+  </div>
+</div>
 
 <!-- SPLASH -->
 <div class="splash" id="splash">
@@ -841,6 +876,7 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream);-webkit-font-smoothing:
       <div class="settings-section-title">Estatísticas</div>
       <div class="settings-row"><div class="settings-label">Decisões registradas</div><div class="settings-value" id="settingsTotal">0</div></div>
       <div class="settings-row"><div class="settings-label">Sequência atual</div><div class="settings-value" id="settingsStreak">0 dias</div></div>
+      <div class="settings-row"><div class="settings-label">Conta</div><div class="settings-value" id="settingsEmail">—</div></div>
       <div class="settings-row"><div class="settings-label">Membro desde</div><div class="settings-value" id="settingsSince">—</div></div>
     </div>
     <div class="settings-section">
@@ -859,6 +895,7 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream);-webkit-font-smoothing:
       <div class="settings-section-title">Dados</div>
       <div class="settings-row"><div class="settings-label">Exportar diário</div><button class="settings-action" onclick="exportData()">Exportar JSON</button></div>
     </div>
+    <button class="danger-btn" style="margin-top:4px;border-color:rgba(200,169,109,.2);color:var(--gold)" onclick="logout()"><i class="ti ti-logout"></i> Sair da conta</button>
     <button class="danger-btn" onclick="confirmReset()">Apagar todos os dados</button>
   </div>
 
@@ -1522,6 +1559,7 @@ function renderStats(){
 }
 
 function updateSettingsProfile(){
+  const cu=localStorage.getItem('avrs4_current_user');if(cu){const el=document.getElementById('settingsEmail');if(el)el.textContent=cu;}
   document.getElementById('settingsTotal').textContent=entries.length;
   document.getElementById('settingsStreak').textContent=streak+' dias';
   if(entries.length>0){const o=new Date(entries[entries.length-1].id);document.getElementById('settingsSince').textContent=o.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});}
@@ -2053,8 +2091,85 @@ function updateSettingsProStatus() {
   }
 }
 
+
+// ── LOGIN ──
+let loginMode = 'login'; // 'login' ou 'register'
+
+function toggleLoginMode() {
+  loginMode = loginMode === 'login' ? 'register' : 'login';
+  if (loginMode === 'register') {
+    document.getElementById('loginTitle').textContent = 'Criar conta';
+    document.getElementById('loginSub').textContent = 'Cadastre-se para começar sua jornada';
+    document.getElementById('loginPassConfirmField').style.display = 'block';
+    document.getElementById('loginBtn').textContent = 'Criar conta';
+    document.getElementById('loginToggle').textContent = 'Já tem conta? Entrar';
+  } else {
+    document.getElementById('loginTitle').textContent = 'Bem-vindo';
+    document.getElementById('loginSub').textContent = 'Entre com sua conta para continuar';
+    document.getElementById('loginPassConfirmField').style.display = 'none';
+    document.getElementById('loginBtn').textContent = 'Entrar';
+    document.getElementById('loginToggle').textContent = 'Não tem conta? Cadastre-se';
+  }
+  document.getElementById('loginError').textContent = '';
+}
+
+function hashSimple(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return hash.toString(36);
+}
+
+function handleLogin() {
+  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  const pass = document.getElementById('loginPass').value;
+  const errEl = document.getElementById('loginError');
+
+  if (!email || !pass) { errEl.textContent = 'Preencha e-mail e senha.'; return; }
+  if (!email.includes('@')) { errEl.textContent = 'E-mail inválido.'; return; }
+  if (pass.length < 6) { errEl.textContent = 'Senha deve ter ao menos 6 caracteres.'; return; }
+
+  const users = JSON.parse(localStorage.getItem('avrs4_users') || '{}');
+  const passHash = hashSimple(pass);
+
+  if (loginMode === 'register') {
+    const confirm = document.getElementById('loginPassConfirm').value;
+    if (pass !== confirm) { errEl.textContent = 'Senhas não conferem.'; return; }
+    if (users[email]) { errEl.textContent = 'E-mail já cadastrado.'; return; }
+    users[email] = { passHash, createdAt: Date.now() };
+    localStorage.setItem('avrs4_users', JSON.stringify(users));
+    localStorage.setItem('avrs4_current_user', email);
+    document.getElementById('loginOverlay').style.display = 'none';
+    checkOnboarding();
+  } else {
+    if (!users[email]) { errEl.textContent = 'E-mail não encontrado.'; return; }
+    if (users[email].passHash !== passHash) { errEl.textContent = 'Senha incorreta.'; return; }
+    localStorage.setItem('avrs4_current_user', email);
+    document.getElementById('loginOverlay').style.display = 'none';
+    checkOnboarding();
+  }
+}
+
+function checkAuth() {
+  const currentUser = localStorage.getItem('avrs4_current_user');
+  if (!currentUser) {
+    document.getElementById('loginOverlay').style.display = 'flex';
+    return false;
+  }
+  return true;
+}
+
+function logout() {
+  localStorage.removeItem('avrs4_current_user');
+  location.reload();
+}
+
 // ── INIT ──
 async function init(){
+  if (!checkAuth()) return;
   load();loadProStatus();updateStreak();
   document.getElementById('splashQuote').textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';
   setTimeout(()=>document.getElementById('splash').classList.add('hide'),2800);
