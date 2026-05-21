@@ -1195,6 +1195,11 @@ function load(){
 function saveData(){
   localStorage.setItem('avrs4_e',JSON.stringify(entries));
   localStorage.setItem('avrs4_profile',JSON.stringify(mentorProfile));
+  // Salvar na nuvem
+  const cu = localStorage.getItem('avrs4_current_user');
+  if (cu && window.saveUserToCloud) {
+    window.saveUserToCloud(cu.replace(/[^a-zA-Z0-9]/g, '_'));
+  }
 }
 function updateStreak(){
   const t=new Date().toDateString(),l=localStorage.getItem('avrs4_l');
@@ -2232,6 +2237,10 @@ function handleLogin() {
     if (users[email].passHash !== passHash) { errEl.textContent = 'Senha incorreta.'; return; }
     localStorage.setItem('avrs4_current_user', email);
     document.getElementById('loginOverlay').style.display = 'none';
+    // Sincronizar dados com Firebase
+    setTimeout(() => {
+      if (window.syncUserData) window.syncUserData(email.replace(/[^a-zA-Z0-9]/g, '_'));
+    }, 1500);
     checkOnboarding();
   }
 }
@@ -2435,6 +2444,84 @@ init();
   <div class="biblio-detail-header" id="biblioDHeader"></div>
   <div class="biblio-detail-body" id="biblioDBody"></div>
 </div>
+
+
+<!-- FIREBASE -->
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+  import { getFirestore, doc, setDoc, getDoc, collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBy13fDtxYQlkMozofoIoYS27VykHMMuDw",
+    authDomain: "avrs-app.firebaseapp.com",
+    projectId: "avrs-app",
+    storageBucket: "avrs-app.firebasestorage.app",
+    messagingSenderId: "1036042586771",
+    appId: "1:1036042586771:web:b4a9bac3dcc7c0ce461b66"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Salvar dados do usuário no Firebase
+  window.saveToFirebase = async function(userId, data) {
+    try {
+      await setDoc(doc(db, 'users', userId), data, { merge: true });
+      console.log('✅ Dados salvos no Firebase');
+    } catch(e) {
+      console.log('❌ Erro ao salvar:', e);
+    }
+  };
+
+  // Carregar dados do usuário do Firebase
+  window.loadFromFirebase = async function(userId) {
+    try {
+      const docSnap = await getDoc(doc(db, 'users', userId));
+      if (docSnap.exists()) {
+        return docSnap.data();
+      }
+      return null;
+    } catch(e) {
+      console.log('❌ Erro ao carregar:', e);
+      return null;
+    }
+  };
+
+  // Sincronizar ao fazer login
+  window.syncUserData = async function(userId) {
+    try {
+      const cloudData = await window.loadFromFirebase(userId);
+      if (cloudData) {
+        // Carregar entradas da nuvem
+        if (cloudData.entries) {
+          const localEntries = JSON.parse(localStorage.getItem('avrs4_e') || '[]');
+          // Mesclar entradas locais com nuvem (sem duplicar)
+          const allIds = new Set(localEntries.map(e => e.id));
+          const newEntries = cloudData.entries.filter(e => !allIds.has(e.id));
+          const merged = [...localEntries, ...newEntries].sort((a,b) => b.id - a.id);
+          localStorage.setItem('avrs4_e', JSON.stringify(merged));
+        }
+        if (cloudData.isPro) {
+          localStorage.setItem('avrs4_pro', 'true');
+        }
+        console.log('✅ Dados sincronizados da nuvem!');
+      }
+      // Salvar dados locais na nuvem
+      await window.saveUserToCloud(userId);
+    } catch(e) {
+      console.log('Sync error:', e);
+    }
+  };
+
+  window.saveUserToCloud = async function(userId) {
+    const entries = JSON.parse(localStorage.getItem('avrs4_e') || '[]');
+    const isPro = localStorage.getItem('avrs4_pro') === 'true';
+    const streak = localStorage.getItem('avrs4_s') || '0';
+    await window.saveToFirebase(userId, { entries, isPro, streak, lastSync: Date.now() });
+  };
+
+  console.log('✅ Firebase inicializado!');
+</script>
 
 </body>
 </html>
