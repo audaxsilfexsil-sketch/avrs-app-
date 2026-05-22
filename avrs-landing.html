@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AVR-S | A Vida Sem Rascunho</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0908;--bg2:#100f0d;--bg3:#1a1816;--bg4:#222018;--gold:#d4b87a;--gold2:#ebd49e;--cream:#f5f0e8;--text2:#b8b0a4;--text3:#6a6460;--border:rgba(200,169,109,0.12);--border2:rgba(200,169,109,0.25)}
+html{scroll-behavior:smooth}
+body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--cream);-webkit-font-smoothing:antialiased}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 40px;display:flex;justify-content:space-between;align-items:center;background:rgba(10,9,8,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-cta{background:var(--gold);color:#0a0908;border:none;border-radius:8px;padding:10px 20px;font-size:12px;font-weight:700;letter-spacing:.1em;cursor:pointer;font-family:"DM Sans",sans-serif;text-decoration:none;transition:background .2s}
+.nav-cta:hover{background:var(--gold2)}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(200,169,109,.06) 0%,transparent 60%)}
+.hero-eyebrow{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--text3);margin-bottom:24px}
+.hero-title{font-family:"Cormorant Garamond",serif;font-size:clamp(48px,8vw,96px);font-weight:300;line-height:1.05;color:var(--cream);margin-bottom:16px}
+.hero-title span{color:var(--gold)}
+.hero-subtitle{font-family:"Cormorant Garamond",serif;font-size:clamp(18px,3vw,26px);font-weight:300;font-style:italic;color:var(--text2);margin-bottom:48px;max-width:600px;line-height:1.6}
+.hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:32px}
+.btn-primary{background:var(--gold);color:#0a0908;border:none;border-radius:12px;padding:18px 36px;font-size:13px;font-weight:700;letter-spacing:.1em;cursor:pointer;font-family:"DM Sans",sans-serif;text-decoration:none;transition:all .2s;display:inline-block}
+.btn-primary:hover{background:var(--gold2);transform:translateY(-2px)}
+.btn-secondary{background:transparent;color:var(--gold);border:1px solid var(--border2);border-radius:12px;padding:18px 36px;font-size:13px;font-weight:500;letter-spacing:.08em;cursor:pointer;font-family:"DM Sans",sans-serif;text-decoration:none;transition:all .2s;display:inline-block}
+.btn-secondary:hover{background:rgba(200,169,109,.07);transform:translateY(-2px)}
+.hero-note{font-size:12px;color:var(--text3);letter-spacing:.06em}
+.divider-line{height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin-bottom:40px}
+.section-wrap{padding:80px 24px 0;text-align:center}
+.section-eyebrow{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--text3);margin-bottom:16px}
+.section-title{font-family:"Cormorant Garamond",serif;font-size:clamp(32px,5vw,52px);font-weight:300;color:var(--cream);line-height:1.2;margin-bottom:16px}
+.section-title span{color:var(--gold)}
+.section-sub{font-size:15px;color:var(--text2);line-height:1.8;max-width:560px;margin:0 auto}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:960px;margin:48px auto 0}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;max-width:960px;margin:48px auto 0}
+@media(max-width:640px){.grid2,.grid3{grid-template-columns:1fr} nav{padding:14px 20px}}
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:24px;transition:border-color .2s}
+.card:hover{border-color:var(--border2)}
+.card-icon{font-size:28px;margin-bottom:12px}
+.card-title{font-size:15px;font-weight:600;color:var(--cream);margin-bottom:8px}
+.card-text{font-size:13px;color:var(--text2);line-height:1.7}
+.metodo-letter{font-family:"Cormorant Garamond",serif;font-size:52px;font-weight:300;color:var(--gold);line-height:1;margin-bottom:8px}
+.feature-item{display:flex;gap:16px;align-items:flex-start;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:20px}
+.feature-icon{width:40px;height:40px;border-radius:10px;background:rgba(200,169,109,.08);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
+.depo-quote-mark{font-family:"Cormorant Garamond",serif;font-size:42px;font-weight:300;color:rgba(200,169,109,.1);line-height:1;position:absolute;top:12px;left:18px}
+.depo-text{font-family:"Cormorant Garamond",serif;font-size:17px;font-style:italic;font-weight:300;color:var(--text2);line-height:1.8;margin-bottom:16px;padding-top:16px}
+.depo-stars{color:var(--gold);font-size:12px;margin-bottom:8px}
+.depo-author{font-size:12px;color:var(--text3);letter-spacing:.06em}
+.preco-card{background:var(--bg3);border:1px solid var(--border2);border-radius:24px;padding:48px 40px;text-align:center;max-width:560px;margin:48px auto 0;position:relative;overflow:hidden}
+.preco-card::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(200,169,109,.06) 0%,transparent 60%)}
+.preco-badge{display:inline-block;background:rgba(200,169,109,.1);border:1px solid var(--border2);border-radius:20px;padding:6px 16px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:24px}
+.preco-valor{font-family:"Cormorant Garamond",serif;font-size:80px;font-weight:300;color:var(--gold);line-height:1}
+.preco-periodo{font-size:14px;color:var(--text3);margin-bottom:32px}
+.preco-feature{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);text-align:left}
+.preco-feature:last-child{border:none}
+.preco-check{color:var(--gold);font-size:16px;flex-shrink:0}
+.preco-feature-text{font-size:14px;color:var(--text2)}
+.faq-wrap{max-width:720px;margin:48px auto 0}
+.faq-item{border-bottom:1px solid var(--border);padding:20px 0;cursor:pointer}
+.faq-q{display:flex;justify-content:space-between;align-items:center;font-size:15px;font-weight:500;color:var(--cream)}
+.faq-a{font-size:14px;color:var(--text2);line-height:1.8;margin-top:12px;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-chevron{transition:transform .3s;color:var(--text3)}
+.faq-item.open .faq-chevron{transform:rotate(180deg)}
+footer{padding:60px 24px 40px;text-align:center;border-top:1px solid var(--border);margin-top:80px}
+.footer-links{display:flex;gap:24px;justify-content:center;margin-bottom:24px;flex-wrap:wrap}
+.footer-link{font-size:12px;color:var(--text3);text-decoration:none;letter-spacing:.06em;transition:color .2s}
+.footer-link:hover{color:var(--gold)}
+.footer-copy{font-size:11px;color:#3a3630;letter-spacing:.08em;line-height:1.8}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.ciclo-wrap{width:100%;max-width:420px;margin:64px auto 0}
+.arc-animL{stroke-dasharray:5 4;animation:spinL 4s linear infinite}
+.nodeL{animation:glowL 3s ease-in-out infinite}
+.pulseL{animation:pulseLL 3s ease-in-out infinite}
+@keyframes spinL{to{stroke-dashoffset:-80}}
+@keyframes glowL{0%,100%{stroke-opacity:.7}50%{stroke-opacity:1}}
+@keyframes pulseLL{0%,100%{opacity:.2}50%{opacity:.5}}
+</style>
+</head>
+<body>
+
+<nav>
+  <img src="https://audaxsilfexsil-sketch.github.io/avrs-app-/LOGO02.png.png" alt="AVR-S" style="height:28px;object-fit:contain"/>
+  <a href="https://audaxsilfexsil-sketch.github.io/avrs-app-/" class="nav-cta">Comecar agora</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Metodo de consciencia e decisao</div>
+  <h1 class="hero-title">A Vida<br><span>Sem Rascunho</span></h1>
+  <p class="hero-subtitle">Voce nao decide com a mente. Voce decide com o estado em que esta. O AVR-S muda isso.</p>
+  <div class="hero-btns">
+    <a href="https://pag.ae/81P9a56Kv/button" class="btn-primary">Assinar Pro - R$19/mes</a>
+    <a href="https://audaxsilfexsil-sketch.github.io/avrs-app-/" class="btn-secondary">Comecar gratis</a>
+  </div>
+  <div class="hero-note">Sem cartao de credito para a versao gratuita · Cancele quando quiser</div>
+
+  <div class="ciclo-wrap">
+    <svg width="100%" viewBox="0 0 680 680" role="img">
+      <title>Ciclo AVR-S</title>
+      <defs>
+        <marker id="arrowL" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+        <radialGradient id="bgL" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#1a1816"/><stop offset="100%" stop-color="#0a0908"/>
+        </radialGradient>
+      </defs>
+      <circle cx="340" cy="340" r="320" fill="url(#bgL)" opacity="0.95"/>
+      <circle cx="340" cy="340" r="210" fill="none" stroke="#d4b87a" stroke-width="0.5" stroke-dasharray="4 6" opacity="0.2"/>
+      <path d="M 480 185 A 210 210 0 0 1 525 370" fill="none" stroke="#d4b87a" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.6" marker-end="url(#arrowL)" class="arc-animL"/>
+      <path d="M 510 430 A 210 210 0 0 1 390 545" fill="none" stroke="#d4b87a" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.6" marker-end="url(#arrowL)" class="arc-animL"/>
+      <path d="M 290 548 A 210 210 0 0 1 162 432" fill="none" stroke="#d4b87a" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.6" marker-end="url(#arrowL)" class="arc-animL"/>
+      <path d="M 155 300 A 210 210 0 0 1 300 142" fill="none" stroke="#d4b87a" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.6" marker-end="url(#arrowL)" class="arc-animL"/>
+      <circle cx="340" cy="340" r="100" fill="#100f0d" stroke="#d4b87a" stroke-width="1" opacity="0.8" class="pulseL"/>
+      <text x="340" y="320" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#6a6460">VOCE VIVE</text>
+      <text x="340" y="340" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#6a6460">O QUE</text>
+      <text x="340" y="364" text-anchor="middle" font-family="Georgia,serif" font-size="22" font-weight="bold" fill="#d4b87a">REPETE.</text>
+      <circle cx="340" cy="130" r="58" fill="#0a0908" stroke="#d4b87a" stroke-width="1.5" class="nodeL"/>
+      <ellipse cx="340" cy="127" rx="18" ry="11" fill="none" stroke="#d4b87a" stroke-width="1.5"/>
+      <circle cx="340" cy="127" r="5" fill="#d4b87a"/><circle cx="340" cy="125" r="2" fill="#0a0908"/>
+      <text x="340" y="151" text-anchor="middle" font-family="Georgia,serif" font-size="11" font-weight="bold" fill="#ebd49e" letter-spacing="2">ATENCAO</text>
+      <text x="340" y="200" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#8a8278">Onde voce olha</text>
+      <circle cx="530" cy="370" r="58" fill="#0a0908" stroke="#d4b87a" stroke-width="1.5" class="nodeL"/>
+      <path d="M516 358 Q510 348 516 342 Q522 336 530 340 Q538 336 544 342 Q550 348 544 358 Q540 368 530 372 Q520 368 516 358Z" fill="none" stroke="#d4b87a" stroke-width="1.5"/>
+      <text x="530" y="393" text-anchor="middle" font-family="Georgia,serif" font-size="11" font-weight="bold" fill="#ebd49e" letter-spacing="2">VISAO</text>
+      <text x="530" y="438" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#8a8278">Como voce interpreta</text>
+      <circle cx="340" cy="545" r="58" fill="#0a0908" stroke="#d4b87a" stroke-width="1.5" class="nodeL"/>
+      <rect x="320" y="530" width="40" height="26" rx="8" fill="none" stroke="#d4b87a" stroke-width="1.5"/>
+      <circle cx="332" cy="543" r="2.5" fill="#d4b87a"/><circle cx="340" cy="543" r="2.5" fill="#d4b87a"/><circle cx="348" cy="543" r="2.5" fill="#d4b87a"/>
+      <path d="M330 556 L326 564 L338 556Z" fill="#d4b87a" opacity="0.8"/>
+      <text x="340" y="568" text-anchor="middle" font-family="Georgia,serif" font-size="11" font-weight="bold" fill="#ebd49e" letter-spacing="2">RESPOSTA</text>
+      <text x="340" y="614" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#8a8278">Como voce reage</text>
+      <circle cx="150" cy="370" r="58" fill="#0a0908" stroke="#d4b87a" stroke-width="1.5" class="nodeL"/>
+      <path d="M135 362 A18 18 0 1 1 165 370" fill="none" stroke="#d4b87a" stroke-width="1.8" stroke-linecap="round" marker-end="url(#arrowL)"/>
+      <circle cx="150" cy="370" r="2.5" fill="#d4b87a" opacity="0.8"/>
+      <text x="150" y="393" text-anchor="middle" font-family="Georgia,serif" font-size="11" font-weight="bold" fill="#ebd49e" letter-spacing="2">SISTEMA</text>
+      <text x="150" y="438" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#8a8278">O que voce repete</text>
+      <text x="340" y="652" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="#3a3630" letter-spacing="3">AVR-S . A VIDA SEM RASCUNHO</text>
+    </svg>
+  </div>
+</section>
+
+<!-- PROBLEMAS -->
+<section class="section-wrap reveal">
+  <div class="divider-line"></div>
+  <div class="section-eyebrow">Voce reconhece isso?</div>
+  <h2 class="section-title">O problema nao e a <span>decisao</span>.<br>E o estado de quem decide.</h2>
+</section>
+<div style="max-width:960px;margin:0 auto;padding:0 24px">
+  <div class="grid3" style="margin-top:48px">
+    <div class="card reveal"><div class="card-icon">⚡</div><div class="card-text">Voce reage antes de pensar — e so percebe depois que a resposta saiu errada.</div></div>
+    <div class="card reveal"><div class="card-icon">🌀</div><div class="card-text">Sente que vive no automatico — os mesmos padroes se repetindo sem que voce escolha.</div></div>
+    <div class="card reveal"><div class="card-icon">🎭</div><div class="card-text">Interpreta situacoes pelo filtro emocional — nao pelo que realmente aconteceu.</div></div>
+    <div class="card reveal"><div class="card-icon">🔥</div><div class="card-text">Toma decisoes sob pressao e urgencia — e frequentemente se arrepende depois.</div></div>
+    <div class="card reveal"><div class="card-icon">🧠</div><div class="card-text">Sabe o que deveria fazer — mas continua fazendo o que sempre fez.</div></div>
+    <div class="card reveal"><div class="card-icon">📉</div><div class="card-text">Percebe ciclos negativos mas nao sabe onde e como interrumpe-los.</div></div>
+  </div>
+</div>
+
+<!-- METODO -->
+<section class="section-wrap reveal">
+  <div class="divider-line"></div>
+  <div class="section-eyebrow">O metodo</div>
+  <h2 class="section-title">Cinco camadas.<br>Uma <span>forma diferente</span> de perceber.</h2>
+  <p class="section-sub">O AVR-S nao e uma tecnica. E uma estrutura que cria espaco entre o estimulo e a sua resposta.</p>
+</section>
+<div style="max-width:960px;margin:0 auto;padding:0 24px">
+  <div class="grid2">
+    <div class="card reveal"><div class="metodo-letter">R</div><div class="card-title">Regular</div><div class="card-text">Antes de qualquer decisao, ajuste o estado interno. A decisao nasce do estado de quem decide.</div></div>
+    <div class="card reveal"><div class="metodo-letter">A</div><div class="card-title">Atencao</div><div class="card-text">Para onde voce olha determina o que voce percebe. Sua atencao foi capturada ou foi escolhida?</div></div>
+    <div class="card reveal"><div class="metodo-letter">V</div><div class="card-title">Visao</div><div class="card-text">Voce nao reage ao que acontece. Reage ao significado que construiu sobre o que acontece.</div></div>
+    <div class="card reveal"><div class="metodo-letter">R</div><div class="card-title">Resposta</div><div class="card-text">Entre o estimulo e a resposta existe um espaco. E nesse espaco que a escolha real acontece.</div></div>
+  </div>
+  <div style="margin-top:16px" class="reveal">
+    <div class="card"><div class="metodo-letter">S</div><div class="card-title">Sistema</div><div class="card-text">Voce nao vive decisoes isoladas. Vive ciclos. Quem nao constroi o proprio sistema vive dentro do que se formou sozinho — por repeticao, nao por escolha.</div></div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="section-wrap reveal">
+  <div class="divider-line"></div>
+  <div class="section-eyebrow">O aplicativo</div>
+  <h2 class="section-title">Tudo que voce precisa<br>para <span>decidir melhor</span>.</h2>
+</section>
+<div style="max-width:960px;margin:48px auto 0;padding:0 24px">
+  <div class="grid2">
+    <div class="feature-item reveal"><div class="feature-icon">🧠</div><div><div class="card-title">Mentor IA personalizado</div><div class="card-text">IA que aprende seus padroes e adapta cada resposta ao seu perfil emocional real.</div></div></div>
+    <div class="feature-item reveal"><div class="feature-icon">📊</div><div><div class="card-title">Dashboard emocional</div><div class="card-text">Visualize estados dominantes, distorcoes recorrentes e evolucao da clareza.</div></div></div>
+    <div class="feature-item reveal"><div class="feature-icon">✅</div><div><div class="card-title">Diagnostico AVR-S</div><div class="card-text">Checklist guiado que identifica o que esta acontecendo no seu estado interno agora.</div></div></div>
+    <div class="feature-item reveal"><div class="feature-icon">📓</div><div><div class="card-title">Diario de decisoes</div><div class="card-text">Registre e revise cada decisao consciente com analise de padroes ao longo do tempo.</div></div></div>
+    <div class="feature-item reveal"><div class="feature-icon">📈</div><div><div class="card-title">Ciclos de melhoria</div><div class="card-text">Analise semanal e mensal dos seus padroes com sugestoes personalizadas da IA.</div></div></div>
+    <div class="feature-item reveal"><div class="feature-icon">🔔</div><div><div class="card-title">Alertas conscientes</div><div class="card-text">Lembretes para registrar seu estado ao dormir, acordar e durante o dia.</div></div></div>
+    <div class="feature-item reveal"><div class="feature-icon">🎤</div><div><div class="card-title">Comando de voz</div><div class="card-text">Fale diretamente com o Mentor IA em portugues.</div></div></div>
+    <div class="feature-item reveal"><div class="feature-icon">☁️</div><div><div class="card-title">Sincronizacao em nuvem</div><div class="card-text">Seus dados sincronizados entre celular e computador via Firebase.</div></div></div>
+  </div>
+</div>
+
+<!-- DEPOIMENTOS -->
+<section class="section-wrap reveal">
+  <div class="divider-line"></div>
+  <div class="section-eyebrow">Resultados reais</div>
+  <h2 class="section-title">O que muda quando voce<br><span>percebe antes de agir</span>.</h2>
+</section>
+<div style="max-width:960px;margin:0 auto;padding:0 24px">
+  <div class="grid3">
+    <div class="card reveal" style="position:relative"><div class="depo-quote-mark">"</div><div class="depo-stars">★★★★★</div><div class="depo-text">Comecei a perceber que minhas reacoes mais impulsivas aconteciam sempre no mesmo estado emocional. O AVR-S me deu nome para isso — e uma saida.</div><div class="depo-author">Marcos V. · Gestor empresarial</div></div>
+    <div class="card reveal" style="position:relative"><div class="depo-quote-mark">"</div><div class="depo-stars">★★★★★</div><div class="depo-text">Eu achava que o problema era falta de disciplina. Nao era. Era decisao em estado errado. Tres semanas usando o app e meu padrao ja mudou visivelmente.</div><div class="depo-author">Fernanda R. · Empreendedora</div></div>
+    <div class="card reveal" style="position:relative"><div class="depo-quote-mark">"</div><div class="depo-stars">★★★★★</div><div class="depo-text">O Mentor IA e surpreendentemente preciso. Ele identificou meu padrao de urgencia falsa antes que eu mesmo percebesse. Como ter um coach disponivel 24h.</div><div class="depo-author">Ricardo A. · Executivo</div></div>
+  </div>
+</div>
+
+<!-- PRECO -->
+<section class="section-wrap reveal" id="planos">
+  <div class="divider-line"></div>
+  <div class="section-eyebrow">Planos</div>
+  <h2 class="section-title">Comece gratis.<br>Evolua com o <span>Pro</span>.</h2>
+</section>
+<div style="padding:0 24px">
+  <div class="preco-card reveal">
+    <div class="preco-badge">AVR-S Pro</div>
+    <div class="preco-valor">R$19</div>
+    <div class="preco-periodo">por mes · cancele quando quiser</div>
+    <div style="margin-bottom:32px">
+      <div class="preco-feature"><span class="preco-check">✦</span><span class="preco-feature-text">Mentor IA ilimitado com perfil adaptativo</span></div>
+      <div class="preco-feature"><span class="preco-check">✦</span><span class="preco-feature-text">Analise personalizada ao final de cada diagnostico</span></div>
+      <div class="preco-feature"><span class="preco-check">✦</span><span class="preco-feature-text">Ciclos de melhoria semanal e mensal com IA</span></div>
+      <div class="preco-feature"><span class="preco-check">✦</span><span class="preco-feature-text">Dashboard emocional completo com insight IA</span></div>
+      <div class="preco-feature"><span class="preco-check">✦</span><span class="preco-feature-text">Comando de voz + sincronizacao em nuvem</span></div>
+      <div class="preco-feature"><span class="preco-check">✦</span><span class="preco-feature-text">Diario ilimitado + alertas configuraveis</span></div>
+    </div>
+    <a href="https://pag.ae/81P9a56Kv/button" class="btn-primary" style="display:block;text-align:center;width:100%;margin-bottom:16px">Assinar Pro agora - R$19/mes</a>
+    <a href="https://audaxsilfexsil-sketch.github.io/avrs-app-/" class="btn-secondary" style="display:block;text-align:center;width:100%">Comecar gratis</a>
+    <div style="font-size:12px;color:var(--text3);margin-top:20px">Versao gratuita: diario, protocolo AVR-S, guia e diagnostico basico.</div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<section class="section-wrap reveal">
+  <div class="divider-line"></div>
+  <div class="section-eyebrow">Duvidas</div>
+  <h2 class="section-title">Perguntas <span>frequentes</span>.</h2>
+</section>
+<div style="padding:0 24px 80px">
+  <div class="faq-wrap reveal">
+    <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q">O que e o metodo AVR-S? <span class="faq-chevron">⌄</span></div><div class="faq-a">AVR-S e um metodo de consciencia e decisao criado a partir do livro "A Vida Sem Rascunho". Funciona em cinco camadas — Regular, Atencao, Visao, Resposta e Sistema — e ajuda a criar um espaco consciente entre o estimulo e a sua resposta.</div></div>
+    <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q">A versao gratuita tem limitacoes? <span class="faq-chevron">⌄</span></div><div class="faq-a">A versao gratuita inclui diario de decisoes, protocolo AVR-S completo, guia e diagnostico basico. O Mentor IA, analises personalizadas e ciclos de melhoria sao exclusivos do plano Pro.</div></div>
+    <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q">Como funciona o Mentor IA? <span class="faq-chevron">⌄</span></div><div class="faq-a">O Mentor IA e alimentado pela Claude (Anthropic) e aprende seus padroes emocionais ao longo do tempo. Ele analisa seu historico e adapta cada resposta ao seu perfil especifico.</div></div>
+    <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q">Meus dados sao privados? <span class="faq-chevron">⌄</span></div><div class="faq-a">Sim. Dados armazenados com seguranca no Firebase (Google Cloud) e nunca vendidos ou compartilhados. Em conformidade com a LGPD, voce pode exportar ou apagar seus dados a qualquer momento.</div></div>
+    <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q">Posso cancelar quando quiser? <span class="faq-chevron">⌄</span></div><div class="faq-a">Sim. O plano Pro e mensal e pode ser cancelado a qualquer momento sem multa. Apos o cancelamento, voce continua com acesso a versao gratuita.</div></div>
+    <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q">O app funciona no celular e computador? <span class="faq-chevron">⌄</span></div><div class="faq-a">Sim. O AVR-S funciona em qualquer dispositivo com navegador. Seus dados sao sincronizados automaticamente entre celular e computador via nuvem.</div></div>
+  </div>
+</div>
+
+<!-- CTA FINAL -->
+<section style="padding:80px 24px;text-align:center" class="reveal">
+  <div class="divider-line" style="max-width:400px;margin:0 auto 60px"></div>
+  <div style="font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--text3);margin-bottom:24px">Comece agora</div>
+  <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(36px,6vw,64px);font-weight:300;color:var(--cream);line-height:1.2;margin-bottom:24px">A vida nao tem rascunho.<br><span style="color:var(--gold)">So execucao.</span></h2>
+  <p style="font-size:15px;color:var(--text2);margin-bottom:48px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.7">Cada decisao que voce toma agora esta construindo o padrao de quem voce vai ser. Comece a escolher com clareza.</p>
+  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+    <a href="https://pag.ae/81P9a56Kv/button" class="btn-primary">Assinar Pro - R$19/mes</a>
+    <a href="https://audaxsilfexsil-sketch.github.io/avrs-app-/" class="btn-secondary">Comecar gratis</a>
+  </div>
+</section>
+
+<footer>
+  <img src="https://audaxsilfexsil-sketch.github.io/avrs-app-/LOGO02.png.png" alt="AVR-S" style="height:32px;object-fit:contain;margin-bottom:20px"/>
+  <div class="footer-links">
+    <a href="https://audaxsilfexsil-sketch.github.io/avrs-app-/" class="footer-link">Acessar app</a>
+    <a href="mailto:audax.silfexsil@gmail.com" class="footer-link">Contato</a>
+    <a href="https://wa.me/5521964164234" class="footer-link">WhatsApp</a>
+  </div>
+  <div class="footer-copy">
+    2025 Audax Consultoria · CNPJ 33.344.650/0001-03 · Todos os direitos reservados<br>
+    AVR-S · A Vida Sem Rascunho
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting){e.target.classList.add("visible");observer.unobserve(e.target);} });
+},{threshold:0.1});
+document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
