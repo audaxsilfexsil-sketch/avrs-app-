@@ -711,6 +711,52 @@ input:checked + .theme-slider{background:var(--gold)}
 input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 .theme-label{font-size:13px;color:var(--cream)}
 .theme-icon{font-size:16px;color:var(--gold)}
+
+/* ══ ALERTAS ══ */
+.alertas-overlay{position:fixed;inset:0;background:var(--bg);z-index:1010;display:none;flex-direction:column;overflow:hidden}
+.alertas-overlay.open{display:flex}
+.alertas-topbar{padding:16px 20px 14px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.alertas-back{background:none;border:none;color:var(--text2);cursor:pointer;font-size:22px;display:flex;align-items:center}
+.alertas-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--cream)}
+.alertas-content{flex:1;overflow-y:auto;padding:20px}
+.alertas-content::-webkit-scrollbar{display:none}
+.alerta-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:16px}
+.alerta-card-title{font-size:13px;font-weight:600;color:var(--cream);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.alerta-card-title i{font-size:18px;color:var(--gold)}
+.alerta-card-sub{font-size:12px;color:var(--text3);margin-bottom:16px}
+.alerta-time-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.alerta-time-label{font-size:13px;color:var(--text2)}
+.alerta-time-input{background:var(--bg4);border:1px solid var(--border2);color:var(--cream);padding:8px 12px;border-radius:10px;font-size:16px;font-family:'DM Sans',sans-serif;outline:none;width:120px;text-align:center}
+.alerta-toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid var(--border)}
+.alerta-toggle-label{font-size:13px;color:var(--text2)}
+.alerta-save-btn{width:100%;background:var(--gold);border:none;border-radius:12px;padding:14px;font-size:13px;font-weight:600;color:#0a0908;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:16px}
+
+/* Notificação de alerta */
+.alerta-notif{position:fixed;top:0;left:0;right:0;z-index:1020;background:var(--bg2);border-bottom:2px solid var(--gold);padding:16px 20px;display:none;align-items:center;gap:14px;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.alerta-notif.show{display:flex}
+.alerta-notif-icon{width:44px;height:44px;border-radius:50%;background:rgba(200,169,109,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.alerta-notif-icon i{font-size:22px;color:var(--gold)}
+.alerta-notif-text{flex:1}
+.alerta-notif-title{font-size:14px;font-weight:600;color:var(--cream);margin-bottom:2px}
+.alerta-notif-sub{font-size:12px;color:var(--text3)}
+.alerta-notif-btn{background:var(--gold);border:none;border-radius:8px;padding:8px 14px;font-size:11px;font-weight:600;color:#0a0908;cursor:pointer;font-family:'DM Sans',sans-serif;flex-shrink:0}
+.alerta-notif-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;flex-shrink:0}
+
+/* ══ COMANDO DE VOZ ══ */
+.voice-btn{background:none;border:1px solid var(--border2);width:40px;height:40px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;flex-shrink:0}
+.voice-btn i{font-size:18px;color:var(--text3);transition:color .3s}
+.voice-btn.listening{border-color:var(--gold);background:rgba(200,169,109,.1);animation:pulse-voice .8s ease-in-out infinite}
+.voice-btn.listening i{color:var(--gold)}
+@keyframes pulse-voice{0%,100%{box-shadow:0 0 0 0 rgba(200,169,109,.3)}50%{box-shadow:0 0 0 8px rgba(200,169,109,0)}}
+.voice-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:1030;display:none;align-items:center;justify-content:center;flex-direction:column}
+.voice-overlay.open{display:flex}
+.voice-circle{width:120px;height:120px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;animation:pulse-voice-big 1s ease-in-out infinite;margin-bottom:24px}
+.voice-circle i{font-size:48px;color:var(--gold)}
+@keyframes pulse-voice-big{0%,100%{box-shadow:0 0 0 0 rgba(200,169,109,.4);transform:scale(1)}50%{box-shadow:0 0 0 20px rgba(200,169,109,0);transform:scale(1.05)}}
+.voice-text{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);margin-bottom:8px;text-align:center}
+.voice-sub{font-size:13px;color:var(--text3);margin-bottom:32px;text-align:center}
+.voice-transcript{font-size:15px;color:var(--gold2);text-align:center;min-height:24px;font-style:italic;margin-bottom:24px;padding:0 40px}
+.voice-cancel{background:none;border:1px solid var(--border2);border-radius:20px;padding:10px 24px;font-size:13px;color:var(--text2);cursor:pointer;font-family:'DM Sans',sans-serif}
 </style>
 </head>
 <body>
@@ -982,6 +1028,13 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
       <div class="settings-row"><div class="settings-label">Versão</div><div class="settings-value">4.0 · IA</div></div>
     </div>
     <div class="settings-section">
+      <div class="settings-section-title">Alertas & Lembretes</div>
+      <div class="settings-row">
+        <div class="settings-label"><i class="ti ti-bell" style="margin-right:6px;color:var(--gold)"></i>Configurar alertas</div>
+        <button class="settings-action" onclick="openAlertas()">Configurar</button>
+      </div>
+    </div>
+    <div class="settings-section">
       <div class="settings-section-title">Dados</div>
       <div class="settings-row"><div class="settings-label">Exportar diário</div><button class="settings-action" onclick="exportData()">Exportar JSON</button></div>
     </div>
@@ -997,6 +1050,79 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
       <div class="guia-intro-title">Como o AVR–S atua ao longo do dia</div>
       <div class="guia-intro-text">O AVR–S não existe apenas para grandes decisões. Ele atua nos pequenos momentos invisíveis que moldam a direção da vida: na forma como você reage, interpreta, acelera, silencia, escolhe e responde ao longo do dia.</div>
     </div>
+
+<!-- CICLO AVR-S SVG -->
+<div style="margin:0 -20px 24px;padding:0 20px">
+<svg width="100%" viewBox="0 0 680 680" role="img" style="max-width:480px;display:block;margin:0 auto">
+<title>Ciclo AVR-S</title>
+<desc>Diagrama circular do método AVR-S: Atenção, Visão, Resposta e Sistema</desc>
+<defs>
+  <marker id="arrowC" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <radialGradient id="bgGradC" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#1a1816"/>
+    <stop offset="100%" stop-color="#0a0908"/>
+  </radialGradient>
+  <style>
+    .arc-animC { stroke-dasharray:5 4; animation: spinDashC 4s linear infinite; }
+    .pulse-ringC { animation: pulseC 3s ease-in-out infinite; }
+    .node-animC { animation: glowNodeC 3s ease-in-out infinite; }
+    @keyframes spinDashC { to { stroke-dashoffset: -80; } }
+    @keyframes pulseC { 0%,100%{opacity:0.2;} 50%{opacity:0.5;} }
+    @keyframes glowNodeC { 0%,100%{stroke-opacity:0.7;} 50%{stroke-opacity:1;} }
+  </style>
+</defs>
+<circle cx="340" cy="340" r="320" fill="url(#bgGradC)" opacity="0.95"/>
+<circle cx="340" cy="340" r="295" fill="none" stroke="#d4b87a" stroke-width="1" stroke-dasharray="8 5" opacity="0.2" class="arc-animC"/>
+<circle cx="340" cy="340" r="210" fill="none" stroke="#d4b87a" stroke-width="0.5" stroke-dasharray="4 6" opacity="0.2"/>
+<path d="M 480 185 A 210 210 0 0 1 525 370" fill="none" stroke="#d4b87a" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.55" marker-end="url(#arrowC)" class="arc-animC"/>
+<path d="M 510 430 A 210 210 0 0 1 390 545" fill="none" stroke="#d4b87a" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.55" marker-end="url(#arrowC)" class="arc-animC"/>
+<path d="M 290 548 A 210 210 0 0 1 162 432" fill="none" stroke="#d4b87a" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.55" marker-end="url(#arrowC)" class="arc-animC"/>
+<path d="M 155 300 A 210 210 0 0 1 300 142" fill="none" stroke="#d4b87a" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.55" marker-end="url(#arrowC)" class="arc-animC"/>
+<circle cx="340" cy="340" r="115" fill="none" stroke="#d4b87a" stroke-width="0.8" opacity="0.2" class="pulse-ringC"/>
+<circle cx="340" cy="340" r="100" fill="#100f0d" stroke="#d4b87a" stroke-width="1" opacity="0.8"/>
+<text x="340" y="318" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#6a6460" letter-spacing="1">VOCÊ VIVE</text>
+<text x="340" y="338" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#6a6460" letter-spacing="1">O QUE</text>
+<text x="340" y="362" text-anchor="middle" font-family="Georgia,serif" font-size="22" font-weight="bold" fill="#d4b87a" letter-spacing="2">REPETE.</text>
+<circle cx="340" cy="130" r="58" fill="#0a0908" stroke="#d4b87a" stroke-width="1.5" class="node-animC"/>
+<circle cx="340" cy="130" r="48" fill="#141210" stroke="#d4b87a" stroke-width="0.5" opacity="0.4"/>
+<ellipse cx="340" cy="127" rx="18" ry="11" fill="none" stroke="#d4b87a" stroke-width="1.5"/>
+<circle cx="340" cy="127" r="5" fill="#d4b87a"/>
+<circle cx="340" cy="125" r="2" fill="#0a0908"/>
+<line x1="328" y1="118" x2="326" y2="114" stroke="#d4b87a" stroke-width="1" opacity="0.6"/>
+<line x1="340" y1="116" x2="340" y2="111" stroke="#d4b87a" stroke-width="1" opacity="0.6"/>
+<line x1="352" y1="118" x2="354" y2="114" stroke="#d4b87a" stroke-width="1" opacity="0.6"/>
+<text x="340" y="151" text-anchor="middle" font-family="Georgia,serif" font-size="11" font-weight="bold" fill="#ebd49e" letter-spacing="2">ATENÇÃO</text>
+<text x="340" y="202" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="#8a8278">Onde você olha</text>
+<circle cx="530" cy="370" r="58" fill="#0a0908" stroke="#d4b87a" stroke-width="1.5" class="node-animC"/>
+<circle cx="530" cy="370" r="48" fill="#141210" stroke="#d4b87a" stroke-width="0.5" opacity="0.4"/>
+<path d="M516 358 Q510 348 516 342 Q522 336 530 340 Q538 336 544 342 Q550 348 544 358 Q540 368 530 372 Q520 368 516 358Z" fill="none" stroke="#d4b87a" stroke-width="1.5"/>
+<path d="M530 340 L530 372" stroke="#d4b87a" stroke-width="0.8" opacity="0.5"/>
+<path d="M520 348 Q526 352 530 356" stroke="#d4b87a" stroke-width="0.8" opacity="0.5" fill="none"/>
+<path d="M540 348 Q534 352 530 356" stroke="#d4b87a" stroke-width="0.8" opacity="0.5" fill="none"/>
+<circle cx="530" cy="356" r="2" fill="#d4b87a" opacity="0.6"/>
+<text x="530" y="393" text-anchor="middle" font-family="Georgia,serif" font-size="11" font-weight="bold" fill="#ebd49e" letter-spacing="2">VISÃO</text>
+<text x="530" y="440" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="#8a8278">Como você interpreta</text>
+<circle cx="340" cy="545" r="58" fill="#0a0908" stroke="#d4b87a" stroke-width="1.5" class="node-animC"/>
+<circle cx="340" cy="545" r="48" fill="#141210" stroke="#d4b87a" stroke-width="0.5" opacity="0.4"/>
+<rect x="320" y="530" width="40" height="26" rx="8" fill="none" stroke="#d4b87a" stroke-width="1.5"/>
+<path d="M330 556 L326 564 L338 556Z" fill="#d4b87a" opacity="0.8"/>
+<circle cx="332" cy="543" r="2.5" fill="#d4b87a"/>
+<circle cx="340" cy="543" r="2.5" fill="#d4b87a"/>
+<circle cx="348" cy="543" r="2.5" fill="#d4b87a"/>
+<text x="340" y="568" text-anchor="middle" font-family="Georgia,serif" font-size="11" font-weight="bold" fill="#ebd49e" letter-spacing="2">RESPOSTA</text>
+<text x="340" y="616" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="#8a8278">Como você reage</text>
+<circle cx="150" cy="370" r="58" fill="#0a0908" stroke="#d4b87a" stroke-width="1.5" class="node-animC"/>
+<circle cx="150" cy="370" r="48" fill="#141210" stroke="#d4b87a" stroke-width="0.5" opacity="0.4"/>
+<path d="M135 362 A18 18 0 1 1 165 370" fill="none" stroke="#d4b87a" stroke-width="1.8" stroke-linecap="round" marker-end="url(#arrowC)"/>
+<circle cx="150" cy="370" r="6" fill="none" stroke="#d4b87a" stroke-width="1" opacity="0.5"/>
+<circle cx="150" cy="370" r="2.5" fill="#d4b87a" opacity="0.8"/>
+<text x="150" y="393" text-anchor="middle" font-family="Georgia,serif" font-size="11" font-weight="bold" fill="#ebd49e" letter-spacing="2">SISTEMA</text>
+<text x="150" y="440" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="#8a8278">O que você repete</text>
+<text x="340" y="652" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="#4a4640" letter-spacing="3">AVR–S · A VIDA SEM RASCUNHO</text>
+</svg>
+</div>
     <div class="momento-card" onclick="toggleMomento(this)">
       <div class="momento-header">
         <div class="momento-num">1</div>
@@ -1161,7 +1287,8 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
     </div>
     <div class="chat-msgs" id="chatMsgs"></div>
     <div class="chat-input-row">
-      <input class="chat-input" id="chatInput" placeholder="Escreva algo..." onkeydown="if(event.key==='Enter')sendChat()"/>
+      <button class="voice-btn" id="voiceChatBtn" onclick="startVoiceChat()" title="Comando de voz"><i class="ti ti-microphone"></i></button>
+      <input class="chat-input" id="chatInput" placeholder="Escreva ou fale..." onkeydown="if(event.key==='Enter')sendChat()"/>
       <button class="chat-send" onclick="sendChat()"><i class="ti ti-send"></i></button>
     </div>
   </div>
@@ -2091,6 +2218,12 @@ function renderDashboard() {
       <div class="dash-pattern-card">${weekPatternHtml || '<div class="dash-clarity-empty">Sem dados suficientes</div>'}</div>
     </div>
 
+    <!-- Ciclos de Melhoria -->
+    <div class="dash-section">
+      <div class="dash-section-title"><i class="ti ti-trending-up"></i>Ciclos de melhoria</div>
+      <div id="ciclosMelhoria"></div>
+    </div>
+
     <!-- Insight IA -->
     ${isPro ? `<div class="dash-section">
       <div class="dash-section-title"><i class="ti ti-brain"></i>Análise IA</div>
@@ -2106,6 +2239,9 @@ function renderDashboard() {
       </div>
     </div>`}
   `;
+
+  // Renderizar ciclos de melhoria
+  renderCiclosMelhoria(last30, sortedStates);
 
   // Carrega insight IA se Pro
   if(isPro) {
@@ -2208,6 +2344,215 @@ function updateSettingsProStatus() {
 }
 
 
+
+
+
+
+// ── COMANDO DE VOZ ──
+let recognition = null;
+let isListening = false;
+
+function initVoice() {
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    return false;
+  }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SR();
+  recognition.lang = 'pt-BR';
+  recognition.continuous = false;
+  recognition.interimResults = true;
+
+  recognition.onresult = (event) => {
+    const transcript = Array.from(event.results).map(r => r[0].transcript).join('');
+    document.getElementById('voiceTranscript').textContent = transcript;
+    if (event.results[event.results.length-1].isFinal) {
+      stopVoice();
+      // Enviar para o chat
+      document.getElementById('chatInput').value = transcript;
+      openMentorChat();
+      setTimeout(() => sendChat(), 300);
+    }
+  };
+
+  recognition.onerror = (e) => { stopVoice(); };
+  recognition.onend = () => { if (isListening) stopVoice(); };
+  return true;
+}
+
+function startVoiceChat() {
+  if (!initVoice()) {
+    alert('Seu navegador não suporta reconhecimento de voz. Use Chrome ou Safari.');
+    return;
+  }
+  isListening = true;
+  document.getElementById('voiceOverlay').classList.add('open');
+  document.getElementById('voiceTranscript').textContent = '';
+  document.getElementById('voiceChatBtn')?.classList.add('listening');
+  recognition.start();
+}
+
+function stopVoice() {
+  isListening = false;
+  document.getElementById('voiceOverlay').classList.remove('open');
+  document.getElementById('voiceChatBtn')?.classList.remove('listening');
+  if (recognition) { try { recognition.stop(); } catch(e) {} }
+}
+
+// ── CICLOS DE MELHORIA ──
+function renderCiclosMelhoria(entries, sortedStates) {
+  const el = document.getElementById('ciclosMelhoria');
+  if (!el || !entries.length) return;
+
+  // Separar por semana e mês
+  const agora = new Date();
+  const semanaAtras = new Date(agora - 7 * 24 * 60 * 60 * 1000);
+  const mesAtras = new Date(agora - 30 * 24 * 60 * 60 * 1000);
+
+  const semana = entries.filter(e => new Date(e.id) >= semanaAtras);
+  const mes = entries.filter(e => new Date(e.id) >= mesAtras);
+
+  // Calcular tendência — comparar primeira e segunda metade do período
+  const calcTendencia = (arr) => {
+    if (arr.length < 2) return 0;
+    const metade = Math.floor(arr.length / 2);
+    const clarityMap = {'Claro':100,'Presente':85,'Focado':80,'Ansioso':35,'Reativo':25,'Sobrecarregado':20};
+    const primeira = arr.slice(metade).reduce((s,e) => s + (clarityMap[e.state]||50), 0) / metade;
+    const segunda = arr.slice(0, metade).reduce((s,e) => s + (clarityMap[e.state]||50), 0) / metade;
+    return segunda - primeira;
+  };
+
+  const tendSemana = calcTendencia(semana);
+  const tendMes = calcTendencia(mes);
+
+  const getIcon = (t) => t > 5 ? '📈' : t < -5 ? '📉' : '➡️';
+  const getLabel = (t) => t > 5 ? 'Melhorando' : t < -5 ? 'Atenção necessária' : 'Estável';
+  const getColor = (t) => t > 5 ? '#7ad4a0' : t < -5 ? '#d46a6a' : 'var(--gold)';
+
+  el.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:16px;text-align:center">
+        <div style="font-size:24px;margin-bottom:8px">${getIcon(tendSemana)}</div>
+        <div style="font-size:11px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">Esta semana</div>
+        <div style="font-size:14px;font-weight:600;color:${getColor(tendSemana)}">${getLabel(tendSemana)}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px">${semana.length} registros</div>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:16px;text-align:center">
+        <div style="font-size:24px;margin-bottom:8px">${getIcon(tendMes)}</div>
+        <div style="font-size:11px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">Este mês</div>
+        <div style="font-size:14px;font-weight:600;color:${getColor(tendMes)}">${getLabel(tendMes)}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px">${mes.length} registros</div>
+      </div>
+    </div>
+    ${isPro ? `<div id="ciclosIABox" style="margin-top:10px;background:var(--ai);border:1px solid var(--ai-border);border-radius:var(--r2);padding:16px">
+      <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#b8e0b8;margin-bottom:10px;font-weight:600"><i class="ti ti-brain" style="margin-right:6px"></i>Análise de ciclo · IA</div>
+      <div id="ciclosIAText"><div class="mentor-typing"><span></span><span></span><span></span></div></div>
+    </div>` : ''}
+  `;
+
+  // Análise IA dos ciclos se Pro
+  if (isPro && semana.length >= 2) {
+    const prompt = `Analise a tendência emocional do usuário:
+Semana: ${semana.map(e=>e.state).join(', ')} — tendência: ${tendSemana > 0 ? 'melhora' : tendSemana < 0 ? 'piora' : 'estável'}
+Mês: ${mes.length} registros — tendência: ${tendMes > 0 ? 'melhora' : tendMes < 0 ? 'piora' : 'estável'}
+Estado dominante: ${sortedStates[0]?.[0] || '—'}
+
+Em 2 frases: identifique o padrão do ciclo e sugira UMA ação concreta de melhoria.`;
+    callClaude([{role:'user',content:prompt}], getMentorSystem()).then(r => {
+      const el = document.getElementById('ciclosIAText');
+      if (el && r) el.innerHTML = `<div style="font-family:'Cormorant Garamond',serif;font-size:15px;color:#f0ebe2;line-height:1.7">${r}</div>`;
+    });
+  }
+}
+
+// ── ALERTAS ──
+function openAlertas() {
+  document.getElementById('alertasOverlay').classList.add('open');
+  carregarAlertas();
+}
+
+function closeAlertas() {
+  document.getElementById('alertasOverlay').classList.remove('open');
+}
+
+function carregarAlertas() {
+  const alertas = JSON.parse(localStorage.getItem('avrs4_alertas') || '{}');
+  if (alertas.dormir) {
+    document.getElementById('horarioDormir').value = alertas.dormir.horario || '22:00';
+    document.getElementById('toggleDormir').checked = alertas.dormir.ativo || false;
+  }
+  if (alertas.acordar) {
+    document.getElementById('horarioAcordar').value = alertas.acordar.horario || '07:00';
+    document.getElementById('toggleAcordar').checked = alertas.acordar.ativo || false;
+  }
+  if (alertas.lembrete) {
+    document.getElementById('horarioLembrete').value = alertas.lembrete.horario || '12:00';
+    document.getElementById('toggleLembrete').checked = alertas.lembrete.ativo || false;
+  }
+}
+
+function salvarAlerta(tipo) {
+  const alertas = JSON.parse(localStorage.getItem('avrs4_alertas') || '{}');
+  const horarioMap = { dormir: 'horarioDormir', acordar: 'horarioAcordar', lembrete: 'horarioLembrete' };
+  const toggleMap = { dormir: 'toggleDormir', acordar: 'toggleAcordar', lembrete: 'toggleLembrete' };
+  
+  alertas[tipo] = {
+    horario: document.getElementById(horarioMap[tipo]).value,
+    ativo: document.getElementById(toggleMap[tipo]).checked
+  };
+  
+  localStorage.setItem('avrs4_alertas', JSON.stringify(alertas));
+  
+  const toast = document.createElement('div');
+  toast.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--gold);color:#0a0908;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:500;z-index:9999';
+  toast.textContent = '✅ Alerta salvo!';
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2000);
+}
+
+function verificarAlertas() {
+  const alertas = JSON.parse(localStorage.getItem('avrs4_alertas') || '{}');
+  const agora = new Date();
+  const horaAtual = agora.getHours().toString().padStart(2,'0') + ':' + agora.getMinutes().toString().padStart(2,'0');
+  const ultimoAlerta = localStorage.getItem('avrs4_ultimo_alerta');
+  const chaveHoje = new Date().toDateString() + '_' + horaAtual;
+
+  const tipos = [
+    { key: 'dormir', icon: 'ti-moon', titulo: 'Hora de dormir', sub: 'Como está seu estado agora?' },
+    { key: 'acordar', icon: 'ti-sun', titulo: 'Bom dia!', sub: 'Como você está começando o dia?' },
+    { key: 'lembrete', icon: 'ti-clock', titulo: 'Lembrete AVR–S', sub: 'Já registrou seu estado hoje?' }
+  ];
+
+  for (const t of tipos) {
+    if (alertas[t.key]?.ativo && alertas[t.key]?.horario === horaAtual && ultimoAlerta !== chaveHoje + t.key) {
+      localStorage.setItem('avrs4_ultimo_alerta', chaveHoje + t.key);
+      mostrarAlertaNotif(t.icon, t.titulo, t.sub);
+      break;
+    }
+  }
+}
+
+function mostrarAlertaNotif(icon, titulo, sub) {
+  document.getElementById('alertaNotifIcon').className = 'ti ' + icon;
+  document.getElementById('alertaNotifTitle').textContent = titulo;
+  document.getElementById('alertaNotifSub').textContent = sub;
+  document.getElementById('alertaNotif').classList.add('show');
+  
+  // Auto fechar após 30 segundos
+  setTimeout(() => fecharAlertaNotif(), 30000);
+}
+
+function fecharAlertaNotif() {
+  document.getElementById('alertaNotif').classList.remove('show');
+}
+
+function registrarEstadoAlerta() {
+  fecharAlertaNotif();
+  // Abre o checklist de estado presente
+  openChecklist('Presente', 'ti-eye');
+}
+
+// Verificar alertas a cada minuto
+setInterval(verificarAlertas, 60000);
 
 // ── PAINEL ADMIN ──
 function openAdmin() {
@@ -2407,6 +2752,9 @@ async function init(){
     document.getElementById("mentorActions").innerHTML = '<div class="mentor-pill" onclick="openPaywall()"><i class="ti ti-crown" style="margin-right:4px"></i>Ativar Pro — R$19/mês</div>';
   }
 
+  // Verificar alertas ao abrir
+  verificarAlertas();
+
   setInterval(()=>{const el=document.getElementById('quoteText');el.style.opacity='0';setTimeout(()=>{el.textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';el.style.opacity='1';},400);},9000);
 }
 
@@ -2423,6 +2771,90 @@ if ('serviceWorker' in navigator) {
 init();
 </script>
 
+
+
+
+<!-- COMANDO DE VOZ -->
+<div class="voice-overlay" id="voiceOverlay">
+  <div class="voice-circle"><i class="ti ti-microphone"></i></div>
+  <div class="voice-text">Ouvindo...</div>
+  <div class="voice-sub">Fale com o Mentor AVR–S</div>
+  <div class="voice-transcript" id="voiceTranscript"></div>
+  <button class="voice-cancel" onclick="stopVoice()">Cancelar</button>
+</div>
+
+<!-- ALERTAS -->
+<div class="alerta-notif" id="alertaNotif">
+  <div class="alerta-notif-icon"><i class="ti ti-bell-ringing" id="alertaNotifIcon"></i></div>
+  <div class="alerta-notif-text">
+    <div class="alerta-notif-title" id="alertaNotifTitle">Hora de dormir</div>
+    <div class="alerta-notif-sub" id="alertaNotifSub">Como está seu estado agora?</div>
+  </div>
+  <button class="alerta-notif-btn" id="alertaNotifBtn" onclick="registrarEstadoAlerta()">Registrar</button>
+  <button class="alerta-notif-close" onclick="fecharAlertaNotif()"><i class="ti ti-x"></i></button>
+</div>
+
+<div class="alertas-overlay" id="alertasOverlay">
+  <div class="alertas-topbar">
+    <button class="alertas-back" onclick="closeAlertas()"><i class="ti ti-arrow-left"></i></button>
+    <div class="alertas-title">Alertas & Lembretes</div>
+  </div>
+  <div class="alertas-content">
+    <!-- Dormir -->
+    <div class="alerta-card">
+      <div class="alerta-card-title"><i class="ti ti-moon"></i>Hora de dormir</div>
+      <div class="alerta-card-sub">Registre seu estado antes de dormir para acompanhar padrões noturnos</div>
+      <div class="alerta-time-row">
+        <div class="alerta-time-label">Horário</div>
+        <input type="time" class="alerta-time-input" id="horarioDormir" value="22:00"/>
+      </div>
+      <div class="alerta-toggle-row">
+        <div class="alerta-toggle-label">Ativar alerta</div>
+        <label class="theme-switch">
+          <input type="checkbox" id="toggleDormir">
+          <span class="theme-slider"></span>
+        </label>
+      </div>
+      <button class="alerta-save-btn" onclick="salvarAlerta('dormir')">Salvar</button>
+    </div>
+
+    <!-- Acordar -->
+    <div class="alerta-card">
+      <div class="alerta-card-title"><i class="ti ti-sun"></i>Hora de acordar</div>
+      <div class="alerta-card-sub">Registre seu estado ao acordar para identificar como cada manhã começa</div>
+      <div class="alerta-time-row">
+        <div class="alerta-time-label">Horário</div>
+        <input type="time" class="alerta-time-input" id="horarioAcordar" value="07:00"/>
+      </div>
+      <div class="alerta-toggle-row">
+        <div class="alerta-toggle-label">Ativar alerta</div>
+        <label class="theme-switch">
+          <input type="checkbox" id="toggleAcordar">
+          <span class="theme-slider"></span>
+        </label>
+      </div>
+      <button class="alerta-save-btn" onclick="salvarAlerta('acordar')">Salvar</button>
+    </div>
+
+    <!-- Lembrete diário -->
+    <div class="alerta-card">
+      <div class="alerta-card-title"><i class="ti ti-clock"></i>Lembrete diário</div>
+      <div class="alerta-card-sub">Um lembrete para registrar seu estado durante o dia</div>
+      <div class="alerta-time-row">
+        <div class="alerta-time-label">Horário</div>
+        <input type="time" class="alerta-time-input" id="horarioLembrete" value="12:00"/>
+      </div>
+      <div class="alerta-toggle-row">
+        <div class="alerta-toggle-label">Ativar lembrete</div>
+        <label class="theme-switch">
+          <input type="checkbox" id="toggleLembrete">
+          <span class="theme-slider"></span>
+        </label>
+      </div>
+      <button class="alerta-save-btn" onclick="salvarAlerta('lembrete')">Salvar</button>
+    </div>
+  </div>
+</div>
 
 <!-- PAINEL ADMIN -->
 <div class="admin-overlay" id="adminOverlay">
@@ -2503,7 +2935,36 @@ init();
     <button class="onboard-skip" onclick="finishOnboard()">Pular introdução</button>
   </div>
   <div class="onboard-step" id="onboard-2">
-    <div class="onboard-icon"><i class="ti ti-layers-intersect"></i></div>
+    <div class="onboard-num" style="margin-bottom:8px">02 de 03</div>
+    <svg width="220" height="220" viewBox="0 0 680 680" style="margin-bottom:16px;flex-shrink:0">
+      <defs>
+        <marker id="arrowO" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+        <radialGradient id="bgGradO" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#1a1816"/><stop offset="100%" stop-color="#0a0908"/>
+        </radialGradient>
+        <style>.arc-animO{stroke-dasharray:5 4;animation:spinDashO 4s linear infinite;}@keyframes spinDashO{to{stroke-dashoffset:-80;}}</style>
+      </defs>
+      <circle cx="340" cy="340" r="320" fill="url(#bgGradO)" opacity="0.95"/>
+      <circle cx="340" cy="340" r="210" fill="none" stroke="#d4b87a" stroke-width="0.5" stroke-dasharray="4 6" opacity="0.25"/>
+      <path d="M 480 185 A 210 210 0 0 1 525 370" fill="none" stroke="#d4b87a" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.6" marker-end="url(#arrowO)" class="arc-animO"/>
+      <path d="M 510 430 A 210 210 0 0 1 390 545" fill="none" stroke="#d4b87a" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.6" marker-end="url(#arrowO)" class="arc-animO"/>
+      <path d="M 290 548 A 210 210 0 0 1 162 432" fill="none" stroke="#d4b87a" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.6" marker-end="url(#arrowO)" class="arc-animO"/>
+      <path d="M 155 300 A 210 210 0 0 1 300 142" fill="none" stroke="#d4b87a" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.6" marker-end="url(#arrowO)" class="arc-animO"/>
+      <circle cx="340" cy="340" r="100" fill="#100f0d" stroke="#d4b87a" stroke-width="1" opacity="0.8"/>
+      <text x="340" y="332" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#6a6460">VOCÊ VIVE</text>
+      <text x="340" y="352" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#6a6460">O QUE</text>
+      <text x="340" y="374" text-anchor="middle" font-family="Georgia,serif" font-size="20" font-weight="bold" fill="#d4b87a">REPETE.</text>
+      <circle cx="340" cy="130" r="52" fill="#0a0908" stroke="#d4b87a" stroke-width="1.5"/>
+      <text x="340" y="134" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="bold" fill="#ebd49e">ATENÇÃO</text>
+      <circle cx="530" cy="370" r="52" fill="#0a0908" stroke="#d4b87a" stroke-width="1.5"/>
+      <text x="530" y="374" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="bold" fill="#ebd49e">VISÃO</text>
+      <circle cx="340" cy="545" r="52" fill="#0a0908" stroke="#d4b87a" stroke-width="1.5"/>
+      <text x="340" y="549" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="bold" fill="#ebd49e">RESPOSTA</text>
+      <circle cx="150" cy="370" r="52" fill="#0a0908" stroke="#d4b87a" stroke-width="1.5"/>
+      <text x="150" y="374" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="bold" fill="#ebd49e">SISTEMA</text>
+    </svg>
     <div class="onboard-num">02 de 03</div>
     <div class="onboard-title">O Protocolo AVR–S</div>
     <div class="onboard-text">Cinco camadas: <strong style="color:var(--gold)">Regular · Atenção · Visão · Resposta · Sistema.</strong><br><br>Cada uma existe para criar um espaço entre o estímulo e a sua ação.</div>
