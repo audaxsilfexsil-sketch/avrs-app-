@@ -1517,11 +1517,24 @@ async function sendChat() {
 
 // ── NAV ──
 function goTo(s){
+  // Animação de saída na tela atual
+  const current = document.querySelector('.screen.active');
+  if (current) {
+    current.classList.add('slide-out');
+    setTimeout(() => current.classList.remove('slide-out'), 350);
+  }
+  // Trocar tela
   document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('screen-'+s).classList.add('active');
   document.getElementById('nav-'+s).classList.add('active');
   if(s==='settings') updateSettingsProfile();
+  // Animação de entrada na nova tela
+  const next = document.getElementById('screen-'+s);
+  if (next) {
+    next.classList.add('slide-in');
+    setTimeout(() => next.classList.remove('slide-in'), 350);
+  }
 }
 
 // ── MODAL ──
@@ -2348,21 +2361,8 @@ function loadTheme() {
   }
 }
 
-// ── ANIMAÇÕES DE TRANSIÇÃO ──
-const originalGoTo = goTo;
-function goTo(s) {
-  const current = document.querySelector('.screen.active');
-  if (current) {
-    current.classList.add('slide-out');
-    setTimeout(() => current.classList.remove('slide-out'), 350);
-  }
-  originalGoTo(s);
-  const next = document.getElementById('screen-' + s);
-  if (next) {
-    next.classList.add('slide-in');
-    setTimeout(() => next.classList.remove('slide-in'), 350);
-  }
-}
+// ── ANIMAÇÕES DE TRANSIÇÃO — integradas no goTo ──
+// (animações aplicadas via CSS nas classes slide-in/slide-out)
 
 // ── INIT ──
 async function init(){
