@@ -757,6 +757,43 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 .voice-sub{font-size:13px;color:var(--text3);margin-bottom:32px;text-align:center}
 .voice-transcript{font-size:15px;color:var(--gold2);text-align:center;min-height:24px;font-style:italic;margin-bottom:24px;padding:0 40px}
 .voice-cancel{background:none;border:1px solid var(--border2);border-radius:20px;padding:10px 24px;font-size:13px;color:var(--text2);cursor:pointer;font-family:'DM Sans',sans-serif}
+
+/* ══ POLÍTICA DE PRIVACIDADE ══ */
+.privacidade-overlay{position:fixed;inset:0;background:var(--bg);z-index:1010;display:none;flex-direction:column;overflow:hidden}
+.privacidade-overlay.open{display:flex}
+.privacidade-topbar{padding:16px 20px 14px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.privacidade-back{background:none;border:none;color:var(--text2);cursor:pointer;font-size:22px;display:flex;align-items:center}
+.privacidade-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--cream)}
+.privacidade-content{flex:1;overflow-y:auto;padding:24px 20px 40px}
+.privacidade-content::-webkit-scrollbar{display:none}
+.priv-section{margin-bottom:24px}
+.priv-section-title{font-size:13px;font-weight:600;color:var(--gold);margin-bottom:10px;letter-spacing:.04em}
+.priv-text{font-size:13px;color:var(--text2);line-height:1.8}
+.priv-divider{height:1px;background:var(--border);margin:20px 0}
+
+/* ══ TEXT-TO-SPEECH ══ */
+.msg-ai-wrap{display:flex;flex-direction:column;align-items:flex-start;gap:6px;max-width:82%}
+.msg-speak-btn{background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:5px;padding:3px 8px 3px 6px;border-radius:20px;transition:all .2s;border:1px solid transparent}
+.msg-speak-btn:hover{background:rgba(100,180,100,.12);border-color:rgba(140,210,140,0.25)}
+.msg-speak-btn i{font-size:13px;color:var(--ai-text);transition:color .2s}
+.msg-speak-btn span{font-size:10px;color:var(--ai-text);letter-spacing:.04em;transition:color .2s}
+.msg-speak-btn.speaking{background:rgba(100,180,100,.15);border-color:rgba(140,210,140,0.4);animation:speak-pulse 1.5s ease-in-out infinite}
+.msg-speak-btn.speaking i{color:#6de06d}
+.msg-speak-btn.speaking span{color:#6de06d}
+@keyframes speak-pulse{0%,100%{opacity:1}50%{opacity:.65}}
+
+/* Indicador global de fala no header */
+.tts-indicator{display:none;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;background:rgba(100,180,100,.12);border:1px solid rgba(140,210,140,0.3);margin-left:auto;margin-right:8px}
+.tts-indicator.active{display:flex}
+.tts-indicator-dot{width:7px;height:7px;border-radius:50%;background:#6de06d;animation:speak-pulse 1s ease-in-out infinite}
+.tts-indicator span{font-size:10px;color:#b8e0b8;letter-spacing:.04em}
+.tts-stop-btn{background:none;border:none;cursor:pointer;color:#b8e0b8;font-size:14px;display:flex;align-items:center;padding:0}
+.tts-stop-btn:hover{color:#6de06d}
+
+/* Velocidade de fala nos ajustes */
+.tts-speed-row{display:flex;align-items:center;gap:8px}
+.tts-speed-btn{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:5px 12px;font-size:12px;color:var(--text2);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+.tts-speed-btn.active{background:rgba(200,169,109,.12);border-color:var(--border2);color:var(--gold)}
 </style>
 </head>
 <body>
@@ -776,6 +813,7 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
     <button class="login-btn" id="loginBtn" onclick="handleLogin()">Entrar</button>
     <button class="login-toggle" id="loginToggle" onclick="toggleLoginMode()">Não tem conta? Cadastre-se</button>
     <div class="login-version">v4.0 · IA</div>
+    <div style="font-size:10px;color:#3a3630;margin-top:8px;letter-spacing:.08em;text-align:center">© 2025 Audax Consultoria · Todos os direitos reservados</div>
   </div>
 </div>
 
@@ -1009,6 +1047,14 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
     </div>
     <div class="settings-section">
       <div class="settings-section-title">Aparência</div>
+      <div class="settings-row" style="margin-bottom:12px">
+        <div class="settings-label"><i class="ti ti-volume" style="margin-right:6px;color:var(--gold)"></i>Voz da IA</div>
+        <div class="tts-speed-row">
+          <button class="tts-speed-btn" id="ttsOff" onclick="setTTSMode('off')">Muda</button>
+          <button class="tts-speed-btn active" id="ttsAuto" onclick="setTTSMode('auto')">Auto</button>
+          <button class="tts-speed-btn" id="ttsAlways" onclick="setTTSMode('always')">Sempre</button>
+        </div>
+      </div>
       <div class="settings-row">
         <div class="settings-label"><i class="ti ti-sun" style="margin-right:6px;color:var(--gold)"></i>Modo claro</div>
         <div class="theme-toggle">
@@ -1037,6 +1083,15 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
       <div class="settings-row"><div class="settings-label">Livro</div><div class="settings-value">A Vida Sem Rascunho</div></div>
       <div class="settings-row"><div class="settings-label">Método</div><div class="settings-value">AVR–S</div></div>
       <div class="settings-row"><div class="settings-label">Versão</div><div class="settings-value">4.0 · IA</div></div>
+      <div class="settings-row"><div class="settings-label">Empresa</div><div class="settings-value">Audax Consultoria</div></div>
+      <div class="settings-row"><div class="settings-label">CNPJ</div><div class="settings-value">33.344.650/0001-03</div></div>
+    </div>
+    <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:#4a4440;letter-spacing:.08em">
+      © 2025 Audax Consultoria · Todos os direitos reservados<br>
+      <span style="font-size:10px;color:#3a3630">AVR–S · A Vida Sem Rascunho</span>
+    </div>
+    <div style="text-align:center;padding:0 0 16px">
+      <button onclick="openPrivacidade()" style="background:none;border:none;font-size:11px;color:var(--gold);cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline;letter-spacing:.06em">Política de Privacidade</button>
     </div>
     <div class="settings-section">
       <div class="settings-section-title">Alertas & Lembretes</div>
@@ -1082,7 +1137,44 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
     @keyframes spinDashC { to { stroke-dashoffset: -80; } }
     @keyframes pulseC { 0%,100%{opacity:0.2;} 50%{opacity:0.5;} }
     @keyframes glowNodeC { 0%,100%{stroke-opacity:0.7;} 50%{stroke-opacity:1;} }
-  </style>
+  
+/* ══ POLÍTICA DE PRIVACIDADE ══ */
+.privacidade-overlay{position:fixed;inset:0;background:var(--bg);z-index:1010;display:none;flex-direction:column;overflow:hidden}
+.privacidade-overlay.open{display:flex}
+.privacidade-topbar{padding:16px 20px 14px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.privacidade-back{background:none;border:none;color:var(--text2);cursor:pointer;font-size:22px;display:flex;align-items:center}
+.privacidade-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--cream)}
+.privacidade-content{flex:1;overflow-y:auto;padding:24px 20px 40px}
+.privacidade-content::-webkit-scrollbar{display:none}
+.priv-section{margin-bottom:24px}
+.priv-section-title{font-size:13px;font-weight:600;color:var(--gold);margin-bottom:10px;letter-spacing:.04em}
+.priv-text{font-size:13px;color:var(--text2);line-height:1.8}
+.priv-divider{height:1px;background:var(--border);margin:20px 0}
+
+/* ══ TEXT-TO-SPEECH ══ */
+.msg-ai-wrap{display:flex;flex-direction:column;align-items:flex-start;gap:6px;max-width:82%}
+.msg-speak-btn{background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:5px;padding:3px 8px 3px 6px;border-radius:20px;transition:all .2s;border:1px solid transparent}
+.msg-speak-btn:hover{background:rgba(100,180,100,.12);border-color:rgba(140,210,140,0.25)}
+.msg-speak-btn i{font-size:13px;color:var(--ai-text);transition:color .2s}
+.msg-speak-btn span{font-size:10px;color:var(--ai-text);letter-spacing:.04em;transition:color .2s}
+.msg-speak-btn.speaking{background:rgba(100,180,100,.15);border-color:rgba(140,210,140,0.4);animation:speak-pulse 1.5s ease-in-out infinite}
+.msg-speak-btn.speaking i{color:#6de06d}
+.msg-speak-btn.speaking span{color:#6de06d}
+@keyframes speak-pulse{0%,100%{opacity:1}50%{opacity:.65}}
+
+/* Indicador global de fala no header */
+.tts-indicator{display:none;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;background:rgba(100,180,100,.12);border:1px solid rgba(140,210,140,0.3);margin-left:auto;margin-right:8px}
+.tts-indicator.active{display:flex}
+.tts-indicator-dot{width:7px;height:7px;border-radius:50%;background:#6de06d;animation:speak-pulse 1s ease-in-out infinite}
+.tts-indicator span{font-size:10px;color:#b8e0b8;letter-spacing:.04em}
+.tts-stop-btn{background:none;border:none;cursor:pointer;color:#b8e0b8;font-size:14px;display:flex;align-items:center;padding:0}
+.tts-stop-btn:hover{color:#6de06d}
+
+/* Velocidade de fala nos ajustes */
+.tts-speed-row{display:flex;align-items:center;gap:8px}
+.tts-speed-btn{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:5px 12px;font-size:12px;color:var(--text2);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+.tts-speed-btn.active{background:rgba(200,169,109,.12);border-color:var(--border2);color:var(--gold)}
+</style>
 </defs>
 <circle cx="340" cy="340" r="320" fill="url(#bgGradC)" opacity="0.95"/>
 <circle cx="340" cy="340" r="295" fill="none" stroke="#d4b87a" stroke-width="1" stroke-dasharray="8 5" opacity="0.2" class="arc-animC"/>
@@ -1293,6 +1385,11 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
       <div>
         <div class="mentor-chat-name">Mentor AVR–S</div>
         <div class="mentor-chat-status" id="mentorChatStatus">online</div>
+      </div>
+      <div class="tts-indicator" id="ttsIndicator">
+        <div class="tts-indicator-dot"></div>
+        <span>falando</span>
+        <button class="tts-stop-btn" onclick="stopSpeak()" title="Parar fala"><i class="ti ti-player-stop-filled"></i></button>
       </div>
       <button class="mentor-close" onclick="closeMentorChat()"><i class="ti ti-x"></i></button>
     </div>
@@ -1596,6 +1693,7 @@ function openMentorChat() {
 }
 
 function closeMentorChat() {
+  stopSpeak();
   document.getElementById('mentorChatOverlay').classList.remove('open');
   localStorage.setItem('avrs4_chat', JSON.stringify(chatHistory.slice(-20)));
 }
@@ -1607,10 +1705,34 @@ function quickChat(msg) {
 
 function appendMsg(role, text, scroll=true) {
   const msgs = document.getElementById('chatMsgs');
-  const div = document.createElement('div');
-  div.className = 'msg ' + (role==='assistant' ? 'msg-ai' : 'msg-user');
-  div.textContent = text;
-  msgs.appendChild(div);
+  if (role === 'assistant') {
+    const wrap = document.createElement('div');
+    wrap.className = 'msg-ai-wrap';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'msg msg-ai';
+    bubble.textContent = text;
+
+    const speakBtn = document.createElement('button');
+    speakBtn.className = 'msg-speak-btn';
+    speakBtn.innerHTML = '<i class="ti ti-volume"></i><span>ouvir</span>';
+    speakBtn.onclick = () => toggleSpeak(text, speakBtn);
+
+    wrap.appendChild(bubble);
+    wrap.appendChild(speakBtn);
+    msgs.appendChild(wrap);
+
+    // Auto-falar se modo = 'always' ou ('auto' e foi uma resposta nova)
+    const ttsMode = localStorage.getItem('avrs4_tts') || 'auto';
+    if (scroll && (ttsMode === 'always' || (ttsMode === 'auto' && text.length < 400))) {
+      setTimeout(() => toggleSpeak(text, speakBtn), 300);
+    }
+  } else {
+    const div = document.createElement('div');
+    div.className = 'msg msg-user';
+    div.textContent = text;
+    msgs.appendChild(div);
+  }
   if (scroll) scrollChat();
 }
 
@@ -1660,6 +1782,109 @@ async function sendChat() {
   chatHistory.push({role:'assistant',content:reply});
   localStorage.setItem('avrs4_chat', JSON.stringify(chatHistory.slice(-20)));
 }
+
+
+// ── TEXT-TO-SPEECH ──
+let ttsUtterance = null;
+let ttsSpeaking = false;
+let ttsCurrentBtn = null;
+
+function stopSpeak() {
+  if (window.speechSynthesis) {
+    window.speechSynthesis.cancel();
+  }
+  ttsSpeaking = false;
+  if (ttsCurrentBtn) {
+    ttsCurrentBtn.classList.remove('speaking');
+    ttsCurrentBtn.innerHTML = '<i class="ti ti-volume"></i><span>ouvir</span>';
+    ttsCurrentBtn = null;
+  }
+  const indicator = document.getElementById('ttsIndicator');
+  if (indicator) indicator.classList.remove('active');
+}
+
+function toggleSpeak(text, btn) {
+  // Se já está falando esse mesmo botão — parar
+  if (ttsSpeaking && ttsCurrentBtn === btn) {
+    stopSpeak();
+    return;
+  }
+  // Se está falando outro — parar primeiro
+  if (ttsSpeaking) stopSpeak();
+
+  if (!window.speechSynthesis) {
+    alert('Seu dispositivo não suporta síntese de voz.');
+    return;
+  }
+
+  // Limpar texto de caracteres especiais
+  const cleanText = text.replace(/[*_~`#]/g, '').trim();
+
+  ttsUtterance = new SpeechSynthesisUtterance(cleanText);
+  ttsUtterance.lang = 'pt-BR';
+  ttsUtterance.rate = parseFloat(localStorage.getItem('avrs4_tts_rate') || '0.95');
+  ttsUtterance.pitch = parseFloat(localStorage.getItem('avrs4_tts_pitch') || '1.0');
+  ttsUtterance.volume = 1;
+
+  // Tentar voz feminina em português
+  const voices = window.speechSynthesis.getVoices();
+  const ptVoice = voices.find(v => v.lang === 'pt-BR' && v.name.toLowerCase().includes('female'))
+    || voices.find(v => v.lang === 'pt-BR')
+    || voices.find(v => v.lang.startsWith('pt'));
+  if (ptVoice) ttsUtterance.voice = ptVoice;
+
+  ttsUtterance.onstart = () => {
+    ttsSpeaking = true;
+    ttsCurrentBtn = btn;
+    btn.classList.add('speaking');
+    btn.innerHTML = '<i class="ti ti-player-stop-filled"></i><span>parar</span>';
+    const indicator = document.getElementById('ttsIndicator');
+    if (indicator) indicator.classList.add('active');
+  };
+
+  ttsUtterance.onend = () => {
+    ttsSpeaking = false;
+    ttsCurrentBtn = null;
+    btn.classList.remove('speaking');
+    btn.innerHTML = '<i class="ti ti-volume"></i><span>ouvir</span>';
+    const indicator = document.getElementById('ttsIndicator');
+    if (indicator) indicator.classList.remove('active');
+  };
+
+  ttsUtterance.onerror = () => {
+    stopSpeak();
+  };
+
+  window.speechSynthesis.speak(ttsUtterance);
+}
+
+// Pré-carregar vozes (necessário em alguns navegadores)
+function loadVoices() {
+  window.speechSynthesis.getVoices();
+}
+if (window.speechSynthesis) {
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+  loadVoices();
+}
+
+// Modo TTS
+function setTTSMode(mode) {
+  localStorage.setItem('avrs4_tts', mode);
+  ['ttsOff','ttsAuto','ttsAlways'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('active');
+  });
+  const modeMap = {off:'ttsOff', auto:'ttsAuto', always:'ttsAlways'};
+  const el = document.getElementById(modeMap[mode]);
+  if (el) el.classList.add('active');
+}
+
+function loadTTSSettings() {
+  const mode = localStorage.getItem('avrs4_tts') || 'auto';
+  setTTSMode(mode);
+}
+
+// Parar fala ao fechar o chat
 
 // ── NAV ──
 function goTo(s){
@@ -1806,6 +2031,7 @@ function renderStats(){
 }
 
 function updateSettingsProfile(){
+  loadTTSSettings();
   const themeToggle = document.getElementById('themeToggle');
   if (themeToggle) themeToggle.checked = localStorage.getItem('avrs4_theme') === 'light';
   const cu=localStorage.getItem('avrs4_current_user');if(cu){const el=document.getElementById('settingsEmail');if(el)el.textContent=cu;}
@@ -2475,6 +2701,15 @@ Em 2 frases: identifique o padrão do ciclo e sugira UMA ação concreta de melh
   }
 }
 
+
+// ── POLÍTICA DE PRIVACIDADE ──
+function openPrivacidade() {
+  document.getElementById('privacidadeOverlay').classList.add('open');
+}
+function closePrivacidade() {
+  document.getElementById('privacidadeOverlay').classList.remove('open');
+}
+
 // ── ALERTAS ──
 function openAlertas() {
   document.getElementById('alertasOverlay').classList.add('open');
@@ -2794,6 +3029,108 @@ init();
   <button class="voice-cancel" onclick="stopVoice()">Cancelar</button>
 </div>
 
+
+<!-- POLÍTICA DE PRIVACIDADE -->
+<div class="privacidade-overlay" id="privacidadeOverlay">
+  <div class="privacidade-topbar">
+    <button class="privacidade-back" onclick="closePrivacidade()"><i class="ti ti-arrow-left"></i></button>
+    <div class="privacidade-title">Política de Privacidade</div>
+  </div>
+  <div class="privacidade-content">
+
+    <div class="priv-section">
+      <div class="priv-text" style="font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:var(--text2);margin-bottom:16px">
+        AVR–S · A Vida Sem Rascunho
+      </div>
+      <div class="priv-text">
+        Esta Política de Privacidade descreve como a <strong style="color:var(--cream)">Audax Consultoria</strong> (CNPJ: 33.344.650/0001-03) coleta, usa e protege as informações dos usuários do aplicativo AVR–S.
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">1. Informações que coletamos</div>
+      <div class="priv-text">
+        O AVR–S coleta apenas as informações necessárias para o funcionamento do aplicativo:<br><br>
+        — <strong style="color:var(--cream)">E-mail e senha:</strong> utilizados para criação e acesso à conta.<br>
+        — <strong style="color:var(--cream)">Registros emocionais:</strong> estados, decisões e reflexões inseridos voluntariamente pelo usuário.<br>
+        — <strong style="color:var(--cream)">Dados de uso:</strong> frequência de acesso e funcionalidades utilizadas, de forma anônima.<br>
+        — <strong style="color:var(--cream)">Dados de pagamento:</strong> processados exclusivamente pelo PagBank, não armazenados pelo AVR–S.
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">2. Como usamos suas informações</div>
+      <div class="priv-text">
+        As informações coletadas são utilizadas exclusivamente para:<br><br>
+        — Personalizar a experiência do Mentor IA com base no seu perfil<br>
+        — Sincronizar seus dados entre dispositivos via Firebase (Google)<br>
+        — Melhorar as funcionalidades do aplicativo<br>
+        — Enviar alertas e lembretes configurados pelo próprio usuário<br><br>
+        <strong style="color:var(--cream)">Não vendemos, compartilhamos ou cedemos seus dados pessoais a terceiros.</strong>
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">3. Armazenamento e segurança</div>
+      <div class="priv-text">
+        Os dados são armazenados localmente no seu dispositivo e sincronizados com o Firebase Firestore (Google Cloud), com infraestrutura segura e criptografada. A Audax Consultoria adota medidas técnicas para proteger suas informações contra acesso não autorizado.
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">4. Inteligência Artificial</div>
+      <div class="priv-text">
+        O Mentor IA utiliza a API da Anthropic (Claude) para processar mensagens e gerar respostas personalizadas. As conversas são enviadas de forma segura via proxy próprio e não são armazenadas permanentemente pela Anthropic. O histórico de conversas fica salvo apenas no seu dispositivo.
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">5. Seus direitos</div>
+      <div class="priv-text">
+        Em conformidade com a LGPD (Lei 13.709/2018), você tem direito a:<br><br>
+        — Acessar seus dados a qualquer momento<br>
+        — Exportar seu diário (Ajustes → Exportar JSON)<br>
+        — Apagar todos os seus dados (Ajustes → Apagar dados)<br>
+        — Solicitar a exclusão da sua conta pelo e-mail de suporte
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">6. Contato</div>
+      <div class="priv-text">
+        Para dúvidas sobre esta política ou sobre seus dados:<br><br>
+        — E-mail: audax.silfexsil@gmail.com<br>
+        — WhatsApp: (21) 96416-4234<br><br>
+        <strong style="color:var(--cream)">Audax Consultoria</strong><br>
+        CNPJ: 33.344.650/0001-03
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-text" style="font-size:11px;color:#4a4440;text-align:center">
+        © 2025 Audax Consultoria · Todos os direitos reservados<br>
+        AVR–S · A Vida Sem Rascunho<br>
+        Última atualização: maio de 2025
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <!-- ALERTAS -->
 <div class="alerta-notif" id="alertaNotif">
   <div class="alerta-notif-icon"><i class="ti ti-bell-ringing" id="alertaNotifIcon"></i></div>
@@ -2955,7 +3292,44 @@ init();
         <radialGradient id="bgGradO" cx="50%" cy="50%" r="50%">
           <stop offset="0%" stop-color="#1a1816"/><stop offset="100%" stop-color="#0a0908"/>
         </radialGradient>
-        <style>.arc-animO{stroke-dasharray:5 4;animation:spinDashO 4s linear infinite;}@keyframes spinDashO{to{stroke-dashoffset:-80;}}</style>
+        <style>.arc-animO{stroke-dasharray:5 4;animation:spinDashO 4s linear infinite;}@keyframes spinDashO{to{stroke-dashoffset:-80;}}
+/* ══ POLÍTICA DE PRIVACIDADE ══ */
+.privacidade-overlay{position:fixed;inset:0;background:var(--bg);z-index:1010;display:none;flex-direction:column;overflow:hidden}
+.privacidade-overlay.open{display:flex}
+.privacidade-topbar{padding:16px 20px 14px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.privacidade-back{background:none;border:none;color:var(--text2);cursor:pointer;font-size:22px;display:flex;align-items:center}
+.privacidade-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--cream)}
+.privacidade-content{flex:1;overflow-y:auto;padding:24px 20px 40px}
+.privacidade-content::-webkit-scrollbar{display:none}
+.priv-section{margin-bottom:24px}
+.priv-section-title{font-size:13px;font-weight:600;color:var(--gold);margin-bottom:10px;letter-spacing:.04em}
+.priv-text{font-size:13px;color:var(--text2);line-height:1.8}
+.priv-divider{height:1px;background:var(--border);margin:20px 0}
+
+/* ══ TEXT-TO-SPEECH ══ */
+.msg-ai-wrap{display:flex;flex-direction:column;align-items:flex-start;gap:6px;max-width:82%}
+.msg-speak-btn{background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:5px;padding:3px 8px 3px 6px;border-radius:20px;transition:all .2s;border:1px solid transparent}
+.msg-speak-btn:hover{background:rgba(100,180,100,.12);border-color:rgba(140,210,140,0.25)}
+.msg-speak-btn i{font-size:13px;color:var(--ai-text);transition:color .2s}
+.msg-speak-btn span{font-size:10px;color:var(--ai-text);letter-spacing:.04em;transition:color .2s}
+.msg-speak-btn.speaking{background:rgba(100,180,100,.15);border-color:rgba(140,210,140,0.4);animation:speak-pulse 1.5s ease-in-out infinite}
+.msg-speak-btn.speaking i{color:#6de06d}
+.msg-speak-btn.speaking span{color:#6de06d}
+@keyframes speak-pulse{0%,100%{opacity:1}50%{opacity:.65}}
+
+/* Indicador global de fala no header */
+.tts-indicator{display:none;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;background:rgba(100,180,100,.12);border:1px solid rgba(140,210,140,0.3);margin-left:auto;margin-right:8px}
+.tts-indicator.active{display:flex}
+.tts-indicator-dot{width:7px;height:7px;border-radius:50%;background:#6de06d;animation:speak-pulse 1s ease-in-out infinite}
+.tts-indicator span{font-size:10px;color:#b8e0b8;letter-spacing:.04em}
+.tts-stop-btn{background:none;border:none;cursor:pointer;color:#b8e0b8;font-size:14px;display:flex;align-items:center;padding:0}
+.tts-stop-btn:hover{color:#6de06d}
+
+/* Velocidade de fala nos ajustes */
+.tts-speed-row{display:flex;align-items:center;gap:8px}
+.tts-speed-btn{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:5px 12px;font-size:12px;color:var(--text2);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+.tts-speed-btn.active{background:rgba(200,169,109,.12);border-color:var(--border2);color:var(--gold)}
+</style>
       </defs>
       <circle cx="340" cy="340" r="320" fill="url(#bgGradO)" opacity="0.95"/>
       <circle cx="340" cy="340" r="210" fill="none" stroke="#d4b87a" stroke-width="0.5" stroke-dasharray="4 6" opacity="0.25"/>
