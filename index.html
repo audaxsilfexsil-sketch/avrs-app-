@@ -482,6 +482,30 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream);-webkit-font-smoothing:
 .admin-user-date{font-size:11px;color:#6a6460}
 .admin-empty{text-align:center;padding:40px;font-size:13px;color:#6a6460}
 .admin-toggle-pro{background:none;border:1px solid var(--border2);border-radius:8px;padding:5px 10px;font-size:11px;color:var(--gold);cursor:pointer;font-family:'DM Sans',sans-serif}
+.admin-user-card{flex-wrap:wrap;gap:8px}
+.admin-user-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.admin-user-stat{font-size:10px;color:#6a6460;background:var(--bg4);border-radius:6px;padding:3px 8px;display:flex;align-items:center;gap:4px}
+.admin-user-stat i{font-size:11px;color:var(--text3)}
+.admin-user-actions{display:flex;gap:6px;margin-top:8px;width:100%}
+.admin-msg-btn{background:none;border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:11px;color:var(--text2);cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:4px}
+.admin-msg-btn i{font-size:13px}
+.admin-revenue-card{background:linear-gradient(135deg,rgba(200,169,109,.12),rgba(200,169,109,.04));border:1px solid var(--border2);border-radius:var(--r);padding:20px;margin-bottom:16px;display:flex;align-items:center;gap:16px}
+.admin-revenue-icon{width:48px;height:48px;border-radius:50%;background:rgba(200,169,109,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.admin-revenue-icon i{font-size:22px;color:var(--gold)}
+.admin-revenue-value{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;color:var(--gold);line-height:1}
+.admin-revenue-label{font-size:11px;color:#8a8278;margin-top:4px}
+.admin-stat-grid-5{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
+.admin-msg-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1050;display:none;align-items:flex-end;justify-content:center}
+.admin-msg-overlay.open{display:flex}
+.admin-msg-panel{background:var(--bg2);width:100%;max-width:860px;border-radius:28px 28px 0 0;padding:0 0 32px;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1)}
+.admin-msg-overlay.open .admin-msg-panel{transform:translateY(0)}
+.admin-activity-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.admin-activity-row:last-child{border:none}
+.admin-activity-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.admin-activity-dot.active{background:#7ad4a0}
+.admin-activity-dot.inactive{background:#6a6460}
+.admin-activity-email{font-size:12px;color:var(--cream);flex:1}
+.admin-activity-info{font-size:11px;color:#6a6460;text-align:right}
 body.light-mode{--bg:#faf7f2;--bg2:#f2ede4;--bg3:#ede7dc;--bg4:#e5ddd0;--bg5:#ddd5c8;--gold:#7a5820;--gold2:#5a3e10;--cream:#1e1a16;--text2:#3a3530;--text3:#7a7268;--border:rgba(90,70,30,0.18);--border2:rgba(90,70,30,0.35);--ai:#1a2e1a;--ai-border:rgba(60,140,60,0.35);--ai-text:#1a5a1a;}
 body.light-mode .splash{background:var(--bg)}
 body.light-mode .login-overlay{background:var(--bg)}
@@ -1102,6 +1126,22 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
   </div>
 </div>
 
+<!-- ADMIN — MODAL MENSAGEM -->
+<div class="admin-msg-overlay" id="adminMsgOverlay">
+  <div class="admin-msg-panel">
+    <div class="modal-handle" style="margin-top:14px"></div>
+    <div class="modal-header"><div class="modal-title">Mensagem para <span id="adminMsgTarget" style="color:var(--gold)"></span></div></div>
+    <div class="modal-body">
+      <div class="field"><label>Assunto</label><input type="text" id="adminMsgSubject" placeholder="Ex: Novidade no app AVR–S"/></div>
+      <div class="field"><label>Mensagem</label><textarea id="adminMsgBody" placeholder="Escreva sua mensagem..." style="min-height:120px"></textarea></div>
+    </div>
+    <div class="modal-actions">
+      <button class="cancel-btn" onclick="closeAdminMsg()">Cancelar</button>
+      <button class="save-btn" onclick="sendAdminMsg()"><i class="ti ti-send"></i> Enviar via WhatsApp</button>
+    </div>
+  </div>
+</div>
+
 <!-- PAINEL ADMIN -->
 <div class="admin-overlay" id="adminOverlay">
   <div class="admin-topbar">
@@ -1130,7 +1170,16 @@ let clState='',clIcon='',clStep=0,clAnswers=[],clSteps=[];
 let chatHistory=[],mentorProfile={};
 
 function load(){try{entries=JSON.parse(localStorage.getItem('avrs4_e'))||[];}catch(e){entries=[];}loadFrasesFav();streak=Number(localStorage.getItem('avrs4_s'))||0;try{mentorProfile=JSON.parse(localStorage.getItem('avrs4_profile'))||{};}catch(e){mentorProfile={};}try{chatHistory=JSON.parse(localStorage.getItem('avrs4_chat'))||[];}catch(e){chatHistory=[];}}
-function saveData(){localStorage.setItem('avrs4_e',JSON.stringify(entries));localStorage.setItem('avrs4_profile',JSON.stringify(mentorProfile));const cu=localStorage.getItem('avrs4_current_user');if(cu&&window.saveUserToCloud)window.saveUserToCloud(cu.replace(/[^a-zA-Z0-9]/g,'_'));}
+function saveData(){
+  localStorage.setItem('avrs4_e',JSON.stringify(entries));
+  localStorage.setItem('avrs4_profile',JSON.stringify(mentorProfile));
+  const cu=localStorage.getItem('avrs4_current_user');
+  if(cu){
+    const users=JSON.parse(localStorage.getItem('avrs4_users')||'{}');
+    if(users[cu]){users[cu].lastSeen=Date.now();users[cu].entriesCount=entries.length;localStorage.setItem('avrs4_users',JSON.stringify(users));}
+    if(window.saveUserToCloud)window.saveUserToCloud(cu.replace(/[^a-zA-Z0-9]/g,'_'));
+  }
+}
 function updateStreak(){const t=new Date().toDateString(),l=localStorage.getItem('avrs4_l');if(l!==t){streak++;localStorage.setItem('avrs4_s',streak);localStorage.setItem('avrs4_l',t);}}
 
 function buildProfile(){const last30=entries.slice(0,30);if(!last30.length)return{};const sc={},dc={};last30.forEach(e=>{if(e.state&&e.state!=='Não definido')sc[e.state]=(sc[e.state]||0)+1;if(e.distortion&&e.distortion!=='Nenhuma')dc[e.distortion]=(dc[e.distortion]||0)+1;});const ds=Object.entries(sc).sort((a,b)=>b[1]-a[1])[0]?.[0]||'';const md=Object.entries(dc).sort((a,b)=>b[1]-a[1])[0]?.[0]||'';const p={dominantState:ds,mainDistortion:md,totalEntries:last30.length,stateCounts:sc,distCounts:dc};mentorProfile=p;saveData();return p;}
@@ -1311,14 +1360,138 @@ setInterval(verificarAlertas,60000);
 // ── ADMIN ──
 function openAdmin(){if(localStorage.getItem('avrs4_current_user')!==ADMIN_EMAIL)return;document.getElementById('adminOverlay').classList.add('open');renderAdmin();}
 function closeAdmin(){document.getElementById('adminOverlay').classList.remove('open');}
-function renderAdmin(){const users=JSON.parse(localStorage.getItem('avrs4_users')||'{}');const container=document.getElementById('adminContent');const total=Object.keys(users).length;const pro=Object.values(users).filter(d=>d.isPro).length;const usersHtml=Object.entries(users).length?Object.entries(users).map(([email,data])=>{const date=data.createdAt?new Date(data.createdAt).toLocaleDateString('pt-BR'):'—';return`<div class="admin-user-card"><div><div class="admin-user-email">${email}</div><div class="admin-user-date">Desde ${date}</div></div><span class="admin-user-badge ${data.isPro?'admin-user-pro':'admin-user-free'}">${data.isPro?'PRO':'Grátis'}</span><button class="admin-toggle-pro" onclick="toggleUserPro('${email}')">${data.isPro?'Revogar':'Dar Pro'}</button></div>`;}).join(''):'<div class="admin-empty">Nenhum usuário ainda.</div>';container.innerHTML=`<div class="admin-stat-grid"><div class="admin-stat-card"><div class="admin-stat-value">${total}</div><div class="admin-stat-label">Usuários</div></div><div class="admin-stat-card"><div class="admin-stat-value">${pro}</div><div class="admin-stat-label">Pro</div></div><div class="admin-stat-card"><div class="admin-stat-value">${total-pro}</div><div class="admin-stat-label">Gratuito</div></div></div><div class="admin-section"><div class="admin-section-title">Usuários</div>${usersHtml}</div>`;}
-function toggleUserPro(email){const users=JSON.parse(localStorage.getItem('avrs4_users')||'{}');if(!users[email])return;users[email].isPro=!users[email].isPro;localStorage.setItem('avrs4_users',JSON.stringify(users));renderAdmin();}
+
+function renderAdmin(){
+  const users=JSON.parse(localStorage.getItem('avrs4_users')||'{}');
+  const container=document.getElementById('adminContent');
+  const userList=Object.entries(users);
+  const total=userList.length;
+  const proCount=userList.filter(([,d])=>d.isPro).length;
+  const freeCount=total-proCount;
+  const receita=proCount*19;
+
+  // Registros por usuário (melhor aproximação: dados do próprio dispositivo)
+  const localEntries=JSON.parse(localStorage.getItem('avrs4_e')||'[]');
+  const totalDecisoes=localEntries.length;
+
+  // Calcular último acesso e registros por usuário
+  const now=Date.now();
+  const DAY=86400000;
+
+  // Ordenar: mais recentes primeiro
+  userList.sort((a,b)=>(b[1].lastSeen||b[1].createdAt||0)-(a[1].lastSeen||a[1].createdAt||0));
+
+  // Usuários ativos (acesso nos últimos 7 dias)
+  const ativos=userList.filter(([,d])=>d.lastSeen&&(now-d.lastSeen)<7*DAY).length;
+
+  // Cards de stats — linha 1
+  const stats1=`
+  <div class="admin-revenue-card">
+    <div class="admin-revenue-icon"><i class="ti ti-currency-dollar"></i></div>
+    <div>
+      <div class="admin-revenue-value">R$${receita}</div>
+      <div class="admin-revenue-label">Receita mensal estimada · ${proCount} assinantes Pro × R$19</div>
+    </div>
+  </div>
+  <div class="admin-stat-grid-5">
+    <div class="admin-stat-card"><div class="admin-stat-value">${total}</div><div class="admin-stat-label">Usuários</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-value" style="color:var(--gold)">${proCount}</div><div class="admin-stat-label">Pro</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-value">${freeCount}</div><div class="admin-stat-label">Gratuito</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-value" style="color:#7ad4a0">${ativos}</div><div class="admin-stat-label">Ativos 7d</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-value">${totalDecisoes}</div><div class="admin-stat-label">Decisões</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-value">${total>0?Math.round(totalDecisoes/total):0}</div><div class="admin-stat-label">Média/user</div></div>
+  </div>`;
+
+  // Lista de usuários expandida
+  const usersHtml=userList.length?userList.map(([email,data])=>{
+    const since=data.createdAt?new Date(data.createdAt).toLocaleDateString('pt-BR'):'—';
+    const lastSeen=data.lastSeen?_relativeTime(data.lastSeen):'nunca';
+    const nEntries=data.entriesCount||0;
+    const isActive=data.lastSeen&&(now-data.lastSeen)<7*DAY;
+    const emailEnc=email.replace(/'/g,"\\'");
+    return`<div class="admin-user-card" style="flex-direction:column;align-items:flex-start">
+      <div style="display:flex;align-items:center;width:100%;gap:10px">
+        <div style="flex:1">
+          <div class="admin-user-email">${email}</div>
+          <div class="admin-user-date">Desde ${since}</div>
+        </div>
+        <span class="admin-user-badge ${data.isPro?'admin-user-pro':'admin-user-free'}">${data.isPro?'PRO':'Grátis'}</span>
+      </div>
+      <div class="admin-user-meta">
+        <div class="admin-user-stat"><i class="ti ti-clock"></i>${lastSeen}</div>
+        <div class="admin-user-stat"><i class="ti ti-notebook"></i>${nEntries} decisões</div>
+        <div class="admin-user-stat"><div class="admin-activity-dot ${isActive?'active':'inactive'}" style="width:7px;height:7px;border-radius:50%;flex-shrink:0"></div>${isActive?'Ativo':'Inativo'}</div>
+      </div>
+      <div class="admin-user-actions">
+        <button class="admin-toggle-pro" onclick="toggleUserPro('${emailEnc}')">${data.isPro?'Revogar Pro':'Dar Pro'}</button>
+        <button class="admin-msg-btn" onclick="openAdminMsg('${emailEnc}')"><i class="ti ti-brand-whatsapp"></i>Mensagem</button>
+        <button class="admin-msg-btn" onclick="adminDeleteUser('${emailEnc}')" style="color:#d46a6a;border-color:rgba(212,106,106,.3)"><i class="ti ti-trash"></i>Remover</button>
+      </div>
+    </div>`;
+  }).join(''):'<div class="admin-empty">Nenhum usuário ainda.</div>';
+
+  container.innerHTML=`
+    ${stats1}
+    <div class="admin-section">
+      <div class="admin-section-title"><i class="ti ti-users" style="font-size:14px;color:var(--gold)"></i>Usuários</div>
+      ${usersHtml}
+    </div>`;
+}
+
+function _relativeTime(ts){
+  const diff=Date.now()-ts;
+  const m=Math.floor(diff/60000);
+  if(m<2)return'agora mesmo';
+  if(m<60)return m+'min atrás';
+  const h=Math.floor(m/60);
+  if(h<24)return h+'h atrás';
+  const d=Math.floor(h/24);
+  if(d===1)return'ontem';
+  return d+'d atrás';
+}
+
+function toggleUserPro(email){
+  const users=JSON.parse(localStorage.getItem('avrs4_users')||'{}');
+  if(!users[email])return;
+  users[email].isPro=!users[email].isPro;
+  localStorage.setItem('avrs4_users',JSON.stringify(users));
+  renderAdmin();
+}
+
+function adminDeleteUser(email){
+  if(!confirm(`Remover o usuário ${email}? Esta ação não pode ser desfeita.`))return;
+  const users=JSON.parse(localStorage.getItem('avrs4_users')||'{}');
+  delete users[email];
+  localStorage.setItem('avrs4_users',JSON.stringify(users));
+  renderAdmin();
+}
+
+let adminMsgEmail='';
+function openAdminMsg(email){
+  adminMsgEmail=email;
+  document.getElementById('adminMsgTarget').textContent=email;
+  document.getElementById('adminMsgSubject').value='';
+  document.getElementById('adminMsgBody').value='';
+  document.getElementById('adminMsgOverlay').classList.add('open');
+}
+function closeAdminMsg(){document.getElementById('adminMsgOverlay').classList.remove('open');}
+function sendAdminMsg(){
+  const subj=document.getElementById('adminMsgSubject').value.trim();
+  const body=document.getElementById('adminMsgBody').value.trim();
+  if(!body){alert('Escreva uma mensagem.');return;}
+  const msg=encodeURIComponent((subj?`*${subj}*\n\n`:'')+body+'\n\n— Audax Consultoria · AVR–S');
+  window.open(`https://wa.me/5521964164234?text=${msg}`,'_blank');
+  closeAdminMsg();
+}
 
 // ── LOGIN ──
 let loginMode='login';
 function toggleLoginMode(){loginMode=loginMode==='login'?'register':'login';if(loginMode==='register'){document.getElementById('loginTitle').textContent='Criar conta';document.getElementById('loginSub').textContent='Cadastre-se para começar sua jornada';document.getElementById('loginPassConfirmField').style.display='block';document.getElementById('loginBtn').textContent='Criar conta';document.getElementById('loginToggle').textContent='Já tem conta? Entrar';}else{document.getElementById('loginTitle').textContent='Bem-vindo';document.getElementById('loginSub').textContent='Entre com sua conta para continuar';document.getElementById('loginPassConfirmField').style.display='none';document.getElementById('loginBtn').textContent='Entrar';document.getElementById('loginToggle').textContent='Não tem conta? Cadastre-se';}document.getElementById('loginError').textContent='';}
 function hashSimple(str){let h=0;for(let i=0;i<str.length;i++){h=((h<<5)-h)+str.charCodeAt(i);h=h&h;}return h.toString(36);}
-function handleLogin(){const email=document.getElementById('loginEmail').value.trim().toLowerCase();const pass=document.getElementById('loginPass').value;const errEl=document.getElementById('loginError');if(!email||!pass){errEl.textContent='Preencha e-mail e senha.';return;}if(!email.includes('@')){errEl.textContent='E-mail inválido.';return;}if(pass.length<6){errEl.textContent='Senha deve ter ao menos 6 caracteres.';return;}const users=JSON.parse(localStorage.getItem('avrs4_users')||'{}');const passHash=hashSimple(pass);if(loginMode==='register'){const confirm=document.getElementById('loginPassConfirm').value;if(pass!==confirm){errEl.textContent='Senhas não conferem.';return;}if(users[email]){errEl.textContent='E-mail já cadastrado.';return;}users[email]={passHash,createdAt:Date.now()};localStorage.setItem('avrs4_users',JSON.stringify(users));localStorage.setItem('avrs4_current_user',email);document.getElementById('loginOverlay').style.display='none';checkOnboarding();}else{if(!users[email]){errEl.textContent='E-mail não encontrado.';return;}if(users[email].passHash!==passHash){errEl.textContent='Senha incorreta.';return;}localStorage.setItem('avrs4_current_user',email);document.getElementById('loginOverlay').style.display='none';setTimeout(()=>{if(window.syncUserData)window.syncUserData(email.replace(/[^a-zA-Z0-9]/g,'_'));},1500);checkOnboarding();}}
+function handleLogin(){const email=document.getElementById('loginEmail').value.trim().toLowerCase();const pass=document.getElementById('loginPass').value;const errEl=document.getElementById('loginError');if(!email||!pass){errEl.textContent='Preencha e-mail e senha.';return;}if(!email.includes('@')){errEl.textContent='E-mail inválido.';return;}if(pass.length<6){errEl.textContent='Senha deve ter ao menos 6 caracteres.';return;}const users=JSON.parse(localStorage.getItem('avrs4_users')||'{}');const passHash=hashSimple(pass);if(loginMode==='register'){const confirm=document.getElementById('loginPassConfirm').value;if(pass!==confirm){errEl.textContent='Senhas não conferem.';return;}if(users[email]){errEl.textContent='E-mail já cadastrado.';return;}users[email]={passHash,createdAt:Date.now()};localStorage.setItem('avrs4_users',JSON.stringify(users));localStorage.setItem('avrs4_current_user',email);document.getElementById('loginOverlay').style.display='none';checkOnboarding();}else{if(!users[email]){errEl.textContent='E-mail não encontrado.';return;}if(users[email].passHash!==passHash){errEl.textContent='Senha incorreta.';return;}localStorage.setItem('avrs4_current_user',email);
+    const usersL=JSON.parse(localStorage.getItem('avrs4_users')||'{}');
+    if(usersL[email]){usersL[email].lastSeen=Date.now();localStorage.setItem('avrs4_users',JSON.stringify(usersL));}
+    document.getElementById('loginOverlay').style.display='none';setTimeout(()=>{if(window.syncUserData)window.syncUserData(email.replace(/[^a-zA-Z0-9]/g,'_'));},1500);checkOnboarding();}}
 const ADMIN_EMAIL='audax2_cj@hotmail.com';
 function checkAuth(){const cu=localStorage.getItem('avrs4_current_user');if(!cu){document.getElementById('loginOverlay').style.display='flex';return false;}if(cu===ADMIN_EMAIL)localStorage.setItem('avrs4_pro','true');return true;}
 function logout(){localStorage.removeItem('avrs4_current_user');location.reload();}
