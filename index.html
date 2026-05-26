@@ -1506,7 +1506,7 @@ async function init(){
   load();loadTheme();loadProStatus();updateStreak();
   document.getElementById('splashQuote').textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';
   setTimeout(()=>document.getElementById('splash').classList.add('hide'),2800);
-  const now=new Date();
+    const now=new Date();
   document.getElementById('dateText').textContent=now.toLocaleDateString('pt-BR',{day:'numeric',month:'long'});
   document.getElementById('quoteText').textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';
   const dq=QUESTIONS[now.getDate()%QUESTIONS.length];
