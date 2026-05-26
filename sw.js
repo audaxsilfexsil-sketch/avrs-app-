@@ -1,11 +1,10 @@
-const CACHE = 'avrs-v47';
+const CACHE = 'avrs-v48';
 const ASSETS = [
   '/avrs-app-/',
   '/avrs-app-/index.html',
   'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap',
   'https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css'
 ];
-
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE).then(cache => {
@@ -14,7 +13,6 @@ self.addEventListener('install', e => {
   );
   self.skipWaiting();
 });
-
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
@@ -23,7 +21,6 @@ self.addEventListener('activate', e => {
   );
   self.clients.claim();
 });
-
 self.addEventListener('fetch', e => {
   e.respondWith(
     caches.match(e.request).then(cached => {
