@@ -609,6 +609,23 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 .tts-speed-row{display:flex;align-items:center;gap:8px}
 .tts-speed-btn{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:5px 12px;font-size:12px;color:var(--text2);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
 .tts-speed-btn.active{background:rgba(200,169,109,.12);border-color:var(--border2);color:var(--gold)}
+
+/* ── TELA DE APRESENTAÇÃO PÓS-LOGIN ── */
+.intro-overlay{position:fixed;inset:0;background:var(--bg);z-index:1005;display:none;flex-direction:column;align-items:center;justify-content:center;padding:0}
+.intro-overlay.open{display:flex}
+.intro-topbar{position:absolute;top:0;left:0;right:0;padding:16px 20px;display:flex;justify-content:flex-end}
+.intro-skip{background:none;border:1px solid var(--border2);border-radius:20px;padding:7px 16px;font-size:12px;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.06em;transition:all .2s}
+.intro-skip:hover{color:var(--gold);border-color:var(--gold)}
+.intro-content{display:flex;flex-direction:column;align-items:center;width:100%;max-width:480px;padding:60px 24px 40px}
+.intro-logo{width:160px;max-width:70%;object-fit:contain;margin-bottom:24px;opacity:0;transition:opacity .8s ease}
+.intro-logo.show{opacity:1}
+.intro-svg-wrap{width:100%;max-width:340px;opacity:0;transform:scale(.92);transition:opacity .8s ease,transform .8s ease;margin-bottom:24px}
+.intro-svg-wrap.show{opacity:1;transform:scale(1)}
+.intro-frase{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;font-weight:300;color:var(--text2);text-align:center;line-height:1.8;max-width:300px;opacity:0;transition:opacity .8s ease;margin-bottom:32px}
+.intro-frase.show{opacity:1}
+.intro-btn{background:var(--gold);border:none;border-radius:14px;padding:15px 40px;font-size:13px;font-weight:600;color:#0a0908;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.06em;opacity:0;transition:opacity .6s ease,transform .2s;transform:translateY(8px)}
+.intro-btn.show{opacity:1;transform:translateY(0)}
+.intro-btn:active{transform:scale(.97)}
 </style>
 </head>
 <body>
@@ -637,6 +654,47 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
   <div class="splash-quote" id="splashQuote"></div>
   <div class="breath-ring"><div class="breath-inner"><div class="breath-dot"></div></div></div>
   <div class="breath-label">Respire</div>
+</div>
+
+
+<!-- TELA DE APRESENTAÇÃO PÓS-LOGIN -->
+<div class="intro-overlay" id="introOverlay">
+  <div class="intro-topbar">
+    <button class="intro-skip" onclick="fecharIntro()">Pular <i class="ti ti-chevron-right" style="font-size:11px"></i></button>
+  </div>
+  <div class="intro-content">
+    <img class="intro-logo" id="introLogo" src="https://audaxsilfexsil-sketch.github.io/avrs-app-/LOGO01.png.png" alt="AVR–S"/>
+    <div class="intro-svg-wrap" id="introSvg">
+      <svg width="100%" viewBox="0 0 680 680" role="img">
+        <defs>
+          <marker id="arrowI" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+          <radialGradient id="bgGradI" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#1a1816"/><stop offset="100%" stop-color="#0a0908"/></radialGradient>
+          <style>.arc-animI{stroke-dasharray:5 4;animation:spinDashI 4s linear infinite;}@keyframes spinDashI{to{stroke-dashoffset:-80;}}.node-animI{animation:glowNodeI 3s ease-in-out infinite;}@keyframes glowNodeI{0%,100%{stroke-opacity:0.7;}50%{stroke-opacity:1;}}</style>
+        </defs>
+        <circle cx="340" cy="340" r="320" fill="url(#bgGradI)" opacity="0.95"/>
+        <circle cx="340" cy="340" r="295" fill="none" stroke="#d4b87a" stroke-width="1" stroke-dasharray="8 5" opacity="0.15" class="arc-animI"/>
+        <circle cx="340" cy="340" r="210" fill="none" stroke="#d4b87a" stroke-width="0.5" stroke-dasharray="4 6" opacity="0.15"/>
+        <path d="M 480 185 A 210 210 0 0 1 525 370" fill="none" stroke="#d4b87a" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.55" marker-end="url(#arrowI)" class="arc-animI"/>
+        <path d="M 510 430 A 210 210 0 0 1 390 545" fill="none" stroke="#d4b87a" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.55" marker-end="url(#arrowI)" class="arc-animI"/>
+        <path d="M 290 548 A 210 210 0 0 1 162 432" fill="none" stroke="#d4b87a" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.55" marker-end="url(#arrowI)" class="arc-animI"/>
+        <path d="M 155 300 A 210 210 0 0 1 300 142" fill="none" stroke="#d4b87a" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.55" marker-end="url(#arrowI)" class="arc-animI"/>
+        <circle cx="340" cy="340" r="100" fill="#100f0d" stroke="#d4b87a" stroke-width="1" opacity="0.8"/>
+        <text x="340" y="322" text-anchor="middle" font-family="Georgia,serif" font-size="13" fill="#6a6460" letter-spacing="1">VOCÊ VIVE</text>
+        <text x="340" y="340" text-anchor="middle" font-family="Georgia,serif" font-size="13" fill="#6a6460" letter-spacing="1">O QUE</text>
+        <text x="340" y="362" text-anchor="middle" font-family="Georgia,serif" font-size="20" font-weight="bold" fill="#d4b87a" letter-spacing="2">REPETE.</text>
+        <circle cx="340" cy="130" r="52" fill="#0a0908" stroke="#d4b87a" stroke-width="1.5" class="node-animI"/>
+        <text x="340" y="134" text-anchor="middle" font-family="Georgia,serif" font-size="10" font-weight="bold" fill="#ebd49e" letter-spacing="2">ATENÇÃO</text>
+        <circle cx="530" cy="370" r="52" fill="#0a0908" stroke="#d4b87a" stroke-width="1.5" class="node-animI"/>
+        <text x="530" y="374" text-anchor="middle" font-family="Georgia,serif" font-size="10" font-weight="bold" fill="#ebd49e" letter-spacing="2">VISÃO</text>
+        <circle cx="340" cy="545" r="52" fill="#0a0908" stroke="#d4b87a" stroke-width="1.5" class="node-animI"/>
+        <text x="340" y="549" text-anchor="middle" font-family="Georgia,serif" font-size="10" font-weight="bold" fill="#ebd49e" letter-spacing="2">RESPOSTA</text>
+        <circle cx="150" cy="370" r="52" fill="#0a0908" stroke="#d4b87a" stroke-width="1.5" class="node-animI"/>
+        <text x="150" y="374" text-anchor="middle" font-family="Georgia,serif" font-size="10" font-weight="bold" fill="#ebd49e" letter-spacing="2">SISTEMA</text>
+      </svg>
+    </div>
+    <div class="intro-frase" id="introFrase">Você vive o que repete.<br>O AVR–S ajuda você a perceber antes de agir.</div>
+    <button class="intro-btn" id="introBtn" onclick="fecharIntro()">Começar</button>
+  </div>
 </div>
 
 <!-- TOPBAR -->
@@ -1240,6 +1298,41 @@ function tocarSomAlerta(){
 function somAtivado(){return localStorage.getItem('avrs4_alerta_som')!=='false';}
 function setSomAlerta(ativo){localStorage.setItem('avrs4_alerta_som',ativo?'true':'false');}
 
+
+// ── APRESENTAÇÃO PÓS-LOGIN ──
+function abrirIntro(){
+  const el = document.getElementById('introOverlay');
+  if(!el) return;
+  el.classList.add('open');
+  // Animação sequencial
+  setTimeout(()=>document.getElementById('introLogo').classList.add('show'), 200);
+  setTimeout(()=>document.getElementById('introSvg').classList.add('show'), 600);
+  setTimeout(()=>document.getElementById('introFrase').classList.add('show'), 1100);
+  setTimeout(()=>document.getElementById('introBtn').classList.add('show'), 1600);
+}
+function fecharIntro(){
+  const el = document.getElementById('introOverlay');
+  if(el) el.classList.remove('open');
+  // Iniciar o app após fechar
+  _iniciarApp();
+}
+async function _iniciarApp(){
+  load();loadTheme();loadProStatus();updateStreak();
+  const now=new Date();
+  document.getElementById('dateText').textContent=now.toLocaleDateString('pt-BR',{day:'numeric',month:'long'});
+  document.getElementById('quoteText').textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';
+  const dq=QUESTIONS[now.getDate()%QUESTIONS.length];
+  document.getElementById('qcardText').textContent=dq.q;
+  document.getElementById('qcardHint').textContent=dq.h;
+  renderStats();renderEntries();
+  if(entries.length>=3){document.getElementById('analysisCard').style.display='block';requestWeeklyAnalysis();}
+  checkOnboarding();checkDailyNotif();applyProGating();updateSettingsProStatus();
+  if(isPro)loadMentorMessage();
+  else{document.getElementById('mentorText').innerHTML='Desbloqueie o Mentor IA para receber análises personalizadas baseadas no seu perfil.';document.getElementById('mentorActions').innerHTML='<div class="mentor-pill" onclick="openPaywall()"><i class="ti ti-crown" style="margin-right:4px"></i>Ativar Pro — R$19/mês</div>';}
+  verificarAlertas();
+  setInterval(()=>{const el=document.getElementById('quoteText');el.style.opacity='0';setTimeout(()=>{el.textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';el.style.opacity='1';},400);},9000);
+}
+
 // ── NAV ──
 function goTo(s){const cur=document.querySelector('.screen.active');if(cur)cur.classList.remove('active');document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById('screen-'+s).classList.add('active');document.getElementById('nav-'+s).classList.add('active');if(s==='settings')updateSettingsProfile();}
 
@@ -1492,12 +1585,14 @@ function handleLogin(){const email=document.getElementById('loginEmail').value.t
     document.getElementById('loginOverlay').style.display='none';
     document.getElementById('splashQuote').textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';
     setTimeout(()=>document.getElementById('splash').classList.add('hide'),2800);
+    setTimeout(()=>abrirIntro(), 3000);
     checkOnboarding();}else{if(!users[email]){errEl.textContent='E-mail não encontrado.';return;}if(users[email].passHash!==passHash){errEl.textContent='Senha incorreta.';return;}localStorage.setItem('avrs4_current_user',email);
     const usersL=JSON.parse(localStorage.getItem('avrs4_users')||'{}');
     if(usersL[email]){usersL[email].lastSeen=Date.now();localStorage.setItem('avrs4_users',JSON.stringify(usersL));}
     document.getElementById('loginOverlay').style.display='none';
     document.getElementById('splashQuote').textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';
     setTimeout(()=>document.getElementById('splash').classList.add('hide'),2800);
+    setTimeout(()=>abrirIntro(), 3000);
     setTimeout(()=>{if(window.syncUserData)window.syncUserData(email.replace(/[^a-zA-Z0-9]/g,'_'));},1500);checkOnboarding();}}
 const ADMIN_EMAIL='audax2_cj@hotmail.com';
 function checkAuth(){const cu=localStorage.getItem('avrs4_current_user');if(!cu){document.getElementById('loginOverlay').style.display='flex';return false;}if(cu===ADMIN_EMAIL)localStorage.setItem('avrs4_pro','true');return true;}
@@ -1509,24 +1604,12 @@ function loadTheme(){if(localStorage.getItem('avrs4_theme')==='light'){document.
 
 // ── INIT ──
 async function init(){
-  // Splash sempre aparece e fecha, independente do login
+  // Splash inicial (antes do login)
   document.getElementById('splashQuote').textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';
   setTimeout(()=>document.getElementById('splash').classList.add('hide'),2800);
   if(!checkAuth())return;
-  load();loadTheme();loadProStatus();updateStreak();
-  const now=new Date();
-  document.getElementById('dateText').textContent=now.toLocaleDateString('pt-BR',{day:'numeric',month:'long'});
-  document.getElementById('quoteText').textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';
-  const dq=QUESTIONS[now.getDate()%QUESTIONS.length];
-  document.getElementById('qcardText').textContent=dq.q;
-  document.getElementById('qcardHint').textContent=dq.h;
-  renderStats();renderEntries();
-  if(entries.length>=3){document.getElementById('analysisCard').style.display='block';requestWeeklyAnalysis();}
-  checkOnboarding();checkDailyNotif();applyProGating();updateSettingsProStatus();
-  if(isPro)loadMentorMessage();
-  else{document.getElementById('mentorText').innerHTML='Desbloqueie o Mentor IA para receber análises personalizadas baseadas no seu perfil.';document.getElementById('mentorActions').innerHTML='<div class="mentor-pill" onclick="openPaywall()"><i class="ti ti-crown" style="margin-right:4px"></i>Ativar Pro — R$19/mês</div>';}
-  verificarAlertas();
-  setInterval(()=>{const el=document.getElementById('quoteText');el.style.opacity='0';setTimeout(()=>{el.textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';el.style.opacity='1';},400);},9000);
+  // Se já logado e reabrindo o app: mostrar intro antes do app
+  abrirIntro();
 }
 if('serviceWorker'in navigator)navigator.serviceWorker.getRegistrations().then(r=>r.forEach(reg=>reg.unregister()));
 init();
