@@ -1509,10 +1509,11 @@ function loadTheme(){if(localStorage.getItem('avrs4_theme')==='light'){document.
 
 // ── INIT ──
 async function init(){
-  if(!checkAuth())return;
-  load();loadTheme();loadProStatus();updateStreak();
+  // Splash sempre aparece e fecha, independente do login
   document.getElementById('splashQuote').textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';
   setTimeout(()=>document.getElementById('splash').classList.add('hide'),2800);
+  if(!checkAuth())return;
+  load();loadTheme();loadProStatus();updateStreak();
     const now=new Date();
   document.getElementById('dateText').textContent=now.toLocaleDateString('pt-BR',{day:'numeric',month:'long'});
   document.getElementById('quoteText').textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';
