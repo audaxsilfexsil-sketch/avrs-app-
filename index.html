@@ -1538,5 +1538,6 @@ window.syncUserData=async function(userId){try{const cloud=await window.loadFrom
 window.saveUserToCloud=async function(userId){const entries=JSON.parse(localStorage.getItem('avrs4_e')||'[]');const isPro=localStorage.getItem('avrs4_pro')==='true';const streak=localStorage.getItem('avrs4_s')||'0';await window.saveToFirebase(userId,{entries,isPro,streak,lastSync:Date.now()});};
 </script>
 
+</div><!-- /app -->
 </body>
 </html>
