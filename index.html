@@ -1491,13 +1491,13 @@ function hashSimple(str){let h=0;for(let i=0;i<str.length;i++){h=((h<<5)-h)+str.
 function handleLogin(){const email=document.getElementById('loginEmail').value.trim().toLowerCase();const pass=document.getElementById('loginPass').value;const errEl=document.getElementById('loginError');if(!email||!pass){errEl.textContent='Preencha e-mail e senha.';return;}if(!email.includes('@')){errEl.textContent='E-mail inválido.';return;}if(pass.length<6){errEl.textContent='Senha deve ter ao menos 6 caracteres.';return;}const users=JSON.parse(localStorage.getItem('avrs4_users')||'{}');const passHash=hashSimple(pass);if(loginMode==='register'){const confirm=document.getElementById('loginPassConfirm').value;if(pass!==confirm){errEl.textContent='Senhas não conferem.';return;}if(users[email]){errEl.textContent='E-mail já cadastrado.';return;}users[email]={passHash,createdAt:Date.now()};localStorage.setItem('avrs4_users',JSON.stringify(users));localStorage.setItem('avrs4_current_user',email);
     document.getElementById('loginOverlay').style.display='none';
     document.getElementById('splashQuote').textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';
-  setTimeout(()=>document.getElementById('splash').classList.add('hide'),2800);
+    setTimeout(()=>document.getElementById('splash').classList.add('hide'),2800);
     checkOnboarding();}else{if(!users[email]){errEl.textContent='E-mail não encontrado.';return;}if(users[email].passHash!==passHash){errEl.textContent='Senha incorreta.';return;}localStorage.setItem('avrs4_current_user',email);
     const usersL=JSON.parse(localStorage.getItem('avrs4_users')||'{}');
     if(usersL[email]){usersL[email].lastSeen=Date.now();localStorage.setItem('avrs4_users',JSON.stringify(usersL));}
     document.getElementById('loginOverlay').style.display='none';
     document.getElementById('splashQuote').textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';
-  setTimeout(()=>document.getElementById('splash').classList.add('hide'),2800);
+    setTimeout(()=>document.getElementById('splash').classList.add('hide'),2800);
     setTimeout(()=>{if(window.syncUserData)window.syncUserData(email.replace(/[^a-zA-Z0-9]/g,'_'));},1500);checkOnboarding();}}
 const ADMIN_EMAIL='audax2_cj@hotmail.com';
 function checkAuth(){const cu=localStorage.getItem('avrs4_current_user');if(!cu){document.getElementById('loginOverlay').style.display='flex';return false;}if(cu===ADMIN_EMAIL)localStorage.setItem('avrs4_pro','true');return true;}
@@ -1514,7 +1514,7 @@ async function init(){
   setTimeout(()=>document.getElementById('splash').classList.add('hide'),2800);
   if(!checkAuth())return;
   load();loadTheme();loadProStatus();updateStreak();
-    const now=new Date();
+  const now=new Date();
   document.getElementById('dateText').textContent=now.toLocaleDateString('pt-BR',{day:'numeric',month:'long'});
   document.getElementById('quoteText').textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';
   const dq=QUESTIONS[now.getDate()%QUESTIONS.length];
@@ -1528,7 +1528,6 @@ async function init(){
   verificarAlertas();
   setInterval(()=>{const el=document.getElementById('quoteText');el.style.opacity='0';setTimeout(()=>{el.textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';el.style.opacity='1';},400);},9000);
 }
-
 if('serviceWorker'in navigator)navigator.serviceWorker.getRegistrations().then(r=>r.forEach(reg=>reg.unregister()));
 init();
 </script>
