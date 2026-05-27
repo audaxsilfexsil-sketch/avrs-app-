@@ -1195,10 +1195,10 @@ async function loadMentorMessage(){const el=document.getElementById('mentorText'
 
 async function requestWeeklyAnalysis(){const btn=document.querySelector('.analysis-btn');btn.innerHTML='<i class="ti ti-loader"></i> Analisando...';btn.disabled=true;const week=entries.slice(0,7);if(!week.length){btn.innerHTML='<i class="ti ti-sparkles"></i> Analisar';btn.disabled=false;return;}const sc={};week.forEach(e=>{if(e.state&&e.state!=='Não definido')sc[e.state]=(sc[e.state]||0)+1;});const total=week.length;document.getElementById('patternBars').innerHTML=Object.entries(sc).sort((a,b)=>b[1]-a[1]).map(([s,c])=>`<div class="pattern-row"><div class="pattern-label">${s}</div><div class="pattern-bar-wrap"><div class="pattern-bar" style="width:${Math.round((c/total)*100)}%"></div></div><div class="pattern-pct">${Math.round((c/total)*100)}%</div></div>`).join('');btn.innerHTML='<i class="ti ti-sparkles"></i> Analisar';btn.disabled=false;}
 
-async function getAIInsight(state,answers){const p=buildProfile();const prompt=`O usuário está no estado "${state}" e respondeu: ${answers.join(' | ')}\n${p.dominantState?'Padrão recorrente: '+p.dominantState:''}\nDê um insight personalizado de 2-3 frases.`;return await callClaude([{role:'user',content:prompt}],getMentorSystem());}
+async function getAIInsight(state,answers){if(!verificarLimiteIA())return null;incrementMsgCount();const p=buildProfile();const prompt=`O usuário está no estado "${state}" e respondeu: ${answers.join(' | ')}\n${p.dominantState?'Padrão recorrente: '+p.dominantState:''}\nDê um insight personalizado de 2-3 frases.`;return await callClaude([{role:'user',content:prompt}],getMentorSystem());}
 
 let isChatLoading=false;
-function openMentorChat(){document.getElementById('mentorChatOverlay').classList.add('open');const msgs=document.getElementById('chatMsgs');if(!msgs.children.length){if(chatHistory.length){chatHistory.forEach(m=>appendMsg(m.role,m.content,false));}else{const w=entries.length?`Olá. Estou analisando seu histórico — ${entries.length} registros. O que você quer trabalhar hoje?`:'Bem-vindo ao Mentor AVR–S. O que está passando agora?';appendMsg('assistant',w,false);chatHistory.push({role:'assistant',content:w});}}scrollChat();}
+function openMentorChat(){document.getElementById('mentorChatOverlay').classList.add('open');setTimeout(()=>atualizarContadorChat(),100);const msgs=document.getElementById('chatMsgs');if(!msgs.children.length){if(chatHistory.length){chatHistory.forEach(m=>appendMsg(m.role,m.content,false));}else{const w=entries.length?`Olá. Estou analisando seu histórico — ${entries.length} registros. O que você quer trabalhar hoje?`:'Bem-vindo ao Mentor AVR–S. O que está passando agora?';appendMsg('assistant',w,false);chatHistory.push({role:'assistant',content:w});}}scrollChat();}
 function closeMentorChat(){stopSpeak();document.getElementById('mentorChatOverlay').classList.remove('open');localStorage.setItem('avrs4_chat',JSON.stringify(chatHistory.slice(-20)));}
 function quickChat(msg){openMentorChat();setTimeout(()=>{document.getElementById('chatInput').value=msg;sendChat();},300);}
 
@@ -1207,7 +1207,7 @@ function appendTyping(){const msgs=document.getElementById('chatMsgs');const div
 function removeTyping(){const el=document.getElementById('typingIndicator');if(el)el.remove();}
 function scrollChat(){const msgs=document.getElementById('chatMsgs');msgs.scrollTop=msgs.scrollHeight;}
 
-async function sendChat(){if(isChatLoading)return;const input=document.getElementById('chatInput');const text=input.value.trim();if(!text)return;input.value='';appendMsg('user',text);chatHistory.push({role:'user',content:text});isChatLoading=true;document.getElementById('mentorChatStatus').textContent='digitando...';appendTyping();const messages=chatHistory.slice(-12).map(m=>({role:m.role,content:m.content}));const response=await callClaude(messages,getMentorSystem());removeTyping();isChatLoading=false;document.getElementById('mentorChatStatus').textContent='online';const reply=response||'Algo deu errado. Tente novamente.';appendMsg('assistant',reply);chatHistory.push({role:'assistant',content:reply});localStorage.setItem('avrs4_chat',JSON.stringify(chatHistory.slice(-20)));}
+async function sendChat(){if(isChatLoading)return;const input=document.getElementById('chatInput');const text=input.value.trim();if(!text)return;if(!verificarLimiteIA())return;incrementMsgCount();atualizarContadorChat();input.value='';appendMsg('user',text);chatHistory.push({role:'user',content:text});isChatLoading=true;document.getElementById('mentorChatStatus').textContent='digitando...';appendTyping();const messages=chatHistory.slice(-12).map(m=>({role:m.role,content:m.content}));const response=await callClaude(messages,getMentorSystem());removeTyping();isChatLoading=false;document.getElementById('mentorChatStatus').textContent='online';const reply=response||'Algo deu errado. Tente novamente.';appendMsg('assistant',reply);chatHistory.push({role:'assistant',content:reply});localStorage.setItem('avrs4_chat',JSON.stringify(chatHistory.slice(-20)));}
 
 // ── TTS ──
 let ttsUtterance=null,ttsSpeaking=false,ttsCurrentBtn=null;
@@ -1243,6 +1243,76 @@ function somAtivado(){return localStorage.getItem('avrs4_alerta_som')!=='false';
 function setSomAlerta(ativo){localStorage.setItem('avrs4_alerta_som',ativo?'true':'false');}
 
 
+
+
+// ── LIMITE DE MENSAGENS IA ──
+const LIMITE_FREE = 5;
+const LIMITE_PRO = 150;
+
+function getMesAtual(){
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+}
+
+function getMsgCount(){
+  const cu = localStorage.getItem('avrs4_current_user');
+  if(!cu) return 0;
+  const key = 'avrs4_msg_' + cu.replace(/[^a-zA-Z0-9]/g,'_') + '_' + getMesAtual();
+  return parseInt(localStorage.getItem(key)||'0');
+}
+
+function incrementMsgCount(){
+  const cu = localStorage.getItem('avrs4_current_user');
+  if(!cu) return;
+  const key = 'avrs4_msg_' + cu.replace(/[^a-zA-Z0-9]/g,'_') + '_' + getMesAtual();
+  const cur = parseInt(localStorage.getItem(key)||'0');
+  localStorage.setItem(key, cur+1);
+}
+
+function getLimite(){
+  return isPro ? LIMITE_PRO : LIMITE_FREE;
+}
+
+function getMsgRestantes(){
+  return Math.max(0, getLimite() - getMsgCount());
+}
+
+function verificarLimiteIA(){
+  // Admin sem limite
+  if(localStorage.getItem('avrs4_current_user') === ADMIN_EMAIL) return true;
+  const restantes = getMsgRestantes();
+  if(restantes <= 0){
+    if(!isPro){
+      // Gratuito: mostrar paywall
+      openPaywall();
+    } else {
+      // Pro: aviso de limite mensal
+      const toast = document.createElement('div');
+      toast.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--border2);color:var(--cream);padding:14px 20px;border-radius:14px;font-size:13px;z-index:9999;text-align:center;max-width:300px';
+      toast.innerHTML = '<i class="ti ti-alert-circle" style="color:var(--gold);margin-right:6px"></i>Limite de 150 mensagens/mês atingido. Renova no próximo mês.';
+      document.body.appendChild(toast);
+      setTimeout(()=>toast.remove(), 4000);
+    }
+    return false;
+  }
+  // Aviso quando restam poucas mensagens
+  if(restantes <= 3 && restantes > 0){
+    const input = document.getElementById('chatInput');
+    if(input) input.placeholder = restantes === 1 ? 'Última mensagem do mês...' : restantes + ' mensagens restantes este mês';
+  }
+  return true;
+}
+
+function atualizarContadorChat(){
+  const restantes = getMsgRestantes();
+  const limite = getLimite();
+  const usado = getMsgCount();
+  // Mostrar no header do chat se Pro
+  const statusEl = document.getElementById('mentorChatStatus');
+  if(statusEl && isPro){
+    statusEl.textContent = 'online · ' + (limite - usado) + '/' + limite + ' msgs';
+  }
+}
 
 // ── NAV ──
 function goTo(s){const cur=document.querySelector('.screen.active');if(cur)cur.classList.remove('active');document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById('screen-'+s).classList.add('active');document.getElementById('nav-'+s).classList.add('active');if(s==='settings')updateSettingsProfile();}
