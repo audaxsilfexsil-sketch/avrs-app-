@@ -783,6 +783,15 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
       <div class="settings-row"><div class="settings-label">Perfil adaptativo</div><div class="settings-value" id="profileStatus">Construindo...</div></div>
       <div class="settings-row"><div class="settings-label">Padrão dominante</div><div class="settings-value" id="dominantPattern">—</div></div>
       <div class="settings-row"><div class="settings-label">Gatilho recorrente</div><div class="settings-value" id="mainTrigger">—</div></div>
+      <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:8px">
+        <div style="display:flex;justify-content:space-between;width:100%">
+          <div class="settings-label"><i class="ti ti-brain" style="margin-right:6px;color:var(--gold)"></i>Mensagens IA este mês</div>
+          <div class="settings-value" id="msgCountDisplay">—</div>
+        </div>
+        <div style="width:100%;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden">
+          <div id="msgCountBar" style="height:100%;border-radius:2px;background:var(--gold);transition:width .4s ease;width:0%"></div>
+        </div>
+      </div>
     </div>
     <div class="settings-section">
       <div class="settings-section-title">Aparência</div>
@@ -1336,7 +1345,23 @@ function filterBy(f,el){document.querySelectorAll('.filter-chip').forEach(c=>c.c
 function renderEntries(){const c=document.getElementById('entriesList');const list=currentFilter==='todos'?entries:entries.filter(e=>e.state===currentFilter);if(!list.length){c.innerHTML=`<div class="empty-state"><div class="empty-icon"><i class="ti ti-notebook"></i></div><div class="empty-title">Nenhum registro ainda</div><div class="empty-sub">Toque em um estado acima para iniciar o diagnóstico.</div></div>`;return;}c.innerHTML=list.map(e=>`<div class="entry-card" onclick="openDetail(${e.id})"><div class="entry-top"><div class="entry-situation">${esc(e.situation)}</div><div class="entry-date">${e.date}</div></div>${e.decision?`<div class="entry-body">${esc(e.decision)}</div>`:''}<div class="entry-footer">${e.state!=='Não definido'?`<span class="badge badge-gold">${esc(e.state)}</span>`:''} ${e.distortion&&e.distortion!=='Nenhuma'?`<span class="badge badge-dark">${esc(e.distortion)}</span>`:''} ${e.answers&&e.answers.length?'<span class="badge badge-ai"><i class="ti ti-brain" style="font-size:10px;margin-right:3px"></i>IA</span>':''}</div></div>`).join('');}
 function esc(s){if(!s)return '';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function renderStats(){document.getElementById('streak').textContent=streak;document.getElementById('totalEntries').textContent=entries.length;const p=buildProfile();const stEl=document.getElementById('statState'),dEl=document.getElementById('statDist');if(stEl)stEl.textContent=p.dominantState||'—';if(dEl)dEl.textContent=p.mainDistortion||'—';}
-function updateSettingsProfile(){loadTTSSettings();const tt=document.getElementById('themeToggle');if(tt)tt.checked=localStorage.getItem('avrs4_theme')==='light';const cu=localStorage.getItem('avrs4_current_user');if(cu){const el=document.getElementById('settingsEmail');if(el)el.textContent=cu;}const adminBtn=document.getElementById('adminBtn');if(adminBtn)adminBtn.style.display=localStorage.getItem('avrs4_current_user')===ADMIN_EMAIL?'block':'none';document.getElementById('settingsTotal').textContent=entries.length;document.getElementById('settingsStreak').textContent=streak+' dias';if(entries.length>0){const o=new Date(entries[entries.length-1].id);document.getElementById('settingsSince').textContent=o.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});}const p=buildProfile();document.getElementById('profileStatus').textContent=entries.length>=5?'Ativo — '+entries.length+' registros':'Construindo... ('+entries.length+'/5)';document.getElementById('dominantPattern').textContent=p.dominantState||'—';document.getElementById('mainTrigger').textContent=p.mainDistortion||'—';}
+function updateSettingsProfile(){loadTTSSettings();const tt=document.getElementById('themeToggle');if(tt)tt.checked=localStorage.getItem('avrs4_theme')==='light';const cu=localStorage.getItem('avrs4_current_user');if(cu){const el=document.getElementById('settingsEmail');if(el)el.textContent=cu;}const adminBtn=document.getElementById('adminBtn');if(adminBtn)adminBtn.style.display=localStorage.getItem('avrs4_current_user')===ADMIN_EMAIL?'block':'none';document.getElementById('settingsTotal').textContent=entries.length;document.getElementById('settingsStreak').textContent=streak+' dias';if(entries.length>0){const o=new Date(entries[entries.length-1].id);document.getElementById('settingsSince').textContent=o.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});}const p=buildProfile();document.getElementById('profileStatus').textContent=entries.length>=5?'Ativo — '+entries.length+' registros':'Construindo... ('+entries.length+'/5)';document.getElementById('dominantPattern').textContent=p.dominantState||'—';document.getElementById('mainTrigger').textContent=p.mainDistortion||'—';
+  // Contador de mensagens IA
+  const usado=getMsgCount();
+  const limite=getLimite();
+  const restantes=Math.max(0,limite-usado);
+  const pct=Math.min(100,Math.round((usado/limite)*100));
+  const displayEl=document.getElementById('msgCountDisplay');
+  const barEl=document.getElementById('msgCountBar');
+  if(displayEl){
+    displayEl.textContent=usado+' / '+limite;
+    displayEl.style.color=restantes<=3?'#d46a6a':restantes<=10?'var(--yellow, #d4a04a)':'var(--text3)';
+  }
+  if(barEl){
+    barEl.style.width=pct+'%';
+    barEl.style.background=restantes<=3?'#d46a6a':restantes<=10?'#d4a04a':'var(--gold)';
+  }
+}
 
 // ── DETAIL ──
 function openDetail(id){const e=entries.find(x=>x.id===id);if(!e)return;currentEntryId=id;document.getElementById('detSit').textContent=e.situation;document.getElementById('detMeta').innerHTML=`${e.state!=='Não definido'?`<span class="badge badge-gold">${esc(e.state)}</span>`:''} ${e.distortion&&e.distortion!=='Nenhuma'?`<span class="badge badge-dark">${esc(e.distortion)}</span>`:''} <span style="font-size:11px;color:var(--text3)">${e.date}</span>`;let body='';if(e.fact)body+=`<div class="det-section"><div class="det-section-label">Fato observável</div><div class="det-section-text">${esc(e.fact)}</div></div>`;if(e.decision)body+=`<div class="det-section"><div class="det-section-label">Decisão consciente</div><div class="det-section-text">${esc(e.decision)}</div></div>`;if(e.lesson)body+=`<div class="det-section"><div class="det-section-label">Evolução</div><div class="det-section-text">${esc(e.lesson)}</div></div>`;document.getElementById('detBody').innerHTML=body;document.getElementById('detOverlay').style.display='block';setTimeout(()=>document.getElementById('detPanel').classList.add('open'),10);}
