@@ -1299,8 +1299,31 @@ function switchProtoTab(tab){['protocolo','biblioteca','frases','glossario'].for
 const STATE_COLORS={'Presente':'#7ab8d4','Focado':'#d4b87a','Ansioso':'#d4a04a','Sobrecarregado':'#a07ad4','Reativo':'#d46a6a','Claro':'#7ad4a0'};
 const STATE_ICONS={'Presente':'ti-eye','Focado':'ti-target','Ansioso':'ti-bolt','Sobrecarregado':'ti-cloud-storm','Reativo':'ti-flame','Claro':'ti-sun'};
 const DIST_DESC={'Urgência falsa':'A pressão percebida é maior do que a situação exige.','Escassez':'O medo de perder está conduzindo as decisões.','Ego':'A necessidade de estar certo interfere no julgamento.','Medo':'Evitação de desconforto como padrão de resposta.','Excesso de confiança':'Subestimação de riscos e complexidade.','Fadiga mental':'Decisões tomadas com capacidade cognitiva reduzida.','Nenhuma':'Nenhuma distorção recorrente identificada.'};
-function openDashboard(){document.getElementById('dashOverlay').classList.add('open');renderDashboard();}
+function openDashboard(){
+  document.getElementById('dashOverlay').classList.add('open');
+  renderDashboard();
+  if(isPro) loadDashInsight();
+}
 function closeDashboard(){document.getElementById('dashOverlay').classList.remove('open');}
+async function loadDashInsight(){
+  const box = document.getElementById('dashInsightText');
+  if(!box) return;
+  const p = buildProfile();
+  if(!p.totalEntries){
+    box.innerHTML = 'Registre pelo menos um estado para receber análise.';
+    return;
+  }
+  const last7 = entries.slice(0,7);
+  const summary = last7.map(e=>`${e.state}${e.distortion&&e.distortion!=='Nenhuma'?' ('+e.distortion+')':''}`).join(', ');
+  const prompt = `Analise o padrão emocional desta semana do usuário: ${summary}. Estado dominante: ${p.dominantState||'variado'}. Distorção mais frequente: ${p.mainDistortion||'nenhuma'}. Dê um insight de 2-3 frases sobre o padrão e uma recomendação prática.`;
+  const insight = await callClaude([{role:'user',content:prompt}], getMentorSystem());
+  if(box && insight){
+    box.innerHTML = insight;
+  } else if(box){
+    box.innerHTML = 'Não foi possível gerar análise agora. Tente novamente.';
+  }
+}
+
 function renderDashboard(){const container=document.getElementById('dashContent');const last30=entries.slice(0,30);if(!last30.length){container.innerHTML=`<div style="text-align:center;padding:60px 24px"><div style="font-size:40px;color:#6a6460;margin-bottom:16px"><i class="ti ti-chart-bar"></i></div><div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:#b8b0a4;margin-bottom:8px">Nenhum dado ainda</div><div style="font-size:13px;color:#6a6460">Registre algumas decisões para ver seu dashboard.</div></div>`;return;}const sc={},dc={};last30.forEach(e=>{if(e.state&&e.state!=='Não definido')sc[e.state]=(sc[e.state]||0)+1;if(e.distortion&&e.distortion!=='Nenhuma')dc[e.distortion]=(dc[e.distortion]||0)+1;});const ss=Object.entries(sc).sort((a,b)=>b[1]-a[1]);const ds=ss[0]?.[0]||'—',dc0=ss[0]?.[1]||0,dp=Math.round((dc0/last30.length)*100);const md=Object.entries(dc).sort((a,b)=>b[1]-a[1])[0]?.[0]||'Nenhuma';const mdc=dc[md]||0;const clarityMap={'Claro':100,'Presente':85,'Focado':80,'Ansioso':35,'Reativo':25,'Sobrecarregado':20};const l7=entries.slice(0,7).map(e=>({date:e.date,state:e.state,clarity:clarityMap[e.state]||50}));const clarityHtml=l7.length?l7.map(d=>{const col=d.clarity>=80?'#7ad4a0':d.clarity>=50?'var(--gold)':'#d46a6a';return`<div class="dash-clarity-row"><div class="dash-clarity-day">${d.date.split(' ')[0]}</div><div class="dash-clarity-bar-wrap"><div class="dash-clarity-bar" style="width:${d.clarity}%;background:${col}"></div></div><div class="dash-clarity-state">${d.state}</div></div>`;}).join(''):'<div class="dash-clarity-empty">Sem dados suficientes</div>';const wpHtml=ss.slice(0,5).map(([s,c])=>{const pct=Math.round((c/last30.length)*100);return`<div class="dash-pattern-row"><div class="dash-pattern-label">${s}</div><div class="dash-pattern-bar-wrap"><div class="dash-pattern-bar" style="width:${pct}%;background:${STATE_COLORS[s]||'var(--gold)'}"></div></div><div class="dash-pattern-pct">${pct}%</div><div class="dash-pattern-count">${c}x</div></div>`;}).join('');container.innerHTML=`<div class="dash-nums"><div class="dash-num-card"><div class="dash-num-value">${last30.length}</div><div class="dash-num-label">Registros</div></div><div class="dash-num-card"><div class="dash-num-value">${streak}</div><div class="dash-num-label">Sequência</div></div><div class="dash-num-card"><div class="dash-num-value">${ss.length}</div><div class="dash-num-label">Estados</div></div></div><div class="dash-section"><div class="dash-section-title"><i class="ti ti-radar"></i>Estado dominante</div><div class="dash-state-card"><div class="dash-state-icon"><i class="ti ${STATE_ICONS[ds]||'ti-brain'}"></i></div><div><div class="dash-state-name">${ds}</div><div class="dash-state-sub">Mais frequente nos últimos ${last30.length} registros</div></div><div class="dash-state-pct"><div class="dash-state-pct-num">${dp}%</div><div class="dash-state-pct-label">das entradas</div></div></div></div><div class="dash-section"><div class="dash-section-title"><i class="ti ti-alert-triangle"></i>Distorção recorrente</div><div class="dash-dist-card"><div class="dash-dist-icon"><i class="ti ti-alert-triangle"></i></div><div style="flex:1"><div class="dash-dist-name">${md}</div><div class="dash-dist-desc">${DIST_DESC[md]||''}</div><div class="dash-dist-freq">${mdc>0?`Apareceu ${mdc}x nos últimos ${last30.length} registros`:'Não detectada'}</div></div></div></div><div class="dash-section"><div class="dash-section-title"><i class="ti ti-trending-up"></i>Evolução · 7 dias</div><div class="dash-clarity-card">${clarityHtml}</div></div><div class="dash-section"><div class="dash-section-title"><i class="ti ti-chart-bar"></i>Padrão</div><div class="dash-pattern-card">${wpHtml||'<div class="dash-clarity-empty">Sem dados</div>'}</div></div>${isPro?`<div class="dash-section"><div class="dash-insight-card"><div class="dash-insight-label"><i class="ti ti-brain"></i>Análise IA</div><div class="dash-insight-text" id="dashInsightText"><div class="mentor-typing"><span></span><span></span><span></span></div></div></div></div>`:''}`;}
 
 // ── PAYWALL ──
