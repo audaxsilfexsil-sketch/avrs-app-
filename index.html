@@ -21,16 +21,29 @@
 html,body{height:100%;overflow:hidden;background:#0e0c0a} @media(min-width:900px){body{background:radial-gradient(ellipse at 30% 20%, rgba(200,169,109,0.05) 0%, #0e0c0a 60%);}}
 body{font-family:'DM Sans',sans-serif;color:var(--cream);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;}
 .app{max-width:100%;width:100%;margin:0 auto;height:100vh;height:100dvh;display:flex;flex-direction:column;background:var(--bg);position:relative;overflow:hidden}
-.splash{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 40px;z-index:999;transition:opacity 1.2s ease}
+.splash{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 40px;z-index:999;transition:opacity 1.4s ease;overflow:hidden}
 .splash.hide{opacity:0;pointer-events:none}
 .splash-logo{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;letter-spacing:.3em;color:var(--gold);margin-bottom:4px}
 .splash-subtitle{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--text3);margin-bottom:48px}
 .splash-quote{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;font-style:italic;color:var(--text2);text-align:center;line-height:1.8;max-width:280px;margin-bottom:48px}
+/* Passagens animadas */
+.sp-logo{opacity:1;transition:opacity .6s ease;margin-bottom:0}
+.sp-item{position:absolute;display:flex;flex-direction:column;align-items:center;text-align:center;opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease;padding:0 40px;width:100%}
+.sp-item.show{opacity:1;transform:translateY(0)}
+.sp-item.out{opacity:0;transform:translateY(-20px)}
+.sp-letter{font-family:'Cormorant Garamond',serif;font-size:80px;font-weight:300;color:var(--gold);line-height:1;margin-bottom:6px;letter-spacing:.05em}
+.sp-name{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--text3);margin-bottom:18px}
+.sp-line{width:28px;height:1px;background:rgba(200,169,109,.35);margin:0 auto 18px}
+.sp-quote{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:300;font-style:italic;color:var(--text2);line-height:1.8;max-width:280px}
+/* Final: respire */
+.sp-final{position:absolute;display:flex;flex-direction:column;align-items:center;opacity:0;transform:translateY(20px);transition:opacity .8s ease,transform .8s ease}
+.sp-final.show{opacity:1;transform:translateY(0)}
 .breath-ring{width:80px;height:80px;border-radius:50%;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;animation:breathe 4s ease-in-out infinite}
 .breath-inner{width:48px;height:48px;border-radius:50%;border:1px solid rgba(200,169,109,.4);display:flex;align-items:center;justify-content:center}
 .breath-dot{width:6px;height:6px;border-radius:50%;background:var(--gold)}
 @keyframes breathe{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.15);opacity:1}}
 .breath-label{margin-top:16px;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3)}
+.sp-tagline{font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:rgba(200,169,109,.45);margin-top:8px;letter-spacing:.05em}
 .topbar{padding:16px 20px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);flex-shrink:0} @media(min-width:520px){.topbar{padding:18px calc(50% - 420px) 16px;}} @media(min-width:1200px){.topbar{padding:20px calc(50% - 500px) 18px;}}
 .brand{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;letter-spacing:.1em;color:var(--gold)}
 .topbar-right{display:flex;align-items:center;gap:14px}
@@ -609,6 +622,19 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 .tts-speed-row{display:flex;align-items:center;gap:8px}
 .tts-speed-btn{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:5px 12px;font-size:12px;color:var(--text2);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
 .tts-speed-btn.active{background:rgba(200,169,109,.12);border-color:var(--border2);color:var(--gold)}
+
+.eco-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:16px;margin-bottom:10px;display:flex;align-items:flex-start;gap:14px;transition:border-color .2s}
+.eco-card:hover{border-color:var(--border2)}
+.eco-num{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--gold);width:28px;flex-shrink:0;line-height:1.2}
+.eco-icon{width:40px;height:40px;border-radius:10px;background:rgba(200,169,109,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.eco-icon i{font-size:20px;color:var(--gold)}
+.eco-content{flex:1}
+.eco-title{font-size:14px;font-weight:600;color:var(--cream);margin-bottom:4px;letter-spacing:.02em}
+.eco-desc{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px}
+.eco-status{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:10px;letter-spacing:.06em}
+.eco-status.available{background:rgba(200,169,109,.1);border:1px solid var(--border2);color:var(--gold)}
+.eco-status.soon{background:var(--bg4);border:1px solid var(--border);color:var(--text3)}
+.eco-intro{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;font-style:italic;color:var(--text2);line-height:1.8;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
 </style>
 </head>
 <body>
@@ -633,13 +659,58 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 
 <!-- SPLASH -->
 <div class="splash" id="splash">
-  <img src="https://audaxsilfexsil-sketch.github.io/avrs-app-/LOGO01.png.png" alt="AVR–S" style="width:220px;max-width:80%;margin-bottom:32px;object-fit:contain"/>
-  <div class="splash-quote" id="splashQuote"></div>
-  <div class="breath-ring"><div class="breath-inner"><div class="breath-dot"></div></div></div>
-  <div class="breath-label">Respire</div>
+
+  <!-- Logo inicial -->
+  <img class="sp-logo" id="spLogo" src="https://audaxsilfexsil-sketch.github.io/avrs-app-/LOGO01.png.png" alt="AVR–S" style="width:200px;max-width:78%;object-fit:contain;position:relative;z-index:1"/>
+
+  <!-- R - Regular -->
+  <div class="sp-item" id="sp0">
+    <div class="sp-letter">R</div>
+    <div class="sp-name">Regular</div>
+    <div class="sp-line"></div>
+    <div class="sp-quote">Antes de decidir,<br>ajuste quem está decidindo.</div>
+  </div>
+
+  <!-- A - Atenção -->
+  <div class="sp-item" id="sp1">
+    <div class="sp-letter">A</div>
+    <div class="sp-name">Atenção</div>
+    <div class="sp-line"></div>
+    <div class="sp-quote">Para onde você olha<br>determina o que você vê.</div>
+  </div>
+
+  <!-- V - Visão -->
+  <div class="sp-item" id="sp2">
+    <div class="sp-letter">V</div>
+    <div class="sp-name">Visão</div>
+    <div class="sp-line"></div>
+    <div class="sp-quote">Você não reage ao que acontece.<br>Reage ao que construiu sobre isso.</div>
+  </div>
+
+  <!-- R - Resposta -->
+  <div class="sp-item" id="sp3">
+    <div class="sp-letter">R</div>
+    <div class="sp-name">Resposta</div>
+    <div class="sp-line"></div>
+    <div class="sp-quote">Entre o estímulo e a resposta<br>existe a sua liberdade.</div>
+  </div>
+
+  <!-- S - Sistema -->
+  <div class="sp-item" id="sp4">
+    <div class="sp-letter">S</div>
+    <div class="sp-name">Sistema</div>
+    <div class="sp-line"></div>
+    <div class="sp-quote">Você vive o que repete.<br>Construa o que quer repetir.</div>
+  </div>
+
+  <!-- Final -->
+  <div class="sp-final" id="spFinal">
+    <div class="breath-ring"><div class="breath-inner"><div class="breath-dot"></div></div></div>
+    <div class="breath-label">Respire</div>
+    <div class="sp-tagline">A Vida Sem Rascunho</div>
+  </div>
+
 </div>
-
-
 
 <!-- TOPBAR -->
 <div class="topbar">
@@ -745,6 +816,7 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
       <button class="proto-tab" id="ptab-biblioteca" onclick="switchProtoTab('biblioteca')">Biblioteca</button>
       <button class="proto-tab" id="ptab-frases" onclick="switchProtoTab('frases')">Frases</button>
       <button class="proto-tab" id="ptab-glossario" onclick="switchProtoTab('glossario')">Glossário</button>
+      <button class="proto-tab" id="ptab-ecossistema" onclick="switchProtoTab('ecossistema')">Ecossistema</button>
     </div>
     <div id="proto-protocolo">
       <div class="protocol-intro">O AVR–S não é uma técnica.<br>É uma forma de perceber antes de agir.</div>
@@ -761,6 +833,66 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
       <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border)">
         <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#6a6460;margin-bottom:12px">Minhas favoritas</div>
         <div id="frasesFavList"></div>
+      </div>
+    </div>
+    <div id="proto-ecossistema" style="display:none">
+      <div class="eco-intro">O app AVR–S é parte de um ecossistema completo de consciência e decisão. Cada elemento foi criado para despertar, ensinar e sustentar uma nova forma de perceber antes de agir.</div>
+      <div class="eco-card">
+        <div class="eco-num">1</div>
+        <div class="eco-icon"><i class="ti ti-book"></i></div>
+        <div class="eco-content">
+          <div class="eco-title">Livro · A Vida Sem Rascunho</div>
+          <div class="eco-desc">A origem. A história real que revela o que acontece antes da decisão e dá origem ao método AVR–S.</div>
+          <span class="eco-status available"><i class="ti ti-check" style="font-size:10px"></i>Disponível</span>
+        </div>
+      </div>
+      <div class="eco-card">
+        <div class="eco-num">2</div>
+        <div class="eco-icon"><i class="ti ti-microphone"></i></div>
+        <div class="eco-content">
+          <div class="eco-title">Palestra · A Vida Sem Rascunho</div>
+          <div class="eco-desc">A mensagem que desperta consciência e abre espaço para mudança. Uma experiência que move plateias.</div>
+          <span class="eco-status available"><i class="ti ti-check" style="font-size:10px"></i>Disponível</span>
+        </div>
+      </div>
+      <div class="eco-card">
+        <div class="eco-num">3</div>
+        <div class="eco-icon"><i class="ti ti-users"></i></div>
+        <div class="eco-content">
+          <div class="eco-title">Workshop · AVR–S Liderança Consciente</div>
+          <div class="eco-desc">A experiência imersiva que ensina o método, gera percepção e desenvolve novas habilidades de liderança.</div>
+          <span class="eco-status soon"><i class="ti ti-clock" style="font-size:10px"></i>Em breve</span>
+        </div>
+      </div>
+      <div class="eco-card">
+        <div class="eco-num">4</div>
+        <div class="eco-icon"><i class="ti ti-notebook"></i></div>
+        <div class="eco-content">
+          <div class="eco-title">Workbook do Participante</div>
+          <div class="eco-desc">O caderno de aplicação que consolida o aprendizado e transforma insight em ação real.</div>
+          <span class="eco-status soon"><i class="ti ti-clock" style="font-size:10px"></i>Em breve</span>
+        </div>
+      </div>
+      <div class="eco-card">
+        <div class="eco-num">5</div>
+        <div class="eco-icon"><i class="ti ti-share"></i></div>
+        <div class="eco-content">
+          <div class="eco-title">Kit para Líderes Replicadores</div>
+          <div class="eco-desc">O sistema de multiplicação que prepara líderes para replicar o método com excelência.</div>
+          <span class="eco-status soon"><i class="ti ti-clock" style="font-size:10px"></i>Em breve</span>
+        </div>
+      </div>
+      <div class="eco-card" style="border-color:var(--border2);background:rgba(200,169,109,.04)">
+        <div class="eco-num">6</div>
+        <div class="eco-icon"><i class="ti ti-device-mobile"></i></div>
+        <div class="eco-content">
+          <div class="eco-title">App AVR–S · Você está aqui</div>
+          <div class="eco-desc">A ferramenta digital que sustenta a prática diária, acompanha o progresso e mantém o ciclo de consciência ativo no dia a dia.</div>
+          <span class="eco-status available"><i class="ti ti-check" style="font-size:10px"></i>Você está aqui</span>
+        </div>
+      </div>
+      <div style="margin-top:20px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:16px;text-align:center">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:var(--gold2);line-height:1.8">Tudo começa na história.<br>Tudo se sustenta na prática.<br>Tudo se multiplica através de líderes conscientes.</div>
       </div>
     </div>
     <div id="proto-glossario" style="display:none">
@@ -992,28 +1124,36 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 <div class="onboard-overlay" id="onboardOverlay">
   <div class="onboard-step active" id="onboard-1">
     <div class="onboard-icon"><i class="ti ti-eye"></i></div>
-    <div class="onboard-num">01 de 03</div>
+    <div class="onboard-num">01 de 04</div>
     <div class="onboard-title">A Vida Sem Rascunho</div>
     <div class="onboard-text">O AVR–S é um método de consciência e decisão. Ele ajuda você a perceber antes de agir.</div>
-    <div class="onboard-dots"><div class="onboard-dot active"></div><div class="onboard-dot"></div><div class="onboard-dot"></div></div>
+    <div class="onboard-dots"><div class="onboard-dot active"></div><div class="onboard-dot"></div><div class="onboard-dot"></div><div class="onboard-dot"></div></div>
     <button class="onboard-btn" onclick="nextOnboard(2)">Continuar</button>
     <button class="onboard-skip" onclick="finishOnboard()">Pular introdução</button>
   </div>
   <div class="onboard-step" id="onboard-2">
     <div class="onboard-icon"><i class="ti ti-layers-intersect"></i></div>
-    <div class="onboard-num">02 de 03</div>
+    <div class="onboard-num">02 de 04</div>
     <div class="onboard-title">O Protocolo AVR–S</div>
     <div class="onboard-text">Cinco camadas: <strong style="color:var(--gold)">Regular · Atenção · Visão · Resposta · Sistema.</strong><br><br>Cada uma cria um espaço entre o estímulo e a sua ação.</div>
-    <div class="onboard-dots"><div class="onboard-dot"></div><div class="onboard-dot active"></div><div class="onboard-dot"></div></div>
+    <div class="onboard-dots"><div class="onboard-dot"></div><div class="onboard-dot active"></div><div class="onboard-dot"></div><div class="onboard-dot"></div></div>
     <button class="onboard-btn" onclick="nextOnboard(3)">Continuar</button>
     <button class="onboard-skip" onclick="finishOnboard()">Pular introdução</button>
   </div>
   <div class="onboard-step" id="onboard-3">
     <div class="onboard-icon"><i class="ti ti-notebook"></i></div>
-    <div class="onboard-num">03 de 03</div>
+    <div class="onboard-num">03 de 04</div>
     <div class="onboard-title">Como usar o app</div>
     <div class="onboard-text">Toque em um estado emocional para iniciar o diagnóstico. Registre suas decisões conscientes. Acompanhe seus padrões no Dashboard.</div>
-    <div class="onboard-dots"><div class="onboard-dot"></div><div class="onboard-dot"></div><div class="onboard-dot active"></div></div>
+    <div class="onboard-dots"><div class="onboard-dot"></div><div class="onboard-dot"></div><div class="onboard-dot active"></div><div class="onboard-dot"></div></div>
+    <button class="onboard-btn" onclick="nextOnboard(4)">Continuar</button>
+  </div>
+  <div class="onboard-step" id="onboard-4">
+    <div class="onboard-icon"><i class="ti ti-circles-relation"></i></div>
+    <div class="onboard-num">04 de 04</div>
+    <div class="onboard-title">O Ecossistema AVR–S</div>
+    <div class="onboard-text">O app é parte de um ciclo completo: <strong style="color:var(--gold)">Livro · Palestra · Workshop · Workbook · Kit · App.</strong><br><br>Você está na etapa de sustentação — onde a prática se torna sistema.</div>
+    <div class="onboard-dots"><div class="onboard-dot"></div><div class="onboard-dot"></div><div class="onboard-dot"></div><div class="onboard-dot active"></div></div>
     <button class="onboard-btn" onclick="finishOnboard()">Começar agora</button>
   </div>
 </div>
@@ -1252,8 +1392,6 @@ function somAtivado(){return localStorage.getItem('avrs4_alerta_som')!=='false';
 function setSomAlerta(ativo){localStorage.setItem('avrs4_alerta_som',ativo?'true':'false');}
 
 
-
-
 // ── LIMITE DE MENSAGENS IA ──
 const LIMITE_FREE = 5;
 const LIMITE_PRO = 150;
@@ -1262,14 +1400,12 @@ function getMesAtual(){
   const d = new Date();
   return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
 }
-
 function getMsgCount(){
   const cu = localStorage.getItem('avrs4_current_user');
   if(!cu) return 0;
   const key = 'avrs4_msg_' + cu.replace(/[^a-zA-Z0-9]/g,'_') + '_' + getMesAtual();
   return parseInt(localStorage.getItem(key)||'0');
 }
-
 function incrementMsgCount(){
   const cu = localStorage.getItem('avrs4_current_user');
   if(!cu) return;
@@ -1277,52 +1413,33 @@ function incrementMsgCount(){
   const cur = parseInt(localStorage.getItem(key)||'0');
   localStorage.setItem(key, cur+1);
 }
-
-function getLimite(){
-  return isPro ? LIMITE_PRO : LIMITE_FREE;
-}
-
-function getMsgRestantes(){
-  return Math.max(0, getLimite() - getMsgCount());
-}
-
+function getLimite(){ return isPro ? LIMITE_PRO : LIMITE_FREE; }
+function getMsgRestantes(){ return Math.max(0, getLimite() - getMsgCount()); }
 function verificarLimiteIA(){
-  // Admin sem limite
   if(localStorage.getItem('avrs4_current_user') === ADMIN_EMAIL) return true;
   const restantes = getMsgRestantes();
   if(restantes <= 0){
-    if(!isPro){
-      // Gratuito: mostrar paywall
-      openPaywall();
-    } else {
-      // Pro: aviso de limite mensal
+    if(!isPro){ openPaywall(); }
+    else {
       const toast = document.createElement('div');
       toast.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--border2);color:var(--cream);padding:14px 20px;border-radius:14px;font-size:13px;z-index:9999;text-align:center;max-width:300px';
-      toast.innerHTML = '<i class="ti ti-alert-circle" style="color:var(--gold);margin-right:6px"></i>Limite de 150 mensagens/mês atingido. Renova no próximo mês.';
+      toast.innerHTML = '<i class="ti ti-alert-circle" style="color:var(--gold);margin-right:6px"></i>Limite de 150 mensagens/mês atingido.';
       document.body.appendChild(toast);
       setTimeout(()=>toast.remove(), 4000);
     }
     return false;
   }
-  // Aviso quando restam poucas mensagens
-  if(restantes <= 3 && restantes > 0){
+  if(restantes <= 3){
     const input = document.getElementById('chatInput');
     if(input) input.placeholder = restantes === 1 ? 'Última mensagem do mês...' : restantes + ' mensagens restantes este mês';
   }
   return true;
 }
-
 function atualizarContadorChat(){
-  const restantes = getMsgRestantes();
-  const limite = getLimite();
-  const usado = getMsgCount();
-  // Mostrar no header do chat se Pro
+  const usado = getMsgCount(); const limite = getLimite();
   const statusEl = document.getElementById('mentorChatStatus');
-  if(statusEl && isPro){
-    statusEl.textContent = 'online · ' + (limite - usado) + '/' + limite + ' msgs';
-  }
+  if(statusEl && isPro) statusEl.textContent = 'online · ' + (limite - usado) + '/' + limite + ' msgs';
 }
-
 // ── NAV ──
 function goTo(s){const cur=document.querySelector('.screen.active');if(cur)cur.classList.remove('active');document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById('screen-'+s).classList.add('active');document.getElementById('nav-'+s).classList.add('active');if(s==='settings')updateSettingsProfile();}
 
@@ -1346,21 +1463,10 @@ function renderEntries(){const c=document.getElementById('entriesList');const li
 function esc(s){if(!s)return '';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function renderStats(){document.getElementById('streak').textContent=streak;document.getElementById('totalEntries').textContent=entries.length;const p=buildProfile();const stEl=document.getElementById('statState'),dEl=document.getElementById('statDist');if(stEl)stEl.textContent=p.dominantState||'—';if(dEl)dEl.textContent=p.mainDistortion||'—';}
 function updateSettingsProfile(){loadTTSSettings();const tt=document.getElementById('themeToggle');if(tt)tt.checked=localStorage.getItem('avrs4_theme')==='light';const cu=localStorage.getItem('avrs4_current_user');if(cu){const el=document.getElementById('settingsEmail');if(el)el.textContent=cu;}const adminBtn=document.getElementById('adminBtn');if(adminBtn)adminBtn.style.display=localStorage.getItem('avrs4_current_user')===ADMIN_EMAIL?'block':'none';document.getElementById('settingsTotal').textContent=entries.length;document.getElementById('settingsStreak').textContent=streak+' dias';if(entries.length>0){const o=new Date(entries[entries.length-1].id);document.getElementById('settingsSince').textContent=o.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});}const p=buildProfile();document.getElementById('profileStatus').textContent=entries.length>=5?'Ativo — '+entries.length+' registros':'Construindo... ('+entries.length+'/5)';document.getElementById('dominantPattern').textContent=p.dominantState||'—';document.getElementById('mainTrigger').textContent=p.mainDistortion||'—';
-  // Contador de mensagens IA
-  const usado=getMsgCount();
-  const limite=getLimite();
-  const restantes=Math.max(0,limite-usado);
-  const pct=Math.min(100,Math.round((usado/limite)*100));
-  const displayEl=document.getElementById('msgCountDisplay');
-  const barEl=document.getElementById('msgCountBar');
-  if(displayEl){
-    displayEl.textContent=usado+' / '+limite;
-    displayEl.style.color=restantes<=3?'#d46a6a':restantes<=10?'var(--yellow, #d4a04a)':'var(--text3)';
-  }
-  if(barEl){
-    barEl.style.width=pct+'%';
-    barEl.style.background=restantes<=3?'#d46a6a':restantes<=10?'#d4a04a':'var(--gold)';
-  }
+  const usado=getMsgCount(),limite=getLimite(),restantes=Math.max(0,limite-usado),pct=Math.min(100,Math.round((usado/limite)*100));
+  const dEl=document.getElementById('msgCountDisplay'),bEl=document.getElementById('msgCountBar');
+  if(dEl){dEl.textContent=usado+' / '+limite;dEl.style.color=restantes<=3?'#d46a6a':restantes<=10?'#d4a04a':'var(--text3)';}
+  if(bEl){bEl.style.width=pct+'%';bEl.style.background=restantes<=3?'#d46a6a':restantes<=10?'#d4a04a':'var(--gold)';}
 }
 
 // ── DETAIL ──
@@ -1388,37 +1494,14 @@ function toggleFav(i){if(frasesFav.includes(i))frasesFav=frasesFav.filter(x=>x!=
 function renderGlossario(){const el=document.getElementById('glossarioList');if(!el)return;el.innerHTML=GLOSSARIO_DATA.map(g=>`<div class="glossario-card" onclick="this.classList.toggle('open')"><div class="glossario-header"><div class="glossario-term">${g.term}</div><i class="ti ti-chevron-down glossario-chevron"></i></div><div class="glossario-body"><div class="glossario-def">${g.def}</div><div class="glossario-example"><div class="glossario-example-text">${g.ex}</div></div></div></div>`).join('');}
 
 // ── TABS ──
-function switchProtoTab(tab){['protocolo','biblioteca','frases','glossario'].forEach(t=>{document.getElementById('proto-'+t).style.display=t===tab?'block':'none';document.getElementById('ptab-'+t).classList.toggle('active',t===tab);});if(tab==='biblioteca')renderBiblioteca();if(tab==='frases'){loadFrasesFav();renderFrases();}if(tab==='glossario')renderGlossario();}
+function switchProtoTab(tab){['protocolo','biblioteca','frases','glossario','ecossistema'].forEach(t=>{document.getElementById('proto-'+t).style.display=t===tab?'block':'none';document.getElementById('ptab-'+t).classList.toggle('active',t===tab);});if(tab==='biblioteca')renderBiblioteca();if(tab==='frases'){loadFrasesFav();renderFrases();}if(tab==='glossario')renderGlossario();}
 
 // ── DASHBOARD ──
 const STATE_COLORS={'Presente':'#7ab8d4','Focado':'#d4b87a','Ansioso':'#d4a04a','Sobrecarregado':'#a07ad4','Reativo':'#d46a6a','Claro':'#7ad4a0'};
 const STATE_ICONS={'Presente':'ti-eye','Focado':'ti-target','Ansioso':'ti-bolt','Sobrecarregado':'ti-cloud-storm','Reativo':'ti-flame','Claro':'ti-sun'};
 const DIST_DESC={'Urgência falsa':'A pressão percebida é maior do que a situação exige.','Escassez':'O medo de perder está conduzindo as decisões.','Ego':'A necessidade de estar certo interfere no julgamento.','Medo':'Evitação de desconforto como padrão de resposta.','Excesso de confiança':'Subestimação de riscos e complexidade.','Fadiga mental':'Decisões tomadas com capacidade cognitiva reduzida.','Nenhuma':'Nenhuma distorção recorrente identificada.'};
-function openDashboard(){
-  document.getElementById('dashOverlay').classList.add('open');
-  renderDashboard();
-  if(isPro) loadDashInsight();
-}
+function openDashboard(){document.getElementById('dashOverlay').classList.add('open');renderDashboard();}
 function closeDashboard(){document.getElementById('dashOverlay').classList.remove('open');}
-async function loadDashInsight(){
-  const box = document.getElementById('dashInsightText');
-  if(!box) return;
-  const p = buildProfile();
-  if(!p.totalEntries){
-    box.innerHTML = 'Registre pelo menos um estado para receber análise.';
-    return;
-  }
-  const last7 = entries.slice(0,7);
-  const summary = last7.map(e=>`${e.state}${e.distortion&&e.distortion!=='Nenhuma'?' ('+e.distortion+')':''}`).join(', ');
-  const prompt = `Analise o padrão emocional desta semana do usuário: ${summary}. Estado dominante: ${p.dominantState||'variado'}. Distorção mais frequente: ${p.mainDistortion||'nenhuma'}. Dê um insight de 2-3 frases sobre o padrão e uma recomendação prática.`;
-  const insight = await callClaude([{role:'user',content:prompt}], getMentorSystem());
-  if(box && insight){
-    box.innerHTML = insight;
-  } else if(box){
-    box.innerHTML = 'Não foi possível gerar análise agora. Tente novamente.';
-  }
-}
-
 function renderDashboard(){const container=document.getElementById('dashContent');const last30=entries.slice(0,30);if(!last30.length){container.innerHTML=`<div style="text-align:center;padding:60px 24px"><div style="font-size:40px;color:#6a6460;margin-bottom:16px"><i class="ti ti-chart-bar"></i></div><div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:#b8b0a4;margin-bottom:8px">Nenhum dado ainda</div><div style="font-size:13px;color:#6a6460">Registre algumas decisões para ver seu dashboard.</div></div>`;return;}const sc={},dc={};last30.forEach(e=>{if(e.state&&e.state!=='Não definido')sc[e.state]=(sc[e.state]||0)+1;if(e.distortion&&e.distortion!=='Nenhuma')dc[e.distortion]=(dc[e.distortion]||0)+1;});const ss=Object.entries(sc).sort((a,b)=>b[1]-a[1]);const ds=ss[0]?.[0]||'—',dc0=ss[0]?.[1]||0,dp=Math.round((dc0/last30.length)*100);const md=Object.entries(dc).sort((a,b)=>b[1]-a[1])[0]?.[0]||'Nenhuma';const mdc=dc[md]||0;const clarityMap={'Claro':100,'Presente':85,'Focado':80,'Ansioso':35,'Reativo':25,'Sobrecarregado':20};const l7=entries.slice(0,7).map(e=>({date:e.date,state:e.state,clarity:clarityMap[e.state]||50}));const clarityHtml=l7.length?l7.map(d=>{const col=d.clarity>=80?'#7ad4a0':d.clarity>=50?'var(--gold)':'#d46a6a';return`<div class="dash-clarity-row"><div class="dash-clarity-day">${d.date.split(' ')[0]}</div><div class="dash-clarity-bar-wrap"><div class="dash-clarity-bar" style="width:${d.clarity}%;background:${col}"></div></div><div class="dash-clarity-state">${d.state}</div></div>`;}).join(''):'<div class="dash-clarity-empty">Sem dados suficientes</div>';const wpHtml=ss.slice(0,5).map(([s,c])=>{const pct=Math.round((c/last30.length)*100);return`<div class="dash-pattern-row"><div class="dash-pattern-label">${s}</div><div class="dash-pattern-bar-wrap"><div class="dash-pattern-bar" style="width:${pct}%;background:${STATE_COLORS[s]||'var(--gold)'}"></div></div><div class="dash-pattern-pct">${pct}%</div><div class="dash-pattern-count">${c}x</div></div>`;}).join('');container.innerHTML=`<div class="dash-nums"><div class="dash-num-card"><div class="dash-num-value">${last30.length}</div><div class="dash-num-label">Registros</div></div><div class="dash-num-card"><div class="dash-num-value">${streak}</div><div class="dash-num-label">Sequência</div></div><div class="dash-num-card"><div class="dash-num-value">${ss.length}</div><div class="dash-num-label">Estados</div></div></div><div class="dash-section"><div class="dash-section-title"><i class="ti ti-radar"></i>Estado dominante</div><div class="dash-state-card"><div class="dash-state-icon"><i class="ti ${STATE_ICONS[ds]||'ti-brain'}"></i></div><div><div class="dash-state-name">${ds}</div><div class="dash-state-sub">Mais frequente nos últimos ${last30.length} registros</div></div><div class="dash-state-pct"><div class="dash-state-pct-num">${dp}%</div><div class="dash-state-pct-label">das entradas</div></div></div></div><div class="dash-section"><div class="dash-section-title"><i class="ti ti-alert-triangle"></i>Distorção recorrente</div><div class="dash-dist-card"><div class="dash-dist-icon"><i class="ti ti-alert-triangle"></i></div><div style="flex:1"><div class="dash-dist-name">${md}</div><div class="dash-dist-desc">${DIST_DESC[md]||''}</div><div class="dash-dist-freq">${mdc>0?`Apareceu ${mdc}x nos últimos ${last30.length} registros`:'Não detectada'}</div></div></div></div><div class="dash-section"><div class="dash-section-title"><i class="ti ti-trending-up"></i>Evolução · 7 dias</div><div class="dash-clarity-card">${clarityHtml}</div></div><div class="dash-section"><div class="dash-section-title"><i class="ti ti-chart-bar"></i>Padrão</div><div class="dash-pattern-card">${wpHtml||'<div class="dash-clarity-empty">Sem dados</div>'}</div></div>${isPro?`<div class="dash-section"><div class="dash-insight-card"><div class="dash-insight-label"><i class="ti ti-brain"></i>Análise IA</div><div class="dash-insight-text" id="dashInsightText"><div class="mentor-typing"><span></span><span></span><span></span></div></div></div></div>`:''}`;}
 
 // ── PAYWALL ──
@@ -1610,17 +1693,10 @@ function sendAdminMsg(){
 let loginMode='login';
 function toggleLoginMode(){loginMode=loginMode==='login'?'register':'login';if(loginMode==='register'){document.getElementById('loginTitle').textContent='Criar conta';document.getElementById('loginSub').textContent='Cadastre-se para começar sua jornada';document.getElementById('loginPassConfirmField').style.display='block';document.getElementById('loginBtn').textContent='Criar conta';document.getElementById('loginToggle').textContent='Já tem conta? Entrar';}else{document.getElementById('loginTitle').textContent='Bem-vindo';document.getElementById('loginSub').textContent='Entre com sua conta para continuar';document.getElementById('loginPassConfirmField').style.display='none';document.getElementById('loginBtn').textContent='Entrar';document.getElementById('loginToggle').textContent='Não tem conta? Cadastre-se';}document.getElementById('loginError').textContent='';}
 function hashSimple(str){let h=0;for(let i=0;i<str.length;i++){h=((h<<5)-h)+str.charCodeAt(i);h=h&h;}return h.toString(36);}
-function handleLogin(){const email=document.getElementById('loginEmail').value.trim().toLowerCase();const pass=document.getElementById('loginPass').value;const errEl=document.getElementById('loginError');if(!email||!pass){errEl.textContent='Preencha e-mail e senha.';return;}if(!email.includes('@')){errEl.textContent='E-mail inválido.';return;}if(pass.length<6){errEl.textContent='Senha deve ter ao menos 6 caracteres.';return;}const users=JSON.parse(localStorage.getItem('avrs4_users')||'{}');const passHash=hashSimple(pass);if(loginMode==='register'){const confirm=document.getElementById('loginPassConfirm').value;if(pass!==confirm){errEl.textContent='Senhas não conferem.';return;}if(users[email]){errEl.textContent='E-mail já cadastrado.';return;}users[email]={passHash,createdAt:Date.now()};localStorage.setItem('avrs4_users',JSON.stringify(users));localStorage.setItem('avrs4_current_user',email);
-    document.getElementById('loginOverlay').style.display='none';
-    document.getElementById('splashQuote').textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';
-    setTimeout(()=>document.getElementById('splash').classList.add('hide'),2800);
-    checkOnboarding();}else{if(!users[email]){errEl.textContent='E-mail não encontrado.';return;}if(users[email].passHash!==passHash){errEl.textContent='Senha incorreta.';return;}localStorage.setItem('avrs4_current_user',email);
+function handleLogin(){const email=document.getElementById('loginEmail').value.trim().toLowerCase();const pass=document.getElementById('loginPass').value;const errEl=document.getElementById('loginError');if(!email||!pass){errEl.textContent='Preencha e-mail e senha.';return;}if(!email.includes('@')){errEl.textContent='E-mail inválido.';return;}if(pass.length<6){errEl.textContent='Senha deve ter ao menos 6 caracteres.';return;}const users=JSON.parse(localStorage.getItem('avrs4_users')||'{}');const passHash=hashSimple(pass);if(loginMode==='register'){const confirm=document.getElementById('loginPassConfirm').value;if(pass!==confirm){errEl.textContent='Senhas não conferem.';return;}if(users[email]){errEl.textContent='E-mail já cadastrado.';return;}users[email]={passHash,createdAt:Date.now()};localStorage.setItem('avrs4_users',JSON.stringify(users));localStorage.setItem('avrs4_current_user',email);document.getElementById('loginOverlay').style.display='none';checkOnboarding();}else{if(!users[email]){errEl.textContent='E-mail não encontrado.';return;}if(users[email].passHash!==passHash){errEl.textContent='Senha incorreta.';return;}localStorage.setItem('avrs4_current_user',email);
     const usersL=JSON.parse(localStorage.getItem('avrs4_users')||'{}');
     if(usersL[email]){usersL[email].lastSeen=Date.now();localStorage.setItem('avrs4_users',JSON.stringify(usersL));}
-    document.getElementById('loginOverlay').style.display='none';
-    document.getElementById('splashQuote').textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';
-    setTimeout(()=>document.getElementById('splash').classList.add('hide'),2800);
-    setTimeout(()=>{if(window.syncUserData)window.syncUserData(email.replace(/[^a-zA-Z0-9]/g,'_'));},1500);checkOnboarding();}}
+    document.getElementById('loginOverlay').style.display='none';setTimeout(()=>{if(window.syncUserData)window.syncUserData(email.replace(/[^a-zA-Z0-9]/g,'_'));},1500);checkOnboarding();}}
 const ADMIN_EMAIL='audax2_cj@hotmail.com';
 function checkAuth(){const cu=localStorage.getItem('avrs4_current_user');if(!cu){document.getElementById('loginOverlay').style.display='flex';return false;}if(cu===ADMIN_EMAIL)localStorage.setItem('avrs4_pro','true');return true;}
 function logout(){localStorage.removeItem('avrs4_current_user');location.reload();}
@@ -1631,10 +1707,47 @@ function loadTheme(){if(localStorage.getItem('avrs4_theme')==='light'){document.
 
 // ── INIT ──
 async function init(){
-  document.getElementById('splashQuote').textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';
-  setTimeout(()=>document.getElementById('splash').classList.add('hide'),2800);
   if(!checkAuth())return;
   load();loadTheme();loadProStatus();updateStreak();
+  // ── ABERTURA: passagens R·A·V·R·S ──
+  (function runSplash(){
+    const STEP = 2000; // ms por passagem
+    const FADE = 600;
+    const total = 5;
+
+    // Esconder logo após 600ms e iniciar passagens
+    setTimeout(() => {
+      const logo = document.getElementById('spLogo');
+      if(logo){ logo.style.transition='opacity .6s ease'; logo.style.opacity='0'; }
+    }, 600);
+
+    for(let i = 0; i < total; i++){
+      const showAt = 900 + i * STEP;
+      const hideAt = showAt + STEP - FADE;
+      (function(idx){
+        setTimeout(() => {
+          const el = document.getElementById('sp'+idx);
+          if(el) el.classList.add('show');
+        }, showAt);
+        setTimeout(() => {
+          const el = document.getElementById('sp'+idx);
+          if(el){ el.classList.remove('show'); el.classList.add('out'); }
+        }, hideAt);
+      })(i);
+    }
+
+    // Mostrar final (respire)
+    const finalAt = 900 + total * STEP;
+    setTimeout(() => {
+      const el = document.getElementById('spFinal');
+      if(el) el.classList.add('show');
+    }, finalAt);
+
+    // Fechar splash 2.5s após o final aparecer
+    setTimeout(() => {
+      document.getElementById('splash').classList.add('hide');
+    }, finalAt + 2500);
+  })();
   const now=new Date();
   document.getElementById('dateText').textContent=now.toLocaleDateString('pt-BR',{day:'numeric',month:'long'});
   document.getElementById('quoteText').textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';
@@ -1649,6 +1762,7 @@ async function init(){
   verificarAlertas();
   setInterval(()=>{const el=document.getElementById('quoteText');el.style.opacity='0';setTimeout(()=>{el.textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';el.style.opacity='1';},400);},9000);
 }
+
 if('serviceWorker'in navigator)navigator.serviceWorker.getRegistrations().then(r=>r.forEach(reg=>reg.unregister()));
 init();
 </script>
