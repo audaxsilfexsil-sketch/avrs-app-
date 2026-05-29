@@ -915,6 +915,13 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
     </div>
     <div class="settings-section">
       <div class="settings-section-title">Dados</div>
+      <div class="settings-row">
+        <div class="settings-label"><i class="ti ti-cloud-upload" style="margin-right:6px;color:var(--gold)"></i>Sincronização</div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+          <button class="settings-action" onclick="forcSync()">Sincronizar agora</button>
+          <div id="syncStatus" style="font-size:10px;color:var(--text3)">—</div>
+        </div>
+      </div>
       <div class="settings-row"><div class="settings-label">Exportar diário</div><button class="settings-action" onclick="exportData()">Exportar JSON</button></div>
     </div>
     <button class="danger-btn" style="margin-top:4px;border-color:rgba(200,169,109,.2);color:var(--gold)" id="adminBtn" onclick="openAdmin()"><i class="ti ti-shield"></i> Painel Admin</button>
@@ -1278,6 +1285,7 @@ function saveData(){
   if(cu){
     const users=JSON.parse(localStorage.getItem('avrs4_users')||'{}');
     if(users[cu]){users[cu].lastSeen=Date.now();users[cu].entriesCount=entries.length;localStorage.setItem('avrs4_users',JSON.stringify(users));}
+    // ★ Sempre tenta salvar na nuvem, independente de users[cu]
     if(window.saveUserToCloud)window.saveUserToCloud(cu.replace(/[^a-zA-Z0-9]/g,'_'));
   }
 }
@@ -1673,6 +1681,23 @@ function logout(){
   if(window.fbLogout)window.fbLogout().then(()=>location.reload()).catch(()=>location.reload());
   else location.reload();
 }
+function forcSync(){
+  const cu=localStorage.getItem('avrs4_current_user');
+  if(!cu){alert('Você precisa estar logado para sincronizar.');return;}
+  const ts=document.getElementById('syncStatus');
+  if(ts){ts.textContent='Sincronizando...';ts.style.color='var(--text3)';}
+  if(window.syncUserData){
+    window.syncUserData(cu.replace(/[^a-zA-Z0-9]/g,'_'))
+      .then(()=>{
+        if(ts){ts.textContent='✓ Sincronizado '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});ts.style.color='var(--ai-text)';}
+      })
+      .catch(()=>{
+        if(ts){ts.textContent='⚠ Erro na sincronização';ts.style.color='#d46a6a';}
+      });
+  }else{
+    if(ts){ts.textContent='⚠ Firebase não disponível';ts.style.color='#d46a6a';}
+  }
+}
 
 // ── TEMA ──
 function toggleTheme(isLight){if(isLight){document.body.classList.add('light-mode');localStorage.setItem('avrs4_theme','light');}else{document.body.classList.remove('light-mode');localStorage.setItem('avrs4_theme','dark');}}
@@ -1794,16 +1819,32 @@ window.syncUserData=async function(userId){
   try{
     const cloud=await window.loadFromFirebase(userId);
     if(cloud){
-      if(cloud.entries){
+      if(cloud.entries&&cloud.entries.length>0){
         const local=JSON.parse(localStorage.getItem('avrs4_e')||'[]');
         const ids=new Set(local.map(e=>e.id));
-        const merged=[...local,...cloud.entries.filter(e=>!ids.has(e.id))].sort((a,b)=>b.id-a.id);
-        localStorage.setItem('avrs4_e',JSON.stringify(merged));
+        const newFromCloud=cloud.entries.filter(e=>!ids.has(e.id));
+        if(newFromCloud.length>0){
+          const merged=[...local,...newFromCloud].sort((a,b)=>b.id-a.id);
+          localStorage.setItem('avrs4_e',JSON.stringify(merged));
+          // ★ CRÍTICO: atualizar entries em memória após merge
+          if(typeof entries!=='undefined'){
+            entries=merged;
+            if(typeof renderEntries==='function')renderEntries();
+            if(typeof renderStats==='function')renderStats();
+          }
+        }
       }
       if(cloud.isPro)localStorage.setItem('avrs4_pro','true');
     }
+    // Salvar dados locais (incluindo qualquer novo entry) para a nuvem
     await window.saveUserToCloud(userId);
-  }catch(e){}
+    // Mostrar indicador de sync
+    const ts=document.getElementById('syncStatus');
+    if(ts){ts.textContent='✓ Sincronizado '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});ts.style.color='var(--ai-text)';}
+  }catch(e){
+    const ts=document.getElementById('syncStatus');
+    if(ts){ts.textContent='⚠ Erro na sincronização';ts.style.color='#d46a6a';}
+  }
 };
 window.saveUserToCloud=async function(userId){
   const entries=JSON.parse(localStorage.getItem('avrs4_e')||'[]');
