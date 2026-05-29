@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AVR–S · Health Check</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#141210;--bg2:#1c1a18;--bg3:#252220;--gold:#d4b87a;--gold2:#ebd49e;--cream:#f5f0e8;--text2:#c0b8b0;--text3:#8a8278;--green:#7ad4a0;--red:#d46a6a;--yellow:#d4a04a}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--cream);min-height:100vh;padding:24px 20px 48px}
+h1{font-family:Georgia,serif;font-size:26px;font-weight:300;color:var(--gold);letter-spacing:.05em;margin-bottom:4px}
+.subtitle{font-size:11px;color:var(--text3);letter-spacing:.15em;text-transform:uppercase;margin-bottom:32px}
+.run-btn{width:100%;background:var(--gold);color:#0a0908;border:none;border-radius:12px;padding:15px;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.08em;margin-bottom:28px;transition:background .2s}
+.run-btn:active{background:var(--gold2)}
+.run-btn:disabled{opacity:.5;cursor:not-allowed}
+.section{margin-bottom:24px}
+.section-title{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;padding-left:2px}
+.check{background:var(--bg3);border-radius:12px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.check-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;background:var(--bg2)}
+.check-icon.ok{background:rgba(122,212,160,.12);color:var(--green)}
+.check-icon.fail{background:rgba(212,106,106,.12);color:var(--red)}
+.check-icon.warn{background:rgba(212,160,74,.12);color:var(--yellow)}
+.check-icon.loading{color:var(--text3);animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.check-body{flex:1}
+.check-name{font-size:13px;font-weight:500;color:var(--cream);margin-bottom:2px}
+.check-detail{font-size:11px;color:var(--text3);line-height:1.5}
+.check-time{font-size:10px;color:var(--text3);flex-shrink:0}
+.summary{background:var(--bg2);border-radius:14px;padding:18px;margin-bottom:28px;display:none}
+.summary.show{display:block}
+.summary-title{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+.summary-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.summary-card{background:var(--bg3);border-radius:10px;padding:12px;text-align:center}
+.summary-num{font-family:Georgia,serif;font-size:28px;font-weight:300;line-height:1}
+.summary-label{font-size:10px;color:var(--text3);margin-top:4px;letter-spacing:.08em}
+.summary-num.ok{color:var(--green)}
+.summary-num.fail{color:var(--red)}
+.summary-num.warn{color:var(--yellow)}
+.timestamp{text-align:center;font-size:11px;color:var(--text3);margin-top:16px}
+</style>
+</head>
+<body>
+
+<h1>AVR–S</h1>
+<div class="subtitle">Diagnóstico · Health Check</div>
+
+<button class="run-btn" id="runBtn" onclick="runAll()">▶ Rodar diagnóstico completo</button>
+
+<div class="summary" id="summary">
+  <div class="summary-title">Resumo</div>
+  <div class="summary-grid">
+    <div class="summary-card"><div class="summary-num ok" id="sumOk">0</div><div class="summary-label">✅ OK</div></div>
+    <div class="summary-card"><div class="summary-num warn" id="sumWarn">0</div><div class="summary-label">⚠️ Aviso</div></div>
+    <div class="summary-card"><div class="summary-num fail" id="sumFail">0</div><div class="summary-label">❌ Falha</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">🔥 Firebase</div>
+  <div class="check" id="chk-firebase-conn">
+    <div class="check-icon">○</div>
+    <div class="check-body"><div class="check-name">Conexão Firebase</div><div class="check-detail">Aguardando...</div></div>
+    <div class="check-time"></div>
+  </div>
+  <div class="check" id="chk-firebase-write">
+    <div class="check-icon">○</div>
+    <div class="check-body"><div class="check-name">Escrita no Firestore</div><div class="check-detail">Aguardando...</div></div>
+    <div class="check-time"></div>
+  </div>
+  <div class="check" id="chk-firebase-read">
+    <div class="check-icon">○</div>
+    <div class="check-body"><div class="check-name">Leitura do Firestore</div><div class="check-detail">Aguardando...</div></div>
+    <div class="check-time"></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">🤖 Inteligência Artificial</div>
+  <div class="check" id="chk-worker">
+    <div class="check-icon">○</div>
+    <div class="check-body"><div class="check-name">Worker Cloudflare (proxy IA)</div><div class="check-detail">Aguardando...</div></div>
+    <div class="check-time"></div>
+  </div>
+  <div class="check" id="chk-claude">
+    <div class="check-icon">○</div>
+    <div class="check-body"><div class="check-name">API Claude (Mentor IA)</div><div class="check-detail">Aguardando...</div></div>
+    <div class="check-time"></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">📱 App Local</div>
+  <div class="check" id="chk-sw">
+    <div class="check-icon">○</div>
+    <div class="check-body"><div class="check-name">Service Worker</div><div class="check-detail">Aguardando...</div></div>
+    <div class="check-time"></div>
+  </div>
+  <div class="check" id="chk-storage">
+    <div class="check-icon">○</div>
+    <div class="check-body"><div class="check-name">LocalStorage</div><div class="check-detail">Aguardando...</div></div>
+    <div class="check-time"></div>
+  </div>
+  <div class="check" id="chk-login">
+    <div class="check-icon">○</div>
+    <div class="check-body"><div class="check-name">Dados de login (usuários)</div><div class="check-detail">Aguardando...</div></div>
+    <div class="check-time"></div>
+  </div>
+  <div class="check" id="chk-network">
+    <div class="check-icon">○</div>
+    <div class="check-body"><div class="check-name">Conectividade de rede</div><div class="check-detail">Aguardando...</div></div>
+    <div class="check-time"></div>
+  </div>
+</div>
+
+<!-- USUÁRIOS & MONETIZAÇÃO -->
+<div class="section">
+  <div class="section-title">👥 Usuários & Monetização</div>
+  <div class="check" id="chk-users">
+    <div class="check-icon">○</div>
+    <div class="check-body"><div class="check-name">Usuários cadastrados</div><div class="check-detail">Aguardando...</div></div>
+    <div class="check-time"></div>
+  </div>
+  <div class="check" id="chk-pro">
+    <div class="check-icon">○</div>
+    <div class="check-body"><div class="check-name">Assinantes Pro ativos</div><div class="check-detail">Aguardando...</div></div>
+    <div class="check-time"></div>
+  </div>
+  <div class="check" id="chk-receita">
+    <div class="check-icon">○</div>
+    <div class="check-body"><div class="check-name">Receita mensal estimada</div><div class="check-detail">Aguardando...</div></div>
+    <div class="check-time"></div>
+  </div>
+</div>
+
+<!-- CRÉDITOS & CONSOLES -->
+<div class="section">
+  <div class="section-title">💳 Créditos & Consoles</div>
+  <div class="check" id="chk-anthropic">
+    <div class="check-icon">○</div>
+    <div class="check-body">
+      <div class="check-name">Créditos API Anthropic</div>
+      <div class="check-detail">Verificação manual → <a href="https://console.anthropic.com" target="_blank" style="color:var(--gold);text-decoration:none">console.anthropic.com ↗</a></div>
+    </div>
+    <div class="check-time"></div>
+  </div>
+  <div class="check" id="chk-firebase-console">
+    <div class="check-icon">○</div>
+    <div class="check-body">
+      <div class="check-name">Firebase Console</div>
+      <div class="check-detail"><a href="https://console.firebase.google.com/project/avrs-app" target="_blank" style="color:var(--gold);text-decoration:none">console.firebase.google.com/project/avrs-app ↗</a></div>
+    </div>
+    <div class="check-time"></div>
+  </div>
+  <div class="check" id="chk-cloudflare-console">
+    <div class="check-icon">○</div>
+    <div class="check-body">
+      <div class="check-name">Cloudflare Workers</div>
+      <div class="check-detail"><a href="https://dash.cloudflare.com" target="_blank" style="color:var(--gold);text-decoration:none">dash.cloudflare.com ↗</a></div>
+    </div>
+    <div class="check-time"></div>
+  </div>
+</div>
+
+<div class="timestamp" id="timestamp"></div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getFirestore, doc, setDoc, getDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBy13fDtxYQlkMozofoIoYS27VykHMMuDw",
+  authDomain: "avrs-app.firebaseapp.com",
+  projectId: "avrs-app",
+  storageBucket: "avrs-app.firebasestorage.app",
+  messagingSenderId: "1036042586771",
+  appId: "1:1036042586771:web:b4a9bac3dcc7c0ce461b66"
+};
+
+const WORKER_URL = 'https://avrs-proxy.audax-silfexsil.workers.dev';
+
+let results = { ok: 0, warn: 0, fail: 0 };
+
+function setCheck(id, status, detail, ms) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const icon = el.querySelector('.check-icon');
+  const det = el.querySelector('.check-detail');
+  const time = el.querySelector('.check-time');
+  icon.className = 'check-icon ' + status;
+  icon.textContent = status === 'ok' ? '✓' : status === 'fail' ? '✗' : status === 'warn' ? '!' : '⟳';
+  det.textContent = detail;
+  if (ms !== undefined) time.textContent = ms + 'ms';
+  results[status] = (results[status] || 0) + 1;
+}
+
+function setLoading(id, detail) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const icon = el.querySelector('.check-icon');
+  const det = el.querySelector('.check-detail');
+  icon.className = 'check-icon loading';
+  icon.textContent = '⟳';
+  det.textContent = detail;
+}
+
+function updateSummary() {
+  document.getElementById('sumOk').textContent = results.ok || 0;
+  document.getElementById('sumWarn').textContent = results.warn || 0;
+  document.getElementById('sumFail').textContent = results.fail || 0;
+  document.getElementById('summary').classList.add('show');
+}
+
+async function timed(fn) {
+  const t = Date.now();
+  const r = await fn();
+  return { result: r, ms: Date.now() - t };
+}
+
+window.runAll = async function() {
+  results = { ok: 0, warn: 0, fail: 0 };
+  document.getElementById('runBtn').disabled = true;
+  document.getElementById('runBtn').textContent = '⟳ Rodando...';
+  document.getElementById('summary').classList.remove('show');
+
+  // ── Rede ──
+  setLoading('chk-network', 'Verificando...');
+  if (navigator.onLine) {
+    setCheck('chk-network', 'ok', 'Dispositivo conectado à internet');
+  } else {
+    setCheck('chk-network', 'fail', 'Sem conexão de rede');
+  }
+
+  // ── LocalStorage ──
+  setLoading('chk-storage', 'Verificando...');
+  try {
+    localStorage.setItem('_health_test', '1');
+    localStorage.removeItem('_health_test');
+    const entries = JSON.parse(localStorage.getItem('avrs4_e') || '[]');
+    setCheck('chk-storage', 'ok', `Funcionando · ${entries.length} registros no dispositivo`);
+  } catch(e) {
+    setCheck('chk-storage', 'fail', 'LocalStorage não disponível: ' + e.message);
+  }
+
+  // ── Login ──
+  setLoading('chk-login', 'Verificando...');
+  try {
+    const users = JSON.parse(localStorage.getItem('avrs4_users') || '{}');
+    const count = Object.keys(users).length;
+    const current = localStorage.getItem('avrs4_current_user');
+    if (count > 0) {
+      setCheck('chk-login', 'ok', `${count} usuário(s) cadastrado(s) · Logado: ${current || 'nenhum'}`);
+    } else {
+      setCheck('chk-login', 'warn', 'Nenhum usuário cadastrado ainda');
+    }
+  } catch(e) {
+    setCheck('chk-login', 'fail', 'Erro ao ler dados de login');
+  }
+
+  // ── Service Worker ──
+  setLoading('chk-sw', 'Verificando...');
+  if ('serviceWorker' in navigator) {
+    try {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      if (regs.length > 0) {
+        setCheck('chk-sw', 'warn', `${regs.length} SW registrado(s) — pode causar cache antigo`);
+      } else {
+        setCheck('chk-sw', 'ok', 'Nenhum Service Worker ativo (desregistrado corretamente)');
+      }
+    } catch(e) {
+      setCheck('chk-sw', 'warn', 'Não foi possível verificar SW');
+    }
+  } else {
+    setCheck('chk-sw', 'warn', 'Service Worker não suportado neste navegador');
+  }
+
+  // ── Firebase init ──
+  setLoading('chk-firebase-conn', 'Inicializando Firebase...');
+  let db;
+  try {
+    const { result: app, ms } = await timed(async () => initializeApp(firebaseConfig));
+    db = getFirestore(app);
+    setCheck('chk-firebase-conn', 'ok', 'Firebase inicializado com sucesso', ms);
+  } catch(e) {
+    setCheck('chk-firebase-conn', 'fail', 'Erro ao inicializar Firebase: ' + e.message);
+    setCheck('chk-firebase-write', 'fail', 'Pulado — Firebase não inicializou');
+    setCheck('chk-firebase-read', 'fail', 'Pulado — Firebase não inicializou');
+    db = null;
+  }
+
+  // ── Firebase Write ──
+  if (db) {
+    setLoading('chk-firebase-write', 'Escrevendo no Firestore...');
+    try {
+      const { ms } = await timed(async () => {
+        await setDoc(doc(db, '_health', 'ping'), { ts: Date.now(), source: 'health-check' });
+      });
+      setCheck('chk-firebase-write', 'ok', 'Escrita bem-sucedida', ms);
+    } catch(e) {
+      setCheck('chk-firebase-write', 'fail', 'Erro na escrita: ' + e.message);
+    }
+
+    // ── Firebase Read ──
+    setLoading('chk-firebase-read', 'Lendo do Firestore...');
+    try {
+      const { result: snap, ms } = await timed(async () => getDoc(doc(db, '_health', 'ping')));
+      if (snap.exists()) {
+        setCheck('chk-firebase-read', 'ok', 'Leitura bem-sucedida · dado encontrado', ms);
+        await deleteDoc(doc(db, '_health', 'ping'));
+      } else {
+        setCheck('chk-firebase-read', 'warn', 'Documento não encontrado após escrita', ms);
+      }
+    } catch(e) {
+      setCheck('chk-firebase-read', 'fail', 'Erro na leitura: ' + e.message);
+    }
+  }
+
+  // ── Worker ──
+  setLoading('chk-worker', 'Testando Worker Cloudflare...');
+  try {
+    const { result: res, ms } = await timed(async () => {
+      return fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 10,
+          messages: [{ role: 'user', content: 'ping' }]
+        })
+      });
+    });
+    if (res.ok || res.status === 200) {
+      setCheck('chk-worker', 'ok', `Worker respondeu · status ${res.status}`, ms);
+    } else {
+      setCheck('chk-worker', 'warn', `Worker retornou status ${res.status}`, ms);
+    }
+
+    // ── Claude ──
+    setLoading('chk-claude', 'Testando API Claude...');
+    try {
+      const { result: data, ms: ms2 } = await timed(async () => res.clone().json());
+      if (data.content && data.content.length > 0) {
+        setCheck('chk-claude', 'ok', `API respondeu · modelo ativo`, ms2);
+      } else if (data.error) {
+        setCheck('chk-claude', 'fail', `Erro da API: ${data.error.message || JSON.stringify(data.error)}`, ms2);
+      } else {
+        setCheck('chk-claude', 'warn', 'Resposta inesperada da API', ms2);
+      }
+    } catch(e) {
+      setCheck('chk-claude', 'warn', 'Não foi possível analisar resposta da IA');
+    }
+
+  } catch(e) {
+    setCheck('chk-worker', 'fail', 'Worker inacessível: ' + e.message);
+    setCheck('chk-claude', 'fail', 'Pulado — Worker não respondeu');
+  }
+
+  // ── Usuários & Monetização (localStorage) ──
+  try {
+    const users = JSON.parse(localStorage.getItem('avrs4_users') || '{}');
+    const userList = Object.entries(users);
+    const total = userList.length;
+    const proList = userList.filter(([,d]) => d.isPro);
+    const proCount = proList.length;
+    const receita = proCount * 19;
+    const now = Date.now();
+    const ativos = userList.filter(([,d]) => d.lastSeen && (now - d.lastSeen) < 7*86400000).length;
+
+    if(total > 0) {
+      setCheck('chk-users', 'ok', `${total} usuário(s) · ${ativos} ativo(s) nos últimos 7 dias`);
+    } else {
+      setCheck('chk-users', 'warn', 'Nenhum usuário encontrado neste dispositivo — dados estão no Firebase');
+    }
+
+    if(proCount > 0) {
+      setCheck('chk-pro', 'ok', `${proCount} assinante(s) Pro · emails: ${proList.map(([e])=>e).join(', ')}`);
+    } else {
+      setCheck('chk-pro', 'warn', 'Nenhum assinante Pro neste dispositivo');
+    }
+
+    setCheck('chk-receita', proCount > 0 ? 'ok' : 'warn',
+      `R$${receita}/mês estimado · ${proCount} × R$19`);
+  } catch(e) {
+    setCheck('chk-users', 'fail', 'Erro ao ler localStorage: ' + e.message);
+    setCheck('chk-pro', 'fail', 'Erro ao ler dados');
+    setCheck('chk-receita', 'fail', 'Erro ao calcular receita');
+  }
+
+  // ── Consoles (apenas informativo) ──
+  setCheck('chk-anthropic', 'warn', 'Verificar manualmente → console.anthropic.com');
+  setCheck('chk-firebase-console', 'ok', 'Firebase projeto: avrs-app · região southamerica-east1');
+  setCheck('chk-cloudflare-console', 'ok', 'Worker: avrs-proxy.audax-silfexsil.workers.dev');
+
+  updateSummary();
+  document.getElementById('timestamp').textContent =
+    'Diagnóstico realizado em ' + new Date().toLocaleString('pt-BR');
+  document.getElementById('runBtn').disabled = false;
+  document.getElementById('runBtn').textContent = '▶ Rodar novamente';
+};
+</script>
+</body>
+</html>
