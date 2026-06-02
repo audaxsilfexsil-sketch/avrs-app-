@@ -1213,24 +1213,361 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 <div class="privacidade-overlay" id="privacidadeOverlay">
   <div class="privacidade-topbar">
     <button class="privacidade-back" onclick="closePrivacidade()"><i class="ti ti-arrow-left"></i></button>
-    <div class="privacidade-title">Política de Privacidade</div>
+    <div class="privacidade-title">Privacidade & Termos</div>
   </div>
-  <div class="privacidade-content">
-    <div class="priv-section"><div class="priv-text" style="font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:var(--text2);margin-bottom:16px">AVR–S · A Vida Sem Rascunho</div><div class="priv-text">Esta Política de Privacidade descreve como a <strong style="color:var(--cream)">Audax Consultoria</strong> (CNPJ: 33.344.650/0001-03) coleta, usa e protege as informações dos usuários do aplicativo AVR–S.</div></div>
+
+  <!-- TABS -->
+  <div style="display:flex;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--bg)">
+    <button id="tabPriv" onclick="switchPrivTab('priv')"
+      style="flex:1;background:none;border:none;border-bottom:2px solid var(--gold);padding:12px 8px;font-size:11px;color:var(--gold);cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.06em;transition:all .2s">
+      Política de Privacidade
+    </button>
+    <button id="tabTermos" onclick="switchPrivTab('termos')"
+      style="flex:1;background:none;border:none;border-bottom:2px solid transparent;padding:12px 8px;font-size:11px;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.06em;transition:all .2s">
+      Termos de Uso
+    </button>
+  </div>
+
+  <!-- ── POLÍTICA DE PRIVACIDADE ── -->
+  <div id="conteudoPriv" class="privacidade-content">
+
+    <div class="priv-section">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--gold);margin-bottom:4px">Política de Privacidade</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:16px">AVR–S · A Vida Sem Rascunho · Última atualização: junho de 2025</div>
+      <div class="priv-text">Esta Política de Privacidade descreve como a <strong style="color:var(--cream)">Audax Consultoria</strong> (CNPJ: 33.344.650/0001-03) coleta, usa, armazena e protege as informações dos usuários do aplicativo AVR–S, em conformidade com a <strong style="color:var(--cream)">Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018)</strong>.</div>
+    </div>
+
     <div class="priv-divider"></div>
-    <div class="priv-section"><div class="priv-section-title">1. Informações que coletamos</div><div class="priv-text">O AVR–S coleta apenas as informações necessárias para o funcionamento do aplicativo:<br><br>— E-mail e senha: utilizados para criação e acesso à conta.<br>— Registros emocionais: estados, decisões e reflexões inseridos voluntariamente.<br>— Dados de pagamento: processados exclusivamente pelo PagBank.</div></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">1. Quem somos</div>
+      <div class="priv-text">
+        <strong style="color:var(--cream)">Controlador dos dados:</strong><br>
+        Audax Consultoria · CNPJ: 33.344.650/0001-03<br>
+        Responsável: André Silfexsil<br>
+        E-mail: audax.silfexsil@gmail.com<br>
+        WhatsApp: (21) 96416-4234<br>
+        Rio de Janeiro · RJ · Brasil
+      </div>
+    </div>
+
     <div class="priv-divider"></div>
-    <div class="priv-section"><div class="priv-section-title">2. Como usamos suas informações</div><div class="priv-text"><strong style="color:var(--cream)">Não vendemos, compartilhamos ou cedemos seus dados pessoais a terceiros.</strong></div></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">2. Dados que coletamos</div>
+      <div class="priv-text">O AVR–S coleta apenas os dados estritamente necessários para o funcionamento do aplicativo:</div>
+      <br>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px">
+          <div style="font-size:11px;color:var(--gold);letter-spacing:.06em;margin-bottom:4px">CONTA</div>
+          <div class="priv-text">E-mail e senha para criação e acesso à conta. Processados via Firebase Authentication (Google).</div>
+        </div>
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px">
+          <div style="font-size:11px;color:var(--gold);letter-spacing:.06em;margin-bottom:4px">REGISTROS EMOCIONAIS</div>
+          <div class="priv-text">Estados internos, decisões conscientes, reflexões e distorções inseridos voluntariamente pelo usuário. Esses dados são pessoais e sensíveis — são usados exclusivamente para personalizar a experiência no app.</div>
+        </div>
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px">
+          <div style="font-size:11px;color:var(--gold);letter-spacing:.06em;margin-bottom:4px">PAGAMENTO</div>
+          <div class="priv-text">Dados de pagamento são processados exclusivamente pelo <strong style="color:var(--cream)">PagBank</strong>. A Audax Consultoria não armazena dados de cartão de crédito ou informações bancárias.</div>
+        </div>
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px">
+          <div style="font-size:11px;color:var(--gold);letter-spacing:.06em;margin-bottom:4px">DADOS TÉCNICOS</div>
+          <div class="priv-text">Registros de uso necessários para sincronização e funcionamento do app (data de último acesso, contagem de registros). Não coletamos dados de localização, contatos ou outros sensores do dispositivo.</div>
+        </div>
+      </div>
+    </div>
+
     <div class="priv-divider"></div>
-    <div class="priv-section"><div class="priv-section-title">3. Seus direitos (LGPD)</div><div class="priv-text">— Exportar seu diário (Ajustes → Exportar JSON)<br>— Apagar todos os seus dados (Ajustes → Apagar dados)</div></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">3. Como usamos seus dados</div>
+      <div class="priv-text">Seus dados são usados exclusivamente para:</div>
+      <br>
+      <div class="priv-text">
+        — Autenticar e identificar sua conta<br>
+        — Personalizar as respostas do Mentor IA com base no seu histórico<br>
+        — Sincronizar seus registros entre dispositivos<br>
+        — Processar e verificar pagamentos via PagBank<br>
+        — Ativar o status Pro após pagamento confirmado<br>
+        — Enviar suporte técnico quando solicitado
+      </div>
+      <br>
+      <div style="background:rgba(200,169,109,.06);border:1px solid var(--border2);border-radius:10px;padding:14px">
+        <div class="priv-text"><strong style="color:var(--cream)">Não vendemos, compartilhamos, alugamos ou cedemos seus dados pessoais a terceiros para fins comerciais ou de marketing.</strong></div>
+      </div>
+    </div>
+
     <div class="priv-divider"></div>
-    <div class="priv-section"><div class="priv-section-title">4. Contato</div><div class="priv-text">E-mail: audax.silfexsil@gmail.com<br>WhatsApp: (21) 96416-4234<br><br><strong style="color:var(--cream)">Audax Consultoria</strong> · CNPJ: 33.344.650/0001-03</div></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">4. Base legal (LGPD)</div>
+      <div class="priv-text">O tratamento dos seus dados é fundamentado nas seguintes bases legais previstas na LGPD:</div>
+      <br>
+      <div class="priv-text">
+        — <strong style="color:var(--cream)">Consentimento</strong> (Art. 7º, I): ao criar sua conta, você consente com o tratamento dos dados para as finalidades descritas<br>
+        — <strong style="color:var(--cream)">Execução de contrato</strong> (Art. 7º, V): para processar pagamentos e ativar o plano Pro<br>
+        — <strong style="color:var(--cream)">Legítimo interesse</strong> (Art. 7º, IX): para melhorar a experiência do app e fornecer suporte
+      </div>
+    </div>
+
     <div class="priv-divider"></div>
-    <div class="priv-section"><div class="priv-text" style="font-size:11px;color:#4a4440;text-align:center">© 2025 Audax Consultoria · Todos os direitos reservados<br>Última atualização: maio de 2025</div></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">5. Compartilhamento de dados</div>
+      <div class="priv-text">Seus dados são processados pelos seguintes serviços de infraestrutura, que atuam como operadores de dados:</div>
+      <br>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center">
+          <div><div style="font-size:13px;color:var(--cream);font-weight:500">Firebase (Google)</div><div style="font-size:11px;color:var(--text3);margin-top:2px">Autenticação e banco de dados</div></div>
+          <div style="font-size:10px;color:var(--text3);text-align:right">EUA/Global</div>
+        </div>
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center">
+          <div><div style="font-size:13px;color:var(--cream);font-weight:500">Cloudflare Workers</div><div style="font-size:11px;color:var(--text3);margin-top:2px">Proxy da IA e webhook de pagamentos</div></div>
+          <div style="font-size:10px;color:var(--text3);text-align:right">EUA/Global</div>
+        </div>
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center">
+          <div><div style="font-size:13px;color:var(--cream);font-weight:500">Anthropic (Claude API)</div><div style="font-size:11px;color:var(--text3);margin-top:2px">Processamento das mensagens do Mentor IA</div></div>
+          <div style="font-size:10px;color:var(--text3);text-align:right">EUA</div>
+        </div>
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center">
+          <div><div style="font-size:13px;color:var(--cream);font-weight:500">PagBank (PagSeguro)</div><div style="font-size:11px;color:var(--text3);margin-top:2px">Processamento de pagamentos</div></div>
+          <div style="font-size:10px;color:var(--text3);text-align:right">Brasil</div>
+        </div>
+      </div>
+      <br>
+      <div class="priv-text">Todos esses serviços possuem políticas de privacidade próprias e são responsáveis pelo tratamento dos dados em suas plataformas.</div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">6. Armazenamento e segurança</div>
+      <div class="priv-text">
+        — Seus dados são armazenados no <strong style="color:var(--cream)">Firebase Firestore</strong> com criptografia em trânsito (TLS) e em repouso<br>
+        — Senhas são armazenadas com hash seguro via Firebase Authentication<br>
+        — O app opera em HTTPS em todas as comunicações<br>
+        — Tokens e chaves de API são armazenados como variáveis de ambiente seguras (nunca expostos no código-fonte)<br>
+        — Dados locais são armazenados no dispositivo via localStorage do navegador
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">7. Seus direitos (LGPD)</div>
+      <div class="priv-text">Como titular dos dados, você tem os seguintes direitos garantidos pela LGPD:</div>
+      <br>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <i class="ti ti-check" style="color:var(--gold);font-size:14px;flex-shrink:0;margin-top:2px"></i>
+          <div class="priv-text"><strong style="color:var(--cream)">Acesso</strong> — solicitar quais dados temos sobre você</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <i class="ti ti-check" style="color:var(--gold);font-size:14px;flex-shrink:0;margin-top:2px"></i>
+          <div class="priv-text"><strong style="color:var(--cream)">Exportação</strong> — baixar seu diário completo em JSON (Ajustes → Exportar JSON)</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <i class="ti ti-check" style="color:var(--gold);font-size:14px;flex-shrink:0;margin-top:2px"></i>
+          <div class="priv-text"><strong style="color:var(--cream)">Exclusão</strong> — apagar todos os seus dados (Ajustes → Apagar todos os dados)</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <i class="ti ti-check" style="color:var(--gold);font-size:14px;flex-shrink:0;margin-top:2px"></i>
+          <div class="priv-text"><strong style="color:var(--cream)">Revogação do consentimento</strong> — você pode encerrar sua conta a qualquer momento</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <i class="ti ti-check" style="color:var(--gold);font-size:14px;flex-shrink:0;margin-top:2px"></i>
+          <div class="priv-text"><strong style="color:var(--cream)">Correção</strong> — solicitar correção de dados incorretos via e-mail</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <i class="ti ti-check" style="color:var(--gold);font-size:14px;flex-shrink:0;margin-top:2px"></i>
+          <div class="priv-text"><strong style="color:var(--cream)">Informação</strong> — ser informado sobre o uso dos seus dados</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">8. Retenção dos dados</div>
+      <div class="priv-text">
+        — Seus dados são mantidos enquanto sua conta estiver ativa<br>
+        — Ao apagar sua conta ou todos os dados (Ajustes), os dados são removidos do dispositivo imediatamente e da nuvem em até 30 dias<br>
+        — Registros de transações financeiras podem ser mantidos por até 5 anos conforme exigência fiscal brasileira
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">9. Menores de idade</div>
+      <div class="priv-text">O aplicativo AVR–S é destinado a maiores de 18 anos. Não coletamos intencionalmente dados de menores de idade. Se identificarmos que uma conta pertence a um menor, ela será encerrada.</div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">10. Alterações nesta política</div>
+      <div class="priv-text">Esta política pode ser atualizada periodicamente. Alterações significativas serão comunicadas via notificação no aplicativo. O uso continuado do app após as alterações implica aceitação da nova política.</div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">11. Contato e DPO</div>
+      <div class="priv-text">
+        Para exercer seus direitos ou esclarecer dúvidas sobre privacidade:<br><br>
+        <strong style="color:var(--cream)">Audax Consultoria</strong><br>
+        CNPJ: 33.344.650/0001-03<br>
+        E-mail: audax.silfexsil@gmail.com<br>
+        WhatsApp: (21) 96416-4234<br>
+        Rio de Janeiro · RJ · Brasil
+      </div>
+      <br>
+      <div class="priv-text">Você também pode registrar reclamações junto à <strong style="color:var(--cream)">Autoridade Nacional de Proteção de Dados (ANPD)</strong> em gov.br/anpd.</div>
+    </div>
+
+    <div class="priv-divider"></div>
+    <div class="priv-section">
+      <div class="priv-text" style="font-size:11px;color:#4a4440;text-align:center">© 2025 Audax Consultoria · Todos os direitos reservados<br>AVR–S · A Vida Sem Rascunho · Versão 4.0<br>Última atualização: junho de 2025</div>
+    </div>
+
+  </div>
+
+  <!-- ── TERMOS DE USO ── -->
+  <div id="conteudoTermos" class="privacidade-content" style="display:none">
+
+    <div class="priv-section">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--gold);margin-bottom:4px">Termos de Uso</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:16px">AVR–S · A Vida Sem Rascunho · Última atualização: junho de 2025</div>
+      <div class="priv-text">Ao criar uma conta e utilizar o aplicativo AVR–S, você concorda com os presentes Termos de Uso. Leia atentamente antes de usar o aplicativo.</div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">1. O serviço</div>
+      <div class="priv-text">O AVR–S é um aplicativo de autoconhecimento e desenvolvimento pessoal baseado no método AVR–S, desenvolvido pela <strong style="color:var(--cream)">Audax Consultoria</strong>. O app oferece ferramentas de diagnóstico emocional, registro de decisões, dashboards de padrões e um Mentor com inteligência artificial.</div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">2. Conta de usuário</div>
+      <div class="priv-text">
+        — Você é responsável por manter a confidencialidade da sua senha<br>
+        — Uma conta por usuário — não é permitido compartilhar contas<br>
+        — Você deve fornecer informações verdadeiras no cadastro<br>
+        — Reservamo-nos o direito de encerrar contas que violem estes termos
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">3. Planos e pagamento</div>
+      <div class="priv-text">
+        <strong style="color:var(--cream)">Plano Gratuito:</strong> acesso ao diário de decisões, protocolo AVR–S, guia e biblioteca. Disponível sem prazo de expiração.<br><br>
+        <strong style="color:var(--cream)">Plano Pro (R$19/mês):</strong> inclui Mentor IA ilimitado, análise de padrões avançada, insights personalizados e dashboard com análise IA.<br><br>
+        — Cobranças são recorrentes mensalmente via PagBank<br>
+        — O cancelamento pode ser feito a qualquer momento diretamente no PagBank<br>
+        — Não há reembolso de períodos parciais já cobrados<br>
+        — A Audax Consultoria pode alterar os preços com aviso prévio de 30 dias
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">4. Uso adequado</div>
+      <div class="priv-text">Ao usar o AVR–S, você concorda em não:</div>
+      <br>
+      <div class="priv-text">
+        — Usar o app para fins ilegais ou prejudiciais a terceiros<br>
+        — Tentar acessar dados de outros usuários<br>
+        — Realizar engenharia reversa, copiar ou distribuir o código do app<br>
+        — Usar o Mentor IA para fins que violem as políticas da Anthropic<br>
+        — Criar múltiplas contas para contornar limites do plano gratuito
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">5. O Mentor IA</div>
+      <div class="priv-text">O Mentor AVR–S utiliza inteligência artificial (Claude, da Anthropic) para gerar respostas personalizadas. <strong style="color:var(--cream)">Importante:</strong></div>
+      <br>
+      <div style="background:rgba(200,169,109,.06);border:1px solid var(--border2);border-radius:10px;padding:14px">
+        <div class="priv-text">
+          — O Mentor não substitui acompanhamento psicológico, psiquiátrico ou médico profissional<br>
+          — As respostas são geradas por IA e podem conter imprecisões<br>
+          — Em situações de crise emocional, procure um profissional de saúde mental<br>
+          — A Audax Consultoria não se responsabiliza por decisões tomadas com base exclusiva nas respostas do Mentor
+        </div>
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">6. Propriedade intelectual</div>
+      <div class="priv-text">
+        — O método AVR–S, o nome "A Vida Sem Rascunho", o código do aplicativo, textos, protocolos e conteúdos são de propriedade exclusiva da <strong style="color:var(--cream)">Audax Consultoria</strong><br>
+        — É proibida a reprodução, distribuição ou uso comercial sem autorização expressa por escrito<br>
+        — Os registros inseridos pelo usuário pertencem ao próprio usuário
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">7. Disponibilidade do serviço</div>
+      <div class="priv-text">
+        — O app é fornecido "como está", sem garantia de disponibilidade ininterrupta<br>
+        — Podemos realizar manutenções programadas com ou sem aviso prévio<br>
+        — Não nos responsabilizamos por perdas decorrentes de indisponibilidade temporária
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">8. Limitação de responsabilidade</div>
+      <div class="priv-text">A Audax Consultoria não se responsabiliza por danos indiretos, incidentais ou consequentes decorrentes do uso ou impossibilidade de uso do aplicativo, incluindo perda de dados por falha técnica. A responsabilidade máxima da Audax Consultoria é limitada ao valor pago pelo usuário nos últimos 3 meses.</div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">9. Alterações nos termos</div>
+      <div class="priv-text">Podemos atualizar estes termos a qualquer momento. Alterações significativas serão comunicadas via notificação no app com pelo menos 15 dias de antecedência. O uso continuado após as alterações implica aceitação dos novos termos.</div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">10. Lei aplicável e foro</div>
+      <div class="priv-text">Estes termos são regidos pelas leis da República Federativa do Brasil. Fica eleito o foro da Comarca do Rio de Janeiro, RJ, para dirimir quaisquer controvérsias decorrentes deste instrumento.</div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">11. Contato</div>
+      <div class="priv-text">
+        <strong style="color:var(--cream)">Audax Consultoria</strong><br>
+        CNPJ: 33.344.650/0001-03<br>
+        E-mail: audax.silfexsil@gmail.com<br>
+        WhatsApp: (21) 96416-4234
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+    <div class="priv-section">
+      <div class="priv-text" style="font-size:11px;color:#4a4440;text-align:center">© 2025 Audax Consultoria · Todos os direitos reservados<br>AVR–S · A Vida Sem Rascunho · Versão 4.0<br>Última atualização: junho de 2025</div>
+    </div>
+
   </div>
 </div>
-
-<!-- ALERTAS NOTIFICAÇÃO -->
 <div class="alerta-notif" id="alertaNotif">
   <div class="alerta-notif-icon"><i class="ti ti-bell-ringing" id="alertaNotifIcon"></i></div>
   <div class="alerta-notif-text">
