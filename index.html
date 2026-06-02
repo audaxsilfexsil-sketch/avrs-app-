@@ -1570,7 +1570,15 @@ function checkDailyNotif(){const today=new Date().toDateString();const last=entr
 
 // ── PRIVACIDADE ──
 function openPrivacidade(){document.getElementById('privacidadeOverlay').classList.add('open');}
- switchPrivTab{document.getElementById('privacidadeOverlay').classList.remove('open');}
+ function closePrivacidade(){document.getElementById('privacidadeOverlay').classList.remove('open');}
+function switchPrivTab(tab){
+  document.getElementById('conteudoPriv').style.display=tab==='priv'?'block':'none';
+  document.getElementById('conteudoTermos').style.display=tab==='termos'?'block':'none';
+  document.getElementById('tabPriv').style.color=tab==='priv'?'var(--gold)':'var(--text3)';
+  document.getElementById('tabPriv').style.borderBottomColor=tab==='priv'?'var(--gold)':'transparent';
+  document.getElementById('tabTermos').style.color=tab==='termos'?'var(--gold)':'var(--text3)';
+  document.getElementById('tabTermos').style.borderBottomColor=tab==='termos'?'var(--gold)':'transparent';
+}
 
 // ── ALERTAS ──
 function openAlertas(){document.getElementById('alertasOverlay').classList.add('open');carregarAlertas();}
