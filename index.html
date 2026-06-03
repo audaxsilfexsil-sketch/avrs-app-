@@ -717,6 +717,7 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
   <img src="https://audaxsilfexsil-sketch.github.io/avrs-app-/LOGO02.png.png" alt="AVR–S" style="height:28px;object-fit:contain"/>
   <div class="topbar-right">
     <span class="date-text" id="dateText"></span>
+   <button class="icon-btn" onclick="openManual()" title="Manual"><i class="ti ti-help-circle"></i></button>
     <button class="icon-btn" onclick="openFocus()" title="Modo Foco"><i class="ti ti-focus-2"></i></button>
     <button class="icon-btn" onclick="openMentorChat()" title="Mentor IA"><i class="ti ti-brain"></i></button>
     <button class="icon-btn" onclick="openModal()"><i class="ti ti-plus"></i></button>
@@ -1568,7 +1569,116 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 
   </div>
 </div>
-<div class="alerta-notif" id="alertaNotif">
+manual_overlay.html
+ <!-- MANUAL DO APP -->
+<div class="alertas-overlay" id="manualOverlay" style="z-index:1010">
+  <div class="alertas-topbar">
+    <button class="alertas-back" onclick="closeManual()"><i class="ti ti-arrow-left"></i></button>
+    <div class="alertas-title">Como usar o app</div>
+  </div>
+  <div class="alertas-content">
+
+    <div style="font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;font-style:italic;color:var(--text2);line-height:1.8;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)">
+      O AVR–S não exige que você tenha lido o livro para começar. Ele foi criado para ser usado no dia a dia — antes de uma decisão, depois de uma reação, ou simplesmente quando você quer entender melhor o que está sentindo.
+    </div>
+
+    <!-- Seção 1 -->
+    <div class="layer-card" onclick="toggleLayer(this)" style="margin-bottom:10px">
+      <div class="layer-header">
+        <div class="layer-left">
+          <div style="width:32px;height:32px;border-radius:50%;background:rgba(200,169,109,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-player-play" style="font-size:15px;color:var(--gold)"></i></div>
+          <div class="layer-name">Por onde começar</div>
+        </div>
+        <i class="ti ti-chevron-down layer-chevron"></i>
+      </div>
+      <div class="layer-body">
+        <div class="layer-desc">Na tela inicial você verá a pergunta: <em>"Como está seu estado interno agora?"</em><br><br>Escolha o estado que mais se aproxima do que você está sentindo:</div>
+        <div class="layer-q"><i class="ti ti-eye layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Presente</strong> — estou aqui, atento</div></div>
+        <div class="layer-q"><i class="ti ti-target layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Focado</strong> — estou concentrado em algo</div></div>
+        <div class="layer-q"><i class="ti ti-bolt layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Ansioso</strong> — sinto pressão ou preocupação</div></div>
+        <div class="layer-q"><i class="ti ti-cloud-storm layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Sobrecarregado</strong> — sinto que é demais</div></div>
+        <div class="layer-q"><i class="ti ti-flame layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Reativo</strong> — acabei de reagir a algo</div></div>
+        <div class="layer-q"><i class="ti ti-sun layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Claro</strong> — estou com a cabeça limpa</div></div>
+        <div style="margin-top:12px;background:rgba(200,169,109,.06);border:1px solid var(--border2);border-radius:10px;padding:12px">
+          <div class="layer-desc" style="margin:0">Toque no estado e o app vai te guiar pelo diagnóstico AVR–S automaticamente.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção 2 -->
+    <div class="layer-card" onclick="toggleLayer(this)" style="margin-bottom:10px">
+      <div class="layer-header">
+        <div class="layer-left">
+          <div style="width:32px;height:32px;border-radius:50%;background:rgba(200,169,109,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-layout-grid" style="font-size:15px;color:var(--gold)"></i></div>
+          <div class="layer-name">O que é cada tela</div>
+        </div>
+        <i class="ti ti-chevron-down layer-chevron"></i>
+      </div>
+      <div class="layer-body">
+        <div class="layer-q"><i class="ti ti-home layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Início</strong> — estados emocionais, sequência de dias, pergunta do dia e Mentor IA</div></div>
+        <div class="layer-q"><i class="ti ti-notebook layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Diário</strong> — todos os seus registros e decisões conscientes</div></div>
+        <div class="layer-q"><i class="ti ti-route layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Guia</strong> — como o AVR–S atua nos momentos do dia</div></div>
+        <div class="layer-q"><i class="ti ti-layers-intersect layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Protocolo</strong> — as 5 camadas, as 8 etapas, biblioteca, frases e glossário</div></div>
+        <div class="layer-q"><i class="ti ti-settings layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Ajustes</strong> — conta, tema, alertas, exportação e suporte</div></div>
+      </div>
+    </div>
+
+    <!-- Seção 3 -->
+    <div class="layer-card" onclick="toggleLayer(this)" style="margin-bottom:10px">
+      <div class="layer-header">
+        <div class="layer-left">
+          <div style="width:32px;height:32px;border-radius:50%;background:rgba(200,169,109,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-calendar" style="font-size:15px;color:var(--gold)"></i></div>
+          <div class="layer-name">Como usar no dia a dia</div>
+        </div>
+        <i class="ti ti-chevron-down layer-chevron"></i>
+      </div>
+      <div class="layer-body">
+        <div class="layer-desc">Você não precisa usar o app por horas. Bastam alguns minutos por dia.</div>
+        <div class="layer-q"><i class="ti ti-sun layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Ao acordar (2 min)</strong> — escolha seu estado e responda o diagnóstico. Isso calibra sua percepção antes do dia começar.</div></div>
+        <div class="layer-q"><i class="ti ti-bolt layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Antes de uma decisão</strong> — abra o app, escolha seu estado e siga o diagnóstico para identificar distorções ativas.</div></div>
+        <div class="layer-q"><i class="ti ti-pencil layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Após uma reação</strong> — use "Registrar decisão consciente" para anotar o que aconteceu e o que aprendeu.</div></div>
+        <div class="layer-q"><i class="ti ti-moon layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Antes de dormir (1 min)</strong> — leia a pergunta do dia e reflita. Não precisa registrar.</div></div>
+      </div>
+    </div>
+
+    <!-- Seção 4 -->
+    <div class="layer-card" onclick="toggleLayer(this)" style="margin-bottom:10px">
+      <div class="layer-header">
+        <div class="layer-left">
+          <div style="width:32px;height:32px;border-radius:50%;background:rgba(200,169,109,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-help" style="font-size:15px;color:var(--gold)"></i></div>
+          <div class="layer-name">Perguntas frequentes</div>
+        </div>
+        <i class="ti ti-chevron-down layer-chevron"></i>
+      </div>
+      <div class="layer-body">
+        <div class="layer-q" style="flex-direction:column;gap:4px;align-items:flex-start">
+          <div style="font-size:13px;color:var(--gold2);font-weight:600">Precisa ler o livro para usar o app?</div>
+          <div class="layer-q-text">Não. O app funciona de forma independente. O livro aprofunda o método, mas não é necessário.</div>
+        </div>
+        <div class="layer-q" style="flex-direction:column;gap:4px;align-items:flex-start">
+          <div style="font-size:13px;color:var(--gold2);font-weight:600">O que é o Mentor IA?</div>
+          <div class="layer-q-text">Um assistente com inteligência artificial treinado no método AVR–S. Disponível no plano Pro.</div>
+        </div>
+        <div class="layer-q" style="flex-direction:column;gap:4px;align-items:flex-start">
+          <div style="font-size:13px;color:var(--gold2);font-weight:600">O que é o plano Pro?</div>
+          <div class="layer-q-text">R$19/mês. Libera o Mentor IA, análise de padrões avançada e insights personalizados ao final de cada diagnóstico.</div>
+        </div>
+        <div class="layer-q" style="flex-direction:column;gap:4px;align-items:flex-start">
+          <div style="font-size:13px;color:var(--gold2);font-weight:600">Meus dados ficam salvos?</div>
+          <div class="layer-q-text">Sim. Salvos no dispositivo e na nuvem. Se trocar de celular, entre com a mesma conta e tudo estará lá.</div>
+        </div>
+        <div class="layer-q" style="flex-direction:column;gap:4px;align-items:flex-start;border:none">
+          <div style="font-size:13px;color:var(--gold2);font-weight:600">Como falo com o suporte?</div>
+          <div class="layer-q-text">Em Ajustes → Suporte você encontra o WhatsApp e o e-mail da Audax Consultoria. Respondemos em até 24h.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:#4a4440">AVR–S · A Vida Sem Rascunho · Audax Consultoria</div>
+
+  </div>
+</div>
+ <div class="alerta-notif" id="alertaNotif">
   <div class="alerta-notif-icon"><i class="ti ti-bell-ringing" id="alertaNotifIcon"></i></div>
   <div class="alerta-notif-text">
     <div class="alerta-notif-title" id="alertaNotifTitle">Lembrete AVR–S</div>
