@@ -1,4 +1,4 @@
-const CACHE = 'avrs-v62';
+const CACHE = 'avrs-v63';
 const ASSETS = [
   '/avrs-app-/',
   '/avrs-app-/index.html',
