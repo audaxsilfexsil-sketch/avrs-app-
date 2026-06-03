@@ -2015,6 +2015,10 @@ function closeFocus(){document.getElementById('focusOverlay').classList.remove('
 // ── NOTIFICAÇÃO DIÁRIA ──
 function checkDailyNotif(){const today=new Date().toDateString();const last=entries[0];const lastDate=last?new Date(last.id).toDateString():null;if(lastDate!==today)setTimeout(()=>document.getElementById('notifBanner').classList.add('show'),4000);}
 
+// ── MANUAL ──
+function openManual(){document.getElementById('manualOverlay').classList.add('open');}
+function closeManual(){document.getElementById('manualOverlay').classList.remove('open');}
+
 // ── PRIVACIDADE ──
 function openPrivacidade(){document.getElementById('privacidadeOverlay').classList.add('open');}
  function closePrivacidade(){document.getElementById('privacidadeOverlay').classList.remove('open');}
