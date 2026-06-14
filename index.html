@@ -2378,7 +2378,7 @@ function switchProtoTab(tab){['protocolo','biblioteca','frases','glossario','eco
 // ── DASHBOARD ──
 const STATE_COLORS={'Presente':'#7ab8d4','Focado':'#d4b87a','Ansioso':'#d4a04a','Sobrecarregado':'#a07ad4','Reativo':'#d46a6a','Claro':'#7ad4a0'};
 const STATE_ICONS={'Presente':'ti-eye','Focado':'ti-target','Ansioso':'ti-bolt','Sobrecarregado':'ti-cloud-storm','Reativo':'ti-flame','Claro':'ti-sun'};
-const DIST_DESC={'Urgência falsa':'A pressão percebida é maior do que a situação exige.','Escassez':'O medo de perder está conduzindo as decisões.','Ego':'A necessidade de estar certo interfere no julgamento.','Medo':'Evitação de desconforto como padrão de resposta.','Excesso de confiança':'Subestimação de riscos e complexidade.','Fadiga mental':'Decisões tomadas com capacidade cognitiva reduzida.','Nenhuma':'Nenhuma distorção recorrente identificada.'};
+
 function openDashboard(){document.getElementById('dashOverlay').classList.add('open');renderDashboard();}
 async function loadDashInsight(){} // incorporado em renderDashboard
 function closeDashboard(){document.getElementById('dashOverlay').classList.remove('open');}
