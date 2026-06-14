@@ -635,6 +635,280 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 .eco-status.available{background:rgba(200,169,109,.1);border:1px solid var(--border2);color:var(--gold)}
 .eco-status.soon{background:var(--bg4);border:1px solid var(--border);color:var(--text3)}
 .eco-intro{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;font-style:italic;color:var(--text2);line-height:1.8;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+
+/* ── JORNADA DA RECONSTRUÇÃO ── */
+.jornada-hero{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:20px;margin-bottom:16px}
+.jornada-hero-eyebrow{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.jornada-hero-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--cream);margin-bottom:6px}
+.jornada-hero-sub{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:14px}
+.jornada-progress-bar{height:3px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-bottom:6px}
+.jornada-progress-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .5s ease}
+.jornada-progress-label{font-size:11px;color:var(--text3);display:flex;justify-content:space-between}
+.jornada-frase{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:16px;margin-bottom:16px;border-left:3px solid var(--gold);position:relative;overflow:hidden}
+.jornada-frase-mark{position:absolute;top:8px;left:12px;font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:rgba(200,169,109,.06);line-height:1}
+.jornada-frase-text{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:var(--gold2);line-height:1.8}
+.mod-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:10px;position:relative;overflow:hidden;transition:border-color .2s}
+.mod-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px;background:var(--gold)}
+.mod-card.locked::before{background:var(--bg4)}
+.mod-card:not(.locked){cursor:pointer}
+.mod-card:not(.locked):hover{border-color:var(--border2)}
+.mod-card-top{display:flex;justify-content:space-between;align-items:flex-start}
+.mod-card-num{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:3px}
+.mod-card-title{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--cream);margin-bottom:2px}
+.mod-card-sub{font-size:11px;color:var(--gold);font-style:italic}
+.mod-card-desc{font-size:12px;color:var(--text3);line-height:1.5;margin-top:8px}
+.mod-card-prog{margin-top:10px}
+.mod-card-prog-bar{height:2px;background:var(--bg4);border-radius:1px;overflow:hidden}
+.mod-card-prog-fill{height:100%;background:var(--gold);border-radius:1px;transition:width .4s ease}
+.mod-card-prog-label{font-size:10px;color:var(--text3);margin-top:3px}
+.jornada-badge-free{background:rgba(100,200,100,.1);border:1px solid rgba(100,200,100,.25);border-radius:20px;padding:3px 9px;font-size:9px;letter-spacing:.06em;color:#7ad4a0;white-space:nowrap}
+.jornada-badge-pro{background:rgba(200,169,109,.1);border:1px solid var(--border2);border-radius:20px;padding:3px 9px;font-size:9px;letter-spacing:.06em;color:var(--gold);white-space:nowrap}
+.jornada-lock{font-size:15px;color:var(--bg5);margin-top:2px}
+.pausa-avrs-card{background:rgba(26,46,26,.6);border:1px solid rgba(100,200,100,.2);border-radius:var(--r);padding:16px;margin-bottom:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px}
+.pausa-avrs-card:hover{background:rgba(26,46,26,.8)}
+.pausa-avrs-icon{width:44px;height:44px;border-radius:50%;background:rgba(100,200,100,.1);border:1px solid rgba(100,200,100,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pausa-avrs-icon i{font-size:22px;color:#7ad4a0}
+.pausa-avrs-title{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--cream);margin-bottom:3px}
+.pausa-avrs-sub{font-size:11px;color:var(--text3);line-height:1.4}
+.mod-detail-overlay{position:fixed;inset:0;background:var(--bg);z-index:940;display:none;flex-direction:column;overflow:hidden}
+.mod-detail-overlay.open{display:flex}
+.mod-detail-topbar{padding:16px 20px 14px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.mod-detail-back{background:none;border:none;color:var(--text2);cursor:pointer;font-size:22px;display:flex;align-items:center}
+.mod-detail-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:var(--cream)}
+.mod-detail-content{flex:1;overflow-y:auto;padding:20px}
+.mod-detail-content::-webkit-scrollbar{display:none}
+.mod-detail-intro{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;font-style:italic;color:var(--text2);line-height:1.8;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.exercicio-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden;transition:border-color .2s}
+.exercicio-card.done{border-color:rgba(200,169,109,.35)}
+.exercicio-header{padding:16px 18px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;background:var(--bg3);transition:background .2s}
+.exercicio-header:hover{background:var(--bg4)}
+.exercicio-num{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:3px}
+.exercicio-title{font-size:14px;font-weight:600;color:var(--cream)}
+.exercicio-check{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--text3);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .25s}
+.exercicio-card.done .exercicio-check{background:var(--gold);border-color:var(--gold)}
+.exercicio-body{display:none;padding:0 18px 18px;background:var(--bg2);border-top:1px solid var(--border)}
+.exercicio-card.open .exercicio-body{display:block}
+.exercicio-pergunta{font-size:13px;color:var(--text2);line-height:1.7;margin-top:14px;margin-bottom:10px}
+.exercicio-textarea{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--cream);padding:12px 14px;border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;resize:none;min-height:80px;outline:none;transition:border-color .2s}
+.exercicio-textarea:focus{border-color:var(--gold)}
+.exercicio-textarea::placeholder{color:var(--text3)}
+.exercicio-salvar{width:100%;background:var(--gold);border:none;border-radius:10px;padding:12px;font-size:12px;font-weight:600;color:#0a0908;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.06em;margin-top:10px;transition:background .2s}
+.exercicio-salvar:hover{background:var(--gold2)}
+.exercicio-resultado{background:rgba(200,169,109,.06);border:1px solid var(--border2);border-radius:10px;padding:14px;margin-top:12px;font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:var(--gold2);line-height:1.7;display:none}
+.exercicio-card.done .exercicio-resultado{display:block}
+.escolhas-motivadores{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.motivador-chip{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:12px 14px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px}
+.motivador-chip.sel{border-color:var(--gold);background:rgba(200,169,109,.07)}
+.motivador-chip-circle{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--text3);flex-shrink:0;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.motivador-chip.sel .motivador-chip-circle{background:var(--gold);border-color:var(--gold)}
+.motivador-chip.sel .motivador-chip-circle::after{content:'';width:6px;height:6px;border-radius:50%;background:#0a0908}
+.motivador-chip-text{font-size:13px;color:var(--text2);transition:color .2s}
+.motivador-chip.sel .motivador-chip-text{color:var(--cream)}
+.habito-item{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.habito-item.done{border-color:rgba(200,169,109,.35);background:rgba(200,169,109,.04)}
+.habito-item-check{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--text3);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .25s}
+.habito-item.done .habito-item-check{background:var(--gold);border-color:var(--gold)}
+.habito-item-text{font-size:13px;color:var(--cream);line-height:1.5}
+.habito-item.done .habito-item-text{color:var(--text3)}
+.evolucao-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:12px}
+.evolucao-card-title{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.evolucao-card-title i{font-size:14px;color:var(--gold)}
+.evolucao-trio{display:flex;flex-direction:column;gap:10px}
+.evolucao-trio-row{display:flex;gap:12px;align-items:flex-start}
+.evolucao-trio-label{font-size:10px;color:var(--gold);letter-spacing:.08em;width:60px;flex-shrink:0;padding-top:14px}
+.evolucao-trio-input{flex:1;background:var(--bg4);border:1px solid var(--border);color:var(--cream);padding:12px 14px;border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;resize:none;min-height:60px;outline:none;transition:border-color .2s}
+.evolucao-trio-input:focus{border-color:var(--gold)}
+.evolucao-trio-input::placeholder{color:var(--text3)}
+.evolucao-indicadores{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.evo-ind-card{background:var(--bg4);border:1px solid var(--border);border-radius:var(--r2);padding:14px;text-align:center}
+.evo-ind-num{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:300;color:var(--gold);line-height:1}
+.evo-ind-label{font-size:10px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-top:4px}
+.pausa-overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:950;display:none;align-items:flex-end;justify-content:center}
+.pausa-overlay.open{display:flex}
+.pausa-panel{background:var(--bg2);width:100%;max-width:860px;border-radius:28px 28px 0 0;transform:translateY(100%);transition:transform .4s cubic-bezier(.32,.72,0,1);max-height:90vh;overflow-y:auto;padding-bottom:32px}
+.pausa-panel::-webkit-scrollbar{display:none}
+.pausa-overlay.open .pausa-panel{transform:translateY(0)}
+.pausa-handle{width:36px;height:3px;border-radius:2px;background:var(--bg5);margin:14px auto 0}
+.pausa-header{padding:16px 24px 14px;border-bottom:1px solid var(--border)}
+.pausa-header-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--cream);margin-bottom:4px}
+.pausa-header-sub{font-size:12px;color:var(--text3);line-height:1.6}
+.pausa-body{padding:16px 24px 0}
+.pausa-step-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:16px;margin-bottom:10px}
+.pausa-step-card.active{border-color:var(--gold)}
+.pausa-step-num{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.pausa-step-q{font-size:14px;color:var(--cream);margin-bottom:12px;line-height:1.5}
+.pausa-step-ta{width:100%;background:var(--bg4);border:1px solid var(--border);color:var(--cream);padding:12px 14px;border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;resize:none;min-height:70px;outline:none;transition:border-color .2s}
+.pausa-step-ta:focus{border-color:var(--gold)}
+.pausa-step-ta::placeholder{color:var(--text3)}
+.pausa-submit{width:calc(100% - 48px);margin:14px 24px 0;background:var(--gold);border:none;border-radius:12px;padding:14px;font-size:13px;font-weight:600;color:#0a0908;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.06em}
+.pausa-confirmacao{background:rgba(26,46,26,.5);border:1px solid rgba(100,200,100,.25);border-radius:var(--r2);padding:16px 24px;margin:14px 24px 0;text-align:center;display:none}
+.pausa-confirmacao-icon{font-size:32px;color:#7ad4a0;margin-bottom:8px}
+.pausa-confirmacao-text{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--cream);line-height:1.7}
+.jornada20-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:14px;transition:all .2s}
+.jornada20-card.available{cursor:pointer}
+.jornada20-card.available:hover{border-color:var(--border2)}
+.jornada20-card.done{border-color:rgba(200,169,109,.3);background:rgba(200,169,109,.03)}
+.jornada20-card.locked-day{opacity:.5}
+.jornada20-num{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--text3);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text3);flex-shrink:0;font-family:'Cormorant Garamond',serif;transition:all .25s}
+.jornada20-card.done .jornada20-num{background:var(--gold);border-color:var(--gold);color:#0a0908;font-weight:600}
+.jornada20-card.today .jornada20-num{border-color:var(--gold);color:var(--gold)}
+.jornada20-info{flex:1}
+.jornada20-title{font-size:13px;color:var(--cream);margin-bottom:2px;line-height:1.4}
+.jornada20-cap{font-size:10px;color:var(--text3)}
+.jornada20-badge{font-size:9px;letter-spacing:.06em;padding:2px 8px;border-radius:20px}
+.jornada20-badge.free{background:rgba(100,200,100,.1);color:#7ad4a0;border:1px solid rgba(100,200,100,.2)}
+.jornada20-badge.pro{background:rgba(200,169,109,.1);color:var(--gold);border:1px solid var(--border2)}
+.jornada-pro-gate{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:24px;text-align:center;margin-bottom:10px}
+.jornada-pro-gate i{font-size:32px;color:var(--gold);margin-bottom:12px;display:block}
+.jornada-pro-gate-title{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--cream);margin-bottom:8px}
+.jornada-pro-gate-sub{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:16px}
+.jornada-pro-btn{display:block;width:100%;background:var(--gold);border:none;border-radius:12px;padding:14px;font-size:13px;font-weight:600;color:#0a0908;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.06em;text-align:center}
+
+
+/* ── UNIVERSO AVR-S 5.1 ── */
+.univ-hero{background:linear-gradient(135deg,rgba(200,169,109,.08),rgba(200,169,109,.02));border:1px solid var(--border2);border-radius:var(--r);padding:20px;margin-bottom:16px;text-align:center}
+.univ-hero-eyebrow{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.univ-hero-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--cream);margin-bottom:6px;line-height:1.3}
+.univ-hero-sub{font-size:12px;color:var(--text3);line-height:1.6}
+.univ-tab-row{display:flex;gap:0;margin-bottom:20px;border-bottom:1px solid var(--border)}
+.univ-tab{flex:1;background:none;border:none;border-bottom:2px solid transparent;padding:11px 4px;font-size:10px;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase;transition:all .2s}
+.univ-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+
+/* ── A VIDA SEM RASCUNHO ── */
+.avrs-mapa{display:flex;justify-content:center;margin-bottom:20px;position:relative;height:160px}
+.avrs-mapa-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:2}
+.avrs-mapa-center-label{font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:2px}
+.avrs-mapa-center-title{font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--gold);font-weight:400;line-height:1.2}
+.avrs-orbit-node{position:absolute;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:#0a0908;font-weight:600;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.avrs-orbit-node.node-a{background:#7ab8d4;top:0;left:50%;transform:translateX(-50%)}
+.avrs-orbit-node.node-v{background:#a07ad4;top:50%;right:8%;transform:translateY(-50%)}
+.avrs-orbit-node.node-r{background:#d4b87a;top:50%;left:8%;transform:translateY(-50%)}
+.avrs-orbit-node.node-s{background:#7ad4a0;bottom:0;left:50%;transform:translateX(-50%)}
+.avrs-orbit-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:130px;height:130px;border-radius:50%;border:1px dashed rgba(200,169,109,.2)}
+
+.avrs-etapa-card{border:1px solid var(--border);border-radius:var(--r2);margin-bottom:10px;overflow:hidden;background:var(--bg3)}
+.avrs-etapa-card.ativo{border-color:var(--border2)}
+.avrs-etapa-header{padding:16px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:background .2s}
+.avrs-etapa-header:hover{background:var(--bg4)}
+.avrs-etapa-letter{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:#0a0908;flex-shrink:0}
+.avrs-etapa-letter.a{background:#7ab8d4}
+.avrs-etapa-letter.v{background:#a07ad4}
+.avrs-etapa-letter.r{background:#d4b87a}
+.avrs-etapa-letter.s{background:#7ad4a0}
+.avrs-etapa-info{flex:1}
+.avrs-etapa-name{font-size:14px;font-weight:600;color:var(--cream);letter-spacing:.02em}
+.avrs-etapa-desc{font-size:11px;color:var(--text3);margin-top:2px}
+.avrs-etapa-status{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.avrs-etapa-badge-ativo{background:rgba(100,200,100,.12);border:1px solid rgba(100,200,100,.3);border-radius:20px;padding:3px 10px;font-size:9px;letter-spacing:.06em;color:#7ad4a0}
+.avrs-etapa-badge-pro{background:rgba(200,169,109,.1);border:1px solid var(--border2);border-radius:20px;padding:3px 10px;font-size:9px;letter-spacing:.06em;color:var(--gold)}
+.avrs-etapa-update{font-size:9px;color:var(--text3);display:flex;align-items:center;gap:4px}
+.avrs-etapa-update::before{content:'';width:5px;height:5px;border-radius:50%;background:#7ad4a0;flex-shrink:0}
+.avrs-etapa-chevron{font-size:14px;color:var(--text3)}
+.avrs-etapa-body{display:none;padding:16px 18px;background:var(--bg2);border-top:1px solid var(--border)}
+.avrs-etapa-card.open .avrs-etapa-body{display:block}
+.avrs-analise-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.avrs-analise-text{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--cream);line-height:1.8;margin-bottom:12px}
+.avrs-ver-btn{background:none;border:1px solid var(--border2);border-radius:20px;padding:7px 16px;font-size:11px;color:var(--gold);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.avrs-ver-btn:hover{background:rgba(200,169,109,.08)}
+.avrs-footer-bar{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.avrs-footer-text{font-size:12px;color:var(--text2);line-height:1.5;flex:1;padding-right:12px}
+.avrs-footer-text strong{color:var(--gold)}
+.avrs-footer-btn{background:var(--gold);border:none;border-radius:10px;padding:9px 16px;font-size:11px;font-weight:600;color:#0a0908;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
+
+/* ── MENTOR IA 5.1 ── */
+.mentor51-header{background:linear-gradient(135deg,var(--ai),rgba(26,46,26,.5));border:1px solid var(--ai-border);border-radius:var(--r);padding:20px;margin-bottom:16px;display:flex;gap:16px;align-items:flex-start}
+.mentor51-avatar{width:52px;height:52px;border-radius:50%;background:rgba(100,200,100,.15);border:2px solid var(--ai-border);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mentor51-avatar img{width:32px;height:32px;object-fit:contain}
+.mentor51-avatar i{font-size:26px;color:var(--ai-text)}
+.mentor51-greeting{font-size:15px;font-weight:600;color:var(--cream);margin-bottom:4px}
+.mentor51-sub{font-size:12px;color:#b8e0b8;line-height:1.5}
+.mentor51-last{font-size:11px;color:var(--text3);margin-top:6px}
+.mapa-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:10px;overflow:hidden;cursor:pointer;transition:border-color .2s}
+.mapa-card:hover{border-color:var(--border2)}
+.mapa-card-inner{padding:14px 16px;display:flex;align-items:flex-start;gap:12px}
+.mapa-card-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mapa-card-icon i{font-size:17px}
+.mapa-card-icon.causa{background:rgba(212,106,106,.12);color:#d46a6a}
+.mapa-card-icon.causa i{color:#d46a6a}
+.mapa-card-icon.escolhas{background:rgba(100,200,100,.1);color:#7ad4a0}
+.mapa-card-icon.escolhas i{color:#7ad4a0}
+.mapa-card-icon.valores{background:rgba(160,122,212,.12);color:#a07ad4}
+.mapa-card-icon.valores i{color:#a07ad4}
+.mapa-card-icon.ciclo{background:rgba(200,169,109,.1);color:var(--gold)}
+.mapa-card-icon.ciclo i{color:var(--gold)}
+.mapa-card-icon.acao{background:rgba(122,180,212,.12);color:#7ab8d4}
+.mapa-card-icon.acao i{color:#7ab8d4}
+.mapa-card-label{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:4px}
+.mapa-card-text{font-size:13px;color:var(--cream);line-height:1.5}
+.mapa-card-chevron{margin-left:auto;font-size:15px;color:var(--text3);flex-shrink:0;margin-top:4px}
+.mapa-card-loading{display:flex;align-items:center;gap:8px;padding:14px 16px}
+.mapa-card-loading .mentor-typing{padding:0}
+.mapa-cta{background:linear-gradient(135deg,rgba(100,200,100,.12),rgba(100,200,100,.06));border:1px solid var(--ai-border);border-radius:var(--r2);padding:16px;margin-top:6px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .2s}
+.mapa-cta:hover{background:rgba(100,200,100,.15)}
+.mapa-cta-text{flex:1}
+.mapa-cta-title{font-size:14px;font-weight:600;color:#b8e0b8;margin-bottom:3px}
+.mapa-cta-sub{font-size:11px;color:var(--text3)}
+.mapa-cta i{font-size:22px;color:var(--ai-text);flex-shrink:0}
+.mentor51-quota{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:14px}
+.mentor51-quota-icon{font-size:16px;color:var(--gold)}
+.mentor51-quota-text{font-size:12px;color:var(--text2);flex:1}
+.mentor51-quota-count{font-size:11px;color:var(--text3)}
+.mapa-full-overlay{position:fixed;inset:0;background:var(--bg);z-index:945;display:none;flex-direction:column;overflow:hidden}
+.mapa-full-overlay.open{display:flex}
+.mapa-full-topbar{padding:16px 20px 14px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.mapa-full-back{background:none;border:none;color:var(--text2);cursor:pointer;font-size:22px;display:flex;align-items:center}
+.mapa-full-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--cream)}
+.mapa-full-content{flex:1;overflow-y:auto;padding:20px}
+.mapa-full-content::-webkit-scrollbar{display:none}
+.mapa-section{margin-bottom:20px}
+.mapa-section-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.mapa-section-label i{font-size:14px}
+.mapa-section-text{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--cream);line-height:1.8}
+.mapa-section-card{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:14px;margin-top:8px}
+.mapa-data-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)}
+.mapa-data-row:last-child{border:none}
+.mapa-data-label{font-size:12px;color:var(--text3);flex:1}
+.mapa-data-value{font-size:12px;color:var(--cream);font-weight:500}
+
+
+/* ── DASHBOARD FASE 3 — CAMADA 2 ── */
+.dash-camada-header{display:flex;align-items:center;gap:8px;padding:14px 0 10px;border-bottom:1px solid var(--border)}
+.dash-camada-title{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);flex:1}
+.dash-camada-badge{font-size:9px;letter-spacing:.06em;padding:3px 9px;border-radius:20px}
+.dash-camada-badge.c1{background:rgba(200,169,109,.1);border:1px solid var(--border2);color:var(--gold)}
+.dash-camada-badge.c2{background:rgba(26,46,26,.6);border:1px solid rgba(100,200,100,.3);color:#7ad4a0}
+.dash-interp-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:8px;overflow:hidden;transition:border-color .2s}
+.dash-interp-card:hover{border-color:var(--border2);cursor:pointer}
+.dash-interp-inner{padding:12px 14px;display:flex;align-items:flex-start;gap:10px}
+.dash-interp-icon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dash-interp-icon i{font-size:15px}
+.dash-interp-icon.causa{background:rgba(212,106,106,.12)}
+.dash-interp-icon.causa i{color:#d46a6a}
+.dash-interp-icon.escolhas{background:rgba(100,200,100,.1)}
+.dash-interp-icon.escolhas i{color:#7ad4a0}
+.dash-interp-icon.valores{background:rgba(160,122,212,.12)}
+.dash-interp-icon.valores i{color:#a07ad4}
+.dash-interp-icon.ciclo{background:rgba(200,169,109,.1)}
+.dash-interp-icon.ciclo i{color:var(--gold)}
+.dash-interp-icon.acao{background:rgba(122,180,212,.12)}
+.dash-interp-icon.acao i{color:#7ab8d4}
+.dash-interp-label{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:3px}
+.dash-interp-text{font-size:12px;color:var(--cream);line-height:1.5}
+.dash-interp-chevron{margin-left:auto;font-size:13px;color:var(--text3);flex-shrink:0;margin-top:2px}
+.dash-gerar-btn{width:100%;background:linear-gradient(135deg,rgba(26,46,26,.8),rgba(26,46,26,.5));border:1px solid rgba(100,200,100,.3);border-radius:var(--r2);padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;margin-top:6px}
+.dash-gerar-btn:hover{background:rgba(26,46,26,.9)}
+.dash-gerar-icon{width:36px;height:36px;border-radius:50%;background:rgba(100,200,100,.15);border:1px solid rgba(100,200,100,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dash-gerar-icon i{font-size:18px;color:#a8d8a8}
+.dash-gerar-text{flex:1;text-align:left}
+.dash-gerar-title{font-size:13px;font-weight:500;color:#b8e0b8;margin-bottom:2px}
+.dash-gerar-sub{font-size:10px;color:var(--text3)}
+.dash-gerar-arrow{font-size:16px;color:#7ad4a0}
+.dash-quota-bar{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:10px 14px;display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.dash-quota-icon{font-size:14px;color:var(--gold)}
+.dash-quota-text{font-size:11px;color:var(--text2);flex:1}
+.dash-quota-count{font-size:10px;color:var(--text3)}
+.dash-divider{height:1px;background:var(--border);margin:16px 0}
+
 </style>
 </head>
 <body>
@@ -757,7 +1031,7 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
         <div class="state-chip" onclick="openChecklist('Claro','ti-sun')"><i class="ti ti-sun"></i><span>Claro</span><i class="ti ti-chevron-right chip-arrow"></i></div>
       </div>
     </div>
-    <div class="avrs-day-card" onclick="goTo('guia')">
+    <div class="avrs-day-card" onclick="goTo('universo');switchUnivTab('protocolo')">
       <div class="avrs-day-top">
         <div class="avrs-day-icon"><i class="ti ti-route"></i></div>
         <div class="avrs-day-label">Como o AVR–S atua ao longo do dia</div>
@@ -1009,7 +1283,139 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
     <div class="momento-card" onclick="toggleMomento(this)"><div class="momento-header"><div class="momento-num">3</div><div class="momento-title-wrap"><div class="momento-eyebrow">Antes de</div><div class="momento-title">Entrar no automático</div></div><i class="ti ti-chevron-down momento-chevron"></i></div><div class="momento-body"><div class="momento-desc">Grande parte da vida é conduzida por repetição inconsciente. O AVR–S ajuda a interromper ciclos automáticos.</div><div class="momento-result"><i class="ti ti-sparkles"></i><div class="momento-result-text">Mais presença. Mais consciência sobre padrões.</div></div></div></div>
     <div class="momento-card" onclick="toggleMomento(this)"><div class="momento-header"><div class="momento-num">4</div><div class="momento-title-wrap"><div class="momento-eyebrow">Antes de</div><div class="momento-title">Interpretar</div></div><i class="ti ti-chevron-down momento-chevron"></i></div><div class="momento-body"><div class="momento-desc">Nem sempre sofremos pelo fato. Muitas vezes sofremos pela interpretação construída sobre ele.</div><div class="momento-result"><i class="ti ti-sparkles"></i><div class="momento-result-text">Menos distorção. Mais percepção limpa da realidade.</div></div></div></div>
     <div class="guia-closing"><div class="guia-closing-text">O AVR–S não muda apenas decisões.<br>Ele altera a forma como você percebe antes de decidir.<br><br>E isso muda tudo.</div></div>
+
+
+  <!-- JORNADA DA RECONSTRUÇÃO -->
+  <div class="screen" id="screen-jornada">
+    <div class="jornada-frase">
+      <div class="jornada-frase-mark">"</div>
+      <div class="jornada-frase-text" id="jornadaFrase"></div>
+    </div>
+    <div class="jornada-hero">
+      <div class="jornada-hero-eyebrow">Jornada da Reconstrução</div>
+      <div class="jornada-hero-title">A mente é a causa. A vida é o efeito.</div>
+      <div class="jornada-hero-sub">Antes de mudar a vida, precisamos compreender o que a direciona.</div>
+      <div class="jornada-progress-bar"><div class="jornada-progress-fill" id="jornadaProgressFill"></div></div>
+      <div class="jornada-progress-label"><span id="jornadaProgressLabel">0 dias concluídos</span><span id="jornadaProgressPct">0%</span></div>
+    </div>
+    <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:10px">Módulos</div>
+    <div class="mod-card" id="jmod1" onclick="openModDetail(1)">
+      <div class="mod-card-top">
+        <div><div class="mod-card-num">Módulo 1</div><div class="mod-card-title">Minha Mente</div><div class="mod-card-sub">A Causa — O Solo</div></div>
+        <span class="jornada-badge-free">Gratuito</span>
+      </div>
+      <div class="mod-card-desc">Descubra os padrões invisíveis que constroem seus resultados visíveis.</div>
+      <div class="mod-card-prog">
+        <div class="mod-card-prog-bar"><div class="mod-card-prog-fill" id="mod1ProgFill" style="width:0%"></div></div>
+        <div class="mod-card-prog-label" id="mod1ProgLabel">0 de 4 exercícios</div>
+      </div>
+    </div>
+    <div class="mod-card locked" id="jmod2" onclick="checkJornadaPro(2)">
+      <div class="mod-card-top">
+        <div><div class="mod-card-num">Módulo 2</div><div class="mod-card-title">Minhas Escolhas</div><div class="mod-card-sub">As Sementes</div></div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><span class="jornada-badge-pro">Pro</span><i class="ti ti-lock jornada-lock"></i></div>
+      </div>
+      <div class="mod-card-desc">Diário das escolhas — consciência diária sobre o que guia suas decisões.</div>
+    </div>
+    <div class="mod-card locked" id="jmod3" onclick="checkJornadaPro(3)">
+      <div class="mod-card-top">
+        <div><div class="mod-card-num">Módulo 3</div><div class="mod-card-title">Meus Hábitos</div><div class="mod-card-sub">O Cultivo</div></div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><span class="jornada-badge-pro">Pro</span><i class="ti ti-lock jornada-lock"></i></div>
+      </div>
+      <div class="mod-card-desc">Checklist de reconstrução diária — práticas que sustentam a mudança.</div>
+    </div>
+    <div class="mod-card locked" id="jmod4" onclick="checkJornadaPro(4)">
+      <div class="mod-card-top">
+        <div><div class="mod-card-num">Módulo 4</div><div class="mod-card-title">Minha Evolução</div><div class="mod-card-sub">A Colheita</div></div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><span class="jornada-badge-pro">Pro</span><i class="ti ti-lock jornada-lock"></i></div>
+      </div>
+      <div class="mod-card-desc">Painel de identidade — antes / percebo / escolho.</div>
+    </div>
+    <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin:16px 0 10px">Ferramenta transversal</div>
+    <div class="pausa-avrs-card" onclick="openPausaAVRS()">
+      <div class="pausa-avrs-icon"><i class="ti ti-focus-2"></i></div>
+      <div style="flex:1">
+        <div class="pausa-avrs-title">Pausa AVR-S</div>
+        <div class="pausa-avrs-sub">Entre o estímulo e a resposta.<br>Gratuito · disponível sempre.</div>
+      </div>
+      <i class="ti ti-chevron-right" style="color:var(--text3);font-size:16px;flex-shrink:0"></i>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin:16px 0 10px">
+      <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3)">Jornada 20 Dias</div>
+      <div style="font-size:11px;color:var(--text3)">Dias 1–5 gratuitos</div>
+    </div>
+    <div id="jornada20List"></div>
   </div>
+
+
+
+  <!-- UNIVERSO AVR-S 5.1 -->
+  <div class="screen" id="screen-universo">
+    <div class="univ-hero">
+      <div class="univ-hero-eyebrow">AVR-S 5.1</div>
+      <div class="univ-hero-title">Universo AVR-S</div>
+      <div class="univ-hero-sub">O sistema interpreta o que você registra.<br>A consciência evolui com cada entrada.</div>
+    </div>
+    <div class="univ-tab-row">
+      <button class="univ-tab active" id="utab-avrs" onclick="switchUnivTab('avrs')">Vida Sem Rascunho</button>
+      <button class="univ-tab" id="utab-mentor" onclick="switchUnivTab('mentor')">Mentor IA</button>
+      <button class="univ-tab" id="utab-protocolo" onclick="switchUnivTab('protocolo')">Protocolo</button>
+    </div>
+
+    <!-- TAB: A VIDA SEM RASCUNHO -->
+    <div id="univ-avrs">
+      <div class="avrs-mapa">
+        <div class="avrs-orbit-ring"></div>
+        <div class="avrs-orbit-node node-a">A</div>
+        <div class="avrs-orbit-node node-v">V</div>
+        <div class="avrs-orbit-node node-r">R</div>
+        <div class="avrs-orbit-node node-s">S</div>
+        <div class="avrs-mapa-center">
+          <div class="avrs-mapa-center-label">Meu Mapa</div>
+          <div class="avrs-mapa-center-title">AVR-S</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text3);text-align:center;margin-bottom:16px">Baseado nos seus registros dos últimos 30 dias</div>
+      <div id="avrsEtapas"></div>
+      <div class="avrs-footer-bar" id="avrsFooterBar" style="display:none">
+        <div class="avrs-footer-text">Você está em <strong id="avrsEtapaCount">1</strong> de 4 etapas gratuitas.<br>Desbloqueie o método completo.</div>
+        <button class="avrs-footer-btn" onclick="openPaywall()">Conhecer Pro</button>
+      </div>
+    </div>
+
+    <!-- TAB: MENTOR IA -->
+    <div id="univ-mentor" style="display:none">
+      <div class="mentor51-header">
+        <div class="mentor51-avatar"><i class="ti ti-brain"></i></div>
+        <div>
+          <div class="mentor51-greeting">Mentor IA AVR-S</div>
+          <div class="mentor51-sub">Analisei sua jornada AVR-S.<br>Aqui está o que descobri sobre você:</div>
+          <div class="mentor51-last" id="mentor51Last"></div>
+        </div>
+      </div>
+      <div class="mentor51-quota" id="mentor51Quota">
+        <i class="ti ti-sparkles mentor51-quota-icon"></i>
+        <div class="mentor51-quota-text" id="mentor51QuotaText">Gerando análise...</div>
+        <div class="mentor51-quota-count" id="mentor51QuotaCount"></div>
+      </div>
+      <div id="mapaCards"></div>
+      <div class="mapa-cta" onclick="openMapaCompleto()">
+        <div class="mapa-cta-text">
+          <div class="mapa-cta-title">Ver Meu Mapa Completo</div>
+          <div class="mapa-cta-sub">Relatório completo da sua reconstrução</div>
+        </div>
+        <i class="ti ti-chevron-right"></i>
+      </div>
+
+    <!-- TAB: PROTOCOLO -->
+    <div id="univ-protocolo" style="display:none">
+      <div style="background:rgba(200,169,109,.05);border:1px solid var(--border2);border-radius:var(--r2);padding:14px;margin-bottom:14px;text-align:center">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:var(--gold2);line-height:1.7">O AVR–S não é uma técnica.<br>É uma forma de perceber antes de agir.</div>
+      </div>
+      <div id="univProtocoloContent"></div>
+    </div>
+  </div>
+
 
 </div>
 
@@ -1017,8 +1423,8 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 <div class="nav">
   <button class="nav-btn active" id="nav-home" onclick="goTo('home')"><i class="ti ti-home"></i>Início</button>
   <button class="nav-btn" id="nav-diary" onclick="goTo('diary')"><i class="ti ti-notebook"></i>Diário</button>
-  <button class="nav-btn" id="nav-guia" onclick="goTo('guia')"><i class="ti ti-route"></i>Guia</button>
-  <button class="nav-btn" id="nav-protocol" onclick="goTo('protocol')"><i class="ti ti-layers-intersect"></i>Protocolo</button>
+  <button class="nav-btn" id="nav-jornada" onclick="goTo('jornada')"><i class="ti ti-seedling"></i>Jornada</button>
+  <button class="nav-btn" id="nav-universo" onclick="goTo('universo')"><i class="ti ti-galaxy"></i>Universo</button>
   <button class="nav-btn" id="nav-settings" onclick="goTo('settings')"><i class="ti ti-settings"></i>Ajustes</button>
 </div>
 
@@ -1871,7 +2277,7 @@ function verificarLimiteIA(){
 }
 function atualizarContadorChat(){const s=document.getElementById('mentorChatStatus');if(s&&isPro)s.textContent='online · '+(getLimite()-getMsgCount())+'/'+getLimite()+' msgs';}
 // ── NAV ──
-function goTo(s){const cur=document.querySelector('.screen.active');if(cur)cur.classList.remove('active');document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById('screen-'+s).classList.add('active');document.getElementById('nav-'+s).classList.add('active');if(s==='settings')updateSettingsProfile();}
+function goTo(s){const cur=document.querySelector('.screen.active');if(cur)cur.classList.remove('active');document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById('screen-'+s).classList.add('active');document.getElementById('nav-'+s).classList.add('active');if(s==='settings')updateSettingsProfile();if(s==='jornada')initJornada();if(s==='universo')initUniverso();}
 
 // ── MODAL ──
 function openModal(){document.getElementById('overlay').classList.add('open');setTimeout(()=>document.getElementById('inpSit').focus(),400);}
@@ -1973,21 +2379,122 @@ function switchProtoTab(tab){['protocolo','biblioteca','frases','glossario','eco
 const STATE_COLORS={'Presente':'#7ab8d4','Focado':'#d4b87a','Ansioso':'#d4a04a','Sobrecarregado':'#a07ad4','Reativo':'#d46a6a','Claro':'#7ad4a0'};
 const STATE_ICONS={'Presente':'ti-eye','Focado':'ti-target','Ansioso':'ti-bolt','Sobrecarregado':'ti-cloud-storm','Reativo':'ti-flame','Claro':'ti-sun'};
 const DIST_DESC={'Urgência falsa':'A pressão percebida é maior do que a situação exige.','Escassez':'O medo de perder está conduzindo as decisões.','Ego':'A necessidade de estar certo interfere no julgamento.','Medo':'Evitação de desconforto como padrão de resposta.','Excesso de confiança':'Subestimação de riscos e complexidade.','Fadiga mental':'Decisões tomadas com capacidade cognitiva reduzida.','Nenhuma':'Nenhuma distorção recorrente identificada.'};
-function openDashboard(){document.getElementById('dashOverlay').classList.add('open');renderDashboard();if(isPro)loadDashInsight();}
-async function loadDashInsight(){
-  const box=document.getElementById('dashInsightText');
-  if(!box)return;
-  const p=buildProfile();
-  if(!p.totalEntries){box.innerHTML='Registre pelo menos um estado para receber análise.';return;}
-  const last7=entries.slice(0,7);
-  const summary=last7.map(e=>`${e.state}${e.distortion&&e.distortion!=='Nenhuma'?' ('+e.distortion+')':''}`).join(', ');
-  const prompt=`Analise o padrão emocional desta semana: ${summary}. Estado dominante: ${p.dominantState||'variado'}. Distorção mais frequente: ${p.mainDistortion||'nenhuma'}. Dê um insight de 2-3 frases e uma recomendação prática.`;
-  const insight=await callClaude([{role:'user',content:prompt}],getMentorSystem());
-  if(box&&insight)box.innerHTML=insight;
-  else if(box)box.innerHTML='Não foi possível gerar análise agora. Tente novamente.';
-}
+function openDashboard(){document.getElementById('dashOverlay').classList.add('open');renderDashboard();}
+async function loadDashInsight(){} // incorporado em renderDashboard
 function closeDashboard(){document.getElementById('dashOverlay').classList.remove('open');}
-function renderDashboard(){const container=document.getElementById('dashContent');const last30=entries.slice(0,30);if(!last30.length){container.innerHTML=`<div style="text-align:center;padding:60px 24px"><div style="font-size:40px;color:#6a6460;margin-bottom:16px"><i class="ti ti-chart-bar"></i></div><div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:#b8b0a4;margin-bottom:8px">Nenhum dado ainda</div><div style="font-size:13px;color:#6a6460">Registre algumas decisões para ver seu dashboard.</div></div>`;return;}const sc={},dc={};last30.forEach(e=>{if(e.state&&e.state!=='Não definido')sc[e.state]=(sc[e.state]||0)+1;if(e.distortion&&e.distortion!=='Nenhuma')dc[e.distortion]=(dc[e.distortion]||0)+1;});const ss=Object.entries(sc).sort((a,b)=>b[1]-a[1]);const ds=ss[0]?.[0]||'—',dc0=ss[0]?.[1]||0,dp=Math.round((dc0/last30.length)*100);const md=Object.entries(dc).sort((a,b)=>b[1]-a[1])[0]?.[0]||'Nenhuma';const mdc=dc[md]||0;const clarityMap={'Claro':100,'Presente':85,'Focado':80,'Ansioso':35,'Reativo':25,'Sobrecarregado':20};const l7=entries.slice(0,7).map(e=>({date:e.date,state:e.state,clarity:clarityMap[e.state]||50}));const clarityHtml=l7.length?l7.map(d=>{const col=d.clarity>=80?'#7ad4a0':d.clarity>=50?'var(--gold)':'#d46a6a';return`<div class="dash-clarity-row"><div class="dash-clarity-day">${d.date.split(' ')[0]}</div><div class="dash-clarity-bar-wrap"><div class="dash-clarity-bar" style="width:${d.clarity}%;background:${col}"></div></div><div class="dash-clarity-state">${d.state}</div></div>`;}).join(''):'<div class="dash-clarity-empty">Sem dados suficientes</div>';const wpHtml=ss.slice(0,5).map(([s,c])=>{const pct=Math.round((c/last30.length)*100);return`<div class="dash-pattern-row"><div class="dash-pattern-label">${s}</div><div class="dash-pattern-bar-wrap"><div class="dash-pattern-bar" style="width:${pct}%;background:${STATE_COLORS[s]||'var(--gold)'}"></div></div><div class="dash-pattern-pct">${pct}%</div><div class="dash-pattern-count">${c}x</div></div>`;}).join('');container.innerHTML=`<div class="dash-nums"><div class="dash-num-card"><div class="dash-num-value">${last30.length}</div><div class="dash-num-label">Registros</div></div><div class="dash-num-card"><div class="dash-num-value">${streak}</div><div class="dash-num-label">Sequência</div></div><div class="dash-num-card"><div class="dash-num-value">${ss.length}</div><div class="dash-num-label">Estados</div></div></div><div class="dash-section"><div class="dash-section-title"><i class="ti ti-radar"></i>Estado dominante</div><div class="dash-state-card"><div class="dash-state-icon"><i class="ti ${STATE_ICONS[ds]||'ti-brain'}"></i></div><div><div class="dash-state-name">${ds}</div><div class="dash-state-sub">Mais frequente nos últimos ${last30.length} registros</div></div><div class="dash-state-pct"><div class="dash-state-pct-num">${dp}%</div><div class="dash-state-pct-label">das entradas</div></div></div></div><div class="dash-section"><div class="dash-section-title"><i class="ti ti-alert-triangle"></i>Distorção recorrente</div><div class="dash-dist-card"><div class="dash-dist-icon"><i class="ti ti-alert-triangle"></i></div><div style="flex:1"><div class="dash-dist-name">${md}</div><div class="dash-dist-desc">${DIST_DESC[md]||''}</div><div class="dash-dist-freq">${mdc>0?`Apareceu ${mdc}x nos últimos ${last30.length} registros`:'Não detectada'}</div></div></div></div><div class="dash-section"><div class="dash-section-title"><i class="ti ti-trending-up"></i>Evolução · 7 dias</div><div class="dash-clarity-card">${clarityHtml}</div></div><div class="dash-section"><div class="dash-section-title"><i class="ti ti-chart-bar"></i>Padrão</div><div class="dash-pattern-card">${wpHtml||'<div class="dash-clarity-empty">Sem dados</div>'}</div></div>${isPro?`<div class="dash-section"><div class="dash-insight-card"><div class="dash-insight-label"><i class="ti ti-brain"></i>Análise IA</div><div class="dash-insight-text" id="dashInsightText"><div class="mentor-typing"><span></span><span></span><span></span></div></div></div></div>`:''}`;}
+function renderDashboard(){
+const container=document.getElementById('dashContent');
+const last30=entries.slice(0,30);
+if(!last30.length){
+  container.innerHTML=`<div style="text-align:center;padding:60px 24px"><div style="font-size:40px;color:#6a6460;margin-bottom:16px"><i class="ti ti-chart-bar"></i></div><div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:#b8b0a4;margin-bottom:8px">Nenhum dado ainda</div><div style="font-size:13px;color:#6a6460">Registre algumas decisões para ver seu dashboard.</div></div>`;
+  return;
+}
+const sc={},dc={};
+last30.forEach(e=>{
+  if(e.state&&e.state!=='Não definido')sc[e.state]=(sc[e.state]||0)+1;
+  if(e.distortion&&e.distortion!=='Nenhuma')dc[e.distortion]=(dc[e.distortion]||0)+1;
+});
+const ss=Object.entries(sc).sort((a,b)=>b[1]-a[1]);
+const ds=ss[0]?.[0]||'—',dc0=ss[0]?.[1]||0,dp=Math.round((dc0/last30.length)*100);
+const md=Object.entries(dc).sort((a,b)=>b[1]-a[1])[0]?.[0]||'Nenhuma';
+const mdc=dc[md]||0;
+const clarityMap={'Claro':100,'Presente':85,'Focado':80,'Ansioso':35,'Reativo':25,'Sobrecarregado':20};
+const l7=entries.slice(0,7).map(e=>({date:e.date,state:e.state,clarity:clarityMap[e.state]||50}));
+const clarityHtml=l7.length?l7.map(d=>{const col=d.clarity>=80?'#7ad4a0':d.clarity>=50?'var(--gold)':'#d46a6a';return`<div class="dash-clarity-row"><div class="dash-clarity-day">${d.date.split(' ')[0]}</div><div class="dash-clarity-bar-wrap"><div class="dash-clarity-bar" style="width:${d.clarity}%;background:${col}"></div></div><div class="dash-clarity-state">${d.state}</div></div>`;}).join(''):'<div class="dash-clarity-empty">Sem dados suficientes</div>';
+const wpHtml=ss.slice(0,5).map(([s,c])=>{const pct=Math.round((c/last30.length)*100);return`<div class="dash-pattern-row"><div class="dash-pattern-label">${s}</div><div class="dash-pattern-bar-wrap"><div class="dash-pattern-bar" style="width:${pct}%;background:${STATE_COLORS[s]||'var(--gold)'}"></div></div><div class="dash-pattern-pct">${pct}%</div><div class="dash-pattern-count">${c}x</div></div>`;}).join('');
+const DIST_DESC={'Urgência falsa':'A pressão percebida é maior do que a situação exige.','Escassez':'O medo de perder está conduzindo as decisões.','Ego':'A necessidade de estar certo interfere no julgamento.','Medo':'Evitação de desconforto como padrão de resposta.','Excesso de confiança':'Subestimação de riscos e complexidade.','Fadiga mental':'Decisões tomadas com capacidade cognitiva reduzida.','Nenhuma':'Nenhuma distorção recorrente identificada.'};
+
+// ── CAMADA 1: DADOS DA JORNADA ──
+const camada1 = `
+<div class="dash-camada-header">
+  <i class="ti ti-chart-bar" style="font-size:14px;color:var(--gold)"></i>
+  <div class="dash-camada-title">Camada 1 — Dados da Jornada</div>
+  <span class="dash-camada-badge c1">Registros</span>
+</div>
+<div class="dash-nums" style="margin-top:12px">
+  <div class="dash-num-card"><div class="dash-num-value">${last30.length}</div><div class="dash-num-label">Registros</div></div>
+  <div class="dash-num-card"><div class="dash-num-value">${streak}</div><div class="dash-num-label">Sequência</div></div>
+  <div class="dash-num-card"><div class="dash-num-value">${ss.length}</div><div class="dash-num-label">Estados</div></div>
+</div>
+<div class="dash-section">
+  <div class="dash-section-title"><i class="ti ti-radar"></i>Estado dominante</div>
+  <div class="dash-state-card">
+    <div class="dash-state-icon"><i class="ti ${STATE_ICONS[ds]||'ti-brain'}"></i></div>
+    <div><div class="dash-state-name">${ds}</div><div class="dash-state-sub">Mais frequente nos últimos ${last30.length} registros</div></div>
+    <div class="dash-state-pct"><div class="dash-state-pct-num">${dp}%</div><div class="dash-state-pct-label">das entradas</div></div>
+  </div>
+</div>
+<div class="dash-section">
+  <div class="dash-section-title"><i class="ti ti-alert-triangle"></i>Distorção recorrente</div>
+  <div class="dash-dist-card">
+    <div class="dash-dist-icon"><i class="ti ti-alert-triangle"></i></div>
+    <div style="flex:1"><div class="dash-dist-name">${md}</div><div class="dash-dist-desc">${DIST_DESC[md]||''}</div><div class="dash-dist-freq">${mdc>0?`Apareceu ${mdc}x nos últimos ${last30.length} registros`:'Não detectada'}</div></div>
+  </div>
+</div>
+<div class="dash-section">
+  <div class="dash-section-title"><i class="ti ti-trending-up"></i>Evolução · 7 dias</div>
+  <div class="dash-clarity-card">${clarityHtml}</div>
+</div>
+<div class="dash-section">
+  <div class="dash-section-title"><i class="ti ti-chart-bar"></i>Padrão</div>
+  <div class="dash-pattern-card">${wpHtml||'<div class="dash-clarity-empty">Sem dados</div>'}</div>
+</div>`;
+
+// ── CAMADA 2: INTERPRETAÇÃO DA JORNADA ──
+const mapaAtual = localStorage.getItem('avrs4_mapa_atual');
+let camada2 = `
+<div class="dash-divider"></div>
+<div class="dash-camada-header">
+  <i class="ti ti-brain" style="font-size:14px;color:#a8d8a8"></i>
+  <div class="dash-camada-title">Camada 2 — Interpretação da Jornada</div>
+  <span class="dash-camada-badge c2">Mentor IA</span>
+</div>`;
+
+if(mapaAtual){
+  const {mapa,ts,totalEntries:te}=JSON.parse(mapaAtual);
+  const dateStr=new Date(ts).toLocaleDateString('pt-BR',{day:'numeric',month:'short'});
+  const INTERP=[
+    {key:'causa',icon:'ti-brain',cls:'causa',label:'Causa Identificada'},
+    {key:'escolhas',icon:'ti-seedling',cls:'escolhas',label:'Escolhas Predominantes'},
+    {key:'valores',icon:'ti-diamond',cls:'valores',label:'Valores Mais Fortes'},
+    {key:'ciclo',icon:'ti-refresh',cls:'ciclo',label:'Ciclo Atual'},
+    {key:'proxima_acao',icon:'ti-target-arrow',cls:'acao',label:'Próxima Ação'},
+  ];
+  camada2+=`<div style="font-size:10px;color:var(--text3);margin:8px 0 10px">Última análise: ${dateStr} · ${te} registros</div>`;
+  camada2+=INTERP.map(c=>`
+    <div class="dash-interp-card" onclick="openDashboard();setTimeout(()=>{goTo('universo');switchUnivTab('mentor');},300)">
+      <div class="dash-interp-inner">
+        <div class="dash-interp-icon ${c.cls}"><i class="ti ${c.icon}"></i></div>
+        <div style="flex:1">
+          <div class="dash-interp-label">${c.label}</div>
+          <div class="dash-interp-text">${mapa[c.key]||'—'}</div>
+        </div>
+        <i class="ti ti-chevron-right dash-interp-chevron"></i>
+      </div>
+    </div>`).join('');
+  camada2+=`<button class="dash-gerar-btn" onclick="closeDashboard();mapaGerado=false;setTimeout(()=>{goTo('universo');switchUnivTab('mentor');initMentor51();},300)">
+    <div class="dash-gerar-icon"><i class="ti ti-refresh"></i></div>
+    <div class="dash-gerar-text"><div class="dash-gerar-title">Atualizar análise</div><div class="dash-gerar-sub">Gerar novo Mapa de Reconstrução</div></div>
+    <i class="ti ti-chevron-right dash-gerar-arrow"></i>
+  </button>`;
+} else {
+  // Sem mapa gerado ainda
+  const restantes=isPro?'∞':(3-getMapaCount());
+  const podeGerar=podeGerarMapa();
+  camada2+=`<div class="dash-quota-bar"><i class="ti ti-sparkles dash-quota-icon"></i><div class="dash-quota-text">${isPro?'Análises ilimitadas · Pro':`${restantes} análises gratuitas restantes este mês`}</div><div class="dash-quota-count">${isPro?'Pro':getMapaCount()+'/3'}</div></div>`;
+  if(podeGerar){
+    camada2+=`<button class="dash-gerar-btn" onclick="closeDashboard();setTimeout(()=>{goTo('universo');switchUnivTab('mentor');initMentor51();},300)">
+      <div class="dash-gerar-icon"><i class="ti ti-brain"></i></div>
+      <div class="dash-gerar-text"><div class="dash-gerar-title">Gerar Mapa de Reconstrução AVR-S</div><div class="dash-gerar-sub">O Mentor IA interpreta toda a sua jornada</div></div>
+      <i class="ti ti-chevron-right dash-gerar-arrow"></i>
+    </button>`;
+  } else {
+    camada2+=`<div class="jornada-pro-gate" style="margin-top:8px"><i class="ti ti-lock" style="display:block;font-size:28px;color:var(--gold);margin-bottom:10px"></i><div class="jornada-pro-gate-title">Limite mensal atingido</div><div class="jornada-pro-gate-sub">Ative o Pro para análises ilimitadas.</div><button class="jornada-pro-btn" onclick="openPaywall()">Ativar Pro</button></div>`;
+  }
+}
+
+container.innerHTML = camada1 + camada2;
+}
 
 // ── PAYWALL ──
 let isPro=false;
@@ -2322,6 +2829,379 @@ async function init(){
   setInterval(()=>{const el=document.getElementById('quoteText');el.style.opacity='0';setTimeout(()=>{el.textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';el.style.opacity='1';},400);},9000);
 }
 
+
+// ── JORNADA DA RECONSTRUÇÃO ──────────────────────────────────────
+const JORNADA_FRASES=['A vida revela aquilo que a mente aprendeu a acreditar.','Você pode trocar as sementes quantas vezes quiser. Se o solo não mudar, a colheita será sempre a mesma.','A mente não precisa ser vencida. Ela precisa ser compreendida, atualizada e direcionada.','O que você repete não é fraqueza. É lealdade inconsciente a uma solução antiga.','A mente que nos trouxe até aqui nem sempre será a mesma capaz de nos levar adiante.','Ressignificar não é fingir que não doeu. É decidir que a dor não vai definir o destino.','Disciplina não é o que você faz quando está motivado. É o que você faz quando a nova versão de você ainda não chegou.'];
+const MOD1_EX=[{titulo:'O Efeito que Você Enxerga',pergunta:'Qual área da minha vida quero transformar? Qual efeito estou vivendo hoje que mais me incomoda?',resultado:'Efeito visível identificado → próximo passo: encontrar a causa.'},{titulo:'O Padrão que Se Repete',pergunta:'Qual padrão se repete mesmo quando mudo o cenário — emprego, relacionamento, ambiente?',resultado:'Padrão mapeado → provavelmente tem uma causa mais profunda.'},{titulo:'A Crença por Trás',pergunta:'Qual crença pode estar por trás desse padrão? O que você aprendeu a acreditar que pode estar produzindo esse resultado?',resultado:'Causa invisível nomeada → consciência é o primeiro passo da reconstrução.'},{titulo:'A Conexão Causa → Efeito',pergunta:'Conecte: "O efeito que vivo é ___. O padrão que se repete é ___. A crença por trás pode ser ___."',resultado:'Mapa da mente atual completo. Você acaba de ver o solo que produz sua colheita.'}];
+const MOD2_MOT=['Medo','Automático — não percebi na hora','Pressão externa — expectativa dos outros','Valores pessoais','Propósito'];
+const MOD3_HAB=['Percebi um padrão antigo em ação','Fiz uma pausa antes de reagir automaticamente','Agi baseado nos meus valores, não no automático','Fortaleci minha nova versão com uma escolha consciente'];
+const J20=[{cap:'Cap. 1',titulo:'O Efeito que Você Enxerga',pergunta:'O que tento mudar fora sem olhar dentro?',pro:false},{cap:'Cap. 2',titulo:'A Mente Que Você Não Escolheu',pergunta:'Que crenças herdei sem questionar?',pro:false},{cap:'Cap. 3',titulo:'O Solo Que Produz a Colheita',pergunta:'Que solo interno produz minha colheita atual?',pro:false},{cap:'Cap. 4',titulo:'Como a Mente Aprende a Sobreviver',pergunta:'Que padrão de proteção virou limitação?',pro:false},{cap:'Cap. 5',titulo:'A Repetição Que Ninguém Vê',pergunta:'Onde rastrear a origem do padrão?',pro:false},{cap:'Cap. 6',titulo:'A Identidade Que Aprendemos a Defender',pergunta:'O que defendo que já não me representa?',pro:true},{cap:'Cap. 7',titulo:'O Silêncio Que Decide',pergunta:'Que decisões tomo no automático?',pro:true},{cap:'Cap. 8',titulo:'O Momento em Que a Máscara Pesa',pergunta:'Onde gasto energia sendo quem não sou?',pro:true},{cap:'Cap. 9',titulo:'A Dor Que Não É Fraqueza',pergunta:'Que dor posso ressignificar hoje?',pro:true},{cap:'Cap. 10',titulo:'Quando o Progresso Incomoda',pergunta:'Como separar feedback de julgamento?',pro:true},{cap:'Cap. 11',titulo:'Não Vencer a Mente — Compreendê-la',pergunta:'Como ficar curioso com meus padrões?',pro:true},{cap:'Cap. 12',titulo:'Ressignificar Não É Apagar',pergunta:'Que história posso reescrever sem negar?',pro:true},{cap:'Cap. 13',titulo:'Reconstruir a Identidade',pergunta:'Quem estou me tornando — não quem fui?',pro:true},{cap:'Cap. 14',titulo:'A Disciplina Como Ato de Amor Próprio',pergunta:'Que compromisso honra minha nova versão?',pro:true},{cap:'Cap. 15',titulo:'Quando a Vida Começa a Refletir',pergunta:'Que mudança externa já reflete minha causa nova?',pro:true},{cap:'Cap. 16',titulo:'O Invisível Que Outros Enxergam',pergunta:'Estou habitando o resultado ou justificando?',pro:true},{cap:'Cap. 17',titulo:'As Relações Que Mudam',pergunta:'Que relação mudou quando eu mudei?',pro:true},{cap:'Cap. 18',titulo:'O Trabalho Que Nasce do Propósito',pergunta:'Trabalho para provar ou para expressar?',pro:true},{cap:'Cap. 19',titulo:'Viver Sem Aprovação',pergunta:'Que decisão adiada espera aprovação externa?',pro:true},{cap:'Cap. 20',titulo:'Uma Vida Sem Rascunho — A Origem',pergunta:'Meu novo mapa AVR-S. Quem sou agora?',pro:true}];
+function loadJSt(){try{return JSON.parse(localStorage.getItem('avrs4_jornada')||'{}');}catch(e){return{};}}
+function saveJSt(st){localStorage.setItem('avrs4_jornada',JSON.stringify(st));}
+function initJornada(){const d=new Date();const el=document.getElementById('jornadaFrase');if(el)el.textContent=JORNADA_FRASES[d.getDay()%JORNADA_FRASES.length];updateJornadaProgress();renderJornada20();applyJornadaProGating();}
+function updateJornadaProgress(){const st=loadJSt();const done=(st.j20Done||[]).length;const pct=Math.round((done/20)*100);const f=document.getElementById('jornadaProgressFill'),l=document.getElementById('jornadaProgressLabel'),p=document.getElementById('jornadaProgressPct');if(f)f.style.width=pct+'%';if(l)l.textContent=done+' dias concluídos';if(p)p.textContent=pct+'%';const ex1=(st.mod1||[]).length;const f1=document.getElementById('mod1ProgFill'),l1=document.getElementById('mod1ProgLabel');if(f1)f1.style.width=Math.round((ex1/4)*100)+'%';if(l1)l1.textContent=ex1+' de 4 exercícios';}
+function applyJornadaProGating(){if(!isPro)return;[2,3,4].forEach(n=>{const c=document.getElementById('jmod'+n);if(c){c.classList.remove('locked');c.onclick=()=>openModDetail(n);}});}
+function checkJornadaPro(n){if(isPro){openModDetail(n);return;}openPaywall();}
+function openModDetail(n){const o=document.getElementById('modDetailOverlay'),t=document.getElementById('modDetailTitle'),b=document.getElementById('modDetailBadge'),c=document.getElementById('modDetailContent');if(!o)return;const titles=['','Minha Mente — A Causa','Minhas Escolhas — As Sementes','Meus Hábitos — O Cultivo','Minha Evolução — A Colheita'];if(t)t.textContent=titles[n];if(b)b.innerHTML=n===1?'<span class="jornada-badge-free">Gratuito</span>':'<span class="jornada-badge-pro">Pro</span>';if(n===1)c.innerHTML=buildMod1HTML();else if(n===2)c.innerHTML=buildMod2HTML();else if(n===3)c.innerHTML=buildMod3HTML();else if(n===4)c.innerHTML=buildMod4HTML();o.classList.add('open');}
+function closeModDetail(){const o=document.getElementById('modDetailOverlay');if(o)o.classList.remove('open');updateJornadaProgress();}
+function buildMod1HTML(){const st=loadJSt();const done=st.mod1||[];let h='<div class="mod-detail-intro">A mente é o solo. As escolhas são as sementes. Os hábitos são o cultivo. A vida é a colheita.</div>';MOD1_EX.forEach((ex,i)=>{const isDone=done.includes(i);const ans=(st.mod1Resp||[])[i]||'';h+=`<div class="exercicio-card${isDone?' done':''}" id="ex1_${i}"><div class="exercicio-header" onclick="toggleExercicio('ex1_${i}')"><div><div class="exercicio-num">Exercício ${i+1}</div><div class="exercicio-title">${ex.titulo}</div></div><div class="exercicio-check">${isDone?'<i class="ti ti-check" style="font-size:12px;color:#0a0908"></i>':''}</div></div><div class="exercicio-body"><div class="exercicio-pergunta">${ex.pergunta}</div><textarea class="exercicio-textarea" id="exta1_${i}" placeholder="Sua reflexão...">${esc(ans)}</textarea><button class="exercicio-salvar" onclick="salvarEx1(${i})">Salvar reflexão</button><div class="exercicio-resultado">"${ex.resultado}"</div></div></div>`;});return h;}
+function toggleExercicio(id){const c=document.getElementById(id);if(c)c.classList.toggle('open');}
+function salvarEx1(i){const ta=document.getElementById('exta1_'+i);const val=ta?ta.value.trim():'';const st=loadJSt();if(!st.mod1)st.mod1=[];if(!st.mod1Resp)st.mod1Resp=[];st.mod1Resp[i]=val;if(!st.mod1.includes(i))st.mod1.push(i);saveJSt(st);const c=document.getElementById('ex1_'+i);if(c){c.classList.add('done');c.classList.remove('open');const ch=c.querySelector('.exercicio-check');if(ch)ch.innerHTML='<i class="ti ti-check" style="font-size:12px;color:#0a0908"></i>';const r=c.querySelector('.exercicio-resultado');if(r)r.style.display='block';}updateJornadaProgress();}
+function buildMod2HTML(){const st=loadJSt();const hoje=new Date().toDateString();const entry=(st.mod2||{})[hoje]||{};const sels=entry.motivadores||[];const resp=entry.resposta||'';let mh=MOD2_MOT.map(m=>`<div class="motivador-chip${sels.includes(m)?' sel':''}" onclick="this.classList.toggle('sel')"><div class="motivador-chip-circle"></div><div class="motivador-chip-text">${m}</div></div>`).join('');return`<div class="mod-detail-intro">Hoje minhas escolhas foram guiadas por... Toque em todos que se aplicam.</div><div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:10px">Meus motivadores hoje</div><div class="escolhas-motivadores" id="motivadoresC">${mh}</div><div style="font-size:14px;font-family:'Cormorant Garamond',serif;color:var(--cream);margin:16px 0 10px;line-height:1.5">Qual escolha consciente eu fiz hoje?</div><textarea class="exercicio-textarea" id="mod2Resp" placeholder="Descreva uma escolha guiada pelos seus valores...">${esc(resp)}</textarea><button class="exercicio-salvar" style="margin-top:10px" onclick="salvarMod2()">Registrar escolhas do dia</button><div id="mod2Confirm" style="display:none;margin-top:12px;background:rgba(26,46,26,.4);border:1px solid rgba(100,200,100,.2);border-radius:10px;padding:14px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:14px;color:#a8d8a8;line-height:1.7">Escolhas do dia registradas.</div>`;}
+function salvarMod2(){const hoje=new Date().toDateString();const chips=document.querySelectorAll('#motivadoresC .motivador-chip.sel');const motivadores=Array.from(chips).map(c=>c.querySelector('.motivador-chip-text').textContent);const resp=document.getElementById('mod2Resp')?.value.trim()||'';const st=loadJSt();if(!st.mod2)st.mod2={};st.mod2[hoje]={motivadores,resposta:resp,ts:Date.now()};saveJSt(st);const c=document.getElementById('mod2Confirm');if(c)c.style.display='block';}
+function buildMod3HTML(){const st=loadJSt();const hoje=new Date().toDateString();const dt=(st.mod3||{})[hoje]||[];let ih=MOD3_HAB.map((h,i)=>`<div class="habito-item${dt.includes(i)?' done':''}" onclick="toggleHabito(${i})" id="hab_${i}"><div class="habito-item-check">${dt.includes(i)?'<i class="ti ti-check" style="font-size:12px;color:#0a0908"></i>':''}</div><div class="habito-item-text">${h}</div></div>`).join('');return`<div class="mod-detail-intro">Hábito não é o que você faz uma vez. É o que você sustenta todos os dias.</div><div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:12px">Minha Reconstrução Diária</div>${ih}<div id="mod3Confirm" style="display:none;margin-top:12px;background:rgba(26,46,26,.4);border:1px solid rgba(100,200,100,.2);border-radius:10px;padding:14px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:14px;color:#a8d8a8;line-height:1.7">Checklist completo. Cada dia é uma semente plantada.</div>`;}
+function toggleHabito(i){const hoje=new Date().toDateString();const st=loadJSt();if(!st.mod3)st.mod3={};if(!st.mod3[hoje])st.mod3[hoje]=[];const idx=st.mod3[hoje].indexOf(i);if(idx>-1)st.mod3[hoje].splice(idx,1);else st.mod3[hoje].push(i);saveJSt(st);const el=document.getElementById('hab_'+i);if(el){const done=st.mod3[hoje].includes(i);el.classList.toggle('done',done);const ch=el.querySelector('.habito-item-check');if(ch)ch.innerHTML=done?'<i class="ti ti-check" style="font-size:12px;color:#0a0908"></i>':'';}if(st.mod3[hoje].length===4){const c=document.getElementById('mod3Confirm');if(c)c.style.display='block';}}
+function buildMod4HTML(){const st=loadJSt();const ev=st.mod4||{};const pausas=(st.pausas||[]).length;const mod2d=Object.keys(st.mod2||{}).length;return`<div class="mod-detail-intro">A colheita não é sobre tarefas concluídas. É sobre quem você está se tornando.</div><div class="evolucao-indicadores"><div class="evo-ind-card"><div class="evo-ind-num">${pausas}</div><div class="evo-ind-label">Pausas</div></div><div class="evo-ind-card"><div class="evo-ind-num">${mod2d}</div><div class="evo-ind-label">Dias escolhas</div></div><div class="evo-ind-card"><div class="evo-ind-num">${(st.mod1||[]).length}</div><div class="evo-ind-label">Exercícios</div></div><div class="evo-ind-card"><div class="evo-ind-num">${(st.j20Done||[]).length}</div><div class="evo-ind-label">Dias jornada</div></div></div><div class="evolucao-card"><div class="evolucao-card-title"><i class="ti ti-arrows-transfer-down"></i>Evolução de identidade</div><div class="evolucao-trio"><div class="evolucao-trio-row"><div class="evolucao-trio-label">Antes eu</div><textarea class="evolucao-trio-input" id="evo_antes" placeholder="repetia um padrão...">${esc(ev.antes||'')}</textarea></div><div class="evolucao-trio-row"><div class="evolucao-trio-label">Hoje percebo</div><textarea class="evolucao-trio-input" id="evo_percebo" placeholder="esse padrão antes de repetir...">${esc(ev.percebo||'')}</textarea></div><div class="evolucao-trio-row"><div class="evolucao-trio-label">Agora escolho</div><textarea class="evolucao-trio-input" id="evo_escolho" placeholder="uma resposta diferente...">${esc(ev.escolho||'')}</textarea></div></div></div><button class="exercicio-salvar" style="margin-top:10px" onclick="salvarMod4()">Salvar evolução</button><div id="mod4Confirm" style="display:none;margin-top:12px;background:rgba(26,46,26,.4);border:1px solid rgba(100,200,100,.2);border-radius:10px;padding:14px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:14px;color:#a8d8a8;line-height:1.7">Evolução registrada.</div>`;}
+function salvarMod4(){const st=loadJSt();st.mod4={antes:document.getElementById('evo_antes')?.value.trim()||'',percebo:document.getElementById('evo_percebo')?.value.trim()||'',escolho:document.getElementById('evo_escolho')?.value.trim()||'',ts:Date.now()};saveJSt(st);const c=document.getElementById('mod4Confirm');if(c)c.style.display='block';}
+function openPausaAVRS(){['pausaP1','pausaP2','pausaP3','pausaP4'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});const conf=document.getElementById('pausaConfirmacao');if(conf)conf.style.display='none';const sub=document.querySelector('.pausa-submit');if(sub)sub.style.display='block';document.getElementById('pausaOverlay').classList.add('open');}
+function closePausaAVRS(){document.getElementById('pausaOverlay').classList.remove('open');}
+function registrarPausa(){const p1=document.getElementById('pausaP1')?.value.trim()||'';const p2=document.getElementById('pausaP2')?.value.trim()||'';const p3=document.getElementById('pausaP3')?.value.trim()||'';const p4=document.getElementById('pausaP4')?.value.trim()||'';const st=loadJSt();if(!st.pausas)st.pausas=[];st.pausas.unshift({p1,p2,p3,p4,ts:Date.now()});if(st.pausas.length>50)st.pausas=st.pausas.slice(0,50);saveJSt(st);const conf=document.getElementById('pausaConfirmacao');const sub=document.querySelector('.pausa-submit');if(conf)conf.style.display='block';if(sub)sub.style.display='none';setTimeout(()=>closePausaAVRS(),3000);}
+function renderJornada20(){const c=document.getElementById('jornada20List');if(!c)return;const st=loadJSt();const done=st.j20Done||[];const next=done.length;let h='';J20.forEach((d,i)=>{const isDone=done.includes(i);const isToday=i===next&&!isDone;const isLocked=i>next;const needsPro=d.pro&&!isPro;let cls='jornada20-card';if(isDone)cls+=' done';else if(isToday)cls+=' today available';else if(!isLocked&&!needsPro)cls+=' available';else cls+=' locked-day';const num=isDone?'<i class="ti ti-check" style="font-size:14px;color:#0a0908"></i>':(i+1);const badge=d.pro?'<span class="jornada20-badge pro">Pro</span>':'<span class="jornada20-badge free">Grátis</span>';const lock=(isLocked||needsPro)&&!isDone?'<i class="ti ti-lock" style="font-size:15px;color:var(--text3);flex-shrink:0"></i>':'';const onclick=isDone?'':needsPro?'onclick="openPaywall()"':isLocked?'':`onclick="openDia20(${i})"`;h+=`<div class="${cls}" ${onclick}><div class="jornada20-num">${num}</div><div class="jornada20-info"><div class="jornada20-title">${d.titulo}</div><div class="jornada20-cap">${d.cap}${d.pro&&!isPro?' · Pro':''}</div></div>${badge}${lock}</div>`;});if(!isPro&&next>=5)h+=`<div class="jornada-pro-gate"><i class="ti ti-seedling"></i><div class="jornada-pro-gate-title">Continue a jornada</div><div class="jornada-pro-gate-sub">Os dias 6 a 20 fazem parte do plano Pro.</div><button class="jornada-pro-btn" onclick="openPaywall()">Ativar Pro — R$19/mês</button></div>`;c.innerHTML=h;}
+function openDia20(i){const d=J20[i];const o=document.getElementById('modDetailOverlay'),t=document.getElementById('modDetailTitle'),b=document.getElementById('modDetailBadge'),c=document.getElementById('modDetailContent');if(!o)return;if(t)t.textContent='Dia '+(i+1);if(b)b.innerHTML=d.pro?'<span class="jornada-badge-pro">Pro</span>':'<span class="jornada-badge-free">Grátis</span>';const st=loadJSt();const resp=(st.j20Resp||{})[i]||'';c.innerHTML=`<div class="mod-detail-intro">${d.cap} · ${d.titulo}</div><div class="question-card" style="margin-bottom:16px"><div class="qcard-eyebrow">Reflexão do dia</div><div class="qcard-question">${d.pergunta}</div></div><textarea class="exercicio-textarea" id="dia20_ta" placeholder="Sua reflexão..." style="min-height:100px">${esc(resp)}</textarea><button class="exercicio-salvar" style="margin-top:10px" onclick="salvarDia20(${i})">Concluir dia ${i+1}</button><div id="dia20Confirm" style="display:none;margin-top:12px;background:rgba(26,46,26,.4);border:1px solid rgba(100,200,100,.2);border-radius:10px;padding:14px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:14px;color:#a8d8a8;line-height:1.7">Dia ${i+1} concluído.</div>`;o.classList.add('open');}
+function salvarDia20(i){const val=document.getElementById('dia20_ta')?.value.trim()||'';const st=loadJSt();if(!st.j20Done)st.j20Done=[];if(!st.j20Resp)st.j20Resp={};if(!st.j20Done.includes(i))st.j20Done.push(i);st.j20Resp[i]=val;saveJSt(st);const c=document.getElementById('dia20Confirm');if(c)c.style.display='block';setTimeout(()=>{closeModDetail();renderJornada20();updateJornadaProgress();},2000);}
+function openManual(){document.getElementById('manualOverlay').classList.add('open');}
+function closeManual(){document.getElementById('manualOverlay').classList.remove('open');}
+
+
+
+// ── UNIVERSO AVR-S 5.1 ──────────────────────────────────────────
+
+function switchUnivTab(tab) {
+  ['avrs','mentor','protocolo'].forEach(t => {
+    const el = document.getElementById('univ-' + t);
+    if (el) el.style.display = t === tab ? 'block' : 'none';
+    const btn = document.getElementById('utab-' + t);
+    if (btn) btn.classList.toggle('active', t === tab);
+  });
+  if (tab === 'mentor') initMentor51();
+  if (tab === 'protocolo') renderUnivProtocolo();
+}
+
+function renderUnivProtocolo() {
+  const c = document.getElementById('univProtocoloContent');
+  if (!c || c.innerHTML) return;
+  // Clonar conteúdo do protocolo existente
+  const proto = document.getElementById('proto-protocolo');
+  if (proto) c.innerHTML = proto.innerHTML;
+}
+
+function initUniverso() {
+  renderAvrsEtapas();
+  const d = new Date();
+  const el = document.getElementById('mentor51Last');
+  if (el) el.textContent = entries.length ? `${entries.length} registros analisados` : 'Faça seus primeiros registros para receber análise.';
+}
+
+// ── A VIDA SEM RASCUNHO ──────────────────────────────────────────
+
+const AVRS_ETAPAS = [
+  {
+    key: 'a', letter: 'A', name: 'Autoconsciência', cls: 'a',
+    desc: 'Perceber quem você é e onde está agora.',
+    update: 'Hoje',
+    pro: false,
+    analise: function(entries) {
+      if (!entries.length) return 'Registre seus estados internos para receber sua análise de autoconsciência.';
+      const sc = {};
+      entries.slice(0, 30).forEach(e => {
+        if (e.state && e.state !== 'Não definido') sc[e.state] = (sc[e.state] || 0) + 1;
+      });
+      const top = Object.entries(sc).sort((a, b) => b[1] - a[1]);
+      const dom = top[0]?.[0];
+      const total = entries.length;
+      return dom
+        ? `Seu estado dominante nos últimos ${Math.min(total, 30)} registros é <strong>${dom}</strong>. Isso revela o padrão emocional que mais consome sua energia e atenção agora.`
+        : 'Continue registrando para revelar seu padrão dominante.';
+    }
+  },
+  {
+    key: 'v', letter: 'V', name: 'Valores', cls: 'v',
+    desc: 'Entender o que realmente importa para você.',
+    update: 'Baseado nos seus padrões de escolha',
+    pro: true,
+    analise: function(entries) {
+      const consciousEntries = entries.filter(e => e.decision && e.decision.length > 10);
+      if (!consciousEntries.length) return 'Registre decisões conscientes para identificar seus valores predominantes.';
+      return `Com base em <strong>${consciousEntries.length} decisões conscientes</strong>, seus valores mais ativos aparecem nas escolhas que você faz sob pressão. O padrão revela o que você prioriza quando precisa escolher.`;
+    }
+  },
+  {
+    key: 'r', letter: 'R', name: 'Ressignificação', cls: 'r',
+    desc: 'Transformar a forma como você interpreta.',
+    update: 'Identificando suas crenças e histórias',
+    pro: true,
+    analise: function(entries) {
+      const withLesson = entries.filter(e => e.lesson && e.lesson.length > 5);
+      return withLesson.length
+        ? `Você registrou <strong>${withLesson.length} aprendizados</strong>. Cada um representa uma nova interpretação sobre um padrão antigo — o começo da ressignificação real.`
+        : 'Adicione "o que aprendeu" nos seus registros para mapear sua ressignificação.';
+    }
+  },
+  {
+    key: 's', letter: 'S', name: 'Sustentação', cls: 's',
+    desc: 'Manter consistência até sua nova vida se tornar real.',
+    update: 'Plano, hábitos e evolução contínua',
+    pro: true,
+    analise: function(entries) {
+      const last7 = entries.filter(e => Date.now() - e.id < 7 * 86400000);
+      return last7.length >= 3
+        ? `<strong>${last7.length} registros nos últimos 7 dias</strong>. Você está sustentando a prática — isso é mais raro do que parece e mais poderoso do que você imagina.`
+        : 'Sustentação é sobre constância. Registre ao menos 3x por semana para construir esse padrão.';
+    }
+  }
+];
+
+function renderAvrsEtapas() {
+  const container = document.getElementById('avrsEtapas');
+  const footer = document.getElementById('avrsFooterBar');
+  if (!container) return;
+
+  let html = '';
+  AVRS_ETAPAS.forEach((etapa, i) => {
+    const bloqueado = etapa.pro && !isPro;
+    const analise = etapa.analise(entries);
+    const temDados = entries.length > 0;
+
+    html += `<div class="avrs-etapa-card${temDados && !bloqueado ? ' ativo' : ''}">
+      <div class="avrs-etapa-header" onclick="toggleAvrsEtapa(this, ${i})">
+        <div class="avrs-etapa-letter ${etapa.cls}">${etapa.letter}</div>
+        <div class="avrs-etapa-info">
+          <div class="avrs-etapa-name">${etapa.name}</div>
+          <div class="avrs-etapa-desc">${etapa.desc}</div>
+        </div>
+        <div class="avrs-etapa-status">
+          ${bloqueado
+            ? '<span class="avrs-etapa-badge-pro">🔒 PRO</span>'
+            : `<span class="avrs-etapa-badge-ativo">ATIVO</span>`
+          }
+          ${temDados && !bloqueado ? `<div class="avrs-etapa-update">Última atualização: ${etapa.update}</div>` : ''}
+        </div>
+        <i class="ti ti-chevron-down avrs-etapa-chevron" style="margin-left:8px"></i>
+      </div>
+      <div class="avrs-etapa-body">
+        ${bloqueado
+          ? `<div class="avrs-analise-label">Análise bloqueada</div>
+             <div class="avrs-analise-text" style="color:var(--text3)">Desbloqueie o AVR-S Pro para acessar sua análise de ${etapa.name}.</div>
+             <button class="avrs-ver-btn" onclick="openPaywall()"><i class="ti ti-crown" style="margin-right:4px"></i>Desbloquear</button>`
+          : `<div class="avrs-analise-label">Sua análise</div>
+             <div class="avrs-analise-text">${analise}</div>
+             ${temDados ? `<button class="avrs-ver-btn" onclick="openMentorChat()"><i class="ti ti-sparkles" style="margin-right:4px"></i>Ver análise completa</button>` : ''}
+          `
+        }
+      </div>
+    </div>`;
+  });
+
+  container.innerHTML = html;
+  if (footer) footer.style.display = !isPro ? 'flex' : 'none';
+  if (!isPro) {
+    const countEl = document.getElementById('avrsEtapaCount');
+    if (countEl) countEl.textContent = '1';
+  }
+}
+
+function toggleAvrsEtapa(header, idx) {
+  const card = header.parentElement;
+  const etapa = AVRS_ETAPAS[idx];
+  if (etapa.pro && !isPro) { openPaywall(); return; }
+  card.classList.toggle('open');
+  const chevron = header.querySelector('.avrs-etapa-chevron');
+  if (chevron) chevron.style.transform = card.classList.contains('open') ? 'rotate(180deg)' : '';
+}
+
+// ── MENTOR IA 5.1 ────────────────────────────────────────────────
+
+const MAPA_QUOTA_FREE = 3;
+let mapaGerado = false;
+
+function getMesAtualMapa() {
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+}
+
+function getMapaCount() {
+  const cu = localStorage.getItem('avrs4_current_user');
+  if (!cu) return 0;
+  return parseInt(localStorage.getItem('avrs4_mapa_' + cu.replace(/[^a-zA-Z0-9]/g, '_') + '_' + getMesAtualMapa()) || '0');
+}
+
+function incrementMapaCount() {
+  const cu = localStorage.getItem('avrs4_current_user');
+  if (!cu) return;
+  const k = 'avrs4_mapa_' + cu.replace(/[^a-zA-Z0-9]/g, '_') + '_' + getMesAtualMapa();
+  localStorage.setItem(k, getMapaCount() + 1);
+}
+
+function podeGerarMapa() {
+  if (isPro) return true;
+  return getMapaCount() < MAPA_QUOTA_FREE;
+}
+
+async function initMentor51() {
+  if (mapaGerado) return;
+  const quotaEl = document.getElementById('mentor51QuotaText');
+  const quotaCount = document.getElementById('mentor51QuotaCount');
+  const cards = document.getElementById('mapaCards');
+
+  if (!entries.length) {
+    if (quotaEl) quotaEl.textContent = 'Registre seu estado interno para receber sua análise.';
+    if (cards) cards.innerHTML = `<div class="empty-state" style="padding:32px 0"><div class="empty-icon"><i class="ti ti-chart-dots"></i></div><div class="empty-title">Nenhum dado ainda</div><div class="empty-sub">Registre seu estado interno, decisões e diário para o Mentor gerar seu mapa.</div></div>`;
+    return;
+  }
+
+  // Quota
+  const restantes = isPro ? '∞' : (MAPA_QUOTA_FREE - getMapaCount());
+  if (quotaEl) quotaEl.textContent = isPro ? 'Análise ilimitada ativa · Pro' : `${restantes} análises gratuitas restantes este mês`;
+  if (quotaCount) quotaCount.textContent = isPro ? '' : `${getMapaCount()}/${MAPA_QUOTA_FREE}`;
+
+  if (!podeGerarMapa()) {
+    if (cards) cards.innerHTML = `<div class="jornada-pro-gate"><i class="ti ti-lock"></i><div class="jornada-pro-gate-title">Limite mensal atingido</div><div class="jornada-pro-gate-sub">Você usou suas 3 análises gratuitas este mês. Ative o Pro para análises ilimitadas.</div><button class="jornada-pro-btn" onclick="openPaywall()">Ativar Pro</button></div>`;
+    return;
+  }
+
+  // Mostrar loading
+  if (cards) cards.innerHTML = ['Causa', 'Escolhas', 'Valores', 'Ciclo', 'Próxima Ação'].map(label =>
+    `<div class="mapa-card"><div class="mapa-card-loading"><div class="mentor-typing"><span></span><span></span><span></span></div><span style="font-size:12px;color:var(--text3)">${label}...</span></div></div>`
+  ).join('');
+
+  // Gerar análise via IA
+  const p = buildProfile();
+  const last10 = entries.slice(0, 10).map(e =>
+    `[${e.date}] ${e.state} | Situação: ${e.situation} | Distorção: ${e.distortion || 'nenhuma'} | Decisão: ${e.decision || '-'} | Aprendizado: ${e.lesson || '-'}`
+  ).join('\n');
+
+  const jSt = loadJSt ? loadJSt() : {};
+  const pausas = (jSt.pausas || []).length;
+  const mod2days = Object.keys(jSt.mod2 || {}).length;
+
+  const prompt = `Analise a jornada AVR-S deste usuário e gere um "Mapa de Reconstrução AVR-S" em JSON com exatamente estas 5 chaves:
+{
+  "causa": "1-2 frases identificando a causa/padrão dominante observado nos dados",
+  "escolhas": "1-2 frases sobre as escolhas predominantes e o que revelam",
+  "valores": "1-2 frases identificando valores percebidos nos registros",
+  "ciclo": "1-2 frases descrevendo o ciclo atual — progresso e oscilações",
+  "proxima_acao": "1 frase de próxima ação consciente e específica"
+}
+
+DADOS DO USUÁRIO:
+- Estado dominante: ${p.dominantState || 'variado'}
+- Distorção mais frequente: ${p.mainDistortion || 'não identificada'}
+- Total de registros: ${entries.length}
+- Pausas AVR-S realizadas: ${pausas}
+- Dias com diário de escolhas: ${mod2days}
+- Últimos 10 registros:
+${last10}
+
+Responda APENAS com o JSON válido, sem markdown, sem explicações adicionais.`;
+
+  try {
+    const resp = await callClaude([{ role: 'user', content: prompt }],
+      'Você é o Mentor IA AVR-S. Analise os dados e responda APENAS com JSON válido conforme solicitado. Seja específico, profundo e pessoal. Nunca genérico.');
+
+    incrementMapaCount();
+
+    let mapa;
+    try {
+      const clean = resp.replace(/```json|```/g, '').trim();
+      mapa = JSON.parse(clean);
+    } catch (e) {
+      mapa = {
+        causa: 'Padrão de reatividade identificado nos seus registros.',
+        escolhas: 'Suas decisões mostram consciência crescente mesmo em momentos difíceis.',
+        valores: 'Autenticidade e crescimento emergem como valores centrais.',
+        ciclo: 'Você está em um ciclo de reconstrução com constância crescente.',
+        proxima_acao: 'Realize uma Pausa AVR-S antes da próxima decisão importante.'
+      };
+    }
+
+    // Salvar para o mapa completo
+    localStorage.setItem('avrs4_mapa_atual', JSON.stringify({ mapa, ts: Date.now(), totalEntries: entries.length }));
+    mapaGerado = true;
+
+    renderMapaCards(mapa);
+
+  } catch (e) {
+    if (cards) cards.innerHTML = '<div style="text-align:center;padding:24px;font-size:13px;color:var(--text3)">Erro ao gerar análise. Tente novamente.</div>';
+  }
+}
+
+const MAPA_CONFIG = [
+  { key: 'causa',       icon: 'ti-brain',        cls: 'causa',    label: '🧠 Causa Identificada' },
+  { key: 'escolhas',    icon: 'ti-seedling',      cls: 'escolhas', label: '🌱 Escolhas Predominantes' },
+  { key: 'valores',     icon: 'ti-diamond',       cls: 'valores',  label: '💎 Valores Mais Fortes' },
+  { key: 'ciclo',       icon: 'ti-refresh',       cls: 'ciclo',    label: '🔄 Ciclo Atual' },
+  { key: 'proxima_acao',icon: 'ti-target-arrow',  cls: 'acao',     label: '🎯 Próxima Ação Recomendada' },
+];
+
+function renderMapaCards(mapa) {
+  const cards = document.getElementById('mapaCards');
+  if (!cards) return;
+  cards.innerHTML = MAPA_CONFIG.map(c =>
+    `<div class="mapa-card" onclick="openMapaCompleto()">
+      <div class="mapa-card-inner">
+        <div class="mapa-card-icon ${c.cls}"><i class="ti ${c.icon}"></i></div>
+        <div style="flex:1">
+          <div class="mapa-card-label">${c.label}</div>
+          <div class="mapa-card-text">${mapa[c.key] || '—'}</div>
+        </div>
+        <i class="ti ti-chevron-right mapa-card-chevron"></i>
+      </div>
+    </div>`
+  ).join('');
+}
+
+function openMapaCompleto() {
+  const overlay = document.getElementById('mapaFullOverlay');
+  const content = document.getElementById('mapaFullContent');
+  if (!overlay || !content) return;
+
+  const saved = localStorage.getItem('avrs4_mapa_atual');
+  if (!saved) { initMentor51(); return; }
+
+  const { mapa, ts, totalEntries } = JSON.parse(saved);
+  const date = new Date(ts).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' });
+  const p = buildProfile();
+
+  content.innerHTML = `
+    <div style="background:linear-gradient(135deg,var(--ai),rgba(26,46,26,.3));border:1px solid var(--ai-border);border-radius:var(--r);padding:20px;margin-bottom:20px">
+      <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#b8e0b8;margin-bottom:4px">Gerado em ${date}</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);margin-bottom:6px">Meu Mapa de Reconstrução</div>
+      <div style="font-size:12px;color:var(--text3)">${totalEntries} registros analisados · Estado dominante: ${p.dominantState || '—'}</div>
+    </div>
+
+    ${MAPA_CONFIG.map(c => `
+    <div class="mapa-section">
+      <div class="mapa-section-label" style="color:var(--gold)"><i class="ti ${c.icon}"></i>${c.label}</div>
+      <div class="mapa-section-card">
+        <div class="mapa-section-text">${mapa[c.key] || '—'}</div>
+      </div>
+    </div>`).join('')}
+
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:16px;margin-top:8px">
+      <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:10px">Dados da análise</div>
+      ${[
+        ['Total de registros', entries.length],
+        ['Estado dominante', p.dominantState || '—'],
+        ['Distorção recorrente', p.mainDistortion || '—'],
+        ['Sequência atual', streak + ' dias'],
+      ].map(([l, v]) => `<div class="mapa-data-row"><div class="mapa-data-label">${l}</div><div class="mapa-data-value">${v}</div></div>`).join('')}
+    </div>
+
+    <div style="text-align:center;padding:20px 0 8px">
+      <button onclick="mapaGerado=false;closeMapaCompleto();switchUnivTab('mentor');initMentor51()" style="background:var(--gold);border:none;border-radius:12px;padding:12px 24px;font-size:13px;font-weight:600;color:#0a0908;cursor:pointer;font-family:'DM Sans',sans-serif">
+        <i class="ti ti-refresh" style="margin-right:6px"></i>Gerar nova análise
+      </button>
+    </div>
+  `;
+
+  overlay.classList.add('open');
+}
+
+function closeMapaCompleto() {
+  document.getElementById('mapaFullOverlay').classList.remove('open');
+}
+
+
 if('serviceWorker'in navigator)navigator.serviceWorker.getRegistrations().then(r=>r.forEach(reg=>reg.unregister()));
 init();
 </script>
@@ -2414,6 +3294,70 @@ window.saveUserToCloud=async function(userId){
   await window.saveToFirebase(userId,{entries,isPro,streak,lastSync:Date.now()});
 };
 </script>
+
+
+<!-- MÓDULO DETAIL -->
+<div class="mod-detail-overlay" id="modDetailOverlay">
+  <div class="mod-detail-topbar">
+    <button class="mod-detail-back" onclick="closeModDetail()"><i class="ti ti-arrow-left"></i></button>
+    <div class="mod-detail-title" id="modDetailTitle"></div>
+    <div style="margin-left:auto" id="modDetailBadge"></div>
+  </div>
+  <div class="mod-detail-content" id="modDetailContent"></div>
+</div>
+
+<!-- PAUSA AVR-S OVERLAY -->
+<div class="pausa-overlay" id="pausaOverlay">
+  <div class="pausa-panel">
+    <div class="pausa-handle"></div>
+    <div class="pausa-header">
+      <div class="pausa-header-title">Pausa AVR-S</div>
+      <div class="pausa-header-sub">Entre o estímulo e a resposta existe um espaço.<br>Neste espaço nasce sua reconstrução.</div>
+    </div>
+    <div class="pausa-body">
+      <div class="pausa-step-card active">
+        <div class="pausa-step-num">Passo 1 — O Fato</div>
+        <div class="pausa-step-q">O que aconteceu? Descreva sem interpretação.</div>
+        <textarea class="pausa-step-ta" id="pausaP1" placeholder="Apenas o fato observável..."></textarea>
+      </div>
+      <div class="pausa-step-card">
+        <div class="pausa-step-num">Passo 2 — Reação Automática</div>
+        <div class="pausa-step-q">Qual foi minha primeira reação?</div>
+        <textarea class="pausa-step-ta" id="pausaP2" placeholder="O automático respondeu..."></textarea>
+      </div>
+      <div class="pausa-step-card">
+        <div class="pausa-step-num">Passo 3 — A Causa</div>
+        <div class="pausa-step-q">Qual causa está por trás dessa reação?</div>
+        <textarea class="pausa-step-ta" id="pausaP3" placeholder="A causa invisível pode ser..."></textarea>
+      </div>
+      <div class="pausa-step-card">
+        <div class="pausa-step-num">Passo 4 — Escolha Consciente</div>
+        <div class="pausa-step-q">Qual escolha representa minha nova versão?</div>
+        <textarea class="pausa-step-ta" id="pausaP4" placeholder="Minha nova versão escolheria..."></textarea>
+      </div>
+    </div>
+    <button class="pausa-submit" onclick="registrarPausa()">Registrar Pausa <i class="ti ti-check"></i></button>
+    <div class="pausa-confirmacao" id="pausaConfirmacao">
+      <div class="pausa-confirmacao-icon"><i class="ti ti-check"></i></div>
+      <div class="pausa-confirmacao-text">Pausa registrada. Você criou um espaço entre o estímulo e a resposta.</div>
+    </div>
+    <div style="text-align:center;padding:14px 24px 0">
+      <button onclick="closePausaAVRS()" style="background:none;border:none;color:var(--text3);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif">Fechar</button>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- MAPA COMPLETO OVERLAY -->
+<div class="mapa-full-overlay" id="mapaFullOverlay">
+  <div class="mapa-full-topbar">
+    <button class="mapa-full-back" onclick="closeMapaCompleto()"><i class="ti ti-arrow-left"></i></button>
+    <div class="mapa-full-title">Meu Mapa de Reconstrução AVR-S</div>
+  </div>
+  <div class="mapa-full-content" id="mapaFullContent"></div>
+</div>
+
 
 </div><!-- /app -->
 </body>
