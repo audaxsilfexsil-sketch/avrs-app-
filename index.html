@@ -20,7 +20,7 @@
 }
 html,body{height:100%;overflow:hidden;background:#0e0c0a} @media(min-width:900px){body{background:radial-gradient(ellipse at 30% 20%, rgba(200,169,109,0.05) 0%, #0e0c0a 60%);}}
 body{font-family:'DM Sans',sans-serif;color:var(--cream);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;}
-.app{max-width:100%;width:100%;margin:0 auto;height:100vh;height:100dvh;display:flex;flex-direction:column;background:var(--bg);position:relative;overflow:hidden}
+.app{max-width:100%;width:100%;margin:0 auto;height:100vh;height:100dvh;display:flex;flex-direction:column;background:var(--bg);position:relative;overflow:hidden;padding-bottom:calc(60px + env(safe-area-inset-bottom))}
 .splash{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 40px;z-index:999;transition:opacity 1.4s ease;overflow:hidden}
 .splash.hide{opacity:0;pointer-events:none}
 .splash-logo{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;letter-spacing:.3em;color:var(--gold);margin-bottom:4px}
@@ -50,12 +50,12 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream);-webkit-font-smoothing:
 .date-text{font-size:11px;color:var(--text3)}
 .icon-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;padding:2px;transition:color .2s}
 .icon-btn:hover{color:var(--gold)}
-.nav{display:flex;border-top:1px solid var(--border);flex-shrink:0}
-.nav-btn{flex:1;padding:14px 8px 12px;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;color:#7a7470;font-size:9px;letter-spacing:.1em;text-transform:uppercase;transition:color .2s} @media(min-width:520px){.nav-btn{font-size:10px;padding:16px 12px 14px;}} @media(min-width:900px){.nav{max-width:900px;margin:0 auto;width:100%;}}
+.nav{display:flex;border-top:1px solid var(--border);flex-shrink:0;position:fixed;bottom:0;left:0;right:0;z-index:100;background:var(--bg);padding-bottom:env(safe-area-inset-bottom)}
+.nav-btn{flex:1;padding:14px 8px 12px;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;color:#7a7470;font-size:9px;letter-spacing:.1em;text-transform:uppercase;transition:color .2s} @media(min-width:520px){.nav-btn{font-size:10px;padding:16px 12px 14px;}} @media(min-width:900px){.nav{max-width:900px;margin:0 auto;left:50%;transform:translateX(-50%);}}
 .nav-btn i{font-size:20px}
 .nav-btn.active{color:var(--gold)}
-.screens{flex:1;overflow:hidden;position:relative}
-.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:20px 20px 32px;display:none;-webkit-overflow-scrolling:touch} @media(min-width:520px){.screen{padding:24px calc(50% - 420px) 40px;}} @media(min-width:1200px){.screen{padding:32px calc(50% - 500px) 48px;}}
+.screens{flex:1;overflow:hidden;position:relative;min-height:0}
+.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:20px 20px 90px;display:none;-webkit-overflow-scrolling:touch} @media(min-width:520px){.screen{padding:24px calc(50% - 420px) 90px;}} @media(min-width:1200px){.screen{padding:32px calc(50% - 500px) 90px;}}
 .screen.active{display:block}
 .screen::-webkit-scrollbar{display:none}
 .today-state{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:16px}
@@ -2209,7 +2209,7 @@ async function callClaude(messages,systemPrompt){try{const r=await fetch('https:
 
 function getMentorSystem(){const p=buildProfile();const re=entries.slice(0,10).map(e=>`[${e.date}] Estado: ${e.state} | Situação: ${e.situation} | Distorção: ${e.distortion}`).join('\n');return`Você é o Mentor AVR–S, um guia de consciência e decisão baseado no método AVR–S do livro "A Vida Sem Rascunho".\n\nMétodo AVR–S:\n- R (Regular): ajustar o estado interno\n- A (Atenção): perceber para onde o foco vai\n- V (Visão): separar fato de interpretação\n- R (Resposta): criar espaço entre estímulo e resposta\n- S (Sistema): construir padrões sustentáveis\n\nPERFIL:\n${p.dominantState?`Estado dominante: ${p.dominantState}`:''}\n${p.mainDistortion?`Distorção mais frequente: ${p.mainDistortion}`:''}\nTotal de registros: ${p.totalEntries||0}\n\nÚLTIMOS REGISTROS:\n${re||'Nenhum ainda.'}\n\nResposta sempre em português brasileiro. Direto, profundo. Máximo 3-4 parágrafos curtos.`;}
 
-async function loadMentorMessage(){const el=document.getElementById('mentorText'),actEl=document.getElementById('mentorActions');const p=buildProfile();let prompt;if(!entries.length){prompt='Dê uma mensagem de boas-vindas ao usuário que está começando o app AVR–S. Máximo 2 frases.';}else{const last=entries[0];prompt=`Dê uma mensagem personalizada de diagnóstico para hoje. Última entrada: Estado "${last.state}", Situação: "${last.situation}". Máximo 3 frases.`;}const r=await callClaude([{role:'user',content:prompt}],getMentorSystem());if(r){el.innerHTML=r;const pills=[];if(p.dominantState==='Ansioso')pills.push('Como regular a ansiedade?');if(p.dominantState==='Reativo')pills.push('Como criar mais espaço?');if(p.mainDistortion)pills.push(`O que é ${p.mainDistortion}?`);pills.push('Meu padrão desta semana');actEl.innerHTML=pills.slice(0,3).map(p=>`<div class="mentor-pill" onclick="quickChat('${p}')">${p}</div>`).join('');}else{el.innerHTML=entries.length?'Seu diário está crescendo. Que padrão você quer transformar hoje?':'Bem-vindo ao AVR–S. Comece registrando seu estado agora.';actEl.innerHTML=`<div class="mentor-pill" onclick="openMentorChat()">Conversar com o Mentor</div>`;}}
+async function loadMentorMessage(){const el=document.getElementById('mentorText'),actEl=document.getElementById('mentorActions');const p=buildProfile();let prompt;if(!entries.length){prompt='Dê uma mensagem de boas-vindas ao usuário que está começando o app AVR–S. Máximo 2 frases.';}else{const last=entries[0];prompt=`Dê uma mensagem personalizada de diagnóstico para hoje. Última entrada: Estado "${last.state}", Situação: "${last.situation}". Máximo 3 frases.`;}const r=await callClaude([{role:'user',content:prompt}],getMentorSystem());if(r){el.innerHTML=mdToHtml(r);const pills=[];if(p.dominantState==='Ansioso')pills.push('Como regular a ansiedade?');if(p.dominantState==='Reativo')pills.push('Como criar mais espaço?');if(p.mainDistortion)pills.push(`O que é ${p.mainDistortion}?`);pills.push('Meu padrão desta semana');actEl.innerHTML=pills.slice(0,3).map(p=>`<div class="mentor-pill" onclick="quickChat('${p}')">${p}</div>`).join('');}else{el.innerHTML=entries.length?'Seu diário está crescendo. Que padrão você quer transformar hoje?':'Bem-vindo ao AVR–S. Comece registrando seu estado agora.';actEl.innerHTML=`<div class="mentor-pill" onclick="openMentorChat()">Conversar com o Mentor</div>`;}}
 
 async function requestWeeklyAnalysis(){const btn=document.querySelector('.analysis-btn');btn.innerHTML='<i class="ti ti-loader"></i> Analisando...';btn.disabled=true;const week=entries.slice(0,7);if(!week.length){btn.innerHTML='<i class="ti ti-sparkles"></i> Analisar';btn.disabled=false;return;}const sc={};week.forEach(e=>{if(e.state&&e.state!=='Não definido')sc[e.state]=(sc[e.state]||0)+1;});const total=week.length;document.getElementById('patternBars').innerHTML=Object.entries(sc).sort((a,b)=>b[1]-a[1]).map(([s,c])=>`<div class="pattern-row"><div class="pattern-label">${s}</div><div class="pattern-bar-wrap"><div class="pattern-bar" style="width:${Math.round((c/total)*100)}%"></div></div><div class="pattern-pct">${Math.round((c/total)*100)}%</div></div>`).join('');btn.innerHTML='<i class="ti ti-sparkles"></i> Analisar';btn.disabled=false;}
 
@@ -2220,7 +2220,7 @@ function openMentorChat(){document.getElementById('mentorChatOverlay').classList
 function closeMentorChat(){stopSpeak();document.getElementById('mentorChatOverlay').classList.remove('open');localStorage.setItem('avrs4_chat',JSON.stringify(chatHistory.slice(-20)));}
 function quickChat(msg){openMentorChat();setTimeout(()=>{document.getElementById('chatInput').value=msg;sendChat();},300);}
 
-function appendMsg(role,text,scroll=true){const msgs=document.getElementById('chatMsgs');if(role==='assistant'){const wrap=document.createElement('div');wrap.className='msg-ai-wrap';const bubble=document.createElement('div');bubble.className='msg msg-ai';bubble.textContent=text;const speakBtn=document.createElement('button');speakBtn.className='msg-speak-btn';speakBtn.innerHTML='<i class="ti ti-volume"></i><span>ouvir</span>';speakBtn.onclick=()=>toggleSpeak(text,speakBtn);wrap.appendChild(bubble);wrap.appendChild(speakBtn);msgs.appendChild(wrap);const ttsMode=localStorage.getItem('avrs4_tts')||'auto';if(scroll&&(ttsMode==='always'||(ttsMode==='auto'&&text.length<400)))setTimeout(()=>toggleSpeak(text,speakBtn),300);}else{const div=document.createElement('div');div.className='msg msg-user';div.textContent=text;msgs.appendChild(div);}if(scroll)scrollChat();}
+function appendMsg(role,text,scroll=true){const msgs=document.getElementById('chatMsgs');if(role==='assistant'){const wrap=document.createElement('div');wrap.className='msg-ai-wrap';const bubble=document.createElement('div');bubble.className='msg msg-ai';bubble.innerHTML=mdToHtml(esc(text));const speakBtn=document.createElement('button');speakBtn.className='msg-speak-btn';speakBtn.innerHTML='<i class="ti ti-volume"></i><span>ouvir</span>';speakBtn.onclick=()=>toggleSpeak(text,speakBtn);wrap.appendChild(bubble);wrap.appendChild(speakBtn);msgs.appendChild(wrap);const ttsMode=localStorage.getItem('avrs4_tts')||'auto';if(scroll&&(ttsMode==='always'||(ttsMode==='auto'&&text.length<400)))setTimeout(()=>toggleSpeak(text,speakBtn),300);}else{const div=document.createElement('div');div.className='msg msg-user';div.textContent=text;msgs.appendChild(div);}if(scroll)scrollChat();}
 function appendTyping(){const msgs=document.getElementById('chatMsgs');const div=document.createElement('div');div.className='msg msg-ai';div.id='typingIndicator';div.innerHTML='<div class="mentor-typing"><span></span><span></span><span></span></div>';msgs.appendChild(div);scrollChat();}
 function removeTyping(){const el=document.getElementById('typingIndicator');if(el)el.remove();}
 function scrollChat(){const msgs=document.getElementById('chatMsgs');msgs.scrollTop=msgs.scrollHeight;}
@@ -3201,6 +3201,17 @@ function closeMapaCompleto() {
   document.getElementById('mapaFullOverlay').classList.remove('open');
 }
 
+
+
+function mdToHtml(text) {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/^#{1,3}\s+(.+)$/gm, '<strong>$1</strong>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br>')
+    .replace(/^/, '<p>').replace(/$/, '</p>');
+}
 
 if('serviceWorker'in navigator)navigator.serviceWorker.getRegistrations().then(r=>r.forEach(reg=>reg.unregister()));
 init();
