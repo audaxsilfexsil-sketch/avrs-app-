@@ -1,36 +1,3385 @@
-const CACHE = 'avrs-v75';
-const ASSETS = [
-  '/avrs-app-/',
-  '/avrs-app-/index.html',
-  'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap',
-  'https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css'
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>AVR–S | A Vida Sem Rascunho</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#141210;--bg2:#1c1a18;--bg3:#252220;--bg4:#2e2b28;--bg5:#323028;
+  --gold:#d4b87a;--gold2:#ebd49e;
+  --cream:#f5f0e8;--text2:#c0b8b0;--text3:#8a8278;
+  --border:rgba(200,169,109,0.14);--border2:rgba(200,169,109,0.28);
+  --ai:#1a2e1a;--ai-border:rgba(120,200,120,0.3);--ai-text:#a8d8a8;
+  --r:18px;--r2:14px;
+}
+html,body{height:100%;overflow:hidden;background:#0e0c0a} @media(min-width:900px){body{background:radial-gradient(ellipse at 30% 20%, rgba(200,169,109,0.05) 0%, #0e0c0a 60%);}}
+body{font-family:'DM Sans',sans-serif;color:var(--cream);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;}
+.app{max-width:100%;width:100%;margin:0 auto;height:100vh;height:100dvh;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;box-sizing:border-box}
+.splash{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 40px;z-index:999;transition:opacity 1.4s ease;overflow:hidden}
+.splash.hide{opacity:0;pointer-events:none}
+.splash-logo{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;letter-spacing:.3em;color:var(--gold);margin-bottom:4px}
+.splash-subtitle{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--text3);margin-bottom:48px}
+.splash-quote{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;font-style:italic;color:var(--text2);text-align:center;line-height:1.8;max-width:280px;margin-bottom:48px}
+/* Passagens animadas */
+.sp-logo{opacity:1;transition:opacity .6s ease;margin-bottom:0}
+.sp-item{position:absolute;display:flex;flex-direction:column;align-items:center;text-align:center;opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease;padding:0 40px;width:100%}
+.sp-item.show{opacity:1;transform:translateY(0)}
+.sp-item.out{opacity:0;transform:translateY(-20px)}
+.sp-letter{font-family:'Cormorant Garamond',serif;font-size:80px;font-weight:300;color:var(--gold);line-height:1;margin-bottom:6px;letter-spacing:.05em}
+.sp-name{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--text3);margin-bottom:18px}
+.sp-line{width:28px;height:1px;background:rgba(200,169,109,.35);margin:0 auto 18px}
+.sp-quote{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:300;font-style:italic;color:var(--text2);line-height:1.8;max-width:280px}
+/* Final: respire */
+.sp-final{position:absolute;display:flex;flex-direction:column;align-items:center;opacity:0;transform:translateY(20px);transition:opacity .8s ease,transform .8s ease}
+.sp-final.show{opacity:1;transform:translateY(0)}
+.breath-ring{width:80px;height:80px;border-radius:50%;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;animation:breathe 4s ease-in-out infinite}
+.breath-inner{width:48px;height:48px;border-radius:50%;border:1px solid rgba(200,169,109,.4);display:flex;align-items:center;justify-content:center}
+.breath-dot{width:6px;height:6px;border-radius:50%;background:var(--gold)}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.15);opacity:1}}
+.breath-label{margin-top:16px;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3)}
+.sp-tagline{font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:rgba(200,169,109,.45);margin-top:8px;letter-spacing:.05em}
+.topbar{padding:16px 20px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);flex-shrink:0} @media(min-width:520px){.topbar{padding:18px calc(50% - 420px) 16px;}} @media(min-width:1200px){.topbar{padding:20px calc(50% - 500px) 18px;}}
+.brand{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;letter-spacing:.1em;color:var(--gold)}
+.topbar-right{display:flex;align-items:center;gap:14px}
+.date-text{font-size:11px;color:var(--text3)}
+.icon-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;padding:2px;transition:color .2s}
+.icon-btn:hover{color:var(--gold)}
+.nav{display:flex;border-top:1px solid var(--border);flex-shrink:0;background:var(--bg)}
+.nav-btn{flex:1;padding:14px 8px 12px;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;color:#7a7470;font-size:9px;letter-spacing:.1em;text-transform:uppercase;transition:color .2s} @media(min-width:520px){.nav-btn{font-size:10px;padding:16px 12px 14px;}} @media(min-width:900px){.nav-btn{font-size:10px;}}
+.nav-btn i{font-size:20px}
+.nav-btn.active{color:var(--gold)}
+.screens{position:relative;overflow:hidden;flex:1 1 0;min-height:0}
+.screen{position:absolute;top:0;left:0;right:0;bottom:0;overflow-y:auto;overflow-x:hidden;padding:20px 20px 80px;display:none;-webkit-overflow-scrolling:touch} @media(min-width:520px){.screen{padding:24px calc(50% - 420px) 90px;}} @media(min-width:1200px){.screen{padding:32px calc(50% - 500px) 90px;}}
+.screen.active{display:block}
+.screen::-webkit-scrollbar{display:none}
+.today-state{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:16px}
+.today-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.today-hint{font-size:12px;color:#8a8278;margin-bottom:14px}
+.state-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px} @media(min-width:520px){.state-grid{grid-template-columns:1fr 1fr 1fr;}}
+.state-chip{background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:14px 12px;cursor:pointer;transition:all .25s;display:flex;flex-direction:column;align-items:flex-start;gap:6px;position:relative}
+.state-chip i{font-size:18px;color:#8a8480;transition:color .25s}
+.state-chip span{font-size:12px;color:#d8d0c4;font-weight:500;transition:color .25s}
+.state-chip .chip-arrow{position:absolute;right:10px;bottom:10px;font-size:12px;color:var(--text3);opacity:0;transition:opacity .2s}
+.state-chip:hover .chip-arrow{opacity:1}
+.state-chip.active{border-color:var(--gold);background:rgba(200,169,109,.07)}
+.state-chip.active i,.state-chip.active span{color:var(--gold2)}
+.stats-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.stat-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:16px}
+.stat-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8a8278;margin-bottom:8px}
+.stat-number{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:400;color:var(--gold);line-height:1;-webkit-font-smoothing:antialiased}
+.stat-sub{font-size:11px;color:#7a7470;margin-top:6px;line-height:1.5}
+.primary-btn{width:100%;background:var(--gold);color:#0a0908;border:none;border-radius:var(--r2);padding:16px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s,transform .1s;-webkit-font-smoothing:antialiased}
+.primary-btn:active{transform:scale(.98);background:var(--gold2)}
+.question-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:22px;margin-bottom:16px}
+.qcard-eyebrow{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:12px}
+.qcard-question{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;line-height:1.4;color:var(--cream);margin-bottom:12px;-webkit-font-smoothing:antialiased}
+.qcard-hint{font-size:13px;color:#bab2aa;line-height:1.7}
+.quote-strip{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:18px;margin-bottom:16px;position:relative;overflow:hidden}
+.quote-text{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;font-weight:400;color:var(--gold2);line-height:1.8;transition:opacity .4s;-webkit-font-smoothing:antialiased}
+.quote-mark{position:absolute;top:10px;left:16px;font-family:'Cormorant Garamond',serif;font-size:64px;font-weight:300;color:rgba(200,169,109,.06);line-height:1}
+.mentor-card{background:var(--ai);border:1px solid var(--ai-border);border-radius:var(--r);padding:20px;margin-bottom:16px}
+.mentor-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.mentor-dot{width:8px;height:8px;border-radius:50%;background:var(--ai-text);animation:pulse-dot 2s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.2)}}
+.mentor-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#b8e0b8;font-weight:600}
+.mentor-text{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:400;color:var(--cream);line-height:1.8;-webkit-font-smoothing:antialiased}
+.mentor-typing{display:flex;gap:4px;align-items:center;padding:4px 0}
+.mentor-typing span{width:5px;height:5px;border-radius:50%;background:var(--ai-text);animation:typing 1.2s ease-in-out infinite}
+.mentor-typing span:nth-child(2){animation-delay:.2s}
+.mentor-typing span:nth-child(3){animation-delay:.4s}
+@keyframes typing{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
+.mentor-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.mentor-pill{background:rgba(100,180,100,.12);border:1px solid rgba(140,210,140,0.35);border-radius:20px;padding:7px 14px;font-size:11px;color:#b8e0b8;cursor:pointer;transition:all .2s;font-weight:500}
+.mentor-pill:hover{background:rgba(100,180,100,.15)}
+.analysis-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:16px}
+.analysis-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.analysis-title{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3)}
+.analysis-btn{background:none;border:1px solid var(--border2);border-radius:20px;padding:6px 12px;font-size:11px;color:var(--gold);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.analysis-btn:hover{background:rgba(200,169,109,.08)}
+.pattern-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.pattern-row:last-child{border:none}
+.pattern-bar-wrap{flex:1;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.pattern-bar{height:100%;border-radius:2px;background:var(--gold);transition:width .6s ease}
+.pattern-label{font-size:12px;color:var(--text2);width:110px;flex-shrink:0}
+.pattern-pct{font-size:11px;color:var(--text3);width:32px;text-align:right;flex-shrink:0}
+.diary-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.section-title{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3)}
+.filter-row{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:2px}
+.filter-row::-webkit-scrollbar{display:none}
+.filter-chip{background:var(--bg3);border:1px solid var(--border);border-radius:30px;padding:7px 14px;font-size:11px;color:var(--text2);cursor:pointer;transition:all .2s;white-space:nowrap}
+.filter-chip.active{border-color:var(--gold);color:var(--gold);background:rgba(200,169,109,.07)}
+.entry-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:18px;margin-bottom:10px;cursor:pointer;transition:border-color .2s}
+.entry-card:hover{border-color:var(--border2)}
+.entry-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.entry-situation{font-size:15px;font-weight:600;color:var(--cream);flex:1;padding-right:12px;line-height:1.4}
+.entry-date{font-size:11px;color:var(--text3);white-space:nowrap}
+.entry-body{font-size:13px;color:#c0b8b0;line-height:1.7;margin-bottom:12px}
+.entry-footer{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.badge{padding:4px 10px;border-radius:30px;font-size:10px;letter-spacing:.06em}
+.badge-gold{background:rgba(200,169,109,.1);color:var(--gold)}
+.badge-dark{background:var(--bg4);color:var(--text3)}
+.badge-ai{background:rgba(100,180,100,.1);color:var(--ai-text)}
+.empty-state{text-align:center;padding:48px 24px}
+.empty-icon{font-size:40px;color:var(--text3);margin-bottom:16px}
+.empty-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--text2);margin-bottom:8px}
+.empty-sub{font-size:13px;color:var(--text3);line-height:1.7}
+.protocol-intro{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:300;font-style:italic;color:var(--text2);line-height:1.8;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.layer-card{border:1px solid var(--border);border-radius:var(--r2);margin-bottom:10px;overflow:hidden}
+.layer-header{padding:16px 18px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;background:var(--bg3);transition:background .2s}
+.layer-header:hover{background:var(--bg4)}
+.layer-left{display:flex;align-items:center;gap:12px}
+.layer-num{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--gold);width:28px}
+.layer-name{font-size:14px;font-weight:600;color:var(--cream);letter-spacing:.02em}
+.layer-chevron{font-size:16px;color:var(--text3);transition:transform .3s}
+.layer-card.open .layer-chevron{transform:rotate(180deg)}
+.layer-body{display:none;padding:18px;background:var(--bg2);border-top:1px solid var(--border)}
+.layer-card.open .layer-body{display:block}
+.layer-desc{font-size:13px;color:#bab2aa;line-height:1.8;margin-bottom:14px}
+.layer-q{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.layer-q:last-child{border:none}
+.layer-q-icon{font-size:16px;color:var(--gold);flex-shrink:0;margin-top:1px}
+.layer-q-text{font-size:13px;color:var(--cream);line-height:1.6}
+.settings-section{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:12px}
+.settings-section-title{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:14px}
+.settings-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)}
+.settings-row:last-child{border:none}
+.settings-label{font-size:14px;color:var(--cream)}
+.settings-value{font-size:13px;color:var(--text3)}
+.settings-action{font-size:13px;color:var(--gold);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif}
+.danger-btn{width:100%;background:transparent;border:1px solid rgba(200,60,60,.3);color:rgba(200,100,100,.8);border-radius:var(--r2);padding:14px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;margin-top:8px}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0);z-index:800;transition:background .35s;display:none;align-items:flex-end;justify-content:center}
+.overlay.open{display:flex;background:rgba(0,0,0,.75)}
+.modal{background:var(--bg2);width:100%;max-width:860px;border-radius:28px 28px 0 0;padding:0 0 32px;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1);max-height:92vh;overflow-y:auto}
+.modal::-webkit-scrollbar{display:none}
+.overlay.open .modal{transform:translateY(0)}
+.modal-handle{width:36px;height:3px;border-radius:2px;background:var(--bg5);margin:14px auto 0}
+.modal-header{padding:20px 24px 16px;border-bottom:1px solid var(--border)}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--cream)}
+.modal-body{padding:20px 24px 0}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.field input,.field textarea,.field select{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--cream);padding:14px 16px;border-radius:12px;font-size:14px;font-family:'DM Sans',sans-serif;-webkit-appearance:none;appearance:none;transition:border-color .2s;outline:none}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold)}
+.field textarea{min-height:80px;resize:none}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%234a4640' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;cursor:pointer}
+.field select option{background:var(--bg3)}
+.modal-actions{display:flex;gap:10px;padding:16px 24px 0}
+.cancel-btn{flex:1;background:transparent;border:1px solid var(--border);color:var(--text2);padding:14px;border-radius:12px;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif}
+.save-btn{flex:2;background:var(--gold);border:none;color:#0a0908;padding:14px;border-radius:12px;font-weight:500;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;letter-spacing:.04em}
+.cl-overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:850;display:none;align-items:flex-end;justify-content:center}
+.cl-overlay.open{display:flex}
+.cl-panel{background:var(--bg2);width:100%;max-width:860px;border-radius:28px 28px 0 0;transform:translateY(100%);transition:transform .4s cubic-bezier(.32,.72,0,1);max-height:90vh;overflow:hidden;display:flex;flex-direction:column}
+.cl-overlay.open .cl-panel{transform:translateY(0)}
+.cl-handle{width:36px;height:3px;border-radius:2px;background:var(--bg5);margin:14px auto 8px;flex-shrink:0}
+.cl-progress{height:2px;background:var(--bg4);margin:0 24px 0;border-radius:1px;flex-shrink:0}
+.cl-progress-fill{height:100%;background:var(--gold);border-radius:1px;transition:width .4s ease}
+.cl-header{padding:16px 24px 14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.cl-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:30px;border:1px solid var(--gold);background:rgba(200,169,109,.08);margin-bottom:12px}
+.cl-badge i{font-size:15px;color:var(--gold)}
+.cl-badge span{font-size:11px;color:var(--gold2);letter-spacing:.06em}
+.cl-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:var(--cream);line-height:1.4;margin-bottom:4px}
+.cl-subtitle{font-size:11px;color:var(--text3)}
+.cl-body{padding:20px 24px;overflow-y:auto;flex:1}
+.cl-body::-webkit-scrollbar{display:none}
+.cl-step-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+.cl-question{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);line-height:1.5;margin-bottom:16px}
+.cl-options{display:flex;flex-direction:column;gap:8px}
+.cl-option{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px}
+.cl-option.sel{border-color:var(--gold);background:rgba(200,169,109,.07)}
+.cl-circle{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--text3);flex-shrink:0;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.cl-option.sel .cl-circle{border-color:var(--gold);background:var(--gold)}
+.cl-option.sel .cl-circle::after{content:'';width:6px;height:6px;border-radius:50%;background:#0a0908}
+.cl-opt-text{font-size:13px;color:var(--text2);line-height:1.5;transition:color .2s}
+.cl-option.sel .cl-opt-text{color:var(--cream)}
+.cl-textarea{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--cream);padding:14px;border-radius:12px;font-size:13px;font-family:'DM Sans',sans-serif;resize:none;min-height:80px;outline:none;transition:border-color .2s}
+.cl-textarea:focus{border-color:var(--gold)}
+.cl-textarea::placeholder{color:var(--text3)}
+.cl-nav{display:flex;gap:10px;padding:14px 24px 32px;flex-shrink:0;border-top:1px solid var(--border)}
+.cl-prev{flex:1;background:transparent;border:1px solid var(--border);color:var(--text2);padding:14px;border-radius:12px;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif}
+.cl-next{flex:2;background:var(--gold);border:none;color:#0a0908;padding:14px;border-radius:12px;font-weight:500;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;letter-spacing:.04em}
+.cl-finish{flex:2;background:transparent;border:1px solid var(--gold);color:var(--gold);padding:14px;border-radius:12px;font-weight:500;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif}
+.sug-card{background:var(--bg3);border:1px solid var(--border2);border-radius:16px;padding:20px;margin-bottom:14px}
+.sug-top{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.sug-icon-wrap{width:38px;height:38px;border-radius:50%;background:rgba(200,169,109,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sug-icon-wrap i{font-size:18px;color:var(--gold)}
+.sug-eyebrow{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3)}
+.sug-name{font-size:14px;font-weight:500;color:var(--gold2)}
+.sug-distortion{background:rgba(90,42,26,.35);border:1px solid rgba(200,100,60,.2);border-radius:10px;padding:12px;margin-bottom:14px;display:flex;gap:10px;align-items:flex-start}
+.sug-distortion i{font-size:16px;color:#c86040;flex-shrink:0;margin-top:1px}
+.sug-distortion-text{font-size:12px;color:rgba(240,180,150,.85);line-height:1.6}
+.sug-body{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:300;color:var(--cream);line-height:1.75;margin-bottom:16px}
+.sug-actions{display:flex;flex-direction:column;gap:8px}
+.sug-action{background:var(--bg4);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.sug-action-n{font-size:10px;color:var(--gold);margin-bottom:4px;letter-spacing:.08em}
+.sug-action-t{font-size:13px;color:var(--cream);line-height:1.6}
+.sug-reflection{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px}
+.sug-reflection-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.sug-reflection-text{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:#c8c0b8;line-height:1.7;font-weight:400}
+.ai-insight{background:var(--ai);border:1px solid var(--ai-border);border-radius:14px;padding:16px;margin-bottom:14px;-webkit-font-smoothing:antialiased}
+.ai-insight-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#b8e0b8;margin-bottom:10px;display:flex;align-items:center;gap:6px;font-weight:600}
+.ai-insight-label i{font-size:14px}
+.ai-insight-text{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:500;color:#f0ebe2;line-height:1.75;-webkit-font-smoothing:antialiased}
+.ai-insight-sub{font-size:12px;color:#c0d8c0;line-height:1.6;margin-top:8px}
+.det-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:900;display:none}
+.det-panel{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:860px;background:var(--bg2);border-radius:28px 28px 0 0;padding:0 0 40px;max-height:88vh;overflow-y:auto;transition:transform .35s cubic-bezier(.32,.72,0,1);z-index:901}
+.det-panel::-webkit-scrollbar{display:none}
+.det-panel.open{transform:translateX(-50%) translateY(0)}
+.det-header{padding:16px 24px 20px;border-bottom:1px solid var(--border)}
+.det-situation{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;line-height:1.4;color:var(--cream);margin-bottom:10px}
+.det-meta{display:flex;gap:8px;flex-wrap:wrap}
+.det-body{padding:20px 24px}
+.det-section{margin-bottom:20px}
+.det-section-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.det-section-text{font-size:14px;color:var(--text2);line-height:1.7}
+.det-sug{background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:14px;margin-top:8px}
+.det-delete{margin:0 24px;background:transparent;border:1px solid rgba(200,60,60,.25);color:rgba(200,100,100,.7);border-radius:12px;padding:12px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;width:calc(100% - 48px)}
+.avrs-day-card{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:18px 20px;margin-bottom:16px;cursor:pointer;transition:border-color .2s,background .2s}
+.avrs-day-card:hover{background:var(--bg4)}
+.avrs-day-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.avrs-day-icon{width:34px;height:34px;border-radius:50%;background:rgba(200,169,109,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.avrs-day-icon i{font-size:17px;color:var(--gold)}
+.avrs-day-label{font-size:13px;font-weight:600;color:var(--gold2);flex:1;line-height:1.3;letter-spacing:.02em}
+.avrs-day-text{font-size:12px;color:#bab2aa;line-height:1.7;margin-bottom:12px}
+.avrs-day-pills{display:flex;gap:6px;flex-wrap:wrap}
+.avrs-day-pill{background:rgba(200,169,109,.07);border:1px solid var(--border);border-radius:20px;padding:5px 10px;font-size:10px;color:var(--text2);letter-spacing:.04em}
+.guia-intro{margin-bottom:20px}
+.guia-intro-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--cream);line-height:1.4;margin-bottom:10px}
+.guia-intro-text{font-size:13px;color:var(--text2);line-height:1.8}
+.guia-closing{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:20px;margin-top:6px;margin-bottom:16px}
+.guia-closing-text{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;font-weight:300;color:var(--gold2);line-height:1.8;text-align:center}
+.momento-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);margin-bottom:12px;overflow:hidden}
+.momento-header{padding:18px 20px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:background .2s}
+.momento-header:hover{background:var(--bg4)}
+.momento-num{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--gold);width:32px;flex-shrink:0;line-height:1}
+.momento-title-wrap{flex:1}
+.momento-eyebrow{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:3px}
+.momento-title{font-size:15px;font-weight:500;color:var(--cream);line-height:1.3}
+.momento-chevron{font-size:16px;color:var(--text3);transition:transform .3s;flex-shrink:0}
+.momento-card.open .momento-chevron{transform:rotate(180deg)}
+.momento-body{display:none;padding:0 20px 20px;background:var(--bg2);border-top:1px solid var(--border)}
+.momento-card.open .momento-body{display:block}
+.momento-desc{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;font-style:italic;color:#c0b8b0;line-height:1.8;padding:16px 0 14px}
+.momento-section{margin-bottom:16px}
+.momento-section-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.momento-section-label i{font-size:14px;color:var(--gold)}
+.momento-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:2px}
+.momento-tag{background:var(--bg4);border:1px solid var(--border);border-radius:20px;padding:6px 12px;font-size:11px;color:var(--text2)}
+.momento-questions{display:flex;flex-direction:column;gap:8px}
+.momento-q{display:flex;gap:10px;align-items:flex-start}
+.momento-q-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:7px}
+.momento-q-text{font-size:13px;color:var(--cream);line-height:1.6}
+.momento-result{background:rgba(200,169,109,.06);border:1px solid var(--border2);border-radius:12px;padding:14px 16px;display:flex;align-items:flex-start;gap:10px}
+.momento-result i{font-size:16px;color:var(--gold);flex-shrink:0;margin-top:2px}
+.momento-result-text{font-size:13px;color:var(--gold2);line-height:1.6}
+.mentor-chat-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:950;display:none;align-items:flex-end;justify-content:center}
+.mentor-chat-overlay.open{display:flex}
+.mentor-chat-panel{background:var(--bg2);width:100%;max-width:860px;border-radius:28px 28px 0 0;max-height:88vh;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .4s cubic-bezier(.32,.72,0,1)}
+.mentor-chat-overlay.open .mentor-chat-panel{transform:translateY(0)}
+.mentor-chat-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0}
+.mentor-avatar{width:36px;height:36px;border-radius:50%;background:var(--ai);border:1px solid var(--ai-border);display:flex;align-items:center;justify-content:center}
+.mentor-avatar i{font-size:18px;color:var(--ai-text)}
+.mentor-chat-name{font-size:14px;font-weight:500;color:var(--cream)}
+.mentor-chat-status{font-size:11px;color:var(--ai-text)}
+.mentor-close{margin-left:auto;background:none;border:none;color:var(--text3);cursor:pointer;font-size:20px}
+.chat-msgs{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px}
+.chat-msgs::-webkit-scrollbar{display:none}
+.msg{max-width:86%;padding:12px 16px;border-radius:16px;font-size:13px;line-height:1.7}
+.msg-ai{background:var(--ai);border:1px solid var(--ai-border);color:var(--cream);align-self:flex-start;border-bottom-left-radius:4px;font-family:'Cormorant Garamond',serif;font-size:15px}
+.msg-user{background:rgba(200,169,109,.1);border:1px solid var(--border2);color:var(--cream);align-self:flex-end;border-bottom-right-radius:4px}
+.chat-input-row{display:flex;gap:10px;padding:14px 20px 32px;border-top:1px solid var(--border);flex-shrink:0}
+.chat-input{flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--cream);padding:12px 16px;border-radius:12px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
+.chat-input:focus{border-color:var(--gold)}
+.chat-send{background:var(--gold);border:none;color:#0a0908;width:40px;height:40px;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.chat-send i{font-size:18px}
+.paywall-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:980;display:none;align-items:flex-end;justify-content:center}
+.paywall-overlay.open{display:flex}
+.paywall-panel{background:var(--bg2);width:100%;max-width:860px;border-radius:28px 28px 0 0;padding:0 0 40px;transform:translateY(100%);transition:transform .4s cubic-bezier(.32,.72,0,1);max-height:92vh;overflow-y:auto}
+.paywall-panel::-webkit-scrollbar{display:none}
+.paywall-overlay.open .paywall-panel{transform:translateY(0)}
+.paywall-handle{width:36px;height:3px;border-radius:2px;background:var(--bg5);margin:14px auto 0}
+.paywall-hero{padding:28px 24px 20px;text-align:center;border-bottom:1px solid var(--border)}
+.paywall-icon{width:56px;height:56px;border-radius:50%;background:rgba(200,169,109,.1);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.paywall-icon i{font-size:26px;color:var(--gold)}
+.paywall-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:var(--cream);margin-bottom:8px;line-height:1.3}
+.paywall-sub{font-size:13px;color:var(--text2);line-height:1.7}
+.paywall-features{padding:20px 24px;border-bottom:1px solid var(--border)}
+.paywall-features-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:14px}
+.paywall-feature{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.paywall-feature:last-child{border:none}
+.paywall-feature-icon{width:32px;height:32px;border-radius:8px;background:rgba(200,169,109,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.paywall-feature-icon i{font-size:16px;color:var(--gold)}
+.paywall-feature-title{font-size:13px;font-weight:500;color:var(--cream);margin-bottom:3px}
+.paywall-feature-desc{font-size:12px;color:var(--text3);line-height:1.5}
+.paywall-pricing{padding:20px 24px}
+.paywall-price-card{background:var(--bg3);border:1px solid var(--border2);border-radius:16px;padding:20px;margin-bottom:14px;text-align:center}
+.paywall-price-badge{display:inline-block;background:rgba(200,169,109,.1);border:1px solid var(--border2);border-radius:20px;padding:4px 12px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.paywall-price-value{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:var(--gold);line-height:1}
+.paywall-price-period{font-size:12px;color:var(--text3);margin-top:4px;margin-bottom:16px}
+.paywall-cta{width:100%;background:var(--gold);color:#0a0908;border:none;border-radius:12px;padding:16px;font-size:13px;font-weight:500;letter-spacing:.06em;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s}
+.paywall-cta:active{background:var(--gold2)}
+.paywall-dismiss{display:block;text-align:center;margin-top:12px;font-size:12px;color:var(--text3);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;width:100%}
+.paywall-free-label{font-size:11px;color:var(--text3);text-align:center;margin-top:8px}
+.pro-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(200,169,109,.1);border:1px solid var(--border2);border-radius:20px;padding:3px 8px;font-size:9px;letter-spacing:.08em;color:var(--gold);text-transform:uppercase;vertical-align:middle;margin-left:6px}
+.pro-badge i{font-size:10px}
+.locked-card{position:relative;overflow:hidden}
+.locked-card::after{content:'';position:absolute;inset:0;background:rgba(10,9,8,.45);border-radius:inherit;}
+.lock-badge{position:absolute;top:12px;right:12px;z-index:2;display:flex;flex-direction:row;align-items:center;gap:5px;cursor:pointer;background:rgba(10,9,8,.75);padding:5px 12px;border-radius:20px;border:1px solid var(--border2)}
+.lock-badge i{font-size:12px;color:var(--gold);opacity:.9}
+.lock-badge span{font-size:10px;color:var(--gold2);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.stat-desktop{display:none;}
+@media(min-width:520px){.stat-desktop{display:block;}.stats-row{grid-template-columns:1fr 1fr 1fr 1fr;}}
+.dash-overlay{position:fixed;inset:0;background:var(--bg);z-index:920;display:none;flex-direction:column;overflow:hidden}
+.dash-overlay.open{display:flex}
+.dash-topbar{padding:16px 20px 14px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.dash-back{background:none;border:none;color:var(--text2);cursor:pointer;font-size:22px;padding:2px;transition:color .2s;display:flex;align-items:center}
+.dash-back:hover{color:var(--gold)}
+.dash-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--cream);letter-spacing:.05em}
+.dash-badge{margin-left:auto;display:inline-flex;align-items:center;gap:5px;background:rgba(200,169,109,.08);border:1px solid var(--border2);border-radius:20px;padding:4px 10px;font-size:10px;color:var(--gold);letter-spacing:.08em}
+.dash-content{flex:1;overflow-y:auto;padding:20px 20px 40px;}
+.dash-content::-webkit-scrollbar{display:none}
+@media(min-width:520px){.dash-content{padding:24px calc(50% - 420px) 48px;}.dash-topbar{padding:18px calc(50% - 420px) 16px;}}
+.dash-section{margin-bottom:20px}
+.dash-section-title{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#6a6460;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.dash-section-title i{font-size:14px;color:var(--gold)}
+.dash-state-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:20px;display:flex;align-items:center;gap:16px}
+.dash-state-icon{width:52px;height:52px;border-radius:50%;background:rgba(200,169,109,.1);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dash-state-icon i{font-size:24px;color:var(--gold)}
+.dash-state-name{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;color:var(--gold);line-height:1}
+.dash-state-sub{font-size:12px;color:#8a8278;margin-top:4px}
+.dash-state-pct{margin-left:auto;text-align:right}
+.dash-state-pct-num{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:var(--gold)}
+.dash-state-pct-label{font-size:10px;color:#6a6460;letter-spacing:.08em}
+.dash-dist-card{background:rgba(90,42,26,.25);border:1px solid rgba(200,100,60,.15);border-radius:var(--r);padding:18px;display:flex;gap:14px;align-items:flex-start}
+.dash-dist-icon{width:38px;height:38px;border-radius:10px;background:rgba(200,100,60,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dash-dist-icon i{font-size:18px;color:#c86040}
+.dash-dist-name{font-size:15px;font-weight:600;color:#e8b090;margin-bottom:4px}
+.dash-dist-desc{font-size:12px;color:#b09080;line-height:1.6}
+.dash-dist-freq{font-size:11px;color:#c86040;margin-top:6px;letter-spacing:.06em}
+.dash-clarity-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:20px}
+.dash-clarity-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.dash-clarity-row:last-child{border:none}
+.dash-clarity-day{font-size:11px;color:#8a8278;width:36px;flex-shrink:0}
+.dash-clarity-bar-wrap{flex:1;height:6px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.dash-clarity-bar{height:100%;border-radius:3px;transition:width .8s ease}
+.dash-clarity-state{font-size:11px;color:#b8b0a4;width:100px;text-align:right;flex-shrink:0}
+.dash-clarity-empty{text-align:center;padding:20px;font-size:13px;color:#6a6460}
+.dash-pattern-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:20px}
+.dash-pattern-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.dash-pattern-row:last-child{border:none}
+.dash-pattern-label{font-size:13px;color:#c8c0b4;width:130px;flex-shrink:0;font-weight:500}
+.dash-pattern-bar-wrap{flex:1;height:8px;background:var(--bg4);border-radius:4px;overflow:hidden}
+.dash-pattern-bar{height:100%;border-radius:4px;background:var(--gold);transition:width .8s ease}
+.dash-pattern-pct{font-size:12px;color:#8a8278;width:36px;text-align:right;flex-shrink:0}
+.dash-pattern-count{font-size:11px;color:#6a6460;width:24px;text-align:right;flex-shrink:0}
+.dash-insight-card{background:var(--ai);border:1px solid var(--ai-border);border-radius:var(--r);padding:20px}
+.dash-insight-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#b8e0b8;margin-bottom:12px;display:flex;align-items:center;gap:6px;font-weight:600}
+.dash-insight-text{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:400;color:#f0ebe2;line-height:1.8;-webkit-font-smoothing:antialiased}
+.dash-nums{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px}
+.dash-num-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:14px;text-align:center}
+.dash-num-value{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:300;color:var(--gold);line-height:1}
+.dash-num-label{font-size:10px;color:#6a6460;letter-spacing:.1em;text-transform:uppercase;margin-top:6px}
+.proto-tab{flex:1;background:none;border:none;border-bottom:2px solid transparent;padding:10px 4px;font-size:11px;color:#6a6460;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.06em;transition:all .2s}
+.proto-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.onboard-overlay{position:fixed;inset:0;background:var(--bg);z-index:990;display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px}
+.onboard-overlay.open{display:flex}
+.onboard-step{display:none;flex-direction:column;align-items:center;text-align:center;max-width:360px;width:100%}
+.onboard-step.active{display:flex}
+.onboard-icon{width:80px;height:80px;border-radius:50%;background:rgba(200,169,109,.1);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;margin-bottom:28px}
+.onboard-icon i{font-size:36px;color:var(--gold)}
+.onboard-num{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#6a6460;margin-bottom:16px}
+.onboard-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--cream);line-height:1.3;margin-bottom:16px}
+.onboard-text{font-size:14px;color:#b8b0a4;line-height:1.8;margin-bottom:40px}
+.onboard-dots{display:flex;gap:8px;margin-bottom:32px}
+.onboard-dot{width:6px;height:6px;border-radius:50%;background:#4a4640;transition:all .3s}
+.onboard-dot.active{background:var(--gold);width:20px;border-radius:3px}
+.onboard-btn{width:100%;background:var(--gold);border:none;border-radius:14px;padding:16px;font-size:13px;font-weight:600;color:#0a0908;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.06em;margin-bottom:12px}
+.onboard-skip{background:none;border:none;color:#6a6460;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.focus-overlay{position:fixed;inset:0;background:#050403;z-index:930;display:none;flex-direction:column}
+.focus-overlay.open{display:flex}
+.focus-topbar{padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.focus-back{background:none;border:none;color:#6a6460;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:6px}
+.focus-back i{font-size:18px}
+.focus-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#4a4640}
+.focus-content{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 40px;text-align:center}
+.focus-date{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#4a4640;margin-bottom:20px}
+.focus-question{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:300;color:var(--cream);line-height:1.5;margin-bottom:16px;max-width:480px}
+.focus-hint{font-size:14px;color:#8a8278;line-height:1.7;max-width:380px;margin-bottom:48px}
+.focus-breath{width:64px;height:64px;border-radius:50%;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;animation:breathe 4s ease-in-out infinite;margin:0 auto 40px}
+.focus-breath-inner{width:38px;height:38px;border-radius:50%;border:1px solid rgba(200,169,109,.4)}
+.focus-actions{display:flex;gap:12px;width:100%;max-width:400px}
+.focus-action-btn{flex:1;padding:14px;border-radius:12px;font-size:12px;letter-spacing:.08em;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;transition:all .2s}
+.focus-primary{background:var(--gold);border:none;color:#0a0908}
+.focus-secondary{background:transparent;border:1px solid var(--border2);color:var(--gold)}
+.biblio-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:12px;cursor:pointer;transition:border-color .2s}
+.biblio-card:hover{border-color:var(--border2)}
+.biblio-tag{display:inline-block;background:rgba(200,169,109,.08);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:10px;color:var(--gold);letter-spacing:.06em;margin-bottom:10px}
+.biblio-situation{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--cream);line-height:1.4;margin-bottom:8px}
+.biblio-preview{font-size:13px;color:#b8b0a4;line-height:1.6}
+.biblio-detail-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:960;display:none}
+.biblio-detail-panel{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:860px;background:var(--bg2);border-radius:28px 28px 0 0;max-height:88vh;overflow-y:auto;transition:transform .35s cubic-bezier(.32,.72,0,1);z-index:961;padding:0 0 40px}
+.biblio-detail-panel::-webkit-scrollbar{display:none}
+.biblio-detail-panel.open{transform:translateX(-50%) translateY(0)}
+.biblio-detail-header{padding:20px 24px;border-bottom:1px solid var(--border)}
+.biblio-detail-body{padding:20px 24px}
+.biblio-detail-section{margin-bottom:18px}
+.biblio-detail-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#6a6460;margin-bottom:8px}
+.biblio-detail-text{font-size:14px;color:#c8c0b4;line-height:1.8}
+.biblio-detail-insight{background:rgba(200,169,109,.06);border:1px solid var(--border2);border-radius:12px;padding:14px;margin-top:8px}
+.biblio-detail-insight-text{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:var(--gold2);line-height:1.75}
+.frase-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:18px;margin-bottom:10px;position:relative}
+.frase-text{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;font-weight:300;color:var(--cream);line-height:1.8;margin-bottom:10px}
+.frase-actions{display:flex;justify-content:flex-end}
+.frase-fav-btn{background:none;border:none;cursor:pointer;font-size:18px;color:#6a6460;transition:color .2s;padding:4px}
+.frase-fav-btn.saved{color:var(--gold)}
+.frase-mark{position:absolute;top:14px;left:14px;font-family:'Cormorant Garamond',serif;font-size:40px;color:rgba(200,169,109,.08);line-height:1}
+.glossario-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:8px;overflow:hidden}
+.glossario-header{padding:14px 18px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:background .2s}
+.glossario-header:hover{background:var(--bg4)}
+.glossario-term{font-size:14px;font-weight:600;color:var(--cream);letter-spacing:.02em}
+.glossario-chevron{font-size:16px;color:#6a6460;transition:transform .3s}
+.glossario-card.open .glossario-chevron{transform:rotate(180deg)}
+.glossario-body{display:none;padding:0 18px 16px;border-top:1px solid var(--border)}
+.glossario-card.open .glossario-body{display:block}
+.glossario-def{font-size:13px;color:#b8b0a4;line-height:1.8;padding-top:12px}
+.glossario-example{background:rgba(200,169,109,.05);border-left:2px solid var(--gold);padding:10px 14px;margin-top:10px;border-radius:0 8px 8px 0}
+.glossario-example-text{font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:var(--gold2);line-height:1.6}
+.notif-banner{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:14px 16px;margin-bottom:16px;display:none;align-items:center;gap:12px}
+.notif-banner.show{display:flex}
+.notif-banner i{font-size:20px;color:var(--gold);flex-shrink:0}
+.notif-banner-text{flex:1;font-size:13px;color:#c8c0b4;line-height:1.5}
+.notif-banner-btn{background:var(--gold);border:none;border-radius:8px;padding:8px 14px;font-size:11px;font-weight:600;color:#0a0908;cursor:pointer;font-family:'DM Sans',sans-serif;flex-shrink:0}
+.notif-dismiss{background:none;border:none;color:#6a6460;cursor:pointer;font-size:16px;flex-shrink:0}
+.dashboard-btn{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:14px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--gold2);font-size:13px;font-weight:500;margin-bottom:16px;transition:background .2s}
+.dashboard-btn:hover{background:var(--bg4)}
+.dashboard-btn i:first-child{font-size:18px;color:var(--gold)}
+.login-overlay{position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px}
+.login-box{width:100%;max-width:380px;display:flex;flex-direction:column;align-items:center}
+.login-logo{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;letter-spacing:.3em;color:var(--gold);margin-bottom:4px}
+.login-subtitle{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--text3);margin-bottom:48px}
+.login-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:var(--cream);margin-bottom:8px;text-align:center}
+.login-sub{font-size:13px;color:var(--text3);margin-bottom:32px;text-align:center;line-height:1.6}
+.login-field{width:100%;margin-bottom:14px}
+.login-field input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--cream);padding:14px 16px;border-radius:12px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
+.login-field input:focus{border-color:var(--gold)}
+.login-field input::placeholder{color:var(--text3)}
+.login-btn{width:100%;background:var(--gold);border:none;border-radius:12px;padding:16px;font-size:13px;font-weight:600;color:#0a0908;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.06em;margin-top:8px;transition:background .2s}
+.login-btn:active{background:var(--gold2)}
+.login-toggle{background:none;border:none;color:var(--text3);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:16px;text-decoration:underline}
+.login-error{font-size:12px;color:#d46a6a;margin-top:8px;text-align:center;min-height:18px}
+.login-version{font-size:10px;color:#3a3630;margin-top:32px;letter-spacing:.1em}
+.admin-overlay{position:fixed;inset:0;background:var(--bg);z-index:1000;display:none;flex-direction:column;overflow:hidden}
+.admin-overlay.open{display:flex}
+.admin-topbar{padding:16px 20px 14px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.admin-back{background:none;border:none;color:var(--text2);cursor:pointer;font-size:22px;display:flex;align-items:center}
+.admin-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--cream)}
+.admin-badge{margin-left:auto;background:rgba(200,169,109,.1);border:1px solid var(--border2);border-radius:20px;padding:4px 10px;font-size:10px;color:var(--gold);letter-spacing:.08em}
+.admin-content{flex:1;overflow-y:auto;padding:20px}
+.admin-content::-webkit-scrollbar{display:none}
+.admin-stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px}
+.admin-stat-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:16px;text-align:center}
+.admin-stat-value{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--gold);line-height:1}
+.admin-stat-label{font-size:10px;color:#6a6460;letter-spacing:.1em;text-transform:uppercase;margin-top:6px}
+.admin-section{margin-bottom:20px}
+.admin-section-title{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#6a6460;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.admin-user-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.admin-user-email{font-size:13px;color:var(--cream);flex:1}
+.admin-user-badge{padding:4px 10px;border-radius:20px;font-size:10px;letter-spacing:.06em}
+.admin-user-pro{background:rgba(200,169,109,.1);color:var(--gold);border:1px solid var(--border2)}
+.admin-user-free{background:var(--bg4);color:var(--text3);border:1px solid var(--border)}
+.admin-user-date{font-size:11px;color:#6a6460}
+.admin-empty{text-align:center;padding:40px;font-size:13px;color:#6a6460}
+.admin-toggle-pro{background:none;border:1px solid var(--border2);border-radius:8px;padding:5px 10px;font-size:11px;color:var(--gold);cursor:pointer;font-family:'DM Sans',sans-serif}
+.admin-user-card{flex-wrap:wrap;gap:8px}
+.admin-user-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.admin-user-stat{font-size:10px;color:#6a6460;background:var(--bg4);border-radius:6px;padding:3px 8px;display:flex;align-items:center;gap:4px}
+.admin-user-stat i{font-size:11px;color:var(--text3)}
+.admin-user-actions{display:flex;gap:6px;margin-top:8px;width:100%}
+.admin-msg-btn{background:none;border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:11px;color:var(--text2);cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:4px}
+.admin-msg-btn i{font-size:13px}
+.admin-revenue-card{background:linear-gradient(135deg,rgba(200,169,109,.12),rgba(200,169,109,.04));border:1px solid var(--border2);border-radius:var(--r);padding:20px;margin-bottom:16px;display:flex;align-items:center;gap:16px}
+.admin-revenue-icon{width:48px;height:48px;border-radius:50%;background:rgba(200,169,109,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.admin-revenue-icon i{font-size:22px;color:var(--gold)}
+.admin-revenue-value{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;color:var(--gold);line-height:1}
+.admin-revenue-label{font-size:11px;color:#8a8278;margin-top:4px}
+.admin-stat-grid-5{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
+.admin-msg-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1050;display:none;align-items:flex-end;justify-content:center}
+.admin-msg-overlay.open{display:flex}
+.admin-msg-panel{background:var(--bg2);width:100%;max-width:860px;border-radius:28px 28px 0 0;padding:0 0 32px;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1)}
+.admin-msg-overlay.open .admin-msg-panel{transform:translateY(0)}
+.admin-activity-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.admin-activity-row:last-child{border:none}
+.admin-activity-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.admin-activity-dot.active{background:#7ad4a0}
+.admin-activity-dot.inactive{background:#6a6460}
+.admin-activity-email{font-size:12px;color:var(--cream);flex:1}
+.admin-activity-info{font-size:11px;color:#6a6460;text-align:right}
+body.light-mode{--bg:#faf7f2;--bg2:#f2ede4;--bg3:#ede7dc;--bg4:#e5ddd0;--bg5:#ddd5c8;--gold:#7a5820;--gold2:#5a3e10;--cream:#1e1a16;--text2:#3a3530;--text3:#7a7268;--border:rgba(90,70,30,0.18);--border2:rgba(90,70,30,0.35);--ai:#1a2e1a;--ai-border:rgba(60,140,60,0.35);--ai-text:#1a5a1a;}
+body.light-mode .splash{background:var(--bg)}
+body.light-mode .login-overlay{background:var(--bg)}
+body.light-mode .onboard-overlay{background:var(--bg)}
+body.light-mode .focus-overlay{background:#f5f0e8}
+body.light-mode .admin-overlay{background:var(--bg)}
+body.light-mode .dash-overlay{background:var(--bg)}
+body.light-mode html{background:#ede7dc}
+body.light-mode .app{background:var(--bg)}
+body.light-mode .modal{background:var(--bg2)}
+body.light-mode .cl-panel{background:var(--bg2)}
+body.light-mode .det-panel{background:var(--bg2)}
+body.light-mode .mentor-chat-panel{background:var(--bg2)}
+body.light-mode .field input,body.light-mode .field textarea,body.light-mode .field select{background:var(--bg3);color:var(--cream)}
+body.light-mode .chat-input{background:var(--bg3);color:var(--cream)}
+body.light-mode .cl-textarea{background:var(--bg3);color:var(--cream)}
+.screen{transition:opacity .3s ease,transform .3s ease}
+.screen.slide-in{animation:slideIn .35s cubic-bezier(.32,.72,0,1)}
+@keyframes slideIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+.state-chip{transition:all .3s cubic-bezier(.32,.72,0,1)}
+.entry-card{transition:all .25s cubic-bezier(.32,.72,0,1)}
+.entry-card:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,0,0,.2)}
+.nav-btn{transition:all .25s cubic-bezier(.32,.72,0,1)}
+.nav-btn.active{transform:translateY(-1px)}
+.primary-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(200,169,109,.3)}
+.theme-toggle{display:flex;align-items:center;gap:10px}
+.theme-switch{position:relative;width:44px;height:24px;cursor:pointer}
+.theme-switch input{opacity:0;width:0;height:0}
+.theme-slider{position:absolute;inset:0;background:var(--bg4);border-radius:24px;transition:.3s;border:1px solid var(--border2)}
+.theme-slider:before{content:'';position:absolute;width:18px;height:18px;left:3px;bottom:2px;background:var(--gold);border-radius:50%;transition:.3s}
+input:checked + .theme-slider{background:var(--gold)}
+input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
+.theme-label{font-size:13px;color:var(--cream)}
+.theme-icon{font-size:16px;color:var(--gold)}
+.alertas-overlay{position:fixed;inset:0;background:var(--bg);z-index:1010;display:none;flex-direction:column;overflow:hidden}
+.alertas-overlay.open{display:flex}
+.alertas-topbar{padding:16px 20px 14px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.alertas-back{background:none;border:none;color:var(--text2);cursor:pointer;font-size:22px;display:flex;align-items:center}
+.alertas-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--cream)}
+.alertas-content{flex:1;overflow-y:auto;padding:20px}
+.alertas-content::-webkit-scrollbar{display:none}
+.alerta-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:16px}
+.alerta-card-title{font-size:13px;font-weight:600;color:var(--cream);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.alerta-card-title i{font-size:18px;color:var(--gold)}
+.alerta-card-sub{font-size:12px;color:var(--text3);margin-bottom:16px}
+.alerta-time-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.alerta-time-label{font-size:13px;color:var(--text2)}
+.alerta-time-input{background:var(--bg4);border:1px solid var(--border2);color:var(--cream);padding:8px 12px;border-radius:10px;font-size:16px;font-family:'DM Sans',sans-serif;outline:none;width:120px;text-align:center}
+.alerta-toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid var(--border)}
+.alerta-toggle-label{font-size:13px;color:var(--text2)}
+.alerta-save-btn{width:100%;background:var(--gold);border:none;border-radius:12px;padding:14px;font-size:13px;font-weight:600;color:#0a0908;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:16px}
+.alerta-notif{position:fixed;top:0;left:0;right:0;z-index:1020;background:var(--bg2);border-bottom:2px solid var(--gold);padding:16px 20px;display:none;align-items:center;gap:14px;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.alerta-notif.show{display:flex}
+.alerta-notif-icon{width:44px;height:44px;border-radius:50%;background:rgba(200,169,109,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.alerta-notif-icon i{font-size:22px;color:var(--gold)}
+.alerta-notif-text{flex:1}
+.alerta-notif-title{font-size:14px;font-weight:600;color:var(--cream);margin-bottom:2px}
+.alerta-notif-sub{font-size:12px;color:var(--text3)}
+.alerta-notif-btn{background:var(--gold);border:none;border-radius:8px;padding:8px 14px;font-size:11px;font-weight:600;color:#0a0908;cursor:pointer;font-family:'DM Sans',sans-serif;flex-shrink:0}
+.alerta-notif-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;flex-shrink:0}
+.voice-btn{background:none;border:1px solid var(--border2);width:40px;height:40px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;flex-shrink:0}
+.voice-btn i{font-size:18px;color:var(--text3);transition:color .3s}
+.voice-btn.listening{border-color:var(--gold);background:rgba(200,169,109,.1);animation:pulse-voice .8s ease-in-out infinite}
+.voice-btn.listening i{color:var(--gold)}
+@keyframes pulse-voice{0%,100%{box-shadow:0 0 0 0 rgba(200,169,109,.3)}50%{box-shadow:0 0 0 8px rgba(200,169,109,0)}}
+.voice-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:1030;display:none;align-items:center;justify-content:center;flex-direction:column}
+.voice-overlay.open{display:flex}
+.voice-circle{width:120px;height:120px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;animation:pulse-voice-big 1s ease-in-out infinite;margin-bottom:24px}
+.voice-circle i{font-size:48px;color:var(--gold)}
+@keyframes pulse-voice-big{0%,100%{box-shadow:0 0 0 0 rgba(200,169,109,.4);transform:scale(1)}50%{box-shadow:0 0 0 20px rgba(200,169,109,0);transform:scale(1.05)}}
+.voice-text{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);margin-bottom:8px;text-align:center}
+.voice-sub{font-size:13px;color:var(--text3);margin-bottom:32px;text-align:center}
+.voice-transcript{font-size:15px;color:var(--gold2);text-align:center;min-height:24px;font-style:italic;margin-bottom:24px;padding:0 40px}
+.voice-cancel{background:none;border:1px solid var(--border2);border-radius:20px;padding:10px 24px;font-size:13px;color:var(--text2);cursor:pointer;font-family:'DM Sans',sans-serif}
+.privacidade-overlay{position:fixed;inset:0;background:var(--bg);z-index:1010;display:none;flex-direction:column;overflow:hidden}
+.privacidade-overlay.open{display:flex}
+.privacidade-topbar{padding:16px 20px 14px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.privacidade-back{background:none;border:none;color:var(--text2);cursor:pointer;font-size:22px;display:flex;align-items:center}
+.privacidade-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--cream)}
+.privacidade-content{flex:1;overflow-y:auto;padding:24px 20px 40px}
+.privacidade-content::-webkit-scrollbar{display:none}
+.priv-section{margin-bottom:24px}
+.priv-section-title{font-size:13px;font-weight:600;color:var(--gold);margin-bottom:10px;letter-spacing:.04em}
+.priv-text{font-size:13px;color:var(--text2);line-height:1.8}
+.priv-divider{height:1px;background:var(--border);margin:20px 0}
+.msg-ai-wrap{display:flex;flex-direction:column;align-items:flex-start;gap:6px;max-width:82%}
+.msg-speak-btn{background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:5px;padding:3px 8px 3px 6px;border-radius:20px;transition:all .2s;border:1px solid transparent}
+.msg-speak-btn:hover{background:rgba(100,180,100,.12);border-color:rgba(140,210,140,0.25)}
+.msg-speak-btn i{font-size:13px;color:var(--ai-text);transition:color .2s}
+.msg-speak-btn span{font-size:10px;color:var(--ai-text);letter-spacing:.04em;transition:color .2s}
+.msg-speak-btn.speaking{background:rgba(100,180,100,.15);border-color:rgba(140,210,140,0.4);animation:speak-pulse 1.5s ease-in-out infinite}
+.msg-speak-btn.speaking i{color:#6de06d}
+.msg-speak-btn.speaking span{color:#6de06d}
+@keyframes speak-pulse{0%,100%{opacity:1}50%{opacity:.65}}
+.tts-indicator{display:none;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;background:rgba(100,180,100,.12);border:1px solid rgba(140,210,140,0.3);margin-left:auto;margin-right:8px}
+.tts-indicator.active{display:flex}
+.tts-indicator-dot{width:7px;height:7px;border-radius:50%;background:#6de06d;animation:speak-pulse 1s ease-in-out infinite}
+.tts-indicator span{font-size:10px;color:#b8e0b8;letter-spacing:.04em}
+.tts-stop-btn{background:none;border:none;cursor:pointer;color:#b8e0b8;font-size:14px;display:flex;align-items:center;padding:0}
+.tts-stop-btn:hover{color:#6de06d}
+.tts-speed-row{display:flex;align-items:center;gap:8px}
+.tts-speed-btn{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:5px 12px;font-size:12px;color:var(--text2);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+.tts-speed-btn.active{background:rgba(200,169,109,.12);border-color:var(--border2);color:var(--gold)}
+
+.eco-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:16px;margin-bottom:10px;display:flex;align-items:flex-start;gap:14px;transition:border-color .2s}
+.eco-card:hover{border-color:var(--border2)}
+.eco-num{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--gold);width:28px;flex-shrink:0;line-height:1.2}
+.eco-icon{width:40px;height:40px;border-radius:10px;background:rgba(200,169,109,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.eco-icon i{font-size:20px;color:var(--gold)}
+.eco-content{flex:1}
+.eco-title{font-size:14px;font-weight:600;color:var(--cream);margin-bottom:4px;letter-spacing:.02em}
+.eco-desc{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px}
+.eco-status{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:10px;letter-spacing:.06em}
+.eco-status.available{background:rgba(200,169,109,.1);border:1px solid var(--border2);color:var(--gold)}
+.eco-status.soon{background:var(--bg4);border:1px solid var(--border);color:var(--text3)}
+.eco-intro{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;font-style:italic;color:var(--text2);line-height:1.8;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+
+/* ── JORNADA DA RECONSTRUÇÃO ── */
+.jornada-hero{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:20px;margin-bottom:16px}
+.jornada-hero-eyebrow{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.jornada-hero-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--cream);margin-bottom:6px}
+.jornada-hero-sub{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:14px}
+.jornada-progress-bar{height:3px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-bottom:6px}
+.jornada-progress-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .5s ease}
+.jornada-progress-label{font-size:11px;color:var(--text3);display:flex;justify-content:space-between}
+.jornada-frase{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:16px;margin-bottom:16px;border-left:3px solid var(--gold);position:relative;overflow:hidden}
+.jornada-frase-mark{position:absolute;top:8px;left:12px;font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:rgba(200,169,109,.06);line-height:1}
+.jornada-frase-text{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:var(--gold2);line-height:1.8}
+.mod-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:10px;position:relative;overflow:hidden;transition:border-color .2s}
+.mod-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px;background:var(--gold)}
+.mod-card.locked::before{background:var(--bg4)}
+.mod-card:not(.locked){cursor:pointer}
+.mod-card:not(.locked):hover{border-color:var(--border2)}
+.mod-card-top{display:flex;justify-content:space-between;align-items:flex-start}
+.mod-card-num{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:3px}
+.mod-card-title{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--cream);margin-bottom:2px}
+.mod-card-sub{font-size:11px;color:var(--gold);font-style:italic}
+.mod-card-desc{font-size:12px;color:var(--text3);line-height:1.5;margin-top:8px}
+.mod-card-prog{margin-top:10px}
+.mod-card-prog-bar{height:2px;background:var(--bg4);border-radius:1px;overflow:hidden}
+.mod-card-prog-fill{height:100%;background:var(--gold);border-radius:1px;transition:width .4s ease}
+.mod-card-prog-label{font-size:10px;color:var(--text3);margin-top:3px}
+.jornada-badge-free{background:rgba(100,200,100,.1);border:1px solid rgba(100,200,100,.25);border-radius:20px;padding:3px 9px;font-size:9px;letter-spacing:.06em;color:#7ad4a0;white-space:nowrap}
+.jornada-badge-pro{background:rgba(200,169,109,.1);border:1px solid var(--border2);border-radius:20px;padding:3px 9px;font-size:9px;letter-spacing:.06em;color:var(--gold);white-space:nowrap}
+.jornada-lock{font-size:15px;color:var(--bg5);margin-top:2px}
+.pausa-avrs-card{background:rgba(26,46,26,.6);border:1px solid rgba(100,200,100,.2);border-radius:var(--r);padding:16px;margin-bottom:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px}
+.pausa-avrs-card:hover{background:rgba(26,46,26,.8)}
+.pausa-avrs-icon{width:44px;height:44px;border-radius:50%;background:rgba(100,200,100,.1);border:1px solid rgba(100,200,100,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pausa-avrs-icon i{font-size:22px;color:#7ad4a0}
+.pausa-avrs-title{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--cream);margin-bottom:3px}
+.pausa-avrs-sub{font-size:11px;color:var(--text3);line-height:1.4}
+.mod-detail-overlay{position:fixed;inset:0;background:var(--bg);z-index:940;display:none;flex-direction:column;overflow:hidden}
+.mod-detail-overlay.open{display:flex}
+.mod-detail-topbar{padding:16px 20px 14px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.mod-detail-back{background:none;border:none;color:var(--text2);cursor:pointer;font-size:22px;display:flex;align-items:center}
+.mod-detail-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:var(--cream)}
+.mod-detail-content{flex:1;overflow-y:auto;padding:20px}
+.mod-detail-content::-webkit-scrollbar{display:none}
+.mod-detail-intro{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;font-style:italic;color:var(--text2);line-height:1.8;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.exercicio-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden;transition:border-color .2s}
+.exercicio-card.done{border-color:rgba(200,169,109,.35)}
+.exercicio-header{padding:16px 18px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;background:var(--bg3);transition:background .2s}
+.exercicio-header:hover{background:var(--bg4)}
+.exercicio-num{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:3px}
+.exercicio-title{font-size:14px;font-weight:600;color:var(--cream)}
+.exercicio-check{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--text3);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .25s}
+.exercicio-card.done .exercicio-check{background:var(--gold);border-color:var(--gold)}
+.exercicio-body{display:none;padding:0 18px 18px;background:var(--bg2);border-top:1px solid var(--border)}
+.exercicio-card.open .exercicio-body{display:block}
+.exercicio-pergunta{font-size:13px;color:var(--text2);line-height:1.7;margin-top:14px;margin-bottom:10px}
+.exercicio-textarea{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--cream);padding:12px 14px;border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;resize:none;min-height:80px;outline:none;transition:border-color .2s}
+.exercicio-textarea:focus{border-color:var(--gold)}
+.exercicio-textarea::placeholder{color:var(--text3)}
+.exercicio-salvar{width:100%;background:var(--gold);border:none;border-radius:10px;padding:12px;font-size:12px;font-weight:600;color:#0a0908;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.06em;margin-top:10px;transition:background .2s}
+.exercicio-salvar:hover{background:var(--gold2)}
+.exercicio-resultado{background:rgba(200,169,109,.06);border:1px solid var(--border2);border-radius:10px;padding:14px;margin-top:12px;font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:var(--gold2);line-height:1.7;display:none}
+.exercicio-card.done .exercicio-resultado{display:block}
+.escolhas-motivadores{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.motivador-chip{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:12px 14px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px}
+.motivador-chip.sel{border-color:var(--gold);background:rgba(200,169,109,.07)}
+.motivador-chip-circle{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--text3);flex-shrink:0;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.motivador-chip.sel .motivador-chip-circle{background:var(--gold);border-color:var(--gold)}
+.motivador-chip.sel .motivador-chip-circle::after{content:'';width:6px;height:6px;border-radius:50%;background:#0a0908}
+.motivador-chip-text{font-size:13px;color:var(--text2);transition:color .2s}
+.motivador-chip.sel .motivador-chip-text{color:var(--cream)}
+.habito-item{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.habito-item.done{border-color:rgba(200,169,109,.35);background:rgba(200,169,109,.04)}
+.habito-item-check{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--text3);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .25s}
+.habito-item.done .habito-item-check{background:var(--gold);border-color:var(--gold)}
+.habito-item-text{font-size:13px;color:var(--cream);line-height:1.5}
+.habito-item.done .habito-item-text{color:var(--text3)}
+.evolucao-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:12px}
+.evolucao-card-title{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.evolucao-card-title i{font-size:14px;color:var(--gold)}
+.evolucao-trio{display:flex;flex-direction:column;gap:10px}
+.evolucao-trio-row{display:flex;gap:12px;align-items:flex-start}
+.evolucao-trio-label{font-size:10px;color:var(--gold);letter-spacing:.08em;width:60px;flex-shrink:0;padding-top:14px}
+.evolucao-trio-input{flex:1;background:var(--bg4);border:1px solid var(--border);color:var(--cream);padding:12px 14px;border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;resize:none;min-height:60px;outline:none;transition:border-color .2s}
+.evolucao-trio-input:focus{border-color:var(--gold)}
+.evolucao-trio-input::placeholder{color:var(--text3)}
+.evolucao-indicadores{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.evo-ind-card{background:var(--bg4);border:1px solid var(--border);border-radius:var(--r2);padding:14px;text-align:center}
+.evo-ind-num{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:300;color:var(--gold);line-height:1}
+.evo-ind-label{font-size:10px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-top:4px}
+.pausa-overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:950;display:none;align-items:flex-end;justify-content:center}
+.pausa-overlay.open{display:flex}
+.pausa-panel{background:var(--bg2);width:100%;max-width:860px;border-radius:28px 28px 0 0;transform:translateY(100%);transition:transform .4s cubic-bezier(.32,.72,0,1);max-height:90vh;overflow-y:auto;padding-bottom:32px}
+.pausa-panel::-webkit-scrollbar{display:none}
+.pausa-overlay.open .pausa-panel{transform:translateY(0)}
+.pausa-handle{width:36px;height:3px;border-radius:2px;background:var(--bg5);margin:14px auto 0}
+.pausa-header{padding:16px 24px 14px;border-bottom:1px solid var(--border)}
+.pausa-header-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--cream);margin-bottom:4px}
+.pausa-header-sub{font-size:12px;color:var(--text3);line-height:1.6}
+.pausa-body{padding:16px 24px 0}
+.pausa-step-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:16px;margin-bottom:10px}
+.pausa-step-card.active{border-color:var(--gold)}
+.pausa-step-num{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.pausa-step-q{font-size:14px;color:var(--cream);margin-bottom:12px;line-height:1.5}
+.pausa-step-ta{width:100%;background:var(--bg4);border:1px solid var(--border);color:var(--cream);padding:12px 14px;border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;resize:none;min-height:70px;outline:none;transition:border-color .2s}
+.pausa-step-ta:focus{border-color:var(--gold)}
+.pausa-step-ta::placeholder{color:var(--text3)}
+.pausa-submit{width:calc(100% - 48px);margin:14px 24px 0;background:var(--gold);border:none;border-radius:12px;padding:14px;font-size:13px;font-weight:600;color:#0a0908;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.06em}
+.pausa-confirmacao{background:rgba(26,46,26,.5);border:1px solid rgba(100,200,100,.25);border-radius:var(--r2);padding:16px 24px;margin:14px 24px 0;text-align:center;display:none}
+.pausa-confirmacao-icon{font-size:32px;color:#7ad4a0;margin-bottom:8px}
+.pausa-confirmacao-text{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--cream);line-height:1.7}
+.jornada20-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:14px;transition:all .2s}
+.jornada20-card.available{cursor:pointer}
+.jornada20-card.available:hover{border-color:var(--border2)}
+.jornada20-card.done{border-color:rgba(200,169,109,.3);background:rgba(200,169,109,.03)}
+.jornada20-card.locked-day{opacity:.5}
+.jornada20-num{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--text3);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text3);flex-shrink:0;font-family:'Cormorant Garamond',serif;transition:all .25s}
+.jornada20-card.done .jornada20-num{background:var(--gold);border-color:var(--gold);color:#0a0908;font-weight:600}
+.jornada20-card.today .jornada20-num{border-color:var(--gold);color:var(--gold)}
+.jornada20-info{flex:1}
+.jornada20-title{font-size:13px;color:var(--cream);margin-bottom:2px;line-height:1.4}
+.jornada20-cap{font-size:10px;color:var(--text3)}
+.jornada20-badge{font-size:9px;letter-spacing:.06em;padding:2px 8px;border-radius:20px}
+.jornada20-badge.free{background:rgba(100,200,100,.1);color:#7ad4a0;border:1px solid rgba(100,200,100,.2)}
+.jornada20-badge.pro{background:rgba(200,169,109,.1);color:var(--gold);border:1px solid var(--border2)}
+.jornada-pro-gate{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:24px;text-align:center;margin-bottom:10px}
+.jornada-pro-gate i{font-size:32px;color:var(--gold);margin-bottom:12px;display:block}
+.jornada-pro-gate-title{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--cream);margin-bottom:8px}
+.jornada-pro-gate-sub{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:16px}
+.jornada-pro-btn{display:block;width:100%;background:var(--gold);border:none;border-radius:12px;padding:14px;font-size:13px;font-weight:600;color:#0a0908;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.06em;text-align:center}
+
+
+/* ── UNIVERSO AVR-S 5.1 ── */
+.univ-hero{background:linear-gradient(135deg,rgba(200,169,109,.08),rgba(200,169,109,.02));border:1px solid var(--border2);border-radius:var(--r);padding:20px;margin-bottom:16px;text-align:center}
+.univ-hero-eyebrow{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.univ-hero-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--cream);margin-bottom:6px;line-height:1.3}
+.univ-hero-sub{font-size:12px;color:var(--text3);line-height:1.6}
+.univ-tab-row{display:flex;gap:0;margin-bottom:20px;border-bottom:1px solid var(--border)}
+.univ-tab{flex:1;background:none;border:none;border-bottom:2px solid transparent;padding:11px 4px;font-size:10px;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase;transition:all .2s}
+.univ-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+
+/* ── A VIDA SEM RASCUNHO ── */
+.avrs-mapa{display:flex;justify-content:center;margin-bottom:20px;position:relative;height:160px}
+.avrs-mapa-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:2}
+.avrs-mapa-center-label{font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:2px}
+.avrs-mapa-center-title{font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--gold);font-weight:400;line-height:1.2}
+.avrs-orbit-node{position:absolute;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:#0a0908;font-weight:600;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.avrs-orbit-node.node-a{background:#7ab8d4;top:0;left:50%;transform:translateX(-50%)}
+.avrs-orbit-node.node-v{background:#a07ad4;top:50%;right:8%;transform:translateY(-50%)}
+.avrs-orbit-node.node-r{background:#d4b87a;top:50%;left:8%;transform:translateY(-50%)}
+.avrs-orbit-node.node-s{background:#7ad4a0;bottom:0;left:50%;transform:translateX(-50%)}
+.avrs-orbit-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:130px;height:130px;border-radius:50%;border:1px dashed rgba(200,169,109,.2)}
+
+.avrs-etapa-card{border:1px solid var(--border);border-radius:var(--r2);margin-bottom:10px;overflow:hidden;background:var(--bg3)}
+.avrs-etapa-card.ativo{border-color:var(--border2)}
+.avrs-etapa-header{padding:16px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:background .2s}
+.avrs-etapa-header:hover{background:var(--bg4)}
+.avrs-etapa-letter{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:#0a0908;flex-shrink:0}
+.avrs-etapa-letter.a{background:#7ab8d4}
+.avrs-etapa-letter.v{background:#a07ad4}
+.avrs-etapa-letter.r{background:#d4b87a}
+.avrs-etapa-letter.s{background:#7ad4a0}
+.avrs-etapa-info{flex:1}
+.avrs-etapa-name{font-size:14px;font-weight:600;color:var(--cream);letter-spacing:.02em}
+.avrs-etapa-desc{font-size:11px;color:var(--text3);margin-top:2px}
+.avrs-etapa-status{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.avrs-etapa-badge-ativo{background:rgba(100,200,100,.12);border:1px solid rgba(100,200,100,.3);border-radius:20px;padding:3px 10px;font-size:9px;letter-spacing:.06em;color:#7ad4a0}
+.avrs-etapa-badge-pro{background:rgba(200,169,109,.1);border:1px solid var(--border2);border-radius:20px;padding:3px 10px;font-size:9px;letter-spacing:.06em;color:var(--gold)}
+.avrs-etapa-update{font-size:9px;color:var(--text3);display:flex;align-items:center;gap:4px}
+.avrs-etapa-update::before{content:'';width:5px;height:5px;border-radius:50%;background:#7ad4a0;flex-shrink:0}
+.avrs-etapa-chevron{font-size:14px;color:var(--text3)}
+.avrs-etapa-body{display:none;padding:16px 18px;background:var(--bg2);border-top:1px solid var(--border)}
+.avrs-etapa-card.open .avrs-etapa-body{display:block}
+.avrs-analise-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.avrs-analise-text{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--cream);line-height:1.8;margin-bottom:12px}
+.avrs-ver-btn{background:none;border:1px solid var(--border2);border-radius:20px;padding:7px 16px;font-size:11px;color:var(--gold);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.avrs-ver-btn:hover{background:rgba(200,169,109,.08)}
+.avrs-footer-bar{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.avrs-footer-text{font-size:12px;color:var(--text2);line-height:1.5;flex:1;padding-right:12px}
+.avrs-footer-text strong{color:var(--gold)}
+.avrs-footer-btn{background:var(--gold);border:none;border-radius:10px;padding:9px 16px;font-size:11px;font-weight:600;color:#0a0908;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
+
+/* ── MENTOR IA 5.1 ── */
+.mentor51-header{background:linear-gradient(135deg,var(--ai),rgba(26,46,26,.5));border:1px solid var(--ai-border);border-radius:var(--r);padding:20px;margin-bottom:16px;display:flex;gap:16px;align-items:flex-start}
+.mentor51-avatar{width:52px;height:52px;border-radius:50%;background:rgba(100,200,100,.15);border:2px solid var(--ai-border);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mentor51-avatar img{width:32px;height:32px;object-fit:contain}
+.mentor51-avatar i{font-size:26px;color:var(--ai-text)}
+.mentor51-greeting{font-size:15px;font-weight:600;color:var(--cream);margin-bottom:4px}
+.mentor51-sub{font-size:12px;color:#b8e0b8;line-height:1.5}
+.mentor51-last{font-size:11px;color:var(--text3);margin-top:6px}
+.mapa-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:10px;overflow:hidden;cursor:pointer;transition:border-color .2s}
+.mapa-card:hover{border-color:var(--border2)}
+.mapa-card-inner{padding:14px 16px;display:flex;align-items:flex-start;gap:12px}
+.mapa-card-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mapa-card-icon i{font-size:17px}
+.mapa-card-icon.causa{background:rgba(212,106,106,.12);color:#d46a6a}
+.mapa-card-icon.causa i{color:#d46a6a}
+.mapa-card-icon.escolhas{background:rgba(100,200,100,.1);color:#7ad4a0}
+.mapa-card-icon.escolhas i{color:#7ad4a0}
+.mapa-card-icon.valores{background:rgba(160,122,212,.12);color:#a07ad4}
+.mapa-card-icon.valores i{color:#a07ad4}
+.mapa-card-icon.ciclo{background:rgba(200,169,109,.1);color:var(--gold)}
+.mapa-card-icon.ciclo i{color:var(--gold)}
+.mapa-card-icon.acao{background:rgba(122,180,212,.12);color:#7ab8d4}
+.mapa-card-icon.acao i{color:#7ab8d4}
+.mapa-card-label{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:4px}
+.mapa-card-text{font-size:13px;color:var(--cream);line-height:1.5}
+.mapa-card-chevron{margin-left:auto;font-size:15px;color:var(--text3);flex-shrink:0;margin-top:4px}
+.mapa-card-loading{display:flex;align-items:center;gap:8px;padding:14px 16px}
+.mapa-card-loading .mentor-typing{padding:0}
+.mapa-cta{background:linear-gradient(135deg,rgba(100,200,100,.12),rgba(100,200,100,.06));border:1px solid var(--ai-border);border-radius:var(--r2);padding:16px;margin-top:6px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .2s}
+.mapa-cta:hover{background:rgba(100,200,100,.15)}
+.mapa-cta-text{flex:1}
+.mapa-cta-title{font-size:14px;font-weight:600;color:#b8e0b8;margin-bottom:3px}
+.mapa-cta-sub{font-size:11px;color:var(--text3)}
+.mapa-cta i{font-size:22px;color:var(--ai-text);flex-shrink:0}
+.mentor51-quota{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:14px}
+.mentor51-quota-icon{font-size:16px;color:var(--gold)}
+.mentor51-quota-text{font-size:12px;color:var(--text2);flex:1}
+.mentor51-quota-count{font-size:11px;color:var(--text3)}
+.mapa-full-overlay{position:fixed;inset:0;background:var(--bg);z-index:945;display:none;flex-direction:column;overflow:hidden}
+.mapa-full-overlay.open{display:flex}
+.mapa-full-topbar{padding:16px 20px 14px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.mapa-full-back{background:none;border:none;color:var(--text2);cursor:pointer;font-size:22px;display:flex;align-items:center}
+.mapa-full-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--cream)}
+.mapa-full-content{flex:1;overflow-y:auto;padding:20px}
+.mapa-full-content::-webkit-scrollbar{display:none}
+.mapa-section{margin-bottom:20px}
+.mapa-section-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.mapa-section-label i{font-size:14px}
+.mapa-section-text{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--cream);line-height:1.8}
+.mapa-section-card{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:14px;margin-top:8px}
+.mapa-data-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)}
+.mapa-data-row:last-child{border:none}
+.mapa-data-label{font-size:12px;color:var(--text3);flex:1}
+.mapa-data-value{font-size:12px;color:var(--cream);font-weight:500}
+
+
+/* ── DASHBOARD FASE 3 — CAMADA 2 ── */
+.dash-camada-header{display:flex;align-items:center;gap:8px;padding:14px 0 10px;border-bottom:1px solid var(--border)}
+.dash-camada-title{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);flex:1}
+.dash-camada-badge{font-size:9px;letter-spacing:.06em;padding:3px 9px;border-radius:20px}
+.dash-camada-badge.c1{background:rgba(200,169,109,.1);border:1px solid var(--border2);color:var(--gold)}
+.dash-camada-badge.c2{background:rgba(26,46,26,.6);border:1px solid rgba(100,200,100,.3);color:#7ad4a0}
+.dash-interp-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:8px;overflow:hidden;transition:border-color .2s}
+.dash-interp-card:hover{border-color:var(--border2);cursor:pointer}
+.dash-interp-inner{padding:12px 14px;display:flex;align-items:flex-start;gap:10px}
+.dash-interp-icon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dash-interp-icon i{font-size:15px}
+.dash-interp-icon.causa{background:rgba(212,106,106,.12)}
+.dash-interp-icon.causa i{color:#d46a6a}
+.dash-interp-icon.escolhas{background:rgba(100,200,100,.1)}
+.dash-interp-icon.escolhas i{color:#7ad4a0}
+.dash-interp-icon.valores{background:rgba(160,122,212,.12)}
+.dash-interp-icon.valores i{color:#a07ad4}
+.dash-interp-icon.ciclo{background:rgba(200,169,109,.1)}
+.dash-interp-icon.ciclo i{color:var(--gold)}
+.dash-interp-icon.acao{background:rgba(122,180,212,.12)}
+.dash-interp-icon.acao i{color:#7ab8d4}
+.dash-interp-label{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:3px}
+.dash-interp-text{font-size:12px;color:var(--cream);line-height:1.5}
+.dash-interp-chevron{margin-left:auto;font-size:13px;color:var(--text3);flex-shrink:0;margin-top:2px}
+.dash-gerar-btn{width:100%;background:linear-gradient(135deg,rgba(26,46,26,.8),rgba(26,46,26,.5));border:1px solid rgba(100,200,100,.3);border-radius:var(--r2);padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;margin-top:6px}
+.dash-gerar-btn:hover{background:rgba(26,46,26,.9)}
+.dash-gerar-icon{width:36px;height:36px;border-radius:50%;background:rgba(100,200,100,.15);border:1px solid rgba(100,200,100,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dash-gerar-icon i{font-size:18px;color:#a8d8a8}
+.dash-gerar-text{flex:1;text-align:left}
+.dash-gerar-title{font-size:13px;font-weight:500;color:#b8e0b8;margin-bottom:2px}
+.dash-gerar-sub{font-size:10px;color:var(--text3)}
+.dash-gerar-arrow{font-size:16px;color:#7ad4a0}
+.dash-quota-bar{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:10px 14px;display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.dash-quota-icon{font-size:14px;color:var(--gold)}
+.dash-quota-text{font-size:11px;color:var(--text2);flex:1}
+.dash-quota-count{font-size:10px;color:var(--text3)}
+.dash-divider{height:1px;background:var(--border);margin:16px 0}
+
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- LOGIN -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <img src="https://audaxsilfexsil-sketch.github.io/avrs-app-/LOGO01.png.png" alt="AVR–S" style="width:200px;max-width:80%;margin-bottom:32px;object-fit:contain"/>
+    <div class="login-title" id="loginTitle">Bem-vindo</div>
+    <div class="login-sub" id="loginSub">Entre com sua conta para continuar</div>
+    <div class="login-field"><input type="email" id="loginEmail" placeholder="Seu e-mail"/></div>
+    <div class="login-field"><input type="password" id="loginPass" placeholder="Sua senha"/></div>
+    <div class="login-field" id="loginPassConfirmField" style="display:none"><input type="password" id="loginPassConfirm" placeholder="Confirme a senha"/></div>
+    <div class="login-error" id="loginError"></div>
+    <button class="login-btn" id="loginBtn" onclick="handleLogin()">Entrar</button>
+    <button class="login-toggle" id="loginToggle" onclick="toggleLoginMode()">Não tem conta? Cadastre-se</button>
+    <div class="login-version">v4.0 · IA</div>
+    <div style="font-size:10px;color:#3a3630;margin-top:8px;letter-spacing:.08em;text-align:center">© 2025 Audax Consultoria · Todos os direitos reservados</div>
+  </div>
+</div>
+
+<!-- SPLASH -->
+<div class="splash" id="splash">
+
+  <!-- Logo inicial -->
+  <img class="sp-logo" id="spLogo" src="https://audaxsilfexsil-sketch.github.io/avrs-app-/LOGO01.png.png" alt="AVR–S" style="width:200px;max-width:78%;object-fit:contain;position:relative;z-index:1"/>
+
+  <!-- R - Regular -->
+  <div class="sp-item" id="sp0">
+    <div class="sp-letter">R</div>
+    <div class="sp-name">Regular</div>
+    <div class="sp-line"></div>
+    <div class="sp-quote">Antes de decidir,<br>ajuste quem está decidindo.</div>
+  </div>
+
+  <!-- A - Atenção -->
+  <div class="sp-item" id="sp1">
+    <div class="sp-letter">A</div>
+    <div class="sp-name">Atenção</div>
+    <div class="sp-line"></div>
+    <div class="sp-quote">Para onde você olha<br>determina o que você vê.</div>
+  </div>
+
+  <!-- V - Visão -->
+  <div class="sp-item" id="sp2">
+    <div class="sp-letter">V</div>
+    <div class="sp-name">Visão</div>
+    <div class="sp-line"></div>
+    <div class="sp-quote">Você não reage ao que acontece.<br>Reage ao que construiu sobre isso.</div>
+  </div>
+
+  <!-- R - Resposta -->
+  <div class="sp-item" id="sp3">
+    <div class="sp-letter">R</div>
+    <div class="sp-name">Resposta</div>
+    <div class="sp-line"></div>
+    <div class="sp-quote">Entre o estímulo e a resposta<br>existe a sua liberdade.</div>
+  </div>
+
+  <!-- S - Sistema -->
+  <div class="sp-item" id="sp4">
+    <div class="sp-letter">S</div>
+    <div class="sp-name">Sistema</div>
+    <div class="sp-line"></div>
+    <div class="sp-quote">Você vive o que repete.<br>Construa o que quer repetir.</div>
+  </div>
+
+  <!-- Final -->
+  <div class="sp-final" id="spFinal">
+    <div class="breath-ring"><div class="breath-inner"><div class="breath-dot"></div></div></div>
+    <div class="breath-label">Respire</div>
+    <div class="sp-tagline">A Vida Sem Rascunho</div>
+  </div>
+
+</div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <img src="https://audaxsilfexsil-sketch.github.io/avrs-app-/LOGO02.png.png" alt="AVR–S" style="height:28px;object-fit:contain"/>
+  <div class="topbar-right">
+    <span class="date-text" id="dateText"></span>
+   <button class="icon-btn" onclick="openManual()" title="Manual"><i class="ti ti-help-circle"></i></button>
+    <button class="icon-btn" onclick="openFocus()" title="Modo Foco"><i class="ti ti-focus-2"></i></button>
+    <button class="icon-btn" onclick="openMentorChat()" title="Mentor IA"><i class="ti ti-brain"></i></button>
+    <button class="icon-btn" onclick="openModal()"><i class="ti ti-plus"></i></button>
+  </div>
+</div>
+
+<!-- SCREENS -->
+<div class="screens">
+
+  <!-- HOME -->
+  <div class="screen active" id="screen-home">
+    <div class="notif-banner" id="notifBanner">
+      <i class="ti ti-bell-ringing"></i>
+      <div class="notif-banner-text">Você ainda não registrou seu estado hoje. Como está sua percepção agora?</div>
+      <button class="notif-banner-btn" onclick="document.getElementById('notifBanner').classList.remove('show');openChecklist('Presente','ti-eye')">Registrar</button>
+      <button class="notif-dismiss" onclick="document.getElementById('notifBanner').classList.remove('show')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="mentor-card" id="mentorCard">
+      <div class="mentor-header">
+        <div class="mentor-dot"></div>
+        <div class="mentor-label">Mentor AVR–S · IA</div>
+      </div>
+      <div class="mentor-text" id="mentorText">
+        <div class="mentor-typing"><span></span><span></span><span></span></div>
+      </div>
+      <div class="mentor-actions" id="mentorActions"></div>
+    </div>
+    <div class="today-state">
+      <div class="today-label">Estado interno agora</div>
+      <div class="today-hint">Toque em um estado para iniciar o diagnóstico AVR–S</div>
+      <div class="state-grid">
+        <div class="state-chip" onclick="openChecklist('Presente','ti-eye')"><i class="ti ti-eye"></i><span>Presente</span><i class="ti ti-chevron-right chip-arrow"></i></div>
+        <div class="state-chip" onclick="openChecklist('Focado','ti-target')"><i class="ti ti-target"></i><span>Focado</span><i class="ti ti-chevron-right chip-arrow"></i></div>
+        <div class="state-chip" onclick="openChecklist('Ansioso','ti-bolt')"><i class="ti ti-bolt"></i><span>Ansioso</span><i class="ti ti-chevron-right chip-arrow"></i></div>
+        <div class="state-chip" onclick="openChecklist('Sobrecarregado','ti-cloud-storm')"><i class="ti ti-cloud-storm"></i><span>Sobrecarregado</span><i class="ti ti-chevron-right chip-arrow"></i></div>
+        <div class="state-chip" onclick="openChecklist('Reativo','ti-flame')"><i class="ti ti-flame"></i><span>Reativo</span><i class="ti ti-chevron-right chip-arrow"></i></div>
+        <div class="state-chip" onclick="openChecklist('Claro','ti-sun')"><i class="ti ti-sun"></i><span>Claro</span><i class="ti ti-chevron-right chip-arrow"></i></div>
+      </div>
+    </div>
+    <div class="avrs-day-card" onclick="goTo('universo');switchUnivTab('protocolo')">
+      <div class="avrs-day-top">
+        <div class="avrs-day-icon"><i class="ti ti-route"></i></div>
+        <div class="avrs-day-label">Como o AVR–S atua ao longo do dia</div>
+        <i class="ti ti-chevron-right" style="color:var(--text3);font-size:16px;flex-shrink:0"></i>
+      </div>
+      <div class="avrs-day-text">O AVR–S não existe apenas para grandes decisões. Ele atua nos pequenos momentos invisíveis que moldam a direção da vida.</div>
+      <div class="avrs-day-pills"><span class="avrs-day-pill">Antes de reagir</span><span class="avrs-day-pill">Antes de decidir</span><span class="avrs-day-pill">Antes de interpretar</span></div>
+    </div>
+    <div class="stats-row" id="statsRow">
+      <div class="stat-card"><div class="stat-label">Dias conscientes</div><div class="stat-number" id="streak">0</div><div class="stat-sub">sequência atual</div></div>
+      <div class="stat-card"><div class="stat-label">Decisões</div><div class="stat-number" id="totalEntries">0</div><div class="stat-sub">registros totais</div></div>
+      <div class="stat-card stat-desktop"><div class="stat-label">Estado frequente</div><div class="stat-number" id="statState" style="font-size:20px;margin-top:6px">—</div><div class="stat-sub">últimos 7 dias</div></div>
+      <div class="stat-card stat-desktop"><div class="stat-label">Distorção comum</div><div class="stat-number" id="statDist" style="font-size:16px;margin-top:8px">—</div><div class="stat-sub">padrão detectado</div></div>
+    </div>
+    <button class="dashboard-btn" onclick="openDashboard()">
+      <i class="ti ti-chart-bar"></i><span>Dashboard Emocional</span>
+      <i class="ti ti-chevron-right" style="margin-left:auto;font-size:14px;color:#6a6460"></i>
+    </button>
+    <div class="analysis-card" id="analysisCard" style="display:none">
+      <div class="analysis-header">
+        <div class="analysis-title">Padrões detectados · 7 dias</div>
+        <button class="analysis-btn" onclick="requestWeeklyAnalysis()"><i class="ti ti-sparkles"></i> Analisar</button>
+      </div>
+      <div id="patternBars"></div>
+    </div>
+    <div class="question-card">
+      <div class="qcard-eyebrow">Pergunta do dia</div>
+      <div class="qcard-question" id="qcardText"></div>
+      <div class="qcard-hint" id="qcardHint"></div>
+    </div>
+    <button class="primary-btn" style="margin-bottom:16px" onclick="openModal()">Registrar decisão consciente</button>
+    <div class="quote-strip">
+      <div class="quote-mark">"</div>
+      <div class="quote-text" id="quoteText"></div>
+    </div>
+  </div>
+
+  <!-- DIÁRIO -->
+  <div class="screen" id="screen-diary">
+    <div class="diary-header"><div class="section-title">Diário de decisões</div></div>
+    <div class="filter-row">
+      <div class="filter-chip active" onclick="filterBy('todos',this)">Todos</div>
+      <div class="filter-chip" onclick="filterBy('Presente',this)">Presente</div>
+      <div class="filter-chip" onclick="filterBy('Focado',this)">Focado</div>
+      <div class="filter-chip" onclick="filterBy('Ansioso',this)">Ansioso</div>
+      <div class="filter-chip" onclick="filterBy('Sobrecarregado',this)">Sobrecarregado</div>
+      <div class="filter-chip" onclick="filterBy('Reativo',this)">Reativo</div>
+      <div class="filter-chip" onclick="filterBy('Claro',this)">Claro</div>
+    </div>
+    <div id="entriesList"></div>
+  </div>
+
+  <!-- PROTOCOLO -->
+  <div class="screen" id="screen-protocol">
+    <div style="display:flex;gap:0;margin-bottom:20px;border-bottom:1px solid var(--border)">
+      <button class="proto-tab active" id="ptab-protocolo" onclick="switchProtoTab('protocolo')">Protocolo</button>
+      <button class="proto-tab" id="ptab-biblioteca" onclick="switchProtoTab('biblioteca')">Biblioteca</button>
+      <button class="proto-tab" id="ptab-frases" onclick="switchProtoTab('frases')">Frases</button>
+      <button class="proto-tab" id="ptab-glossario" onclick="switchProtoTab('glossario')">Glossário</button>
+      <button class="proto-tab" id="ptab-ecossistema" onclick="switchProtoTab('ecossistema')">Ecossistema</button>
+    </div>
+    <div id="proto-protocolo">
+      <div class="protocol-intro">O AVR–S não é uma técnica.<br>É uma forma de perceber antes de agir.</div>
+      <div class="layer-card" onclick="toggleLayer(this)"><div class="layer-header"><div class="layer-left"><div class="layer-num">R</div><div class="layer-name">Regular</div></div><i class="ti ti-chevron-down layer-chevron"></i></div><div class="layer-body"><div class="layer-desc">Antes de qualquer decisão, ajuste o estado interno. A decisão nasce do estado de quem decide.</div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Meu estado está regulado agora?</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Estou decidindo sob pressão ou com clareza?</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">O que preciso fazer para reduzir a intensidade?</div></div></div></div>
+      <div class="layer-card" onclick="toggleLayer(this)"><div class="layer-header"><div class="layer-left"><div class="layer-num">A</div><div class="layer-name">Atenção</div></div><i class="ti ti-chevron-down layer-chevron"></i></div><div class="layer-body"><div class="layer-desc">Para onde você está olhando determina o que você percebe. Atenção não é neutra.</div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Onde está meu foco agora?</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Estou vendo o fato ou a história que construí?</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Minha atenção foi capturada ou escolhida?</div></div></div></div>
+      <div class="layer-card" onclick="toggleLayer(this)"><div class="layer-header"><div class="layer-left"><div class="layer-num">V</div><div class="layer-name">Visão</div></div><i class="ti ti-chevron-down layer-chevron"></i></div><div class="layer-body"><div class="layer-desc">Você não reage ao que acontece. Reage ao significado que construiu sobre o que acontece.</div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">O que de fato aconteceu?</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">O que estou assumindo sobre isso?</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Minha percepção está limpa ou distorcida?</div></div></div></div>
+      <div class="layer-card" onclick="toggleLayer(this)"><div class="layer-header"><div class="layer-left"><div class="layer-num">R</div><div class="layer-name">Resposta</div></div><i class="ti ti-chevron-down layer-chevron"></i></div><div class="layer-body"><div class="layer-desc">Entre o estímulo e a resposta existe um espaço. É nesse espaço que a escolha real acontece.</div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Estou reagindo ou escolhendo minha resposta?</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Esta resposta está alinhada com quem quero ser?</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Posso criar um espaço antes de agir?</div></div></div></div>
+      <div class="layer-card" onclick="toggleLayer(this)"><div class="layer-header"><div class="layer-left"><div class="layer-num">S</div><div class="layer-name">Sistema</div></div><i class="ti ti-chevron-down layer-chevron"></i></div><div class="layer-body"><div class="layer-desc">Você não vive decisões isoladas. Vive ciclos. Quem não constrói o próprio sistema vive dentro do que se formou sozinho.</div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Consigo sustentar essa decisão ao longo do tempo?</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Ela cria um padrão que quero repetir?</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">O que quero que se torne automático em mim?</div></div></div></div>
+
+      <!-- 8 CAMADAS DO PROTOCOLO — do livro -->
+      <div style="margin-top:24px;padding-top:24px;border-top:1px solid var(--border)">
+        <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:4px">Protocolo Completo</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;color:var(--cream);margin-bottom:6px">As 8 Camadas da Decisão Consciente</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:16px;line-height:1.6">Do livro "A Vida Sem Rascunho" · Apêndice — Protocolo AVR–S</div>
+      </div>
+      <div class="layer-card" onclick="toggleLayer(this)">
+        <div class="layer-header"><div class="layer-left"><div class="layer-num" style="font-size:16px;width:24px">1</div><div class="layer-name">Mecânica Invisível</div></div><i class="ti ti-chevron-down layer-chevron"></i></div>
+        <div class="layer-body"><div class="layer-desc">Toda decisão passa por três filtros antes de existir: seu estado interno (como você está no momento), sua estrutura mental (crenças, experiências e padrões) e sua atenção (onde você está focando). Se esses três pontos estão distorcidos, a decisão já nasce comprometida.</div></div>
+      </div>
+      <div class="layer-card" onclick="toggleLayer(this)">
+        <div class="layer-header"><div class="layer-left"><div class="layer-num" style="font-size:16px;width:24px">2</div><div class="layer-name">Pausa e Reconfiguração</div></div><i class="ti ti-chevron-down layer-chevron"></i></div>
+        <div class="layer-body"><div class="layer-desc">Antes de qualquer decisão, reduza o estado. Respire mais lento que o normal. Relaxe o corpo — solte mandíbula e ombros. Diminua a velocidade do pensamento.</div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text" style="font-family:'Cormorant Garamond',serif;font-style:italic">Você não precisa decidir rápido. Precisa decidir limpo.</div></div></div>
+      </div>
+      <div class="layer-card" onclick="toggleLayer(this)">
+        <div class="layer-header"><div class="layer-left"><div class="layer-num" style="font-size:16px;width:24px">3</div><div class="layer-name">Mapa de Distorções</div></div><i class="ti ti-chevron-down layer-chevron"></i></div>
+        <div class="layer-body"><div class="layer-desc">Observe o que pode estar influenciando sua percepção:</div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Urgência falsa</strong> — sensação de que tudo precisa ser resolvido agora</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Ego</strong> — necessidade de estar certo ou não perder</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Escassez</strong> — medo de perder oportunidades</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Excesso de confiança</strong> — achar que já sabe sem validar</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Fadiga mental</strong> — decidir cansado ou sobrecarregado</div></div></div>
+      </div>
+      <div class="layer-card" onclick="toggleLayer(this)">
+        <div class="layer-header"><div class="layer-left"><div class="layer-num" style="font-size:16px;width:24px">4</div><div class="layer-name">Descontaminação da Realidade</div></div><i class="ti ti-chevron-down layer-chevron"></i></div>
+        <div class="layer-body"><div class="layer-desc">Separe o que é fato do que é construção da sua mente:</div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Fato</strong> — o que realmente aconteceu</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">História</strong> — o que sua mente está dizendo sobre isso</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Projeção</strong> — o que você está sentindo sobre essa história</div></div><div class="layer-q" style="border:none;padding-top:14px"><i class="ti ti-point-filled layer-q-icon" style="color:transparent"></i><div class="layer-q-text" style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold2)">Decisão consciente nasce quando o fato fica limpo.</div></div></div>
+      </div>
+      <div class="layer-card" onclick="toggleLayer(this)">
+        <div class="layer-header"><div class="layer-left"><div class="layer-num" style="font-size:16px;width:24px">5</div><div class="layer-name">Alinhamento Estrutural</div></div><i class="ti ti-chevron-down layer-chevron"></i></div>
+        <div class="layer-body"><div class="layer-desc">Antes de decidir, alinhe três pontos:</div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Identidade</strong> — quem você está sendo nessa decisão?</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Direção</strong> — para onde essa decisão está te levando?</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Sustentação</strong> — você consegue manter isso depois?</div></div></div>
+      </div>
+      <div class="layer-card" onclick="toggleLayer(this)">
+        <div class="layer-header"><div class="layer-left"><div class="layer-num" style="font-size:16px;width:24px">6</div><div class="layer-name">Critério de Decisão</div></div><i class="ti ti-chevron-down layer-chevron"></i></div>
+        <div class="layer-body"><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Se estiver emocional → não decida ainda</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Se faltar informação → busque mais dados</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Se estiver alinhado, mesmo desconfortável → avance</div></div><div class="layer-q" style="border:none;padding-top:14px"><i class="ti ti-point-filled layer-q-icon" style="color:transparent"></i><div class="layer-q-text" style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold2)">Clareza não elimina desconforto. Mas evita erro invisível.</div></div></div>
+      </div>
+      <div class="layer-card" onclick="toggleLayer(this)">
+        <div class="layer-header"><div class="layer-left"><div class="layer-num" style="font-size:16px;width:24px">7</div><div class="layer-name">Execução Consciente</div></div><i class="ti ti-chevron-down layer-chevron"></i></div>
+        <div class="layer-body"><div class="layer-desc">Depois de decidir, execute. Evite:</div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Revisar toda hora</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Duvidar constantemente</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Voltar atrás por impulso</div></div><div class="layer-q" style="border:none;padding-top:14px"><i class="ti ti-point-filled layer-q-icon" style="color:transparent"></i><div class="layer-q-text" style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold2)">Decisão consciente precisa de consistência.</div></div></div>
+      </div>
+      <div class="layer-card" onclick="toggleLayer(this)" style="margin-bottom:0">
+        <div class="layer-header"><div class="layer-left"><div class="layer-num" style="font-size:16px;width:24px">8</div><div class="layer-name">Evolução</div></div><i class="ti ti-chevron-down layer-chevron"></i></div>
+        <div class="layer-body"><div class="layer-desc">Depois da ação, revise:</div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Meu estado estava limpo?</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Houve distorção na percepção?</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Onde perdi clareza?</div></div><div class="layer-q" style="border:none;padding-top:14px"><i class="ti ti-point-filled layer-q-icon" style="color:transparent"></i><div class="layer-q-text" style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold2)">Você não evolui evitando erro. Evolui entendendo o erro.</div></div></div>
+      </div>
+    </div>
+    <div id="proto-biblioteca" style="display:none"><div id="biblioList"></div></div>
+    <div id="proto-frases" style="display:none">
+      <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#6a6460;margin-bottom:16px">Frases do livro · toque no marcador para salvar</div>
+      <div id="frasesList"></div>
+      <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border)">
+        <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#6a6460;margin-bottom:12px">Minhas favoritas</div>
+        <div id="frasesFavList"></div>
+      </div>
+    </div>
+    <div id="proto-ecossistema" style="display:none">
+      <div class="eco-intro">O app AVR–S é parte de um ecossistema completo de consciência e decisão. Cada elemento foi criado para despertar, ensinar e sustentar uma nova forma de perceber antes de agir.</div>
+      <div class="eco-card"><div class="eco-num">1</div><div class="eco-icon"><i class="ti ti-book"></i></div><div class="eco-content"><div class="eco-title">Livro · A Vida Sem Rascunho</div><div class="eco-desc">A origem. A história real que revela o que acontece antes da decisão e dá origem ao método AVR–S.</div><span class="eco-status available"><i class="ti ti-check" style="font-size:10px"></i>Disponível</span></div></div>
+      <div class="eco-card"><div class="eco-num">2</div><div class="eco-icon"><i class="ti ti-microphone"></i></div><div class="eco-content"><div class="eco-title">Palestra · A Vida Sem Rascunho</div><div class="eco-desc">A mensagem que desperta consciência e abre espaço para mudança.</div><span class="eco-status available"><i class="ti ti-check" style="font-size:10px"></i>Disponível</span></div></div>
+      <div class="eco-card"><div class="eco-num">3</div><div class="eco-icon"><i class="ti ti-users"></i></div><div class="eco-content"><div class="eco-title">Workshop · AVR–S Liderança Consciente</div><div class="eco-desc">A experiência imersiva que ensina o método e desenvolve novas habilidades de liderança.</div><span class="eco-status soon"><i class="ti ti-clock" style="font-size:10px"></i>Em breve</span></div></div>
+      <div class="eco-card"><div class="eco-num">4</div><div class="eco-icon"><i class="ti ti-notebook"></i></div><div class="eco-content"><div class="eco-title">Workbook do Participante</div><div class="eco-desc">O caderno de aplicação que consolida o aprendizado e transforma insight em ação.</div><span class="eco-status soon"><i class="ti ti-clock" style="font-size:10px"></i>Em breve</span></div></div>
+      <div class="eco-card"><div class="eco-num">5</div><div class="eco-icon"><i class="ti ti-share"></i></div><div class="eco-content"><div class="eco-title">Kit para Líderes Replicadores</div><div class="eco-desc">O sistema de multiplicação que prepara líderes para replicar o método com excelência.</div><span class="eco-status soon"><i class="ti ti-clock" style="font-size:10px"></i>Em breve</span></div></div>
+      <div class="eco-card" style="border-color:var(--border2);background:rgba(200,169,109,.04)"><div class="eco-num">6</div><div class="eco-icon"><i class="ti ti-device-mobile"></i></div><div class="eco-content"><div class="eco-title">App AVR–S · Você está aqui</div><div class="eco-desc">A ferramenta digital que sustenta a prática diária e mantém o ciclo de consciência ativo.</div><span class="eco-status available"><i class="ti ti-check" style="font-size:10px"></i>Você está aqui</span></div></div>
+      <div style="margin-top:20px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:16px;text-align:center"><div style="font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:var(--gold2);line-height:1.8">Tudo começa na história.<br>Tudo se sustenta na prática.<br>Tudo se multiplica através de líderes conscientes.</div></div>
+    </div>
+        <div id="proto-glossario" style="display:none">
+      <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#6a6460;margin-bottom:16px">Conceitos do método AVR–S</div>
+      <div id="glossarioList"></div>
+    </div>
+  </div>
+
+  <!-- AJUSTES -->
+  <div class="screen" id="screen-settings">
+    <div class="settings-section">
+      <div class="settings-section-title">Estatísticas</div>
+      <div class="settings-row"><div class="settings-label">Decisões registradas</div><div class="settings-value" id="settingsTotal">0</div></div>
+      <div class="settings-row"><div class="settings-label">Sequência atual</div><div class="settings-value" id="settingsStreak">0 dias</div></div>
+      <div class="settings-row"><div class="settings-label">Conta</div><div class="settings-value" id="settingsEmail">—</div></div>
+      <div class="settings-row"><div class="settings-label">Membro desde</div><div class="settings-value" id="settingsSince">—</div></div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-section-title">Inteligência AVR–S <span class="pro-badge" id="proNavBadge" style="display:none"><i class="ti ti-crown"></i>PRO</span></div>
+      <div class="settings-row"><div class="settings-label">Perfil adaptativo</div><div class="settings-value" id="profileStatus">Construindo...</div></div>
+      <div class="settings-row"><div class="settings-label">Padrão dominante</div><div class="settings-value" id="dominantPattern">—</div></div>
+      <div class="settings-row"><div class="settings-label">Gatilho recorrente</div><div class="settings-value" id="mainTrigger">—</div></div>
+      <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:8px">
+        <div style="display:flex;justify-content:space-between;width:100%">
+          <div class="settings-label"><i class="ti ti-brain" style="margin-right:6px;color:var(--gold)"></i>Mensagens IA este mês</div>
+          <div class="settings-value" id="msgCountDisplay">—</div>
+        </div>
+        <div style="width:100%;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden">
+          <div id="msgCountBar" style="height:100%;border-radius:2px;background:var(--gold);transition:width .4s ease;width:0%"></div>
+        </div>
+      </div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-section-title">Aparência</div>
+      <div class="settings-row" style="margin-bottom:12px">
+        <div class="settings-label"><i class="ti ti-volume" style="margin-right:6px;color:var(--gold)"></i>Voz da IA</div>
+        <div class="tts-speed-row">
+          <button class="tts-speed-btn" id="ttsOff" onclick="setTTSMode('off')">Muda</button>
+          <button class="tts-speed-btn active" id="ttsAuto" onclick="setTTSMode('auto')">Auto</button>
+          <button class="tts-speed-btn" id="ttsAlways" onclick="setTTSMode('always')">Sempre</button>
+        </div>
+      </div>
+      <div class="settings-row">
+        <div class="settings-label"><i class="ti ti-sun" style="margin-right:6px;color:var(--gold)"></i>Modo claro</div>
+        <div class="theme-toggle">
+          <span class="theme-icon"><i class="ti ti-moon"></i></span>
+          <label class="theme-switch"><input type="checkbox" id="themeToggle" onchange="toggleTheme(this.checked)"><span class="theme-slider"></span></label>
+          <span class="theme-icon"><i class="ti ti-sun"></i></span>
+        </div>
+      </div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-section-title">Suporte</div>
+      <div class="settings-row"><div class="settings-label"><i class="ti ti-brand-whatsapp" style="margin-right:6px;color:#25D366"></i>WhatsApp</div><button class="settings-action" onclick="window.open('https://wa.me/5521964164234?text=Olá!%20Preciso%20de%20ajuda%20com%20o%20app%20AVR–S','_blank')">Falar agora</button></div>
+      <div class="settings-row"><div class="settings-label"><i class="ti ti-mail" style="margin-right:6px;color:var(--gold)"></i>E-mail</div><button class="settings-action" onclick="window.open('mailto:audax.silfexsil@gmail.com?subject=Suporte AVR–S','_blank')">Enviar e-mail</button></div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-section-title">Sobre</div>
+      <div class="settings-row"><div class="settings-label">Livro</div><div class="settings-value">A Vida Sem Rascunho</div></div>
+      <div class="settings-row"><div class="settings-label">Método</div><div class="settings-value">AVR–S</div></div>
+      <div class="settings-row"><div class="settings-label">Versão</div><div class="settings-value">4.0 · IA</div></div>
+      <div class="settings-row"><div class="settings-label">Empresa</div><div class="settings-value">Audax Consultoria</div></div>
+      <div class="settings-row"><div class="settings-label">CNPJ</div><div class="settings-value">33.344.650/0001-03</div></div>
+    </div>
+    <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:#4a4440;letter-spacing:.08em">© 2025 Audax Consultoria · Todos os direitos reservados<br><span style="font-size:10px;color:#3a3630">AVR–S · A Vida Sem Rascunho</span></div>
+    <div style="text-align:center;padding:0 0 16px"><button onclick="openPrivacidade()" style="background:none;border:none;font-size:11px;color:var(--gold);cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline;letter-spacing:.06em">Política de Privacidade</button></div>
+    <div class="settings-section">
+      <div class="settings-section-title">Alertas & Lembretes</div>
+      <div class="settings-row"><div class="settings-label"><i class="ti ti-bell" style="margin-right:6px;color:var(--gold)"></i>Configurar alertas</div><button class="settings-action" onclick="openAlertas()">Configurar</button></div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-section-title">Dados</div>
+      <div class="settings-row">
+        <div class="settings-label"><i class="ti ti-cloud-upload" style="margin-right:6px;color:var(--gold)"></i>Sincronização</div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+          <button class="settings-action" onclick="forcSync()">Sincronizar agora</button>
+          <div id="syncStatus" style="font-size:10px;color:var(--text3)">—</div>
+        </div>
+      </div>
+      <div class="settings-row"><div class="settings-label">Exportar diário</div><button class="settings-action" onclick="exportData()">Exportar JSON</button></div>
+    </div>
+    <button class="danger-btn" style="margin-top:4px;border-color:rgba(200,169,109,.2);color:var(--gold)" id="adminBtn" onclick="openAdmin()"><i class="ti ti-shield"></i> Painel Admin</button>
+    <button class="danger-btn" style="margin-top:4px;border-color:rgba(200,169,109,.2);color:var(--gold)" onclick="logout()"><i class="ti ti-logout"></i> Sair da conta</button>
+    <button class="danger-btn" onclick="confirmReset()">Apagar todos os dados</button>
+  </div>
+
+  <!-- GUIA -->
+  <div class="screen" id="screen-guia">
+    <div class="guia-intro">
+      <div class="guia-intro-title">Como o AVR–S atua ao longo do dia</div>
+      <div class="guia-intro-text">O AVR–S não existe apenas para grandes decisões. Ele atua nos pequenos momentos invisíveis que moldam a direção da vida.</div>
+    </div>
+    <div style="margin:0 -20px 24px;padding:0 20px">
+      <svg width="100%" viewBox="0 0 680 680" role="img" style="max-width:480px;display:block;margin:0 auto">
+        <defs>
+          <marker id="arrowC" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+          <radialGradient id="bgGradC" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#1a1816"/><stop offset="100%" stop-color="#0a0908"/></radialGradient>
+          <style>.arc-animC{stroke-dasharray:5 4;animation:spinDashC 4s linear infinite;}.pulse-ringC{animation:pulseC 3s ease-in-out infinite;}.node-animC{animation:glowNodeC 3s ease-in-out infinite;}@keyframes spinDashC{to{stroke-dashoffset:-80;}}@keyframes pulseC{0%,100%{opacity:0.2;}50%{opacity:0.5;}}@keyframes glowNodeC{0%,100%{stroke-opacity:0.7;}50%{stroke-opacity:1;}}</style>
+        </defs>
+        <circle cx="340" cy="340" r="320" fill="url(#bgGradC)" opacity="0.95"/>
+        <circle cx="340" cy="340" r="295" fill="none" stroke="#d4b87a" stroke-width="1" stroke-dasharray="8 5" opacity="0.2" class="arc-animC"/>
+        <circle cx="340" cy="340" r="210" fill="none" stroke="#d4b87a" stroke-width="0.5" stroke-dasharray="4 6" opacity="0.2"/>
+        <path d="M 480 185 A 210 210 0 0 1 525 370" fill="none" stroke="#d4b87a" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.55" marker-end="url(#arrowC)" class="arc-animC"/>
+        <path d="M 510 430 A 210 210 0 0 1 390 545" fill="none" stroke="#d4b87a" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.55" marker-end="url(#arrowC)" class="arc-animC"/>
+        <path d="M 290 548 A 210 210 0 0 1 162 432" fill="none" stroke="#d4b87a" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.55" marker-end="url(#arrowC)" class="arc-animC"/>
+        <path d="M 155 300 A 210 210 0 0 1 300 142" fill="none" stroke="#d4b87a" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.55" marker-end="url(#arrowC)" class="arc-animC"/>
+        <circle cx="340" cy="340" r="100" fill="#100f0d" stroke="#d4b87a" stroke-width="1" opacity="0.8"/>
+        <text x="340" y="318" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#6a6460" letter-spacing="1">VOCÊ VIVE</text>
+        <text x="340" y="338" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#6a6460" letter-spacing="1">O QUE</text>
+        <text x="340" y="362" text-anchor="middle" font-family="Georgia,serif" font-size="22" font-weight="bold" fill="#d4b87a" letter-spacing="2">REPETE.</text>
+        <circle cx="340" cy="130" r="58" fill="#0a0908" stroke="#d4b87a" stroke-width="1.5" class="node-animC"/>
+        <text x="340" y="134" text-anchor="middle" font-family="Georgia,serif" font-size="11" font-weight="bold" fill="#ebd49e" letter-spacing="2">ATENÇÃO</text>
+        <circle cx="530" cy="370" r="58" fill="#0a0908" stroke="#d4b87a" stroke-width="1.5" class="node-animC"/>
+        <text x="530" y="374" text-anchor="middle" font-family="Georgia,serif" font-size="11" font-weight="bold" fill="#ebd49e" letter-spacing="2">VISÃO</text>
+        <circle cx="340" cy="545" r="58" fill="#0a0908" stroke="#d4b87a" stroke-width="1.5" class="node-animC"/>
+        <text x="340" y="549" text-anchor="middle" font-family="Georgia,serif" font-size="11" font-weight="bold" fill="#ebd49e" letter-spacing="2">RESPOSTA</text>
+        <circle cx="150" cy="370" r="58" fill="#0a0908" stroke="#d4b87a" stroke-width="1.5" class="node-animC"/>
+        <text x="150" y="374" text-anchor="middle" font-family="Georgia,serif" font-size="11" font-weight="bold" fill="#ebd49e" letter-spacing="2">SISTEMA</text>
+        <text x="340" y="652" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="#4a4640" letter-spacing="3">AVR–S · A VIDA SEM RASCUNHO</text>
+      </svg>
+    </div>
+    <div class="momento-card" onclick="toggleMomento(this)"><div class="momento-header"><div class="momento-num">1</div><div class="momento-title-wrap"><div class="momento-eyebrow">Antes de</div><div class="momento-title">Reagir</div></div><i class="ti ti-chevron-down momento-chevron"></i></div><div class="momento-body"><div class="momento-desc">Nem toda reação nasce do que aconteceu. Muitas vezes ela nasce do estado interno de quem interpreta.</div><div class="momento-section"><div class="momento-section-label"><i class="ti ti-map-pin"></i>Situações comuns</div><div class="momento-tags"><span class="momento-tag">Mensagens que provocam ansiedade</span><span class="momento-tag">Discussões impulsivas</span><span class="momento-tag">Críticas no calor emocional</span></div></div><div class="momento-result"><i class="ti ti-sparkles"></i><div class="momento-result-text">Mais clareza. Menos impulsividade. Respostas mais conscientes.</div></div></div></div>
+    <div class="momento-card" onclick="toggleMomento(this)"><div class="momento-header"><div class="momento-num">2</div><div class="momento-title-wrap"><div class="momento-eyebrow">Antes de</div><div class="momento-title">Decidir sob pressão</div></div><i class="ti ti-chevron-down momento-chevron"></i></div><div class="momento-body"><div class="momento-desc">A pressão reduz percepção. O AVR–S ajuda a desacelerar antes da decisão.</div><div class="momento-result"><i class="ti ti-sparkles"></i><div class="momento-result-text">Mais discernimento. Menos decisões impulsivas.</div></div></div></div>
+    <div class="momento-card" onclick="toggleMomento(this)"><div class="momento-header"><div class="momento-num">3</div><div class="momento-title-wrap"><div class="momento-eyebrow">Antes de</div><div class="momento-title">Entrar no automático</div></div><i class="ti ti-chevron-down momento-chevron"></i></div><div class="momento-body"><div class="momento-desc">Grande parte da vida é conduzida por repetição inconsciente. O AVR–S ajuda a interromper ciclos automáticos.</div><div class="momento-result"><i class="ti ti-sparkles"></i><div class="momento-result-text">Mais presença. Mais consciência sobre padrões.</div></div></div></div>
+    <div class="momento-card" onclick="toggleMomento(this)"><div class="momento-header"><div class="momento-num">4</div><div class="momento-title-wrap"><div class="momento-eyebrow">Antes de</div><div class="momento-title">Interpretar</div></div><i class="ti ti-chevron-down momento-chevron"></i></div><div class="momento-body"><div class="momento-desc">Nem sempre sofremos pelo fato. Muitas vezes sofremos pela interpretação construída sobre ele.</div><div class="momento-result"><i class="ti ti-sparkles"></i><div class="momento-result-text">Menos distorção. Mais percepção limpa da realidade.</div></div></div></div>
+    <div class="guia-closing"><div class="guia-closing-text">O AVR–S não muda apenas decisões.<br>Ele altera a forma como você percebe antes de decidir.<br><br>E isso muda tudo.</div></div>
+
+
+  <!-- JORNADA DA RECONSTRUÇÃO -->
+  <div class="screen" id="screen-jornada">
+    <div class="jornada-frase">
+      <div class="jornada-frase-mark">"</div>
+      <div class="jornada-frase-text" id="jornadaFrase"></div>
+    </div>
+    <div class="jornada-hero">
+      <div class="jornada-hero-eyebrow">Jornada da Reconstrução</div>
+      <div class="jornada-hero-title">A mente é a causa. A vida é o efeito.</div>
+      <div class="jornada-hero-sub">Antes de mudar a vida, precisamos compreender o que a direciona.</div>
+      <div class="jornada-progress-bar"><div class="jornada-progress-fill" id="jornadaProgressFill"></div></div>
+      <div class="jornada-progress-label"><span id="jornadaProgressLabel">0 dias concluídos</span><span id="jornadaProgressPct">0%</span></div>
+    </div>
+    <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:10px">Módulos</div>
+    <div class="mod-card" id="jmod1" onclick="openModDetail(1)">
+      <div class="mod-card-top">
+        <div><div class="mod-card-num">Módulo 1</div><div class="mod-card-title">Minha Mente</div><div class="mod-card-sub">A Causa — O Solo</div></div>
+        <span class="jornada-badge-free">Gratuito</span>
+      </div>
+      <div class="mod-card-desc">Descubra os padrões invisíveis que constroem seus resultados visíveis.</div>
+      <div class="mod-card-prog">
+        <div class="mod-card-prog-bar"><div class="mod-card-prog-fill" id="mod1ProgFill" style="width:0%"></div></div>
+        <div class="mod-card-prog-label" id="mod1ProgLabel">0 de 4 exercícios</div>
+      </div>
+    </div>
+    <div class="mod-card locked" id="jmod2" onclick="checkJornadaPro(2)">
+      <div class="mod-card-top">
+        <div><div class="mod-card-num">Módulo 2</div><div class="mod-card-title">Minhas Escolhas</div><div class="mod-card-sub">As Sementes</div></div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><span class="jornada-badge-pro">Pro</span><i class="ti ti-lock jornada-lock"></i></div>
+      </div>
+      <div class="mod-card-desc">Diário das escolhas — consciência diária sobre o que guia suas decisões.</div>
+    </div>
+    <div class="mod-card locked" id="jmod3" onclick="checkJornadaPro(3)">
+      <div class="mod-card-top">
+        <div><div class="mod-card-num">Módulo 3</div><div class="mod-card-title">Meus Hábitos</div><div class="mod-card-sub">O Cultivo</div></div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><span class="jornada-badge-pro">Pro</span><i class="ti ti-lock jornada-lock"></i></div>
+      </div>
+      <div class="mod-card-desc">Checklist de reconstrução diária — práticas que sustentam a mudança.</div>
+    </div>
+    <div class="mod-card locked" id="jmod4" onclick="checkJornadaPro(4)">
+      <div class="mod-card-top">
+        <div><div class="mod-card-num">Módulo 4</div><div class="mod-card-title">Minha Evolução</div><div class="mod-card-sub">A Colheita</div></div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><span class="jornada-badge-pro">Pro</span><i class="ti ti-lock jornada-lock"></i></div>
+      </div>
+      <div class="mod-card-desc">Painel de identidade — antes / percebo / escolho.</div>
+    </div>
+    <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin:16px 0 10px">Ferramenta transversal</div>
+    <div class="pausa-avrs-card" onclick="openPausaAVRS()">
+      <div class="pausa-avrs-icon"><i class="ti ti-focus-2"></i></div>
+      <div style="flex:1">
+        <div class="pausa-avrs-title">Pausa AVR-S</div>
+        <div class="pausa-avrs-sub">Entre o estímulo e a resposta.<br>Gratuito · disponível sempre.</div>
+      </div>
+      <i class="ti ti-chevron-right" style="color:var(--text3);font-size:16px;flex-shrink:0"></i>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin:16px 0 10px">
+      <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3)">Jornada 20 Dias</div>
+      <div style="font-size:11px;color:var(--text3)">Dias 1–5 gratuitos</div>
+    </div>
+    <div id="jornada20List"></div>
+  </div>
+
+
+
+  <!-- UNIVERSO AVR-S 5.1 -->
+  <div class="screen" id="screen-universo">
+    <div class="univ-hero">
+      <div class="univ-hero-eyebrow">AVR-S 5.1</div>
+      <div class="univ-hero-title">Universo AVR-S</div>
+      <div class="univ-hero-sub">O sistema interpreta o que você registra.<br>A consciência evolui com cada entrada.</div>
+    </div>
+    <div class="univ-tab-row">
+      <button class="univ-tab active" id="utab-avrs" onclick="switchUnivTab('avrs')">Vida Sem Rascunho</button>
+      <button class="univ-tab" id="utab-mentor" onclick="switchUnivTab('mentor')">Mentor IA</button>
+      <button class="univ-tab" id="utab-protocolo" onclick="switchUnivTab('protocolo')">Protocolo</button>
+    </div>
+
+    <!-- TAB: A VIDA SEM RASCUNHO -->
+    <div id="univ-avrs">
+      <div class="avrs-mapa">
+        <div class="avrs-orbit-ring"></div>
+        <div class="avrs-orbit-node node-a">A</div>
+        <div class="avrs-orbit-node node-v">V</div>
+        <div class="avrs-orbit-node node-r">R</div>
+        <div class="avrs-orbit-node node-s">S</div>
+        <div class="avrs-mapa-center">
+          <div class="avrs-mapa-center-label">Meu Mapa</div>
+          <div class="avrs-mapa-center-title">AVR-S</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text3);text-align:center;margin-bottom:16px">Baseado nos seus registros dos últimos 30 dias</div>
+      <div id="avrsEtapas"></div>
+      <div class="avrs-footer-bar" id="avrsFooterBar" style="display:none">
+        <div class="avrs-footer-text">Você está em <strong id="avrsEtapaCount">1</strong> de 4 etapas gratuitas.<br>Desbloqueie o método completo.</div>
+        <button class="avrs-footer-btn" onclick="openPaywall()">Conhecer Pro</button>
+      </div>
+    </div>
+
+    <!-- TAB: MENTOR IA -->
+    <div id="univ-mentor" style="display:none">
+      <div class="mentor51-header">
+        <div class="mentor51-avatar"><i class="ti ti-brain"></i></div>
+        <div>
+          <div class="mentor51-greeting">Mentor IA AVR-S</div>
+          <div class="mentor51-sub">Analisei sua jornada AVR-S.<br>Aqui está o que descobri sobre você:</div>
+          <div class="mentor51-last" id="mentor51Last"></div>
+        </div>
+      </div>
+      <div class="mentor51-quota" id="mentor51Quota">
+        <i class="ti ti-sparkles mentor51-quota-icon"></i>
+        <div class="mentor51-quota-text" id="mentor51QuotaText">Gerando análise...</div>
+        <div class="mentor51-quota-count" id="mentor51QuotaCount"></div>
+      </div>
+      <div id="mapaCards"></div>
+      <div class="mapa-cta" onclick="openMapaCompleto()">
+        <div class="mapa-cta-text">
+          <div class="mapa-cta-title">Ver Meu Mapa Completo</div>
+          <div class="mapa-cta-sub">Relatório completo da sua reconstrução</div>
+        </div>
+        <i class="ti ti-chevron-right"></i>
+      </div>
+
+    <!-- TAB: PROTOCOLO -->
+    <div id="univ-protocolo" style="display:none">
+      <div style="background:rgba(200,169,109,.05);border:1px solid var(--border2);border-radius:var(--r2);padding:14px;margin-bottom:14px;text-align:center">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:var(--gold2);line-height:1.7">O AVR–S não é uma técnica.<br>É uma forma de perceber antes de agir.</div>
+      </div>
+      <div id="univProtocoloContent"></div>
+    </div>
+  </div>
+
+
+</div>
+
+</div>
+
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button class="nav-btn active" id="nav-home" onclick="goTo('home')"><i class="ti ti-home"></i>Início</button>
+  <button class="nav-btn" id="nav-diary" onclick="goTo('diary')"><i class="ti ti-notebook"></i>Diário</button>
+  <button class="nav-btn" id="nav-jornada" onclick="goTo('jornada')"><i class="ti ti-seedling"></i>Jornada</button>
+  <button class="nav-btn" id="nav-universo" onclick="goTo('universo')"><i class="ti ti-galaxy"></i>Universo</button>
+  <button class="nav-btn" id="nav-settings" onclick="goTo('settings')"><i class="ti ti-settings"></i>Ajustes</button>
+</div>
+
+<!-- MODAL DECISÃO -->
+<div class="overlay" id="overlay" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header"><div class="modal-title">Nova decisão consciente</div></div>
+    <div class="modal-body">
+      <div class="field"><label>Situação</label><input type="text" id="inpSit" placeholder="O que está acontecendo?"/></div>
+      <div style="background:rgba(200,169,109,.04);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:16px">
+        <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:12px;display:flex;align-items:center;gap:6px"><i class="ti ti-layers-intersect" style="color:var(--gold);font-size:13px"></i>Descontaminação da realidade</div>
+        <div class="field" style="margin-bottom:10px">
+          <label style="color:var(--gold2)">Fato — O que realmente aconteceu?</label>
+          <textarea id="inpFact" placeholder="Apenas o fato observável, sem interpretação..." style="min-height:60px"></textarea>
+        </div>
+        <div class="field" style="margin-bottom:10px">
+          <label>História — O que minha mente construiu?</label>
+          <textarea id="inpHistoria" placeholder="O que estou assumindo ou concluindo sobre isso..." style="min-height:60px"></textarea>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>Projeção — O que estou sentindo sobre essa história?</label>
+          <textarea id="inpProjecao" placeholder="O que temo que vai acontecer..." style="min-height:60px"></textarea>
+        </div>
+      </div>
+      <div class="field"><label>Distorção percebida</label><select id="inpDist"><option>Nenhuma</option><option>Urgência falsa</option><option>Escassez</option><option>Ego</option><option>Medo</option><option>Excesso de confiança</option><option>Fadiga mental</option></select></div>
+      <div class="field"><label>Decisão consciente</label><textarea id="inpDec" placeholder="O que você escolhe fazer, com clareza?"></textarea></div>
+      <div class="field"><label>O que aprendeu</label><textarea id="inpLes" placeholder="Que padrão você reconheceu?"></textarea></div>
+    </div>
+    <div class="modal-actions">
+      <button class="cancel-btn" onclick="closeModal()">Cancelar</button>
+      <button class="save-btn" onclick="saveEntry()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKLIST -->
+<div class="cl-overlay" id="clOverlay">
+  <div class="cl-panel" id="clPanel">
+    <div style="display:flex;align-items:center;padding:14px 20px 0;flex-shrink:0">
+      <button onclick="closeChecklist()" style="background:none;border:none;color:#8a8278;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:'DM Sans',sans-serif;font-size:13px;padding:0"><i class="ti ti-arrow-left" style="font-size:18px"></i> Voltar</button>
+    </div>
+    <div class="cl-handle" style="margin-top:8px"></div>
+    <div class="cl-progress"><div class="cl-progress-fill" id="clFill" style="width:0%"></div></div>
+    <div class="cl-header" id="clHeader"></div>
+    <div class="cl-body" id="clBody"></div>
+    <div class="cl-nav" id="clNav"></div>
+  </div>
+</div>
+
+<!-- DETAIL -->
+<div class="det-overlay" id="detOverlay" onclick="closeDetail()"></div>
+<div class="det-panel" id="detPanel">
+  <div class="modal-handle" style="margin-top:14px"></div>
+  <div class="det-header"><div class="det-situation" id="detSit"></div><div class="det-meta" id="detMeta"></div></div>
+  <div class="det-body" id="detBody"></div>
+  <button class="det-delete" onclick="deleteEntry()"><i class="ti ti-trash"></i> Apagar registro</button>
+</div>
+
+<!-- MENTOR CHAT -->
+<div class="mentor-chat-overlay" id="mentorChatOverlay">
+  <div class="mentor-chat-panel">
+    <div class="modal-handle" style="margin-top:14px;margin-bottom:0"></div>
+    <div class="mentor-chat-header">
+      <div class="mentor-avatar"><i class="ti ti-brain"></i></div>
+      <div><div class="mentor-chat-name">Mentor AVR–S</div><div class="mentor-chat-status" id="mentorChatStatus">online</div></div>
+      <div class="tts-indicator" id="ttsIndicator"><div class="tts-indicator-dot"></div><span>falando</span><button class="tts-stop-btn" onclick="stopSpeak()" title="Parar fala"><i class="ti ti-player-stop-filled"></i></button></div>
+      <button class="mentor-close" onclick="closeMentorChat()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="chat-msgs" id="chatMsgs"></div>
+    <div class="chat-input-row">
+      <button class="voice-btn" id="voiceChatBtn" onclick="startVoiceChat()" title="Comando de voz"><i class="ti ti-microphone"></i></button>
+      <input class="chat-input" id="chatInput" placeholder="Escreva ou fale..." onkeydown="if(event.key==='Enter')sendChat()"/>
+      <button class="chat-send" onclick="sendChat()"><i class="ti ti-send"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- PAYWALL -->
+<div class="paywall-overlay" id="paywallOverlay">
+  <div class="paywall-panel">
+    <div class="paywall-handle"></div>
+    <div class="paywall-hero"><div class="paywall-icon"><i class="ti ti-brain"></i></div><div class="paywall-title">AVR–S Pro</div><div class="paywall-sub">Desbloqueie o Mentor IA personalizado e transforme a forma como você decide todos os dias.</div></div>
+    <div class="paywall-features">
+      <div class="paywall-features-label">O que você desbloqueia</div>
+      <div class="paywall-feature"><div class="paywall-feature-icon"><i class="ti ti-brain"></i></div><div><div class="paywall-feature-title">Mentor AVR–S · IA</div><div class="paywall-feature-desc">Chat ilimitado com IA que aprende seus padrões.</div></div></div>
+      <div class="paywall-feature"><div class="paywall-feature-icon"><i class="ti ti-chart-bar"></i></div><div><div class="paywall-feature-title">Análise de padrões</div><div class="paywall-feature-desc">A IA detecta seus gatilhos e distorções recorrentes.</div></div></div>
+      <div class="paywall-feature"><div class="paywall-feature-icon"><i class="ti ti-sparkles"></i></div><div><div class="paywall-feature-title">Diagnóstico avançado</div><div class="paywall-feature-desc">Insight personalizado ao final de cada checklist.</div></div></div>
+    </div>
+    <div class="paywall-pricing">
+      <div class="paywall-price-card">
+        <div class="paywall-price-badge">AVR–S Pro</div>
+        <div class="paywall-price-value">R$19</div>
+        <div class="paywall-price-period">por mês · cancele quando quiser</div>
+        <a href="https://pag.ae/81P9a56Kv/button" target="_blank" style="display:block;width:100%;text-decoration:none"><button class="paywall-cta" style="width:100%">Assinar agora — R$19/mês</button></a>
+      </div>
+      <div class="paywall-free-label">Versão gratuita: diário, protocolo e guia permanecem disponíveis</div>
+      <button class="paywall-dismiss" onclick="closePaywall()">Continuar com a versão gratuita</button>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dash-overlay" id="dashOverlay">
+  <div class="dash-topbar">
+    <button class="dash-back" onclick="closeDashboard()"><i class="ti ti-arrow-left"></i></button>
+    <div class="dash-title">Dashboard Emocional</div>
+    <div class="dash-badge"><i class="ti ti-chart-bar" style="font-size:12px"></i> AVR–S</div>
+  </div>
+  <div class="dash-content" id="dashContent"></div>
+</div>
+
+<!-- ONBOARDING -->
+<div class="onboard-overlay" id="onboardOverlay">
+  <div class="onboard-step active" id="onboard-1">
+    <div class="onboard-icon"><i class="ti ti-eye"></i></div>
+    <div class="onboard-num">01 de 03</div>
+    <div class="onboard-title">A Vida Sem Rascunho</div>
+    <div class="onboard-text">O AVR–S é um método de consciência e decisão. Ele ajuda você a perceber antes de agir.</div>
+    <div class="onboard-dots"><div class="onboard-dot active"></div><div class="onboard-dot"></div><div class="onboard-dot"></div></div>
+    <button class="onboard-btn" onclick="nextOnboard(2)">Continuar</button>
+    <button class="onboard-skip" onclick="finishOnboard()">Pular introdução</button>
+  </div>
+  <div class="onboard-step" id="onboard-2">
+    <div class="onboard-icon"><i class="ti ti-layers-intersect"></i></div>
+    <div class="onboard-num">02 de 03</div>
+    <div class="onboard-title">O Protocolo AVR–S</div>
+    <div class="onboard-text">Cinco camadas: <strong style="color:var(--gold)">Regular · Atenção · Visão · Resposta · Sistema.</strong><br><br>Cada uma cria um espaço entre o estímulo e a sua ação.</div>
+    <div class="onboard-dots"><div class="onboard-dot"></div><div class="onboard-dot active"></div><div class="onboard-dot"></div></div>
+    <button class="onboard-btn" onclick="nextOnboard(3)">Continuar</button>
+    <button class="onboard-skip" onclick="finishOnboard()">Pular introdução</button>
+  </div>
+  <div class="onboard-step" id="onboard-3">
+    <div class="onboard-icon"><i class="ti ti-notebook"></i></div>
+    <div class="onboard-num">03 de 04</div>
+    <div class="onboard-title">Como usar o app</div>
+    <div class="onboard-text">Toque em um estado emocional para iniciar o diagnóstico. Registre suas decisões conscientes. Acompanhe seus padrões no Dashboard.</div>
+    <div class="onboard-dots"><div class="onboard-dot"></div><div class="onboard-dot"></div><div class="onboard-dot active"></div><div class="onboard-dot"></div></div>
+    <button class="onboard-btn" onclick="nextOnboard(4)">Continuar</button>
+  </div>
+  <div class="onboard-step" id="onboard-4">
+    <div class="onboard-icon"><i class="ti ti-circles-relation"></i></div>
+    <div class="onboard-num">04 de 04</div>
+    <div class="onboard-title">O Ecossistema AVR–S</div>
+    <div class="onboard-text">O app é parte de um ciclo completo: <strong style="color:var(--gold)">Livro · Palestra · Workshop · Workbook · Kit · App.</strong><br><br>Você está na etapa de sustentação — onde a prática se torna sistema.</div>
+    <div style="background:rgba(200,169,109,.06);border:1px solid var(--border2);border-radius:14px;padding:18px;margin-bottom:24px;text-align:left">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--gold2);line-height:2;font-style:italic">
+        O livro explica.<br>O workshop demonstra.<br>O aplicativo pratica.<br>O cockpit acompanha.<br><strong style="font-style:normal;letter-spacing:.04em">O AVR–S transforma.</strong>
+      </div>
+    </div>
+    <div class="onboard-dots"><div class="onboard-dot"></div><div class="onboard-dot"></div><div class="onboard-dot"></div><div class="onboard-dot active"></div></div>
+    <button class="onboard-btn" onclick="finishOnboard()">Começar agora</button>
+  </div>
+</div>
+
+<!-- MODO FOCO -->
+<div class="focus-overlay" id="focusOverlay">
+  <div class="focus-topbar">
+    <button class="focus-back" onclick="closeFocus()"><i class="ti ti-arrow-left"></i> Voltar</button>
+    <div class="focus-label">Modo Foco</div>
+    <div style="width:60px"></div>
+  </div>
+  <div class="focus-content">
+    <div class="focus-date" id="focusDate"></div>
+    <div class="focus-question" id="focusQuestion"></div>
+    <div class="focus-hint" id="focusHint"></div>
+    <div class="focus-breath"><div class="focus-breath-inner"></div></div>
+    <div class="focus-actions">
+      <button class="focus-action-btn focus-secondary" onclick="closeFocus();openChecklist('Presente','ti-eye')">Iniciar diagnóstico</button>
+      <button class="focus-action-btn focus-primary" onclick="closeFocus();openModal()">Registrar decisão</button>
+    </div>
+  </div>
+</div>
+
+<!-- BIBLIOTECA DETALHE -->
+<div class="biblio-detail-overlay" id="biblioDO" onclick="closeBiblioDetail()"></div>
+<div class="biblio-detail-panel" id="biblioDPanel">
+  <div class="modal-handle" style="margin-top:14px"></div>
+  <div class="biblio-detail-header" id="biblioDHeader"></div>
+  <div class="biblio-detail-body" id="biblioDBody"></div>
+</div>
+
+<!-- COMANDO DE VOZ -->
+<div class="voice-overlay" id="voiceOverlay">
+  <div class="voice-circle"><i class="ti ti-microphone"></i></div>
+  <div class="voice-text">Ouvindo...</div>
+  <div class="voice-sub">Fale com o Mentor AVR–S</div>
+  <div class="voice-transcript" id="voiceTranscript"></div>
+  <button class="voice-cancel" onclick="stopVoice()">Cancelar</button>
+</div>
+
+
+<div class="privacidade-overlay" id="privacidadeOverlay">
+  <div class="privacidade-topbar">
+    <button class="privacidade-back" onclick="closePrivacidade()"><i class="ti ti-arrow-left"></i></button>
+    <div class="privacidade-title">Privacidade & Termos</div>
+  </div>
+
+  <!-- TABS -->
+  <div style="display:flex;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--bg)">
+    <button id="tabPriv" onclick="switchPrivTab('priv')"
+      style="flex:1;background:none;border:none;border-bottom:2px solid var(--gold);padding:12px 8px;font-size:11px;color:var(--gold);cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.06em;transition:all .2s">
+      Política de Privacidade
+    </button>
+    <button id="tabTermos" onclick="switchPrivTab('termos')"
+      style="flex:1;background:none;border:none;border-bottom:2px solid transparent;padding:12px 8px;font-size:11px;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.06em;transition:all .2s">
+      Termos de Uso
+    </button>
+  </div>
+
+  <!-- ── POLÍTICA DE PRIVACIDADE ── -->
+  <div id="conteudoPriv" class="privacidade-content">
+
+    <div class="priv-section">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--gold);margin-bottom:4px">Política de Privacidade</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:16px">AVR–S · A Vida Sem Rascunho · Última atualização: junho de 2025</div>
+      <div class="priv-text">Esta Política de Privacidade descreve como a <strong style="color:var(--cream)">Audax Consultoria</strong> (CNPJ: 33.344.650/0001-03) coleta, usa, armazena e protege as informações dos usuários do aplicativo AVR–S, em conformidade com a <strong style="color:var(--cream)">Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018)</strong>.</div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">1. Quem somos</div>
+      <div class="priv-text">
+        <strong style="color:var(--cream)">Controlador dos dados:</strong><br>
+        Audax Consultoria · CNPJ: 33.344.650/0001-03<br>
+        Responsável: André Silfexsil<br>
+        E-mail: audax.silfexsil@gmail.com<br>
+        WhatsApp: (21) 96416-4234<br>
+        Rio de Janeiro · RJ · Brasil
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">2. Dados que coletamos</div>
+      <div class="priv-text">O AVR–S coleta apenas os dados estritamente necessários para o funcionamento do aplicativo:</div>
+      <br>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px">
+          <div style="font-size:11px;color:var(--gold);letter-spacing:.06em;margin-bottom:4px">CONTA</div>
+          <div class="priv-text">E-mail e senha para criação e acesso à conta. Processados via Firebase Authentication (Google).</div>
+        </div>
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px">
+          <div style="font-size:11px;color:var(--gold);letter-spacing:.06em;margin-bottom:4px">REGISTROS EMOCIONAIS</div>
+          <div class="priv-text">Estados internos, decisões conscientes, reflexões e distorções inseridos voluntariamente pelo usuário. Esses dados são pessoais e sensíveis — são usados exclusivamente para personalizar a experiência no app.</div>
+        </div>
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px">
+          <div style="font-size:11px;color:var(--gold);letter-spacing:.06em;margin-bottom:4px">PAGAMENTO</div>
+          <div class="priv-text">Dados de pagamento são processados exclusivamente pelo <strong style="color:var(--cream)">PagBank</strong>. A Audax Consultoria não armazena dados de cartão de crédito ou informações bancárias.</div>
+        </div>
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px">
+          <div style="font-size:11px;color:var(--gold);letter-spacing:.06em;margin-bottom:4px">DADOS TÉCNICOS</div>
+          <div class="priv-text">Registros de uso necessários para sincronização e funcionamento do app (data de último acesso, contagem de registros). Não coletamos dados de localização, contatos ou outros sensores do dispositivo.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">3. Como usamos seus dados</div>
+      <div class="priv-text">Seus dados são usados exclusivamente para:</div>
+      <br>
+      <div class="priv-text">
+        — Autenticar e identificar sua conta<br>
+        — Personalizar as respostas do Mentor IA com base no seu histórico<br>
+        — Sincronizar seus registros entre dispositivos<br>
+        — Processar e verificar pagamentos via PagBank<br>
+        — Ativar o status Pro após pagamento confirmado<br>
+        — Enviar suporte técnico quando solicitado
+      </div>
+      <br>
+      <div style="background:rgba(200,169,109,.06);border:1px solid var(--border2);border-radius:10px;padding:14px">
+        <div class="priv-text"><strong style="color:var(--cream)">Não vendemos, compartilhamos, alugamos ou cedemos seus dados pessoais a terceiros para fins comerciais ou de marketing.</strong></div>
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">4. Base legal (LGPD)</div>
+      <div class="priv-text">O tratamento dos seus dados é fundamentado nas seguintes bases legais previstas na LGPD:</div>
+      <br>
+      <div class="priv-text">
+        — <strong style="color:var(--cream)">Consentimento</strong> (Art. 7º, I): ao criar sua conta, você consente com o tratamento dos dados para as finalidades descritas<br>
+        — <strong style="color:var(--cream)">Execução de contrato</strong> (Art. 7º, V): para processar pagamentos e ativar o plano Pro<br>
+        — <strong style="color:var(--cream)">Legítimo interesse</strong> (Art. 7º, IX): para melhorar a experiência do app e fornecer suporte
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">5. Compartilhamento de dados</div>
+      <div class="priv-text">Seus dados são processados pelos seguintes serviços de infraestrutura, que atuam como operadores de dados:</div>
+      <br>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center">
+          <div><div style="font-size:13px;color:var(--cream);font-weight:500">Firebase (Google)</div><div style="font-size:11px;color:var(--text3);margin-top:2px">Autenticação e banco de dados</div></div>
+          <div style="font-size:10px;color:var(--text3);text-align:right">EUA/Global</div>
+        </div>
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center">
+          <div><div style="font-size:13px;color:var(--cream);font-weight:500">Cloudflare Workers</div><div style="font-size:11px;color:var(--text3);margin-top:2px">Proxy da IA e webhook de pagamentos</div></div>
+          <div style="font-size:10px;color:var(--text3);text-align:right">EUA/Global</div>
+        </div>
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center">
+          <div><div style="font-size:13px;color:var(--cream);font-weight:500">Anthropic (Claude API)</div><div style="font-size:11px;color:var(--text3);margin-top:2px">Processamento das mensagens do Mentor IA</div></div>
+          <div style="font-size:10px;color:var(--text3);text-align:right">EUA</div>
+        </div>
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center">
+          <div><div style="font-size:13px;color:var(--cream);font-weight:500">PagBank (PagSeguro)</div><div style="font-size:11px;color:var(--text3);margin-top:2px">Processamento de pagamentos</div></div>
+          <div style="font-size:10px;color:var(--text3);text-align:right">Brasil</div>
+        </div>
+      </div>
+      <br>
+      <div class="priv-text">Todos esses serviços possuem políticas de privacidade próprias e são responsáveis pelo tratamento dos dados em suas plataformas.</div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">6. Armazenamento e segurança</div>
+      <div class="priv-text">
+        — Seus dados são armazenados no <strong style="color:var(--cream)">Firebase Firestore</strong> com criptografia em trânsito (TLS) e em repouso<br>
+        — Senhas são armazenadas com hash seguro via Firebase Authentication<br>
+        — O app opera em HTTPS em todas as comunicações<br>
+        — Tokens e chaves de API são armazenados como variáveis de ambiente seguras (nunca expostos no código-fonte)<br>
+        — Dados locais são armazenados no dispositivo via localStorage do navegador
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">7. Seus direitos (LGPD)</div>
+      <div class="priv-text">Como titular dos dados, você tem os seguintes direitos garantidos pela LGPD:</div>
+      <br>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <i class="ti ti-check" style="color:var(--gold);font-size:14px;flex-shrink:0;margin-top:2px"></i>
+          <div class="priv-text"><strong style="color:var(--cream)">Acesso</strong> — solicitar quais dados temos sobre você</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <i class="ti ti-check" style="color:var(--gold);font-size:14px;flex-shrink:0;margin-top:2px"></i>
+          <div class="priv-text"><strong style="color:var(--cream)">Exportação</strong> — baixar seu diário completo em JSON (Ajustes → Exportar JSON)</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <i class="ti ti-check" style="color:var(--gold);font-size:14px;flex-shrink:0;margin-top:2px"></i>
+          <div class="priv-text"><strong style="color:var(--cream)">Exclusão</strong> — apagar todos os seus dados (Ajustes → Apagar todos os dados)</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <i class="ti ti-check" style="color:var(--gold);font-size:14px;flex-shrink:0;margin-top:2px"></i>
+          <div class="priv-text"><strong style="color:var(--cream)">Revogação do consentimento</strong> — você pode encerrar sua conta a qualquer momento</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <i class="ti ti-check" style="color:var(--gold);font-size:14px;flex-shrink:0;margin-top:2px"></i>
+          <div class="priv-text"><strong style="color:var(--cream)">Correção</strong> — solicitar correção de dados incorretos via e-mail</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <i class="ti ti-check" style="color:var(--gold);font-size:14px;flex-shrink:0;margin-top:2px"></i>
+          <div class="priv-text"><strong style="color:var(--cream)">Informação</strong> — ser informado sobre o uso dos seus dados</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">8. Retenção dos dados</div>
+      <div class="priv-text">
+        — Seus dados são mantidos enquanto sua conta estiver ativa<br>
+        — Ao apagar sua conta ou todos os dados (Ajustes), os dados são removidos do dispositivo imediatamente e da nuvem em até 30 dias<br>
+        — Registros de transações financeiras podem ser mantidos por até 5 anos conforme exigência fiscal brasileira
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">9. Menores de idade</div>
+      <div class="priv-text">O aplicativo AVR–S é destinado a maiores de 18 anos. Não coletamos intencionalmente dados de menores de idade. Se identificarmos que uma conta pertence a um menor, ela será encerrada.</div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">10. Alterações nesta política</div>
+      <div class="priv-text">Esta política pode ser atualizada periodicamente. Alterações significativas serão comunicadas via notificação no aplicativo. O uso continuado do app após as alterações implica aceitação da nova política.</div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">11. Contato e DPO</div>
+      <div class="priv-text">
+        Para exercer seus direitos ou esclarecer dúvidas sobre privacidade:<br><br>
+        <strong style="color:var(--cream)">Audax Consultoria</strong><br>
+        CNPJ: 33.344.650/0001-03<br>
+        E-mail: audax.silfexsil@gmail.com<br>
+        WhatsApp: (21) 96416-4234<br>
+        Rio de Janeiro · RJ · Brasil
+      </div>
+      <br>
+      <div class="priv-text">Você também pode registrar reclamações junto à <strong style="color:var(--cream)">Autoridade Nacional de Proteção de Dados (ANPD)</strong> em gov.br/anpd.</div>
+    </div>
+
+    <div class="priv-divider"></div>
+    <div class="priv-section">
+      <div class="priv-text" style="font-size:11px;color:#4a4440;text-align:center">© 2025 Audax Consultoria · Todos os direitos reservados<br>AVR–S · A Vida Sem Rascunho · Versão 4.0<br>Última atualização: junho de 2025</div>
+    </div>
+
+  </div>
+
+  <!-- ── TERMOS DE USO ── -->
+  <div id="conteudoTermos" class="privacidade-content" style="display:none">
+
+    <div class="priv-section">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--gold);margin-bottom:4px">Termos de Uso</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:16px">AVR–S · A Vida Sem Rascunho · Última atualização: junho de 2025</div>
+      <div class="priv-text">Ao criar uma conta e utilizar o aplicativo AVR–S, você concorda com os presentes Termos de Uso. Leia atentamente antes de usar o aplicativo.</div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">1. O serviço</div>
+      <div class="priv-text">O AVR–S é um aplicativo de autoconhecimento e desenvolvimento pessoal baseado no método AVR–S, desenvolvido pela <strong style="color:var(--cream)">Audax Consultoria</strong>. O app oferece ferramentas de diagnóstico emocional, registro de decisões, dashboards de padrões e um Mentor com inteligência artificial.</div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">2. Conta de usuário</div>
+      <div class="priv-text">
+        — Você é responsável por manter a confidencialidade da sua senha<br>
+        — Uma conta por usuário — não é permitido compartilhar contas<br>
+        — Você deve fornecer informações verdadeiras no cadastro<br>
+        — Reservamo-nos o direito de encerrar contas que violem estes termos
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">3. Planos e pagamento</div>
+      <div class="priv-text">
+        <strong style="color:var(--cream)">Plano Gratuito:</strong> acesso ao diário de decisões, protocolo AVR–S, guia e biblioteca. Disponível sem prazo de expiração.<br><br>
+        <strong style="color:var(--cream)">Plano Pro (R$19/mês):</strong> inclui Mentor IA ilimitado, análise de padrões avançada, insights personalizados e dashboard com análise IA.<br><br>
+        — Cobranças são recorrentes mensalmente via PagBank<br>
+        — O cancelamento pode ser feito a qualquer momento diretamente no PagBank<br>
+        — Não há reembolso de períodos parciais já cobrados<br>
+        — A Audax Consultoria pode alterar os preços com aviso prévio de 30 dias
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">4. Uso adequado</div>
+      <div class="priv-text">Ao usar o AVR–S, você concorda em não:</div>
+      <br>
+      <div class="priv-text">
+        — Usar o app para fins ilegais ou prejudiciais a terceiros<br>
+        — Tentar acessar dados de outros usuários<br>
+        — Realizar engenharia reversa, copiar ou distribuir o código do app<br>
+        — Usar o Mentor IA para fins que violem as políticas da Anthropic<br>
+        — Criar múltiplas contas para contornar limites do plano gratuito
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">5. O Mentor IA</div>
+      <div class="priv-text">O Mentor AVR–S utiliza inteligência artificial (Claude, da Anthropic) para gerar respostas personalizadas. <strong style="color:var(--cream)">Importante:</strong></div>
+      <br>
+      <div style="background:rgba(200,169,109,.06);border:1px solid var(--border2);border-radius:10px;padding:14px">
+        <div class="priv-text">
+          — O Mentor não substitui acompanhamento psicológico, psiquiátrico ou médico profissional<br>
+          — As respostas são geradas por IA e podem conter imprecisões<br>
+          — Em situações de crise emocional, procure um profissional de saúde mental<br>
+          — A Audax Consultoria não se responsabiliza por decisões tomadas com base exclusiva nas respostas do Mentor
+        </div>
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">6. Propriedade intelectual</div>
+      <div class="priv-text">
+        — O método AVR–S, o nome "A Vida Sem Rascunho", o código do aplicativo, textos, protocolos e conteúdos são de propriedade exclusiva da <strong style="color:var(--cream)">Audax Consultoria</strong><br>
+        — É proibida a reprodução, distribuição ou uso comercial sem autorização expressa por escrito<br>
+        — Os registros inseridos pelo usuário pertencem ao próprio usuário
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">7. Disponibilidade do serviço</div>
+      <div class="priv-text">
+        — O app é fornecido "como está", sem garantia de disponibilidade ininterrupta<br>
+        — Podemos realizar manutenções programadas com ou sem aviso prévio<br>
+        — Não nos responsabilizamos por perdas decorrentes de indisponibilidade temporária
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">8. Limitação de responsabilidade</div>
+      <div class="priv-text">A Audax Consultoria não se responsabiliza por danos indiretos, incidentais ou consequentes decorrentes do uso ou impossibilidade de uso do aplicativo, incluindo perda de dados por falha técnica. A responsabilidade máxima da Audax Consultoria é limitada ao valor pago pelo usuário nos últimos 3 meses.</div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">9. Alterações nos termos</div>
+      <div class="priv-text">Podemos atualizar estes termos a qualquer momento. Alterações significativas serão comunicadas via notificação no app com pelo menos 15 dias de antecedência. O uso continuado após as alterações implica aceitação dos novos termos.</div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">10. Lei aplicável e foro</div>
+      <div class="priv-text">Estes termos são regidos pelas leis da República Federativa do Brasil. Fica eleito o foro da Comarca do Rio de Janeiro, RJ, para dirimir quaisquer controvérsias decorrentes deste instrumento.</div>
+    </div>
+
+    <div class="priv-divider"></div>
+
+    <div class="priv-section">
+      <div class="priv-section-title">11. Contato</div>
+      <div class="priv-text">
+        <strong style="color:var(--cream)">Audax Consultoria</strong><br>
+        CNPJ: 33.344.650/0001-03<br>
+        E-mail: audax.silfexsil@gmail.com<br>
+        WhatsApp: (21) 96416-4234
+      </div>
+    </div>
+
+    <div class="priv-divider"></div>
+    <div class="priv-section">
+      <div class="priv-text" style="font-size:11px;color:#4a4440;text-align:center">© 2025 Audax Consultoria · Todos os direitos reservados<br>AVR–S · A Vida Sem Rascunho · Versão 4.0<br>Última atualização: junho de 2025</div>
+    </div>
+
+  </div>
+</div>
+
+ <!-- MANUAL DO APP -->
+<div class="alertas-overlay" id="manualOverlay" style="z-index:1010">
+  <div class="alertas-topbar">
+    <button class="alertas-back" onclick="closeManual()"><i class="ti ti-arrow-left"></i></button>
+    <div class="alertas-title">Como usar o app</div>
+  </div>
+  <div class="alertas-content">
+
+    <div style="font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;font-style:italic;color:var(--text2);line-height:1.8;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)">
+      O AVR–S não exige que você tenha lido o livro para começar. Ele foi criado para ser usado no dia a dia — antes de uma decisão, depois de uma reação, ou simplesmente quando você quer entender melhor o que está sentindo.
+    </div>
+
+    <!-- Seção 1 -->
+    <div class="layer-card" onclick="toggleLayer(this)" style="margin-bottom:10px">
+      <div class="layer-header">
+        <div class="layer-left">
+          <div style="width:32px;height:32px;border-radius:50%;background:rgba(200,169,109,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-player-play" style="font-size:15px;color:var(--gold)"></i></div>
+          <div class="layer-name">Por onde começar</div>
+        </div>
+        <i class="ti ti-chevron-down layer-chevron"></i>
+      </div>
+      <div class="layer-body">
+        <div class="layer-desc">Na tela inicial você verá a pergunta: <em>"Como está seu estado interno agora?"</em><br><br>Escolha o estado que mais se aproxima do que você está sentindo:</div>
+        <div class="layer-q"><i class="ti ti-eye layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Presente</strong> — estou aqui, atento</div></div>
+        <div class="layer-q"><i class="ti ti-target layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Focado</strong> — estou concentrado em algo</div></div>
+        <div class="layer-q"><i class="ti ti-bolt layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Ansioso</strong> — sinto pressão ou preocupação</div></div>
+        <div class="layer-q"><i class="ti ti-cloud-storm layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Sobrecarregado</strong> — sinto que é demais</div></div>
+        <div class="layer-q"><i class="ti ti-flame layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Reativo</strong> — acabei de reagir a algo</div></div>
+        <div class="layer-q"><i class="ti ti-sun layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Claro</strong> — estou com a cabeça limpa</div></div>
+        <div style="margin-top:12px;background:rgba(200,169,109,.06);border:1px solid var(--border2);border-radius:10px;padding:12px">
+          <div class="layer-desc" style="margin:0">Toque no estado e o app vai te guiar pelo diagnóstico AVR–S automaticamente.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção 2 -->
+    <div class="layer-card" onclick="toggleLayer(this)" style="margin-bottom:10px">
+      <div class="layer-header">
+        <div class="layer-left">
+          <div style="width:32px;height:32px;border-radius:50%;background:rgba(200,169,109,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-layout-grid" style="font-size:15px;color:var(--gold)"></i></div>
+          <div class="layer-name">O que é cada tela</div>
+        </div>
+        <i class="ti ti-chevron-down layer-chevron"></i>
+      </div>
+      <div class="layer-body">
+        <div class="layer-q"><i class="ti ti-home layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Início</strong> — estados emocionais, sequência de dias, pergunta do dia e Mentor IA</div></div>
+        <div class="layer-q"><i class="ti ti-notebook layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Diário</strong> — todos os seus registros e decisões conscientes</div></div>
+        <div class="layer-q"><i class="ti ti-route layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Guia</strong> — como o AVR–S atua nos momentos do dia</div></div>
+        <div class="layer-q"><i class="ti ti-layers-intersect layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Protocolo</strong> — as 5 camadas, as 8 etapas, biblioteca, frases e glossário</div></div>
+        <div class="layer-q"><i class="ti ti-settings layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Ajustes</strong> — conta, tema, alertas, exportação e suporte</div></div>
+      </div>
+    </div>
+
+    <!-- Seção 3 -->
+    <div class="layer-card" onclick="toggleLayer(this)" style="margin-bottom:10px">
+      <div class="layer-header">
+        <div class="layer-left">
+          <div style="width:32px;height:32px;border-radius:50%;background:rgba(200,169,109,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-calendar" style="font-size:15px;color:var(--gold)"></i></div>
+          <div class="layer-name">Como usar no dia a dia</div>
+        </div>
+        <i class="ti ti-chevron-down layer-chevron"></i>
+      </div>
+      <div class="layer-body">
+        <div class="layer-desc">Você não precisa usar o app por horas. Bastam alguns minutos por dia.</div>
+        <div class="layer-q"><i class="ti ti-sun layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Ao acordar (2 min)</strong> — escolha seu estado e responda o diagnóstico. Isso calibra sua percepção antes do dia começar.</div></div>
+        <div class="layer-q"><i class="ti ti-bolt layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Antes de uma decisão</strong> — abra o app, escolha seu estado e siga o diagnóstico para identificar distorções ativas.</div></div>
+        <div class="layer-q"><i class="ti ti-pencil layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Após uma reação</strong> — use "Registrar decisão consciente" para anotar o que aconteceu e o que aprendeu.</div></div>
+        <div class="layer-q"><i class="ti ti-moon layer-q-icon"></i><div class="layer-q-text"><strong style="color:var(--gold2)">Antes de dormir (1 min)</strong> — leia a pergunta do dia e reflita. Não precisa registrar.</div></div>
+      </div>
+    </div>
+
+    <!-- Seção 4 -->
+    <div class="layer-card" onclick="toggleLayer(this)" style="margin-bottom:10px">
+      <div class="layer-header">
+        <div class="layer-left">
+          <div style="width:32px;height:32px;border-radius:50%;background:rgba(200,169,109,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-help" style="font-size:15px;color:var(--gold)"></i></div>
+          <div class="layer-name">Perguntas frequentes</div>
+        </div>
+        <i class="ti ti-chevron-down layer-chevron"></i>
+      </div>
+      <div class="layer-body">
+        <div class="layer-q" style="flex-direction:column;gap:4px;align-items:flex-start">
+          <div style="font-size:13px;color:var(--gold2);font-weight:600">Precisa ler o livro para usar o app?</div>
+          <div class="layer-q-text">Não. O app funciona de forma independente. O livro aprofunda o método, mas não é necessário.</div>
+        </div>
+        <div class="layer-q" style="flex-direction:column;gap:4px;align-items:flex-start">
+          <div style="font-size:13px;color:var(--gold2);font-weight:600">O que é o Mentor IA?</div>
+          <div class="layer-q-text">Um assistente com inteligência artificial treinado no método AVR–S. Disponível no plano Pro.</div>
+        </div>
+        <div class="layer-q" style="flex-direction:column;gap:4px;align-items:flex-start">
+          <div style="font-size:13px;color:var(--gold2);font-weight:600">O que é o plano Pro?</div>
+          <div class="layer-q-text">R$19/mês. Libera o Mentor IA, análise de padrões avançada e insights personalizados ao final de cada diagnóstico.</div>
+        </div>
+        <div class="layer-q" style="flex-direction:column;gap:4px;align-items:flex-start">
+          <div style="font-size:13px;color:var(--gold2);font-weight:600">Meus dados ficam salvos?</div>
+          <div class="layer-q-text">Sim. Salvos no dispositivo e na nuvem. Se trocar de celular, entre com a mesma conta e tudo estará lá.</div>
+        </div>
+        <div class="layer-q" style="flex-direction:column;gap:4px;align-items:flex-start;border:none">
+          <div style="font-size:13px;color:var(--gold2);font-weight:600">Como falo com o suporte?</div>
+          <div class="layer-q-text">Em Ajustes → Suporte você encontra o WhatsApp e o e-mail da Audax Consultoria. Respondemos em até 24h.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:#4a4440">AVR–S · A Vida Sem Rascunho · Audax Consultoria</div>
+
+  </div>
+</div>
+ <div class="alerta-notif" id="alertaNotif">
+  <div class="alerta-notif-icon"><i class="ti ti-bell-ringing" id="alertaNotifIcon"></i></div>
+  <div class="alerta-notif-text">
+    <div class="alerta-notif-title" id="alertaNotifTitle">Lembrete AVR–S</div>
+    <div class="alerta-notif-sub" id="alertaNotifSub">Como está seu estado agora?</div>
+  </div>
+  <button class="alerta-notif-btn" onclick="registrarEstadoAlerta()">Registrar</button>
+  <button class="alerta-notif-close" onclick="fecharAlertaNotif()"><i class="ti ti-x"></i></button>
+</div>
+
+<!-- ALERTAS CONFIG -->
+<div class="alertas-overlay" id="alertasOverlay">
+  <div class="alertas-topbar">
+    <button class="alertas-back" onclick="closeAlertas()"><i class="ti ti-arrow-left"></i></button>
+    <div class="alertas-title">Alertas & Lembretes</div>
+  </div>
+  <div class="alertas-content">
+
+    <!-- Preferência de som — GLOBAL -->
+    <div class="alerta-card" style="border-color:var(--border2)">
+      <div class="alerta-card-title"><i class="ti ti-volume"></i>Som dos alertas</div>
+      <div class="alerta-card-sub">Escolha se os alertas devem tocar um som suave ao disparar</div>
+      <div class="alerta-toggle-row" style="border-top:none;padding-top:0">
+        <div class="alerta-toggle-label"><i class="ti ti-volume" style="margin-right:6px;color:var(--gold)"></i>Som ao disparar</div>
+        <label class="theme-switch">
+          <input type="checkbox" id="toggleSom" onchange="setSomAlerta(this.checked)">
+          <span class="theme-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Dormir -->
+    <div class="alerta-card">
+      <div class="alerta-card-title"><i class="ti ti-moon"></i>Hora de dormir</div>
+      <div class="alerta-card-sub">Registre seu estado antes de dormir para acompanhar padrões noturnos</div>
+      <div class="alerta-time-row"><div class="alerta-time-label">Horário</div><input type="time" class="alerta-time-input" id="horarioDormir" value="22:00"/></div>
+      <div class="alerta-toggle-row"><div class="alerta-toggle-label">Ativar alerta</div><label class="theme-switch"><input type="checkbox" id="toggleDormir"><span class="theme-slider"></span></label></div>
+      <button class="alerta-save-btn" onclick="salvarAlerta('dormir')">Salvar</button>
+    </div>
+
+    <!-- Acordar -->
+    <div class="alerta-card">
+      <div class="alerta-card-title"><i class="ti ti-sun"></i>Hora de acordar</div>
+      <div class="alerta-card-sub">Registre seu estado ao acordar para identificar como cada manhã começa</div>
+      <div class="alerta-time-row"><div class="alerta-time-label">Horário</div><input type="time" class="alerta-time-input" id="horarioAcordar" value="07:00"/></div>
+      <div class="alerta-toggle-row"><div class="alerta-toggle-label">Ativar alerta</div><label class="theme-switch"><input type="checkbox" id="toggleAcordar"><span class="theme-slider"></span></label></div>
+      <button class="alerta-save-btn" onclick="salvarAlerta('acordar')">Salvar</button>
+    </div>
+
+    <!-- Lembrete diário -->
+    <div class="alerta-card">
+      <div class="alerta-card-title"><i class="ti ti-clock"></i>Lembrete diário</div>
+      <div class="alerta-card-sub">Um lembrete para registrar seu estado durante o dia</div>
+      <div class="alerta-time-row"><div class="alerta-time-label">Horário</div><input type="time" class="alerta-time-input" id="horarioLembrete" value="12:00"/></div>
+      <div class="alerta-toggle-row"><div class="alerta-toggle-label">Ativar lembrete</div><label class="theme-switch"><input type="checkbox" id="toggleLembrete"><span class="theme-slider"></span></label></div>
+      <button class="alerta-save-btn" onclick="salvarAlerta('lembrete')">Salvar</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ADMIN — MODAL MENSAGEM -->
+<div class="admin-msg-overlay" id="adminMsgOverlay">
+  <div class="admin-msg-panel">
+    <div class="modal-handle" style="margin-top:14px"></div>
+    <div class="modal-header"><div class="modal-title">Mensagem para <span id="adminMsgTarget" style="color:var(--gold)"></span></div></div>
+    <div class="modal-body">
+      <div class="field"><label>Assunto</label><input type="text" id="adminMsgSubject" placeholder="Ex: Novidade no app AVR–S"/></div>
+      <div class="field"><label>Mensagem</label><textarea id="adminMsgBody" placeholder="Escreva sua mensagem..." style="min-height:120px"></textarea></div>
+    </div>
+    <div class="modal-actions">
+      <button class="cancel-btn" onclick="closeAdminMsg()">Cancelar</button>
+      <button class="save-btn" onclick="sendAdminMsg()"><i class="ti ti-send"></i> Enviar via WhatsApp</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAINEL ADMIN -->
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-topbar">
+    <button class="admin-back" onclick="closeAdmin()"><i class="ti ti-arrow-left"></i></button>
+    <div class="admin-title">Painel Admin</div>
+    <div class="admin-badge">👑 Admin</div>
+  </div>
+  <div class="admin-content" id="adminContent"></div>
+</div>
+
+<script>
+// ── DADOS ESTÁTICOS ──
+const QUOTES=['Clareza não é pensar mais. É distorcer menos.','Você decide a versão da realidade que percebe.','Toda decisão carrega o estado de quem decide.','A vida não tem rascunho. Só execução.','Entre o estímulo e a resposta existe a sua liberdade.','Você não vive o que aprende. Vive o que repete.','O automático continua até que algo consciente o interrompa.','Quem não escolhe onde colocar a atenção responde ao que aparece.','Percepção limpa. Decisão consciente.'];
+const QUESTIONS=[{q:'Onde está sua atenção agora?',h:'Você está presente no que importa ou conduzido pelo que apareceu?'},{q:'O que é fato e o que é interpretação?',h:'Separe o que aconteceu do que você construiu sobre isso.'},{q:'Que comando invisível está ativo em você?',h:'Qual frase interna está conduzindo sua percepção hoje?'},{q:'Você está decidindo ou reagindo?',h:'Existe um espaço entre o estímulo e sua resposta. Você o está usando?'},{q:'O que você tem repetido sem perceber?',h:'Repetição não percebida vira padrão. Padrão vira identidade.'},{q:'Seu estado está regulado para decidir?',h:'Decisão boa em estado ruim tende a dar resultado ruim.'},{q:'Que ciclo você está dentro agora?',h:'Todo comportamento tem uma instrução na origem. Qual é a sua?'}];
+const CL={Presente:{intro:'Você está presente. Vamos verificar a qualidade dessa presença.',steps:[{q:'Sua atenção está onde você quer que esteja?',opts:['Sim, estou totalmente focado','Sim, mas com algum esforço','Não, estou dividido','Não sei dizer']},{q:'Você está observando os fatos ou já interpretando?',opts:['Observando apenas os fatos','Misturando fatos e interpretações','Principalmente interpretando','Não estou certo']},{q:'Há algo que está evitando perceber agora?',opts:['Não, estou aberto','Talvez algo pequeno','Sim, prefiro não olhar','Preciso refletir mais']},{q:'Descreva em uma frase o que está presente para você agora:',type:'text',ph:'O que está realmente acontecendo neste momento?'}]},Focado:{intro:'Foco é um recurso poderoso. Vamos entender a origem e a direção do seu.',steps:[{q:'Seu foco é escolhido ou foi capturado por algo externo?',opts:['Totalmente escolhido por mim','Mais escolhido do que capturado','Mais capturado do que escolhido','Completamente capturado']},{q:'O que você está focando é realmente o mais importante?',opts:['Sim, com certeza','Acho que sim','Tenho dúvidas','Provavelmente não']},{q:'Existe urgência real ou você está criando urgência artificialmente?',opts:['Urgência real e justificada','Urgência real mas exagerada','Urgência artificial','Não há urgência']},{q:'O que precisa da sua atenção e está sendo ignorado?',type:'text',ph:'Algo importante que você está evitando...'}]},Ansioso:{intro:'Ansiedade é um sinal. Vamos entender o que ela está tentando te dizer.',steps:[{q:'O que está gerando essa ansiedade?',opts:['Uma ameaça real e concreta','Uma ameaça possível mas incerta','Um pensamento sobre o futuro','Não consigo identificar']},{q:'Essa ansiedade é proporcional à situação real?',opts:['Sim, é proporcional','Está um pouco exagerada','Está muito exagerada','Não sei avaliar']},{q:'Qual distorção pode estar ativa?',opts:['Urgência falsa — parece mais urgente do que é','Escassez — medo de perder algo','Medo — evitando um desconforto','Outra coisa']},{q:'O que você tem controle de fazer agora nessa situação?',type:'text',ph:'Foque apenas no que depende de você...'}]},Sobrecarregado:{intro:'Sobrecarga é sinal de que o sistema opera além da capacidade. Vamos organizar.',steps:[{q:'De onde vem essa sensação de sobrecarga?',opts:['Excesso de tarefas reais','Excesso de preocupações mentais','Mistura dos dois','Não sei ao certo']},{q:'Você está tentando controlar coisas que não dependem de você?',opts:['Não, foco apenas no que posso controlar','Um pouco sim','Bastante','Sim, quase tudo']},{q:'Qual é a coisa mais importante a resolver agora?',opts:['Sei exatamente qual é','Tenho algumas ideias','Estou confuso sobre isso','Não consigo priorizar']},{q:'O que você pode eliminar, delegar ou adiar hoje?',type:'text',ph:'Liste pelo menos uma coisa...'}]},Reativo:{intro:'Reatividade significa que algo acionou uma resposta automática. Vamos identificar o gatilho.',steps:[{q:'O que disparou essa reação?',opts:['Uma palavra ou ação de alguém','Uma situação inesperada','Um pensamento interno','Não sei identificar']},{q:'Sua reação está sendo proporcional ao que aconteceu?',opts:['Sim, proporcional','Levemente desproporcional','Muito desproporcional','Não consigo avaliar agora']},{q:'Qual estado emocional está conduzindo essa reação?',opts:['Raiva ou frustração','Medo ou insegurança','Ego ou necessidade de estar certo','Cansaço ou sobrecarga']},{q:'Se você esperasse 10 minutos antes de agir, o que mudaria?',type:'text',ph:'Descreva como você responderia com mais clareza...'}]},Claro:{intro:'Clareza é um estado valioso. Vamos solidificar e aproveitar esse momento.',steps:[{q:'O que gerou essa clareza?',opts:['Um processo de reflexão','Uma conversa reveladora','Um momento de pausa','Veio naturalmente']},{q:'Existe alguma decisão importante que você pode tomar agora?',opts:['Sim, e já sei o que fazer','Sim, mas preciso de mais informação','Não há decisão urgente','Prefiro registrar e observar']},{q:'Essa clareza revela algo sobre um padrão seu?',opts:['Sim, identifiquei um padrão claro','Sim, mas ainda vago','Não percebi padrão','Preciso refletir mais']},{q:'Que ação concreta esse momento de clareza pede de você?',type:'text',ph:'Uma ação específica que você vai tomar...'}]}};
+const SUBS={Presente:{default:{icon:'ti-eye',name:'Presença Qualificada',dist:null,body:'Você está presente — isso é raro. Agora a pergunta é: sua presença está servindo ao que realmente importa?',actions:[{n:'01',t:'Nomeie em voz baixa o que está observando — sem julgamento, apenas o fato.'},{n:'02',t:'Pergunte: "O que este momento está pedindo de mim?" Responda com uma ação simples.'},{n:'03',t:'Registre essa clareza — presença consciente é o início de qualquer decisão bem tomada.'}]}},Focado:{capturado:{icon:'ti-target',name:'Foco Capturado',dist:'Atenção capturada: você está respondendo ao que aparece, não ao que escolheu.',body:'Seu foco foi sequestrado por algo externo.',actions:[{n:'01',t:'Pause por 60 segundos. Respire.'},{n:'02',t:'Pergunte: "O que eu escolheria focar se não houvesse pressão externa?"'},{n:'03',t:'Retorne ao que é importante — não ao que é barulhento.'}]},default:{icon:'ti-target',name:'Foco Consciente',dist:null,body:'Seu foco está alinhado e escolhido.',actions:[{n:'01',t:'Defina uma única entrega para as próximas 2 horas.'},{n:'02',t:'Bloqueie interrupções enquanto esse estado durar.'},{n:'03',t:'Ao final, registre o que esse foco produziu.'}]}},Ansioso:{urgencia:{icon:'ti-bolt',name:'Distorção: Urgência Falsa',dist:'Urgência falsa ativa.',body:'A ansiedade está sendo alimentada por uma sensação de urgência que pode não ser real.',actions:[{n:'01',t:'Pergunte: "Se eu agir amanhã, o que de fato muda?"'},{n:'02',t:'Respire por 4 tempos.'},{n:'03',t:'Decida conscientemente quando agir.'}]},escassez:{icon:'ti-bolt',name:'Distorção: Escassez',dist:'Escassez ativa.',body:'O medo de perder está distorcendo sua percepção.',actions:[{n:'01',t:'Pergunte: "O que realmente perco se não agir agora?"'},{n:'02',t:'Identifique outras oportunidades semelhantes.'},{n:'03',t:'Tome a decisão baseado em clareza, não em medo.'}]},medo:{icon:'ti-bolt',name:'Ansiedade por Evitação',dist:'Evitação ativa.',body:'Você está ansioso porque está evitando algo que precisa ser enfrentado.',actions:[{n:'01',t:'Nomeie o que está evitando.'},{n:'02',t:'Identifique a menor ação possível em direção ao que está evitando.'},{n:'03',t:'Faça essa ação agora.'}]},default:{icon:'ti-bolt',name:'Regulando a Ansiedade',dist:null,body:'Ansiedade é informação — não uma ordem.',actions:[{n:'01',t:'Separe o fato da história que você está contando sobre ele.'},{n:'02',t:'Respire profundamente por 4 tempos.'},{n:'03',t:'Decida uma ação pequena e concreta que você tem controle de fazer agora.'}]}},Sobrecarregado:{default:{icon:'ti-cloud-storm',name:'Organizando a Sobrecarga',dist:null,body:'Quando tudo parece urgente, nada é prioritário.',actions:[{n:'01',t:'Escolha UMA coisa que se concluída hoje geraria mais valor.'},{n:'02',t:'Elimine, delegue ou adie tudo o mais.'},{n:'03',t:'Avance nessa uma coisa por 25 minutos sem interrupção.'}]}},Reativo:{raiva:{icon:'ti-flame',name:'Reação Emocional Ativa',dist:'Sequestro da amígdala ativo.',body:'Raiva e frustração desativam temporariamente o raciocínio.',actions:[{n:'01',t:'Não decida agora. Mínimo 10-30 minutos de espera.'},{n:'02',t:'Mova o corpo: caminhe, respire, mude de ambiente.'},{n:'03',t:'Quando o estado baixar, pergunte: "O que realmente aconteceu?"'}]},ego:{icon:'ti-flame',name:'Reação do Ego',dist:'Ego ativo.',body:'A necessidade de estar certo está conduzindo a reação.',actions:[{n:'01',t:'Pergunte: "Quero estar certo ou quero o melhor resultado?"'},{n:'02',t:'Considere que a outra perspectiva pode conter informação útil.'},{n:'03',t:'Responda com base no objetivo, não na necessidade de vencer.'}]},default:{icon:'ti-flame',name:'Identificando o Gatilho',dist:null,body:'Reação automática significa que algo ativou um padrão sem passagem pela consciência.',actions:[{n:'01',t:'Pause antes de qualquer ação.'},{n:'02',t:'Identifique o gatilho real.'},{n:'03',t:'Escolha conscientemente como responder.'}]}},Claro:{default:{icon:'ti-sun',name:'Estado de Clareza',dist:null,body:'Clareza é um ativo raro. Use esse momento para registrar insights e tomar decisões.',actions:[{n:'01',t:'Registre o que você está enxergando com clareza.'},{n:'02',t:'Tome as decisões que vinha adiando.'},{n:'03',t:'Identifique o que gerou essa clareza e como recriar esse estado.'}]}}};
+const FRASES_LIVRO=['Clareza não é pensar mais. É distorcer menos.','Você decide a versão da realidade que percebe.','Toda decisão carrega o estado de quem decide.','A vida não tem rascunho. Só execução.','Entre o estímulo e a resposta existe a sua liberdade.','Você não vive o que aprende. Vive o que repete.','O automático continua até que algo consciente o interrompa.','Quem não escolhe onde colocar a atenção responde ao que aparece.','Percepção limpa. Decisão consciente.','Nem toda reação nasce do que aconteceu. Nasce do estado de quem interpreta.','A pressão reduz percepção. Estados acelerados criam distorções.','Você não reage ao que acontece. Reage ao significado que construiu.','Repetição não percebida vira padrão. Padrão vira identidade.','Decisão boa em estado ruim tende a dar resultado ruim.','O espaço entre o estímulo e a resposta é onde a escolha real acontece.','Não sofremos pelo fato. Sofremos pela interpretação que construímos sobre ele.'];
+const GLOSSARIO_DATA=[{term:'Regulação',def:'Ajuste do estado interno antes de decidir ou agir.',ex:'"Antes de responder ao e-mail que me irritou, pausei e regulei meu estado."'},{term:'Distorção cognitiva',def:'Filtro mental que altera a percepção da realidade.',ex:'"Percebi que a urgência que sentia era emocional, não real."'},{term:'Atenção capturada',def:'Estado em que o foco foi sequestrado por algo externo sem escolha consciente.',ex:'"Meu foco estava no que apareceu, não no que escolhi priorizar."'},{term:'Resposta automática',def:'Comportamento gerado sem passagem pela consciência.',ex:'"Reagi sem pensar — foi um automático que preciso trabalhar."'},{term:'Espaço de escolha',def:'O intervalo entre o estímulo e a resposta. É nesse espaço que a decisão consciente acontece.',ex:'"Aprendi a criar um espaço antes de responder."'},{term:'Urgência falsa',def:'Distorção que faz uma situação parecer mais urgente do que realmente é.',ex:'"A sensação de que precisava decidir agora era urgência falsa."'},{term:'Estado interno',def:'Conjunto de condições emocionais e cognitivas que determinam a qualidade das decisões.',ex:'"Meu estado interno estava ansioso — não era hora de decidir."'},{term:'Padrão',def:'Comportamento repetido com frequência suficiente para se tornar automático.',ex:'"Percebi que evitar conflito era um padrão que carrego há anos."'},{term:'Ciclo',def:'Sequência de comportamentos que se retroalimenta.',ex:'"Entrei no ciclo de sobrecarga porque nunca dizia não."'},{term:'Percepção limpa',def:'Estado em que a realidade é observada sem filtros emocionais ou narrativas construídas.',ex:'"Com percepção limpa, vi que o problema era menor do que imaginei."'}];
+const BIBLIOTECA_DATA=[{tag:'Urgência falsa',state:'Ansioso',situation:'A proposta que parecia expirar amanhã',preview:'Um vendedor disse que a oferta acabava em 24h. A ansiedade tomou conta.',fato:'A oferta existia há semanas. O prazo era uma técnica de pressão.',distorcao:'Urgência falsa — a pressão era externa e emocional, não real.',decisao:'Pausei, pesquisei, e negociei sem pressa.',insight:'Urgência real é rara. Na maioria das vezes, é a emoção criando pressão onde não existe.'},{tag:'Reatividade',state:'Reativo',situation:'A mensagem que pareceu um ataque pessoal',preview:'Um colega enviou um feedback crítico. A primeira leitura pareceu agressiva.',fato:'O texto era direto, não agressivo. O tom foi interpretado pelo meu estado irritado.',distorcao:'Projeção emocional — o estado interno contaminou a leitura.',decisao:'Esperei 30 minutos, reli a mensagem e respondi com clareza.',insight:'Ler uma mensagem difícil no estado errado é garantia de interpretação errada.'},{tag:'Escassez',state:'Ansioso',situation:'A oportunidade que parecia única na vida',preview:'Uma oportunidade surgiu. Parecia que nunca mais apareceria igual.',fato:'Oportunidades similares existiam. O que era único era a pressão que sentia.',distorcao:'Escassez — o medo de perder distorceu a avaliação real.',decisao:'Pedi 48 horas para analisar. A oportunidade continuou disponível.',insight:'Decisões tomadas sob escassez raramente são as melhores.'}];
+
+function getSuggestion(state,answers){const pool=SUBS[state];if(!pool)return null;const a0=answers[0]||'',a2=answers[2]||'';if(state==='Ansioso'){if(a2.includes('Urgência'))return pool.urgencia;if(a2.includes('Escassez'))return pool.escassez;if(a2.includes('Medo'))return pool.medo;}if(state==='Reativo'){if(a2.includes('Raiva'))return pool.raiva;if(a2.includes('Ego'))return pool.ego;}if(state==='Focado'){if(a0.includes('capturado')||a0.includes('Completamente'))return pool.capturado;}return pool.default;}
+
+// ── STATE ──
+let entries=[],streak=0,currentFilter='todos',currentEntryId=null;
+let clState='',clIcon='',clStep=0,clAnswers=[],clSteps=[];
+let chatHistory=[],mentorProfile={};
+
+function load(){try{entries=JSON.parse(localStorage.getItem('avrs4_e'))||[];}catch(e){entries=[];}loadFrasesFav();streak=Number(localStorage.getItem('avrs4_s'))||0;try{mentorProfile=JSON.parse(localStorage.getItem('avrs4_profile'))||{};}catch(e){mentorProfile={};}try{chatHistory=JSON.parse(localStorage.getItem('avrs4_chat'))||[];}catch(e){chatHistory=[];}}
+function saveData(){
+  localStorage.setItem('avrs4_e',JSON.stringify(entries));
+  localStorage.setItem('avrs4_profile',JSON.stringify(mentorProfile));
+  const cu=localStorage.getItem('avrs4_current_user');
+  if(cu){
+    const users=JSON.parse(localStorage.getItem('avrs4_users')||'{}');
+    if(users[cu]){users[cu].lastSeen=Date.now();users[cu].entriesCount=entries.length;localStorage.setItem('avrs4_users',JSON.stringify(users));}
+    // ★ Sempre tenta salvar na nuvem, independente de users[cu]
+    if(window.saveUserToCloud)window.saveUserToCloud(cu.replace(/[^a-zA-Z0-9]/g,'_'));
+  }
+}
+function updateStreak(){const t=new Date().toDateString(),l=localStorage.getItem('avrs4_l');if(l!==t){streak++;localStorage.setItem('avrs4_s',streak);localStorage.setItem('avrs4_l',t);}}
+
+function buildProfile(){const last30=entries.slice(0,30);if(!last30.length)return{};const sc={},dc={};last30.forEach(e=>{if(e.state&&e.state!=='Não definido')sc[e.state]=(sc[e.state]||0)+1;if(e.distortion&&e.distortion!=='Nenhuma')dc[e.distortion]=(dc[e.distortion]||0)+1;});const ds=Object.entries(sc).sort((a,b)=>b[1]-a[1])[0]?.[0]||'';const md=Object.entries(dc).sort((a,b)=>b[1]-a[1])[0]?.[0]||'';const p={dominantState:ds,mainDistortion:md,totalEntries:last30.length,stateCounts:sc,distCounts:dc};mentorProfile=p;saveData();return p;}
+function getProfileSummary(){const p=buildProfile();if(!p.totalEntries)return null;const l=[];if(p.dominantState)l.push(`Estado mais frequente: ${p.dominantState}`);if(p.mainDistortion)l.push(`Distorção recorrente: ${p.mainDistortion}`);l.push(`${p.totalEntries} registros analisados`);return l.join('\n');}
+
+async function callClaude(messages,systemPrompt){try{const r=await fetch('https://avrs-proxy.audax-silfexsil.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1000,system:systemPrompt,messages})});const d=await r.json();return d.content?.map(c=>c.type==='text'?c.text:'').join('').trim()||null;}catch(e){return null;}}
+
+function getMentorSystem(){const p=buildProfile();const re=entries.slice(0,10).map(e=>`[${e.date}] Estado: ${e.state} | Situação: ${e.situation} | Distorção: ${e.distortion}`).join('\n');return`Você é o Mentor AVR–S, um guia de consciência e decisão baseado no método AVR–S do livro "A Vida Sem Rascunho".\n\nMétodo AVR–S:\n- R (Regular): ajustar o estado interno\n- A (Atenção): perceber para onde o foco vai\n- V (Visão): separar fato de interpretação\n- R (Resposta): criar espaço entre estímulo e resposta\n- S (Sistema): construir padrões sustentáveis\n\nPERFIL:\n${p.dominantState?`Estado dominante: ${p.dominantState}`:''}\n${p.mainDistortion?`Distorção mais frequente: ${p.mainDistortion}`:''}\nTotal de registros: ${p.totalEntries||0}\n\nÚLTIMOS REGISTROS:\n${re||'Nenhum ainda.'}\n\nResposta sempre em português brasileiro. Direto, profundo. Máximo 3-4 parágrafos curtos.`;}
+
+async function loadMentorMessage(){const el=document.getElementById('mentorText'),actEl=document.getElementById('mentorActions');const p=buildProfile();let prompt;if(!entries.length){prompt='Dê uma mensagem de boas-vindas ao usuário que está começando o app AVR–S. Máximo 2 frases.';}else{const last=entries[0];prompt=`Dê uma mensagem personalizada de diagnóstico para hoje. Última entrada: Estado "${last.state}", Situação: "${last.situation}". Máximo 3 frases.`;}const r=await callClaude([{role:'user',content:prompt}],getMentorSystem());if(r){el.innerHTML=mdToHtml(r);const pills=[];if(p.dominantState==='Ansioso')pills.push('Como regular a ansiedade?');if(p.dominantState==='Reativo')pills.push('Como criar mais espaço?');if(p.mainDistortion)pills.push(`O que é ${p.mainDistortion}?`);pills.push('Meu padrão desta semana');actEl.innerHTML=pills.slice(0,3).map(p=>`<div class="mentor-pill" onclick="quickChat('${p}')">${p}</div>`).join('');}else{el.innerHTML=entries.length?'Seu diário está crescendo. Que padrão você quer transformar hoje?':'Bem-vindo ao AVR–S. Comece registrando seu estado agora.';actEl.innerHTML=`<div class="mentor-pill" onclick="openMentorChat()">Conversar com o Mentor</div>`;}}
+
+async function requestWeeklyAnalysis(){const btn=document.querySelector('.analysis-btn');btn.innerHTML='<i class="ti ti-loader"></i> Analisando...';btn.disabled=true;const week=entries.slice(0,7);if(!week.length){btn.innerHTML='<i class="ti ti-sparkles"></i> Analisar';btn.disabled=false;return;}const sc={};week.forEach(e=>{if(e.state&&e.state!=='Não definido')sc[e.state]=(sc[e.state]||0)+1;});const total=week.length;document.getElementById('patternBars').innerHTML=Object.entries(sc).sort((a,b)=>b[1]-a[1]).map(([s,c])=>`<div class="pattern-row"><div class="pattern-label">${s}</div><div class="pattern-bar-wrap"><div class="pattern-bar" style="width:${Math.round((c/total)*100)}%"></div></div><div class="pattern-pct">${Math.round((c/total)*100)}%</div></div>`).join('');btn.innerHTML='<i class="ti ti-sparkles"></i> Analisar';btn.disabled=false;}
+
+async function getAIInsight(state,answers){if(!verificarLimiteIA())return null;incrementMsgCount();const p=buildProfile();const prompt=`O usuário está no estado "${state}" e respondeu: ${answers.join(' | ')}\n${p.dominantState?'Padrão recorrente: '+p.dominantState:''}\nDê um insight personalizado de 2-3 frases.`;return await callClaude([{role:'user',content:prompt}],getMentorSystem());}
+
+let isChatLoading=false;
+function openMentorChat(){document.getElementById('mentorChatOverlay').classList.add('open');const msgs=document.getElementById('chatMsgs');if(!msgs.children.length){if(chatHistory.length){chatHistory.forEach(m=>appendMsg(m.role,m.content,false));}else{const w=entries.length?`Olá. Estou analisando seu histórico — ${entries.length} registros. O que você quer trabalhar hoje?`:'Bem-vindo ao Mentor AVR–S. O que está passando agora?';appendMsg('assistant',w,false);chatHistory.push({role:'assistant',content:w});}}scrollChat();}
+function closeMentorChat(){stopSpeak();document.getElementById('mentorChatOverlay').classList.remove('open');localStorage.setItem('avrs4_chat',JSON.stringify(chatHistory.slice(-20)));}
+function quickChat(msg){openMentorChat();setTimeout(()=>{document.getElementById('chatInput').value=msg;sendChat();},300);}
+
+function appendMsg(role,text,scroll=true){const msgs=document.getElementById('chatMsgs');if(role==='assistant'){const wrap=document.createElement('div');wrap.className='msg-ai-wrap';const bubble=document.createElement('div');bubble.className='msg msg-ai';bubble.innerHTML=mdToHtml(esc(text));const speakBtn=document.createElement('button');speakBtn.className='msg-speak-btn';speakBtn.innerHTML='<i class="ti ti-volume"></i><span>ouvir</span>';speakBtn.onclick=()=>toggleSpeak(text,speakBtn);wrap.appendChild(bubble);wrap.appendChild(speakBtn);msgs.appendChild(wrap);const ttsMode=localStorage.getItem('avrs4_tts')||'auto';if(scroll&&(ttsMode==='always'||(ttsMode==='auto'&&text.length<400)))setTimeout(()=>toggleSpeak(text,speakBtn),300);}else{const div=document.createElement('div');div.className='msg msg-user';div.textContent=text;msgs.appendChild(div);}if(scroll)scrollChat();}
+function appendTyping(){const msgs=document.getElementById('chatMsgs');const div=document.createElement('div');div.className='msg msg-ai';div.id='typingIndicator';div.innerHTML='<div class="mentor-typing"><span></span><span></span><span></span></div>';msgs.appendChild(div);scrollChat();}
+function removeTyping(){const el=document.getElementById('typingIndicator');if(el)el.remove();}
+function scrollChat(){const msgs=document.getElementById('chatMsgs');msgs.scrollTop=msgs.scrollHeight;}
+
+async function sendChat(){if(isChatLoading)return;const input=document.getElementById('chatInput');const text=input.value.trim();if(!text)return;if(!verificarLimiteIA())return;incrementMsgCount();atualizarContadorChat();input.value='';appendMsg('user',text);chatHistory.push({role:'user',content:text});isChatLoading=true;document.getElementById('mentorChatStatus').textContent='digitando...';appendTyping();const messages=chatHistory.slice(-12).map(m=>({role:m.role,content:m.content}));const response=await callClaude(messages,getMentorSystem());removeTyping();isChatLoading=false;document.getElementById('mentorChatStatus').textContent='online';const reply=response||'Algo deu errado. Tente novamente.';appendMsg('assistant',reply);chatHistory.push({role:'assistant',content:reply});localStorage.setItem('avrs4_chat',JSON.stringify(chatHistory.slice(-20)));}
+
+// ── TTS ──
+let ttsUtterance=null,ttsSpeaking=false,ttsCurrentBtn=null;
+function stopSpeak(){if(window.speechSynthesis)window.speechSynthesis.cancel();ttsSpeaking=false;if(ttsCurrentBtn){ttsCurrentBtn.classList.remove('speaking');ttsCurrentBtn.innerHTML='<i class="ti ti-volume"></i><span>ouvir</span>';ttsCurrentBtn=null;}const ind=document.getElementById('ttsIndicator');if(ind)ind.classList.remove('active');}
+function toggleSpeak(text,btn){if(ttsSpeaking&&ttsCurrentBtn===btn){stopSpeak();return;}if(ttsSpeaking)stopSpeak();if(!window.speechSynthesis){alert('Seu dispositivo não suporta síntese de voz.');return;}const clean=text.replace(/[*_~`#]/g,'').trim();ttsUtterance=new SpeechSynthesisUtterance(clean);ttsUtterance.lang='pt-BR';ttsUtterance.rate=0.95;ttsUtterance.volume=1;const voices=window.speechSynthesis.getVoices();const v=voices.find(v=>v.lang==='pt-BR')||voices.find(v=>v.lang.startsWith('pt'));if(v)ttsUtterance.voice=v;ttsUtterance.onstart=()=>{ttsSpeaking=true;ttsCurrentBtn=btn;btn.classList.add('speaking');btn.innerHTML='<i class="ti ti-player-stop-filled"></i><span>parar</span>';const ind=document.getElementById('ttsIndicator');if(ind)ind.classList.add('active');};ttsUtterance.onend=()=>{ttsSpeaking=false;ttsCurrentBtn=null;btn.classList.remove('speaking');btn.innerHTML='<i class="ti ti-volume"></i><span>ouvir</span>';const ind=document.getElementById('ttsIndicator');if(ind)ind.classList.remove('active');};ttsUtterance.onerror=()=>stopSpeak();window.speechSynthesis.speak(ttsUtterance);}
+if(window.speechSynthesis)window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();
+function setTTSMode(mode){localStorage.setItem('avrs4_tts',mode);['ttsOff','ttsAuto','ttsAlways'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('active');});const map={off:'ttsOff',auto:'ttsAuto',always:'ttsAlways'};const el=document.getElementById(map[mode]);if(el)el.classList.add('active');}
+function loadTTSSettings(){const mode=localStorage.getItem('avrs4_tts')||'auto';setTTSMode(mode);}
+
+// ── ★ SOM DE ALERTA (NOVO) ──
+function tocarSomAlerta(){
+  try{
+    const AudioCtx=window.AudioContext||window.webkitAudioContext;
+    if(!AudioCtx)return;
+    const ctx=new AudioCtx();
+    [0,0.5].forEach(delay=>{
+      const osc=ctx.createOscillator();
+      const gain=ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type='sine';
+      osc.frequency.setValueAtTime(528,ctx.currentTime+delay);
+      osc.frequency.exponentialRampToValueAtTime(440,ctx.currentTime+delay+0.4);
+      gain.gain.setValueAtTime(0,ctx.currentTime+delay);
+      gain.gain.linearRampToValueAtTime(0.18,ctx.currentTime+delay+0.05);
+      gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+delay+0.6);
+      osc.start(ctx.currentTime+delay);
+      osc.stop(ctx.currentTime+delay+0.7);
+    });
+  }catch(e){}
+}
+function somAtivado(){return localStorage.getItem('avrs4_alerta_som')!=='false';}
+function setSomAlerta(ativo){localStorage.setItem('avrs4_alerta_som',ativo?'true':'false');}
+
+
+// ── LIMITE DE MENSAGENS IA ──
+const LIMITE_FREE=5,LIMITE_PRO=150;
+function getMesAtual(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');}
+function getMsgCount(){const cu=localStorage.getItem('avrs4_current_user');if(!cu)return 0;return parseInt(localStorage.getItem('avrs4_msg_'+cu.replace(/[^a-zA-Z0-9]/g,'_')+'_'+getMesAtual())||'0');}
+function incrementMsgCount(){const cu=localStorage.getItem('avrs4_current_user');if(!cu)return;const k='avrs4_msg_'+cu.replace(/[^a-zA-Z0-9]/g,'_')+'_'+getMesAtual();localStorage.setItem(k,getMsgCount()+1);}
+function getLimite(){return isPro?LIMITE_PRO:LIMITE_FREE;}
+function getMsgRestantes(){return Math.max(0,getLimite()-getMsgCount());}
+function verificarLimiteIA(){
+  if(localStorage.getItem('avrs4_current_user')===ADMIN_EMAIL)return true;
+  const r=getMsgRestantes();
+  if(r<=0){if(!isPro)openPaywall();else{const t=document.createElement('div');t.style.cssText='position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--border2);color:var(--cream);padding:14px 20px;border-radius:14px;font-size:13px;z-index:9999;max-width:300px;text-align:center';t.innerHTML='<i class="ti ti-alert-circle" style="color:var(--gold);margin-right:6px"></i>Limite de 150 msgs/mês atingido.';document.body.appendChild(t);setTimeout(()=>t.remove(),4000);}return false;}
+  if(r<=3){const inp=document.getElementById('chatInput');if(inp)inp.placeholder=r===1?'Última mensagem do mês...':r+' mensagens restantes';}
+  return true;
+}
+function atualizarContadorChat(){const s=document.getElementById('mentorChatStatus');if(s&&isPro)s.textContent='online · '+(getLimite()-getMsgCount())+'/'+getLimite()+' msgs';}
+// ── NAV ──
+function goTo(s){const cur=document.querySelector('.screen.active');if(cur)cur.classList.remove('active');document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById('screen-'+s).classList.add('active');document.getElementById('nav-'+s).classList.add('active');if(s==='settings')updateSettingsProfile();if(s==='jornada')initJornada();if(s==='universo')initUniverso();}
+
+// ── MODAL ──
+function openModal(){document.getElementById('overlay').classList.add('open');setTimeout(()=>document.getElementById('inpSit').focus(),400);}
+function closeModal(e){if(e&&e.target!==document.getElementById('overlay'))return;document.getElementById('overlay').classList.remove('open');}
+function saveEntry(){const sit=document.getElementById('inpSit').value.trim();if(!sit){document.getElementById('inpSit').focus();return;}const entry={id:Date.now(),situation:sit,fact:document.getElementById('inpFact').value.trim(),historia:document.getElementById('inpHistoria').value.trim(),projecao:document.getElementById('inpProjecao').value.trim(),distortion:document.getElementById('inpDist').value,decision:document.getElementById('inpDec').value.trim(),lesson:document.getElementById('inpLes').value.trim(),state:clState||'Não definido',answers:[...clAnswers],date:new Date().toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'})};entries.unshift(entry);saveData();renderEntries();renderStats();document.getElementById('overlay').classList.remove('open');['inpSit','inpFact','inpHistoria','inpProjecao','inpDec','inpLes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('inpDist').selectedIndex=0;clState='';clAnswers=[];document.querySelectorAll('.state-chip').forEach(c=>c.classList.remove('active'));const ac=document.getElementById('analysisCard');if(entries.length>=3)ac.style.display='block';requestWeeklyAnalysis();setTimeout(()=>loadMentorMessage(),500);}
+
+// ── CHECKLIST ──
+function openChecklist(state,icon){clState=state;clIcon=icon;clStep=0;clAnswers=[];clSteps=CL[state].steps;document.querySelectorAll('.state-chip').forEach(c=>c.classList.toggle('active',c.querySelector('span').textContent===state));document.getElementById('clOverlay').classList.add('open');renderStep();}
+function renderStep(){const total=clSteps.length;const pct=Math.round((clStep/total)*100);document.getElementById('clFill').style.width=pct+'%';const isSug=clStep===total;const header=document.getElementById('clHeader'),body=document.getElementById('clBody'),nav=document.getElementById('clNav');header.innerHTML=`<div class="cl-badge"><i class="ti ${clIcon}"></i><span>${clState.toUpperCase()}</span></div><div class="cl-title">${isSug?'Diagnóstico AVR–S':CL[clState].intro}</div>${!isSug?`<div class="cl-subtitle">Pergunta ${clStep+1} de ${total}</div>`:''}`;if(isSug){document.getElementById('clFill').style.width='100%';const sug=getSuggestion(clState,clAnswers);const lastStep=clSteps[clSteps.length-1];const lastAns=clAnswers[clSteps.length-1]||'';let distHtml=sug&&sug.dist?`<div class="sug-distortion"><i class="ti ti-alert-triangle"></i><div class="sug-distortion-text"><strong>Distorção detectada:</strong> ${sug.dist}</div></div>`:'';let actHtml=sug?sug.actions.map(a=>`<div class="sug-action"><div class="sug-action-n">${a.n}</div><div class="sug-action-t">${a.t}</div></div>`).join(''):'';let refHtml=lastStep.type==='text'&&lastAns?`<div class="sug-reflection"><div class="sug-reflection-label">Sua reflexão</div><div class="sug-reflection-text">"${esc(lastAns)}"</div></div>`:'';body.innerHTML=`<div class="sug-card"><div class="sug-top"><div class="sug-icon-wrap"><i class="ti ${sug?sug.icon:'ti-sparkles'}"></i></div><div><div class="sug-eyebrow">Diagnóstico</div><div class="sug-name">${sug?sug.name:''}</div></div></div>${distHtml}<div class="sug-body">${sug?sug.body:''}</div><div class="sug-actions">${actHtml}</div></div>${refHtml}<div class="ai-insight" id="aiInsightBox"><div class="ai-insight-label"><i class="ti ti-brain"></i>Análise personalizada · IA</div><div class="mentor-typing"><span></span><span></span><span></span></div></div>`;nav.innerHTML=`<button class="cl-prev" onclick="clStep=clSteps.length-1;renderStep()">← Rever</button><button class="cl-next" onclick="finishChecklist()">Registrar decisão</button>`;if(!isPro){const box=document.getElementById('aiInsightBox');if(box)box.innerHTML='<div class="ai-insight-label"><i class="ti ti-lock"></i>Análise personalizada · Pro</div><div class="ai-insight-text" style="font-size:13px;color:var(--text3)">Desbloqueie o AVR–S Pro para receber insights personalizados.</div><div style="margin-top:12px"><div class="mentor-pill" style="display:inline-flex" onclick="closeChecklist();openPaywall()"><i class="ti ti-crown" style="margin-right:4px"></i>Ver plano Pro</div></div>';return;}getAIInsight(clState,clAnswers).then(insight=>{const box=document.getElementById('aiInsightBox');if(box&&insight)box.innerHTML=`<div class="ai-insight-label"><i class="ti ti-brain"></i>Análise personalizada · IA</div><div class="ai-insight-text">${insight}</div>`;else if(box)box.style.display='none';});}else{const step=clSteps[clStep];let inp=step.type==='text'?`<textarea class="cl-textarea" id="clTA" placeholder="${step.ph||''}" oninput="clAnswers[${clStep}]=this.value">${clAnswers[clStep]||''}</textarea>`:`<div class="cl-options">${step.opts.map(o=>`<div class="cl-option ${clAnswers[clStep]===o?'sel':''}" onclick="selOpt(this,'${o.replace(/'/g,"\\'")}')"><div class="cl-circle"></div><div class="cl-opt-text">${o}</div></div>`).join('')}</div>`;body.innerHTML=`<div><div class="cl-step-label">Pergunta ${clStep+1}</div><div class="cl-question">${step.q}</div>${inp}</div>`;nav.innerHTML=`${clStep>0?'<button class="cl-prev" onclick="prevStep()">← Anterior</button>':'<div style="flex:1"></div>'}<button class="cl-next" onclick="nextStep()">${clStep===clSteps.length-1?'Ver diagnóstico →':'Próxima →'}</button>`;}}
+function closeChecklist(){document.getElementById('clOverlay').classList.remove('open');}
+function selOpt(el,opt){clAnswers[clStep]=opt;document.querySelectorAll('.cl-option').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');}
+function nextStep(){if(clSteps[clStep].type==='text'){const el=document.getElementById('clTA');if(el)clAnswers[clStep]=el.value.trim();}clStep++;renderStep();}
+function prevStep(){if(clStep>0){clStep--;renderStep();}}
+function finishChecklist(){document.getElementById('clOverlay').classList.remove('open');setTimeout(()=>openModal(),300);}
+
+// ── ENTRIES ──
+function filterBy(f,el){document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');currentFilter=f;renderEntries();}
+function renderEntries(){const c=document.getElementById('entriesList');const list=currentFilter==='todos'?entries:entries.filter(e=>e.state===currentFilter);if(!list.length){c.innerHTML=`<div class="empty-state"><div class="empty-icon"><i class="ti ti-notebook"></i></div><div class="empty-title">Nenhum registro ainda</div><div class="empty-sub">Toque em um estado acima para iniciar o diagnóstico.</div></div>`;return;}c.innerHTML=list.map(e=>`<div class="entry-card" onclick="openDetail(${e.id})"><div class="entry-top"><div class="entry-situation">${esc(e.situation)}</div><div class="entry-date">${e.date}</div></div>${e.decision?`<div class="entry-body">${esc(e.decision)}</div>`:''}<div class="entry-footer">${e.state!=='Não definido'?`<span class="badge badge-gold">${esc(e.state)}</span>`:''} ${e.distortion&&e.distortion!=='Nenhuma'?`<span class="badge badge-dark">${esc(e.distortion)}</span>`:''} ${e.answers&&e.answers.length?'<span class="badge badge-ai"><i class="ti ti-brain" style="font-size:10px;margin-right:3px"></i>IA</span>':''}</div></div>`).join('');}
+function esc(s){if(!s)return '';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function renderStats(){document.getElementById('streak').textContent=streak;document.getElementById('totalEntries').textContent=entries.length;const p=buildProfile();const stEl=document.getElementById('statState'),dEl=document.getElementById('statDist');if(stEl)stEl.textContent=p.dominantState||'—';if(dEl)dEl.textContent=p.mainDistortion||'—';}
+function updateSettingsProfile(){loadTTSSettings();const tt=document.getElementById('themeToggle');if(tt)tt.checked=localStorage.getItem('avrs4_theme')==='light';const cu=localStorage.getItem('avrs4_current_user');if(cu){const el=document.getElementById('settingsEmail');if(el)el.textContent=cu;}const adminBtn=document.getElementById('adminBtn');if(adminBtn)adminBtn.style.display=localStorage.getItem('avrs4_current_user')===ADMIN_EMAIL?'block':'none';document.getElementById('settingsTotal').textContent=entries.length;document.getElementById('settingsStreak').textContent=streak+' dias';if(entries.length>0){const o=new Date(entries[entries.length-1].id);document.getElementById('settingsSince').textContent=o.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});}const p=buildProfile();document.getElementById('profileStatus').textContent=entries.length>=5?'Ativo — '+entries.length+' registros':'Construindo... ('+entries.length+'/5)';document.getElementById('dominantPattern').textContent=p.dominantState||'—';document.getElementById('mainTrigger').textContent=p.mainDistortion||'—';}
+
+// ── DETAIL ──
+function openDetail(id){const e=entries.find(x=>x.id===id);if(!e)return;currentEntryId=id;document.getElementById('detSit').textContent=e.situation;document.getElementById('detMeta').innerHTML=`${e.state!=='Não definido'?`<span class="badge badge-gold">${esc(e.state)}</span>`:''} ${e.distortion&&e.distortion!=='Nenhuma'?`<span class="badge badge-dark">${esc(e.distortion)}</span>`:''} <span style="font-size:11px;color:var(--text3)">${e.date}</span>`;let body='';if(e.fact)body+=`<div class="det-section"><div class="det-section-label">Fato</div><div class="det-section-text">\${esc(e.fact)}</div></div>`;
+if(e.historia)body+=`<div class="det-section"><div class="det-section-label">História construída</div><div class="det-section-text">\${esc(e.historia)}</div></div>`;
+if(e.projecao)body+=`<div class="det-section"><div class="det-section-label">Projeção emocional</div><div class="det-section-text">\${esc(e.projecao)}</div></div>`;if(e.decision)body+=`<div class="det-section"><div class="det-section-label">Decisão consciente</div><div class="det-section-text">${esc(e.decision)}</div></div>`;if(e.lesson)body+=`<div class="det-section"><div class="det-section-label">Evolução</div><div class="det-section-text">${esc(e.lesson)}</div></div>`;document.getElementById('detBody').innerHTML=body;document.getElementById('detOverlay').style.display='block';setTimeout(()=>document.getElementById('detPanel').classList.add('open'),10);}
+function closeDetail(){document.getElementById('detPanel').classList.remove('open');setTimeout(()=>document.getElementById('detOverlay').style.display='none',350);}
+function deleteEntry(){if(!currentEntryId||!confirm('Apagar este registro?'))return;entries=entries.filter(e=>e.id!==currentEntryId);saveData();renderEntries();renderStats();closeDetail();}
+function toggleLayer(card){card.classList.toggle('open');}
+function toggleMomento(card){card.classList.toggle('open');}
+function exportData(){const b=new Blob([JSON.stringify({entries,streak,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='avrs-diario.json';a.click();}
+function confirmReset(){if(!confirm('Apagar todos os dados?'))return;localStorage.clear();entries=[];streak=0;mentorProfile={};chatHistory=[];renderEntries();renderStats();}
+
+// ── BIBLIOTECA ──
+function renderBiblioteca(){
+  const el=document.getElementById('biblioList');if(!el)return;
+  const livroCard=`<div style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:20px;margin-bottom:16px;cursor:pointer;transition:border-color .2s" onclick="openResumoLivro()">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+      <div style="width:38px;height:38px;border-radius:10px;background:rgba(200,169,109,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-book" style="font-size:18px;color:var(--gold)"></i></div>
+      <div>
+        <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:2px">Sobre o Livro</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--gold2)">A Vida Sem Rascunho</div>
+      </div>
+      <i class="ti ti-chevron-right" style="margin-left:auto;color:var(--text3);font-size:16px"></i>
+    </div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.7">A origem do método AVR–S. Entenda a história real que deu vida ao protocolo e o que acontece antes de qualquer decisão existir.</div>
+    <div style="margin-top:12px;font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:rgba(200,169,109,.5)">Lançamento · Julho 2026</div>
+  </div>`;
+  el.innerHTML=livroCard+BIBLIOTECA_DATA.map((c,i)=>`<div class="biblio-card" onclick="openBiblioDetail(${i})"><div class="biblio-tag">${c.tag}</div><div class="biblio-situation">${c.situation}</div><div class="biblio-preview">${c.preview}</div></div>`).join('');
+}
+function openBiblioDetail(i){const c=BIBLIOTECA_DATA[i];document.getElementById('biblioDHeader').innerHTML=`<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span class="biblio-tag">${c.tag}</span><span class="badge badge-gold">${c.state}</span></div><div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--cream);line-height:1.4">${c.situation}</div>`;document.getElementById('biblioDBody').innerHTML=`<div class="biblio-detail-section"><div class="biblio-detail-label">O que aconteceu</div><div class="biblio-detail-text">${c.preview}</div></div><div class="biblio-detail-section"><div class="biblio-detail-label">Fato observável</div><div class="biblio-detail-text">${c.fato}</div></div><div class="biblio-detail-section"><div class="biblio-detail-label">Distorção identificada</div><div class="biblio-detail-text">${c.distorcao}</div></div><div class="biblio-detail-section"><div class="biblio-detail-label">Decisão consciente</div><div class="biblio-detail-text">${c.decisao}</div></div><div class="biblio-detail-section"><div class="biblio-detail-label">Insight do método</div><div class="biblio-detail-insight"><div class="biblio-detail-insight-text">"${c.insight}"</div></div></div>`;document.getElementById('biblioDO').style.display='block';setTimeout(()=>document.getElementById('biblioDPanel').classList.add('open'),10);}
+function openResumoLivro(){
+  const header=document.getElementById('biblioDHeader');
+  const body=document.getElementById('biblioDBody');
+  header.innerHTML=`<div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:var(--gold);margin-bottom:6px">A Vida Sem Rascunho</div><div style="font-size:13px;color:var(--text3)">André Fernandes · Audax Consultoria</div>`;
+  body.innerHTML=`
+    <div class="biblio-detail-section">
+      <div class="biblio-detail-label">A Origem</div>
+      <div class="biblio-detail-text">A vida não muda de uma vez. Ela vai sendo construída em pequenas decisões que raramente são percebidas como decisões. Você não acorda um dia e perde o controle. Você vai cedendo aos poucos — respondendo sem perceber, agindo no automático, interpretando sem questionar.</div>
+    </div>
+    <div class="biblio-detail-insight"><div class="biblio-detail-insight-text">"Este livro não é sobre decidir melhor. É sobre enxergar o que acontece antes da decisão existir."</div></div>
+    <div class="biblio-detail-section" style="margin-top:16px">
+      <div class="biblio-detail-label">Como Nasceu o AVR–S</div>
+      <div class="biblio-detail-text">O método nasceu de um incômodo que não passava. Não era falta de conhecimento — era a ausência de uma estrutura que sustentasse o que já sabia. Você pode enxergar com clareza e ainda assim continuar repetindo o mesmo padrão.</div>
+    </div>
+    <div class="biblio-detail-insight"><div class="biblio-detail-insight-text">"Você não vive o que sabe. Você vive o que consegue sustentar."</div></div>
+    <div class="biblio-detail-section" style="margin-top:16px">
+      <div class="biblio-detail-label">O Livro em 5 Partes</div>
+      <div class="biblio-detail-text" style="display:flex;flex-direction:column;gap:8px">
+        <div><strong style="color:var(--gold2)">Parte I — Percepção:</strong> Você não reage ao que acontece. Reage ao que construiu sobre o que acontece.</div>
+        <div><strong style="color:var(--gold2)">Parte II — A Programação Invisível:</strong> Padrões instalados ao longo da vida operam como um sistema que direciona suas respostas automaticamente.</div>
+        <div><strong style="color:var(--gold2)">Parte III — O Método AVR–S:</strong> A estrutura que transforma consciência em decisão sustentável.</div>
+        <div><strong style="color:var(--gold2)">Parte IV — Aplicação:</strong> Ver, Decidir, Executar, Evoluir.</div>
+        <div><strong style="color:var(--gold2)">Parte V — Reprogramação:</strong> Assumir o controle do que antes acontecia automaticamente.</div>
+      </div>
+    </div>
+    <div class="biblio-detail-insight"><div class="biblio-detail-insight-text">"A vida não tem rascunho. E cada decisão vira parte da sua história."</div></div>
+    <div style="margin-top:16px;text-align:center;font-size:11px;color:var(--text3);padding:12px;background:var(--bg3);border-radius:10px">📖 Lançamento previsto · Julho 2026</div>
+  `;
+  document.getElementById('biblioDO').style.display='block';
+  setTimeout(()=>document.getElementById('biblioDPanel').classList.add('open'),10);
+}
+function closeBiblioDetail(){document.getElementById('biblioDPanel').classList.remove('open');setTimeout(()=>document.getElementById('biblioDO').style.display='none',350);}
+
+// ── FRASES ──
+let frasesFav=[];
+function loadFrasesFav(){try{frasesFav=JSON.parse(localStorage.getItem('avrs4_fav'))||[];}catch(e){frasesFav=[];}}
+function saveFrasesFav(){localStorage.setItem('avrs4_fav',JSON.stringify(frasesFav));}
+function renderFrases(){const el=document.getElementById('frasesList'),favEl=document.getElementById('frasesFavList');if(!el)return;el.innerHTML=FRASES_LIVRO.map((f,i)=>{const isFav=frasesFav.includes(i);return`<div class="frase-card"><div class="frase-mark">"</div><div class="frase-text">"${f}"</div><div class="frase-actions"><button class="frase-fav-btn ${isFav?'saved':''}" onclick="toggleFav(${i})"><i class="ti ${isFav?'ti-bookmark-filled':'ti-bookmark'}"></i></button></div></div>`;}).join('');if(favEl){const favs=frasesFav.map(i=>FRASES_LIVRO[i]);favEl.innerHTML=favs.length?favs.map(f=>`<div class="frase-card" style="border-color:var(--border2)"><div class="frase-mark">"</div><div class="frase-text">"${f}"</div></div>`).join(''):'<div style="font-size:13px;color:#6a6460;text-align:center;padding:20px">Nenhuma frase salva ainda.</div>';}}
+function toggleFav(i){if(frasesFav.includes(i))frasesFav=frasesFav.filter(x=>x!==i);else frasesFav.push(i);saveFrasesFav();renderFrases();}
+
+// ── GLOSSÁRIO ──
+function renderGlossario(){const el=document.getElementById('glossarioList');if(!el)return;el.innerHTML=GLOSSARIO_DATA.map(g=>`<div class="glossario-card" onclick="this.classList.toggle('open')"><div class="glossario-header"><div class="glossario-term">${g.term}</div><i class="ti ti-chevron-down glossario-chevron"></i></div><div class="glossario-body"><div class="glossario-def">${g.def}</div><div class="glossario-example"><div class="glossario-example-text">${g.ex}</div></div></div></div>`).join('');}
+
+// ── TABS ──
+function switchProtoTab(tab){['protocolo','biblioteca','frases','glossario','ecossistema'].forEach(t=>{document.getElementById('proto-'+t).style.display=t===tab?'block':'none';document.getElementById('ptab-'+t).classList.toggle('active',t===tab);});if(tab==='biblioteca')renderBiblioteca();if(tab==='frases'){loadFrasesFav();renderFrases();}if(tab==='glossario')renderGlossario();}
+
+// ── DASHBOARD ──
+const STATE_COLORS={'Presente':'#7ab8d4','Focado':'#d4b87a','Ansioso':'#d4a04a','Sobrecarregado':'#a07ad4','Reativo':'#d46a6a','Claro':'#7ad4a0'};
+const STATE_ICONS={'Presente':'ti-eye','Focado':'ti-target','Ansioso':'ti-bolt','Sobrecarregado':'ti-cloud-storm','Reativo':'ti-flame','Claro':'ti-sun'};
+
+function openDashboard(){document.getElementById('dashOverlay').classList.add('open');renderDashboard();}
+async function loadDashInsight(){} // incorporado em renderDashboard
+function closeDashboard(){document.getElementById('dashOverlay').classList.remove('open');}
+function renderDashboard(){
+const container=document.getElementById('dashContent');
+const last30=entries.slice(0,30);
+if(!last30.length){
+  container.innerHTML=`<div style="text-align:center;padding:60px 24px"><div style="font-size:40px;color:#6a6460;margin-bottom:16px"><i class="ti ti-chart-bar"></i></div><div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:#b8b0a4;margin-bottom:8px">Nenhum dado ainda</div><div style="font-size:13px;color:#6a6460">Registre algumas decisões para ver seu dashboard.</div></div>`;
+  return;
+}
+const sc={},dc={};
+last30.forEach(e=>{
+  if(e.state&&e.state!=='Não definido')sc[e.state]=(sc[e.state]||0)+1;
+  if(e.distortion&&e.distortion!=='Nenhuma')dc[e.distortion]=(dc[e.distortion]||0)+1;
+});
+const ss=Object.entries(sc).sort((a,b)=>b[1]-a[1]);
+const ds=ss[0]?.[0]||'—',dc0=ss[0]?.[1]||0,dp=Math.round((dc0/last30.length)*100);
+const md=Object.entries(dc).sort((a,b)=>b[1]-a[1])[0]?.[0]||'Nenhuma';
+const mdc=dc[md]||0;
+const clarityMap={'Claro':100,'Presente':85,'Focado':80,'Ansioso':35,'Reativo':25,'Sobrecarregado':20};
+const l7=entries.slice(0,7).map(e=>({date:e.date,state:e.state,clarity:clarityMap[e.state]||50}));
+const clarityHtml=l7.length?l7.map(d=>{const col=d.clarity>=80?'#7ad4a0':d.clarity>=50?'var(--gold)':'#d46a6a';return`<div class="dash-clarity-row"><div class="dash-clarity-day">${d.date.split(' ')[0]}</div><div class="dash-clarity-bar-wrap"><div class="dash-clarity-bar" style="width:${d.clarity}%;background:${col}"></div></div><div class="dash-clarity-state">${d.state}</div></div>`;}).join(''):'<div class="dash-clarity-empty">Sem dados suficientes</div>';
+const wpHtml=ss.slice(0,5).map(([s,c])=>{const pct=Math.round((c/last30.length)*100);return`<div class="dash-pattern-row"><div class="dash-pattern-label">${s}</div><div class="dash-pattern-bar-wrap"><div class="dash-pattern-bar" style="width:${pct}%;background:${STATE_COLORS[s]||'var(--gold)'}"></div></div><div class="dash-pattern-pct">${pct}%</div><div class="dash-pattern-count">${c}x</div></div>`;}).join('');
+const DIST_DESC={'Urgência falsa':'A pressão percebida é maior do que a situação exige.','Escassez':'O medo de perder está conduzindo as decisões.','Ego':'A necessidade de estar certo interfere no julgamento.','Medo':'Evitação de desconforto como padrão de resposta.','Excesso de confiança':'Subestimação de riscos e complexidade.','Fadiga mental':'Decisões tomadas com capacidade cognitiva reduzida.','Nenhuma':'Nenhuma distorção recorrente identificada.'};
+
+// ── CAMADA 1: DADOS DA JORNADA ──
+const camada1 = `
+<div class="dash-camada-header">
+  <i class="ti ti-chart-bar" style="font-size:14px;color:var(--gold)"></i>
+  <div class="dash-camada-title">Camada 1 — Dados da Jornada</div>
+  <span class="dash-camada-badge c1">Registros</span>
+</div>
+<div class="dash-nums" style="margin-top:12px">
+  <div class="dash-num-card"><div class="dash-num-value">${last30.length}</div><div class="dash-num-label">Registros</div></div>
+  <div class="dash-num-card"><div class="dash-num-value">${streak}</div><div class="dash-num-label">Sequência</div></div>
+  <div class="dash-num-card"><div class="dash-num-value">${ss.length}</div><div class="dash-num-label">Estados</div></div>
+</div>
+<div class="dash-section">
+  <div class="dash-section-title"><i class="ti ti-radar"></i>Estado dominante</div>
+  <div class="dash-state-card">
+    <div class="dash-state-icon"><i class="ti ${STATE_ICONS[ds]||'ti-brain'}"></i></div>
+    <div><div class="dash-state-name">${ds}</div><div class="dash-state-sub">Mais frequente nos últimos ${last30.length} registros</div></div>
+    <div class="dash-state-pct"><div class="dash-state-pct-num">${dp}%</div><div class="dash-state-pct-label">das entradas</div></div>
+  </div>
+</div>
+<div class="dash-section">
+  <div class="dash-section-title"><i class="ti ti-alert-triangle"></i>Distorção recorrente</div>
+  <div class="dash-dist-card">
+    <div class="dash-dist-icon"><i class="ti ti-alert-triangle"></i></div>
+    <div style="flex:1"><div class="dash-dist-name">${md}</div><div class="dash-dist-desc">${DIST_DESC[md]||''}</div><div class="dash-dist-freq">${mdc>0?`Apareceu ${mdc}x nos últimos ${last30.length} registros`:'Não detectada'}</div></div>
+  </div>
+</div>
+<div class="dash-section">
+  <div class="dash-section-title"><i class="ti ti-trending-up"></i>Evolução · 7 dias</div>
+  <div class="dash-clarity-card">${clarityHtml}</div>
+</div>
+<div class="dash-section">
+  <div class="dash-section-title"><i class="ti ti-chart-bar"></i>Padrão</div>
+  <div class="dash-pattern-card">${wpHtml||'<div class="dash-clarity-empty">Sem dados</div>'}</div>
+</div>`;
+
+// ── CAMADA 2: INTERPRETAÇÃO DA JORNADA ──
+const mapaAtual = localStorage.getItem('avrs4_mapa_atual');
+let camada2 = `
+<div class="dash-divider"></div>
+<div class="dash-camada-header">
+  <i class="ti ti-brain" style="font-size:14px;color:#a8d8a8"></i>
+  <div class="dash-camada-title">Camada 2 — Interpretação da Jornada</div>
+  <span class="dash-camada-badge c2">Mentor IA</span>
+</div>`;
+
+if(mapaAtual){
+  const {mapa,ts,totalEntries:te}=JSON.parse(mapaAtual);
+  const dateStr=new Date(ts).toLocaleDateString('pt-BR',{day:'numeric',month:'short'});
+  const INTERP=[
+    {key:'causa',icon:'ti-brain',cls:'causa',label:'Causa Identificada'},
+    {key:'escolhas',icon:'ti-seedling',cls:'escolhas',label:'Escolhas Predominantes'},
+    {key:'valores',icon:'ti-diamond',cls:'valores',label:'Valores Mais Fortes'},
+    {key:'ciclo',icon:'ti-refresh',cls:'ciclo',label:'Ciclo Atual'},
+    {key:'proxima_acao',icon:'ti-target-arrow',cls:'acao',label:'Próxima Ação'},
+  ];
+  camada2+=`<div style="font-size:10px;color:var(--text3);margin:8px 0 10px">Última análise: ${dateStr} · ${te} registros</div>`;
+  camada2+=INTERP.map(c=>`
+    <div class="dash-interp-card" onclick="openDashboard();setTimeout(()=>{goTo('universo');switchUnivTab('mentor');},300)">
+      <div class="dash-interp-inner">
+        <div class="dash-interp-icon ${c.cls}"><i class="ti ${c.icon}"></i></div>
+        <div style="flex:1">
+          <div class="dash-interp-label">${c.label}</div>
+          <div class="dash-interp-text">${mapa[c.key]||'—'}</div>
+        </div>
+        <i class="ti ti-chevron-right dash-interp-chevron"></i>
+      </div>
+    </div>`).join('');
+  camada2+=`<button class="dash-gerar-btn" onclick="closeDashboard();mapaGerado=false;setTimeout(()=>{goTo('universo');switchUnivTab('mentor');initMentor51();},300)">
+    <div class="dash-gerar-icon"><i class="ti ti-refresh"></i></div>
+    <div class="dash-gerar-text"><div class="dash-gerar-title">Atualizar análise</div><div class="dash-gerar-sub">Gerar novo Mapa de Reconstrução</div></div>
+    <i class="ti ti-chevron-right dash-gerar-arrow"></i>
+  </button>`;
+} else {
+  // Sem mapa gerado ainda
+  const restantes=isPro?'∞':(3-getMapaCount());
+  const podeGerar=podeGerarMapa();
+  camada2+=`<div class="dash-quota-bar"><i class="ti ti-sparkles dash-quota-icon"></i><div class="dash-quota-text">${isPro?'Análises ilimitadas · Pro':`${restantes} análises gratuitas restantes este mês`}</div><div class="dash-quota-count">${isPro?'Pro':getMapaCount()+'/3'}</div></div>`;
+  if(podeGerar){
+    camada2+=`<button class="dash-gerar-btn" onclick="closeDashboard();setTimeout(()=>{goTo('universo');switchUnivTab('mentor');initMentor51();},300)">
+      <div class="dash-gerar-icon"><i class="ti ti-brain"></i></div>
+      <div class="dash-gerar-text"><div class="dash-gerar-title">Gerar Mapa de Reconstrução AVR-S</div><div class="dash-gerar-sub">O Mentor IA interpreta toda a sua jornada</div></div>
+      <i class="ti ti-chevron-right dash-gerar-arrow"></i>
+    </button>`;
+  } else {
+    camada2+=`<div class="jornada-pro-gate" style="margin-top:8px"><i class="ti ti-lock" style="display:block;font-size:28px;color:var(--gold);margin-bottom:10px"></i><div class="jornada-pro-gate-title">Limite mensal atingido</div><div class="jornada-pro-gate-sub">Ative o Pro para análises ilimitadas.</div><button class="jornada-pro-btn" onclick="openPaywall()">Ativar Pro</button></div>`;
+  }
+}
+
+container.innerHTML = camada1 + camada2;
+}
+
+// ── PAYWALL ──
+let isPro=false;
+function loadProStatus(){isPro=localStorage.getItem('avrs4_pro')==='true';}
+function openPaywall(){document.getElementById('paywallOverlay').classList.add('open');}
+function closePaywall(){document.getElementById('paywallOverlay').classList.remove('open');}
+function applyProGating(){if(isPro)return;const mc=document.getElementById('mentorCard');if(mc){mc.classList.add('locked-card');const lb=document.createElement('div');lb.className='lock-badge';lb.innerHTML='<i class="ti ti-lock"></i><span>Recurso Pro</span>';lb.onclick=()=>openPaywall();mc.appendChild(lb);}const bb=document.querySelector('.icon-btn[title="Mentor IA"]');if(bb)bb.onclick=()=>openPaywall();}
+function updateSettingsProStatus(){const ps=document.getElementById('profileStatus');if(ps)ps.innerHTML=isPro?'Pro ativo':'Gratuito · <span style="color:var(--gold);cursor:pointer" onclick="openPaywall()">Upgrade</span>';}
+
+// ── VOZ ──
+let recognition=null,isListening=false;
+function initVoice(){if(!('webkitSpeechRecognition'in window)&&!('SpeechRecognition'in window))return false;const SR=window.SpeechRecognition||window.webkitSpeechRecognition;recognition=new SR();recognition.lang='pt-BR';recognition.continuous=false;recognition.interimResults=true;recognition.onresult=(event)=>{const t=Array.from(event.results).map(r=>r[0].transcript).join('');document.getElementById('voiceTranscript').textContent=t;if(event.results[event.results.length-1].isFinal){stopVoice();document.getElementById('chatInput').value=t;openMentorChat();setTimeout(()=>sendChat(),300);}};recognition.onerror=()=>stopVoice();recognition.onend=()=>{if(isListening)stopVoice();};return true;}
+function startVoiceChat(){if(!initVoice()){alert('Seu navegador não suporta reconhecimento de voz.');return;}isListening=true;document.getElementById('voiceOverlay').classList.add('open');document.getElementById('voiceTranscript').textContent='';document.getElementById('voiceChatBtn')?.classList.add('listening');recognition.start();}
+function stopVoice(){isListening=false;document.getElementById('voiceOverlay').classList.remove('open');document.getElementById('voiceChatBtn')?.classList.remove('listening');if(recognition){try{recognition.stop();}catch(e){}}}
+
+// ── ONBOARDING ──
+function checkOnboarding(){const seen=localStorage.getItem('avrs4_onboard');if(!seen){setTimeout(()=>{document.getElementById('onboardOverlay').classList.add('open');localStorage.setItem('avrs4_onboard','1');},2500);}}
+function nextOnboard(step){document.querySelectorAll('.onboard-step').forEach(s=>s.classList.remove('active'));document.getElementById('onboard-'+step).classList.add('active');}
+function finishOnboard(){document.getElementById('onboardOverlay').classList.remove('open');}
+
+// ── FOCO ──
+function openFocus(){const now=new Date();const dq=QUESTIONS[now.getDate()%QUESTIONS.length];document.getElementById('focusDate').textContent=now.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});document.getElementById('focusQuestion').textContent=dq.q;document.getElementById('focusHint').textContent=dq.h;document.getElementById('focusOverlay').classList.add('open');}
+function closeFocus(){document.getElementById('focusOverlay').classList.remove('open');}
+
+// ── NOTIFICAÇÃO DIÁRIA ──
+function checkDailyNotif(){const today=new Date().toDateString();const last=entries[0];const lastDate=last?new Date(last.id).toDateString():null;if(lastDate!==today)setTimeout(()=>document.getElementById('notifBanner').classList.add('show'),4000);}
+
+// ── PRIVACIDADE ──
+function openPrivacidade(){document.getElementById('privacidadeOverlay').classList.add('open');}
+ function closePrivacidade(){document.getElementById('privacidadeOverlay').classList.remove('open');}
+function switchPrivTab(tab){
+  document.getElementById('conteudoPriv').style.display=tab==='priv'?'block':'none';
+  document.getElementById('conteudoTermos').style.display=tab==='termos'?'block':'none';
+  document.getElementById('tabPriv').style.color=tab==='priv'?'var(--gold)':'var(--text3)';
+  document.getElementById('tabPriv').style.borderBottomColor=tab==='priv'?'var(--gold)':'transparent';
+  document.getElementById('tabTermos').style.color=tab==='termos'?'var(--gold)':'var(--text3)';
+  document.getElementById('tabTermos').style.borderBottomColor=tab==='termos'?'var(--gold)':'transparent';
+}
+
+// ── ALERTAS ──
+function openAlertas(){document.getElementById('alertasOverlay').classList.add('open');carregarAlertas();}
+function closeAlertas(){document.getElementById('alertasOverlay').classList.remove('open');}
+function carregarAlertas(){
+  const alertas=JSON.parse(localStorage.getItem('avrs4_alertas')||'{}');
+  if(alertas.dormir){document.getElementById('horarioDormir').value=alertas.dormir.horario||'22:00';document.getElementById('toggleDormir').checked=alertas.dormir.ativo||false;}
+  if(alertas.acordar){document.getElementById('horarioAcordar').value=alertas.acordar.horario||'07:00';document.getElementById('toggleAcordar').checked=alertas.acordar.ativo||false;}
+  if(alertas.lembrete){document.getElementById('horarioLembrete').value=alertas.lembrete.horario||'12:00';document.getElementById('toggleLembrete').checked=alertas.lembrete.ativo||false;}
+  // ★ Restaurar preferência de som
+  const somOn=localStorage.getItem('avrs4_alerta_som')!=='false';
+  const tSom=document.getElementById('toggleSom');
+  if(tSom)tSom.checked=somOn;
+}
+function salvarAlerta(tipo){const alertas=JSON.parse(localStorage.getItem('avrs4_alertas')||'{}');const hm={dormir:'horarioDormir',acordar:'horarioAcordar',lembrete:'horarioLembrete'};const tm={dormir:'toggleDormir',acordar:'toggleAcordar',lembrete:'toggleLembrete'};alertas[tipo]={horario:document.getElementById(hm[tipo]).value,ativo:document.getElementById(tm[tipo]).checked};localStorage.setItem('avrs4_alertas',JSON.stringify(alertas));const toast=document.createElement('div');toast.style.cssText='position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--gold);color:#0a0908;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:500;z-index:9999';toast.textContent='✅ Alerta salvo!';document.body.appendChild(toast);setTimeout(()=>toast.remove(),2000);}
+function verificarAlertas(){const alertas=JSON.parse(localStorage.getItem('avrs4_alertas')||'{}');const agora=new Date();const horaAtual=agora.getHours().toString().padStart(2,'0')+':'+agora.getMinutes().toString().padStart(2,'0');const ultimoAlerta=localStorage.getItem('avrs4_ultimo_alerta');const chaveHoje=new Date().toDateString()+'_'+horaAtual;const tipos=[{key:'dormir',icon:'ti-moon',titulo:'Hora de dormir',sub:'Como está seu estado agora?'},{key:'acordar',icon:'ti-sun',titulo:'Bom dia!',sub:'Como você está começando o dia?'},{key:'lembrete',icon:'ti-clock',titulo:'Lembrete AVR–S',sub:'Já registrou seu estado hoje?'}];for(const t of tipos){if(alertas[t.key]?.ativo&&alertas[t.key]?.horario===horaAtual&&ultimoAlerta!==chaveHoje+t.key){localStorage.setItem('avrs4_ultimo_alerta',chaveHoje+t.key);mostrarAlertaNotif(t.icon,t.titulo,t.sub);break;}}}
+function mostrarAlertaNotif(icon,titulo,sub){
+  // ★ Tocar som se ativado
+  if(somAtivado())tocarSomAlerta();
+  document.getElementById('alertaNotifIcon').className='ti '+icon;
+  document.getElementById('alertaNotifTitle').textContent=titulo;
+  document.getElementById('alertaNotifSub').textContent=sub;
+  document.getElementById('alertaNotif').classList.add('show');
+  setTimeout(()=>fecharAlertaNotif(),30000);
+}
+function fecharAlertaNotif(){document.getElementById('alertaNotif').classList.remove('show');}
+function registrarEstadoAlerta(){fecharAlertaNotif();openChecklist('Presente','ti-eye');}
+setInterval(verificarAlertas,60000);
+
+// ── ADMIN ──
+function openAdmin(){if(localStorage.getItem('avrs4_current_user')!==ADMIN_EMAIL)return;document.getElementById('adminOverlay').classList.add('open');renderAdmin();}
+function closeAdmin(){document.getElementById('adminOverlay').classList.remove('open');}
+
+function renderAdmin(){
+  const users=JSON.parse(localStorage.getItem('avrs4_users')||'{}');
+  const container=document.getElementById('adminContent');
+  const userList=Object.entries(users);
+  const total=userList.length;
+  const proCount=userList.filter(([,d])=>d.isPro).length;
+  const freeCount=total-proCount;
+  const receita=proCount*19;
+
+  // Registros por usuário (melhor aproximação: dados do próprio dispositivo)
+  const localEntries=JSON.parse(localStorage.getItem('avrs4_e')||'[]');
+  const totalDecisoes=localEntries.length;
+
+  // Calcular último acesso e registros por usuário
+  const now=Date.now();
+  const DAY=86400000;
+
+  // Ordenar: mais recentes primeiro
+  userList.sort((a,b)=>(b[1].lastSeen||b[1].createdAt||0)-(a[1].lastSeen||a[1].createdAt||0));
+
+  // Usuários ativos (acesso nos últimos 7 dias)
+  const ativos=userList.filter(([,d])=>d.lastSeen&&(now-d.lastSeen)<7*DAY).length;
+
+  // Cards de stats — linha 1
+  const stats1=`
+  <div class="admin-revenue-card">
+    <div class="admin-revenue-icon"><i class="ti ti-currency-dollar"></i></div>
+    <div>
+      <div class="admin-revenue-value">R$${receita}</div>
+      <div class="admin-revenue-label">Receita mensal estimada · ${proCount} assinantes Pro × R$19</div>
+    </div>
+  </div>
+  <div class="admin-stat-grid-5">
+    <div class="admin-stat-card"><div class="admin-stat-value">${total}</div><div class="admin-stat-label">Usuários</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-value" style="color:var(--gold)">${proCount}</div><div class="admin-stat-label">Pro</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-value">${freeCount}</div><div class="admin-stat-label">Gratuito</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-value" style="color:#7ad4a0">${ativos}</div><div class="admin-stat-label">Ativos 7d</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-value">${totalDecisoes}</div><div class="admin-stat-label">Decisões</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-value">${total>0?Math.round(totalDecisoes/total):0}</div><div class="admin-stat-label">Média/user</div></div>
+  </div>`;
+
+  // Lista de usuários expandida
+  const usersHtml=userList.length?userList.map(([email,data])=>{
+    const since=data.createdAt?new Date(data.createdAt).toLocaleDateString('pt-BR'):'—';
+    const lastSeen=data.lastSeen?_relativeTime(data.lastSeen):'nunca';
+    const nEntries=data.entriesCount||0;
+    const isActive=data.lastSeen&&(now-data.lastSeen)<7*DAY;
+    const emailEnc=email.replace(/'/g,"\\'");
+    return`<div class="admin-user-card" style="flex-direction:column;align-items:flex-start">
+      <div style="display:flex;align-items:center;width:100%;gap:10px">
+        <div style="flex:1">
+          <div class="admin-user-email">${email}</div>
+          <div class="admin-user-date">Desde ${since}</div>
+        </div>
+        <span class="admin-user-badge ${data.isPro?'admin-user-pro':'admin-user-free'}">${data.isPro?'PRO':'Grátis'}</span>
+      </div>
+      <div class="admin-user-meta">
+        <div class="admin-user-stat"><i class="ti ti-clock"></i>${lastSeen}</div>
+        <div class="admin-user-stat"><i class="ti ti-notebook"></i>${nEntries} decisões</div>
+        <div class="admin-user-stat"><div class="admin-activity-dot ${isActive?'active':'inactive'}" style="width:7px;height:7px;border-radius:50%;flex-shrink:0"></div>${isActive?'Ativo':'Inativo'}</div>
+      </div>
+      <div class="admin-user-actions">
+        <button class="admin-toggle-pro" onclick="toggleUserPro('${emailEnc}')">${data.isPro?'Revogar Pro':'Dar Pro'}</button>
+        <button class="admin-msg-btn" onclick="openAdminMsg('${emailEnc}')"><i class="ti ti-brand-whatsapp"></i>Mensagem</button>
+        <button class="admin-msg-btn" onclick="adminDeleteUser('${emailEnc}')" style="color:#d46a6a;border-color:rgba(212,106,106,.3)"><i class="ti ti-trash"></i>Remover</button>
+      </div>
+    </div>`;
+  }).join(''):'<div class="admin-empty">Nenhum usuário ainda.</div>';
+
+  container.innerHTML=`
+    ${stats1}
+    <div class="admin-section">
+      <div class="admin-section-title"><i class="ti ti-users" style="font-size:14px;color:var(--gold)"></i>Usuários</div>
+      ${usersHtml}
+    </div>`;
+}
+
+function _relativeTime(ts){
+  const diff=Date.now()-ts;
+  const m=Math.floor(diff/60000);
+  if(m<2)return'agora mesmo';
+  if(m<60)return m+'min atrás';
+  const h=Math.floor(m/60);
+  if(h<24)return h+'h atrás';
+  const d=Math.floor(h/24);
+  if(d===1)return'ontem';
+  return d+'d atrás';
+}
+
+function toggleUserPro(email){
+  const users=JSON.parse(localStorage.getItem('avrs4_users')||'{}');
+  if(!users[email])return;
+  users[email].isPro=!users[email].isPro;
+  localStorage.setItem('avrs4_users',JSON.stringify(users));
+  renderAdmin();
+}
+
+function adminDeleteUser(email){
+  if(!confirm(`Remover o usuário ${email}? Esta ação não pode ser desfeita.`))return;
+  const users=JSON.parse(localStorage.getItem('avrs4_users')||'{}');
+  delete users[email];
+  localStorage.setItem('avrs4_users',JSON.stringify(users));
+  renderAdmin();
+}
+
+let adminMsgEmail='';
+function openAdminMsg(email){
+  adminMsgEmail=email;
+  document.getElementById('adminMsgTarget').textContent=email;
+  document.getElementById('adminMsgSubject').value='';
+  document.getElementById('adminMsgBody').value='';
+  document.getElementById('adminMsgOverlay').classList.add('open');
+}
+function closeAdminMsg(){document.getElementById('adminMsgOverlay').classList.remove('open');}
+function sendAdminMsg(){
+  const subj=document.getElementById('adminMsgSubject').value.trim();
+  const body=document.getElementById('adminMsgBody').value.trim();
+  if(!body){alert('Escreva uma mensagem.');return;}
+  const msg=encodeURIComponent((subj?`*${subj}*\n\n`:'')+body+'\n\n— Audax Consultoria · AVR–S');
+  window.open(`https://wa.me/5521964164234?text=${msg}`,'_blank');
+  closeAdminMsg();
+}
+
+// ── LOGIN ──
+let loginMode='login';
+function toggleLoginMode(){loginMode=loginMode==='login'?'register':'login';if(loginMode==='register'){document.getElementById('loginTitle').textContent='Criar conta';document.getElementById('loginSub').textContent='Cadastre-se para começar sua jornada';document.getElementById('loginPassConfirmField').style.display='block';document.getElementById('loginBtn').textContent='Criar conta';document.getElementById('loginToggle').textContent='Já tem conta? Entrar';}else{document.getElementById('loginTitle').textContent='Bem-vindo';document.getElementById('loginSub').textContent='Entre com sua conta para continuar';document.getElementById('loginPassConfirmField').style.display='none';document.getElementById('loginBtn').textContent='Entrar';document.getElementById('loginToggle').textContent='Não tem conta? Cadastre-se';}document.getElementById('loginError').textContent='';}
+function hashSimple(str){let h=0;for(let i=0;i<str.length;i++){h=((h<<5)-h)+str.charCodeAt(i);h=h&h;}return h.toString(36);}
+function handleLogin(){
+  const email=document.getElementById('loginEmail').value.trim().toLowerCase();
+  const pass=document.getElementById('loginPass').value;
+  const errEl=document.getElementById('loginError');
+  if(!email||!pass){errEl.textContent='Preencha e-mail e senha.';return;}
+  if(!email.includes('@')){errEl.textContent='E-mail inválido.';return;}
+  if(pass.length<6){errEl.textContent='Senha deve ter ao menos 6 caracteres.';return;}
+  const btn=document.getElementById('loginBtn');
+  btn.textContent='Aguarde...';btn.disabled=true;
+  errEl.textContent='';
+
+  const erros={'auth/email-already-in-use':'E-mail já cadastrado.','auth/user-not-found':'E-mail não encontrado.','auth/wrong-password':'Senha incorreta.','auth/invalid-credential':'E-mail ou senha incorretos.','auth/too-many-requests':'Muitas tentativas. Tente mais tarde.','auth/network-request-failed':'Sem conexão. Verifique a internet.'};
+
+  if(loginMode==='register'){
+    const confirm=document.getElementById('loginPassConfirm').value;
+    if(pass!==confirm){errEl.textContent='Senhas não conferem.';btn.textContent='Criar conta';btn.disabled=false;return;}
+    window.fbRegister(email,pass).then(r=>{
+      btn.textContent='Criar conta';btn.disabled=false;
+      if(r.ok){
+        // onAuthStateChanged vai cuidar do resto
+        localStorage.setItem('avrs4_current_user',email);
+        checkOnboarding();
+      } else {
+        errEl.textContent=erros[r.code]||'Erro ao criar conta. Tente novamente.';
+      }
+    });
+  } else {
+    window.fbLogin(email,pass).then(r=>{
+      btn.textContent='Entrar';btn.disabled=false;
+      if(r.ok){
+        // onAuthStateChanged vai cuidar do resto
+        localStorage.setItem('avrs4_current_user',email);
+        checkOnboarding();
+      } else {
+        errEl.textContent=erros[r.code]||'Erro ao entrar. Verifique seus dados.';
+      }
+    });
+  }
+}
+const ADMIN_EMAIL='audax2_cj@hotmail.com';
+function checkAuth(){
+  const cu=localStorage.getItem('avrs4_current_user');
+  if(!cu){
+    document.getElementById('loginOverlay').style.display='flex';
+    return false;
+  }
+  if(cu===ADMIN_EMAIL)localStorage.setItem('avrs4_pro','true');
+  return true;
+}
+// Expor ADMIN_EMAIL para o módulo Firebase
+window._ADMIN_EMAIL='audax2_cj@hotmail.com';
+function logout(){
+  localStorage.removeItem('avrs4_current_user');
+  if(window.fbLogout)window.fbLogout().then(()=>location.reload()).catch(()=>location.reload());
+  else location.reload();
+}
+function forcSync(){
+  const cu=localStorage.getItem('avrs4_current_user');
+  if(!cu){alert('Você precisa estar logado para sincronizar.');return;}
+  const ts=document.getElementById('syncStatus');
+  if(ts){ts.textContent='Sincronizando...';ts.style.color='var(--text3)';}
+  if(window.syncUserData){
+    window.syncUserData(cu.replace(/[^a-zA-Z0-9]/g,'_'))
+      .then(()=>{
+        if(ts){ts.textContent='✓ Sincronizado '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});ts.style.color='var(--ai-text)';}
+      })
+      .catch(()=>{
+        if(ts){ts.textContent='⚠ Erro na sincronização';ts.style.color='#d46a6a';}
+      });
+  }else{
+    if(ts){ts.textContent='⚠ Firebase não disponível';ts.style.color='#d46a6a';}
+  }
+}
+
+// ── TEMA ──
+function toggleTheme(isLight){if(isLight){document.body.classList.add('light-mode');localStorage.setItem('avrs4_theme','light');}else{document.body.classList.remove('light-mode');localStorage.setItem('avrs4_theme','dark');}}
+function loadTheme(){if(localStorage.getItem('avrs4_theme')==='light'){document.body.classList.add('light-mode');const t=document.getElementById('themeToggle');if(t)t.checked=true;}}
+
+// ── INIT ──
+async function init(){
+  window._appInited=true;
+  if(!checkAuth())return;
+  load();loadTheme();loadProStatus();updateStreak();
+  // ── ABERTURA: passagens R·A·V·R·S ──
+  (function runSplash(){
+    const STEP = 2000; // ms por passagem
+    const FADE = 600;
+    const total = 5;
+
+    // Esconder logo após 600ms e iniciar passagens
+    setTimeout(() => {
+      const logo = document.getElementById('spLogo');
+      if(logo){ logo.style.transition='opacity .6s ease'; logo.style.opacity='0'; }
+    }, 600);
+
+    for(let i = 0; i < total; i++){
+      const showAt = 900 + i * STEP;
+      const hideAt = showAt + STEP - FADE;
+      (function(idx){
+        setTimeout(() => {
+          const el = document.getElementById('sp'+idx);
+          if(el) el.classList.add('show');
+        }, showAt);
+        setTimeout(() => {
+          const el = document.getElementById('sp'+idx);
+          if(el){ el.classList.remove('show'); el.classList.add('out'); }
+        }, hideAt);
+      })(i);
+    }
+
+    // Mostrar final (respire)
+    const finalAt = 900 + total * STEP;
+    setTimeout(() => {
+      const el = document.getElementById('spFinal');
+      if(el) el.classList.add('show');
+    }, finalAt);
+
+    // Fechar splash 2.5s após o final aparecer
+    setTimeout(() => {
+      document.getElementById('splash').classList.add('hide');
+    }, finalAt + 2500);
+  })();
+  const now=new Date();
+  document.getElementById('dateText').textContent=now.toLocaleDateString('pt-BR',{day:'numeric',month:'long'});
+  document.getElementById('quoteText').textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';
+  const dq=QUESTIONS[now.getDate()%QUESTIONS.length];
+  document.getElementById('qcardText').textContent=dq.q;
+  document.getElementById('qcardHint').textContent=dq.h;
+  renderStats();renderEntries();
+  if(entries.length>=3){document.getElementById('analysisCard').style.display='block';requestWeeklyAnalysis();}
+  checkOnboarding();checkDailyNotif();applyProGating();updateSettingsProStatus();
+  if(isPro)loadMentorMessage();
+  else{document.getElementById('mentorText').innerHTML='Desbloqueie o Mentor IA para receber análises personalizadas baseadas no seu perfil.';document.getElementById('mentorActions').innerHTML='<div class="mentor-pill" onclick="openPaywall()"><i class="ti ti-crown" style="margin-right:4px"></i>Ativar Pro — R$19/mês</div>';}
+  verificarAlertas();
+  setInterval(()=>{const el=document.getElementById('quoteText');el.style.opacity='0';setTimeout(()=>{el.textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';el.style.opacity='1';},400);},9000);
+}
+
+
+// ── JORNADA DA RECONSTRUÇÃO ──────────────────────────────────────
+const JORNADA_FRASES=['A vida revela aquilo que a mente aprendeu a acreditar.','Você pode trocar as sementes quantas vezes quiser. Se o solo não mudar, a colheita será sempre a mesma.','A mente não precisa ser vencida. Ela precisa ser compreendida, atualizada e direcionada.','O que você repete não é fraqueza. É lealdade inconsciente a uma solução antiga.','A mente que nos trouxe até aqui nem sempre será a mesma capaz de nos levar adiante.','Ressignificar não é fingir que não doeu. É decidir que a dor não vai definir o destino.','Disciplina não é o que você faz quando está motivado. É o que você faz quando a nova versão de você ainda não chegou.'];
+const MOD1_EX=[{titulo:'O Efeito que Você Enxerga',pergunta:'Qual área da minha vida quero transformar? Qual efeito estou vivendo hoje que mais me incomoda?',resultado:'Efeito visível identificado → próximo passo: encontrar a causa.'},{titulo:'O Padrão que Se Repete',pergunta:'Qual padrão se repete mesmo quando mudo o cenário — emprego, relacionamento, ambiente?',resultado:'Padrão mapeado → provavelmente tem uma causa mais profunda.'},{titulo:'A Crença por Trás',pergunta:'Qual crença pode estar por trás desse padrão? O que você aprendeu a acreditar que pode estar produzindo esse resultado?',resultado:'Causa invisível nomeada → consciência é o primeiro passo da reconstrução.'},{titulo:'A Conexão Causa → Efeito',pergunta:'Conecte: "O efeito que vivo é ___. O padrão que se repete é ___. A crença por trás pode ser ___."',resultado:'Mapa da mente atual completo. Você acaba de ver o solo que produz sua colheita.'}];
+const MOD2_MOT=['Medo','Automático — não percebi na hora','Pressão externa — expectativa dos outros','Valores pessoais','Propósito'];
+const MOD3_HAB=['Percebi um padrão antigo em ação','Fiz uma pausa antes de reagir automaticamente','Agi baseado nos meus valores, não no automático','Fortaleci minha nova versão com uma escolha consciente'];
+const J20=[{cap:'Cap. 1',titulo:'O Efeito que Você Enxerga',pergunta:'O que tento mudar fora sem olhar dentro?',pro:false},{cap:'Cap. 2',titulo:'A Mente Que Você Não Escolheu',pergunta:'Que crenças herdei sem questionar?',pro:false},{cap:'Cap. 3',titulo:'O Solo Que Produz a Colheita',pergunta:'Que solo interno produz minha colheita atual?',pro:false},{cap:'Cap. 4',titulo:'Como a Mente Aprende a Sobreviver',pergunta:'Que padrão de proteção virou limitação?',pro:false},{cap:'Cap. 5',titulo:'A Repetição Que Ninguém Vê',pergunta:'Onde rastrear a origem do padrão?',pro:false},{cap:'Cap. 6',titulo:'A Identidade Que Aprendemos a Defender',pergunta:'O que defendo que já não me representa?',pro:true},{cap:'Cap. 7',titulo:'O Silêncio Que Decide',pergunta:'Que decisões tomo no automático?',pro:true},{cap:'Cap. 8',titulo:'O Momento em Que a Máscara Pesa',pergunta:'Onde gasto energia sendo quem não sou?',pro:true},{cap:'Cap. 9',titulo:'A Dor Que Não É Fraqueza',pergunta:'Que dor posso ressignificar hoje?',pro:true},{cap:'Cap. 10',titulo:'Quando o Progresso Incomoda',pergunta:'Como separar feedback de julgamento?',pro:true},{cap:'Cap. 11',titulo:'Não Vencer a Mente — Compreendê-la',pergunta:'Como ficar curioso com meus padrões?',pro:true},{cap:'Cap. 12',titulo:'Ressignificar Não É Apagar',pergunta:'Que história posso reescrever sem negar?',pro:true},{cap:'Cap. 13',titulo:'Reconstruir a Identidade',pergunta:'Quem estou me tornando — não quem fui?',pro:true},{cap:'Cap. 14',titulo:'A Disciplina Como Ato de Amor Próprio',pergunta:'Que compromisso honra minha nova versão?',pro:true},{cap:'Cap. 15',titulo:'Quando a Vida Começa a Refletir',pergunta:'Que mudança externa já reflete minha causa nova?',pro:true},{cap:'Cap. 16',titulo:'O Invisível Que Outros Enxergam',pergunta:'Estou habitando o resultado ou justificando?',pro:true},{cap:'Cap. 17',titulo:'As Relações Que Mudam',pergunta:'Que relação mudou quando eu mudei?',pro:true},{cap:'Cap. 18',titulo:'O Trabalho Que Nasce do Propósito',pergunta:'Trabalho para provar ou para expressar?',pro:true},{cap:'Cap. 19',titulo:'Viver Sem Aprovação',pergunta:'Que decisão adiada espera aprovação externa?',pro:true},{cap:'Cap. 20',titulo:'Uma Vida Sem Rascunho — A Origem',pergunta:'Meu novo mapa AVR-S. Quem sou agora?',pro:true}];
+function loadJSt(){try{return JSON.parse(localStorage.getItem('avrs4_jornada')||'{}');}catch(e){return{};}}
+function saveJSt(st){localStorage.setItem('avrs4_jornada',JSON.stringify(st));}
+function initJornada(){const d=new Date();const el=document.getElementById('jornadaFrase');if(el)el.textContent=JORNADA_FRASES[d.getDay()%JORNADA_FRASES.length];updateJornadaProgress();renderJornada20();applyJornadaProGating();}
+function updateJornadaProgress(){const st=loadJSt();const done=(st.j20Done||[]).length;const pct=Math.round((done/20)*100);const f=document.getElementById('jornadaProgressFill'),l=document.getElementById('jornadaProgressLabel'),p=document.getElementById('jornadaProgressPct');if(f)f.style.width=pct+'%';if(l)l.textContent=done+' dias concluídos';if(p)p.textContent=pct+'%';const ex1=(st.mod1||[]).length;const f1=document.getElementById('mod1ProgFill'),l1=document.getElementById('mod1ProgLabel');if(f1)f1.style.width=Math.round((ex1/4)*100)+'%';if(l1)l1.textContent=ex1+' de 4 exercícios';}
+function applyJornadaProGating(){if(!isPro)return;[2,3,4].forEach(n=>{const c=document.getElementById('jmod'+n);if(c){c.classList.remove('locked');c.onclick=()=>openModDetail(n);}});}
+function checkJornadaPro(n){if(isPro){openModDetail(n);return;}openPaywall();}
+function openModDetail(n){const o=document.getElementById('modDetailOverlay'),t=document.getElementById('modDetailTitle'),b=document.getElementById('modDetailBadge'),c=document.getElementById('modDetailContent');if(!o)return;const titles=['','Minha Mente — A Causa','Minhas Escolhas — As Sementes','Meus Hábitos — O Cultivo','Minha Evolução — A Colheita'];if(t)t.textContent=titles[n];if(b)b.innerHTML=n===1?'<span class="jornada-badge-free">Gratuito</span>':'<span class="jornada-badge-pro">Pro</span>';if(n===1)c.innerHTML=buildMod1HTML();else if(n===2)c.innerHTML=buildMod2HTML();else if(n===3)c.innerHTML=buildMod3HTML();else if(n===4)c.innerHTML=buildMod4HTML();o.classList.add('open');}
+function closeModDetail(){const o=document.getElementById('modDetailOverlay');if(o)o.classList.remove('open');updateJornadaProgress();}
+function buildMod1HTML(){const st=loadJSt();const done=st.mod1||[];let h='<div class="mod-detail-intro">A mente é o solo. As escolhas são as sementes. Os hábitos são o cultivo. A vida é a colheita.</div>';MOD1_EX.forEach((ex,i)=>{const isDone=done.includes(i);const ans=(st.mod1Resp||[])[i]||'';h+=`<div class="exercicio-card${isDone?' done':''}" id="ex1_${i}"><div class="exercicio-header" onclick="toggleExercicio('ex1_${i}')"><div><div class="exercicio-num">Exercício ${i+1}</div><div class="exercicio-title">${ex.titulo}</div></div><div class="exercicio-check">${isDone?'<i class="ti ti-check" style="font-size:12px;color:#0a0908"></i>':''}</div></div><div class="exercicio-body"><div class="exercicio-pergunta">${ex.pergunta}</div><textarea class="exercicio-textarea" id="exta1_${i}" placeholder="Sua reflexão...">${esc(ans)}</textarea><button class="exercicio-salvar" onclick="salvarEx1(${i})">Salvar reflexão</button><div class="exercicio-resultado">"${ex.resultado}"</div></div></div>`;});return h;}
+function toggleExercicio(id){const c=document.getElementById(id);if(c)c.classList.toggle('open');}
+function salvarEx1(i){const ta=document.getElementById('exta1_'+i);const val=ta?ta.value.trim():'';const st=loadJSt();if(!st.mod1)st.mod1=[];if(!st.mod1Resp)st.mod1Resp=[];st.mod1Resp[i]=val;if(!st.mod1.includes(i))st.mod1.push(i);saveJSt(st);const c=document.getElementById('ex1_'+i);if(c){c.classList.add('done');c.classList.remove('open');const ch=c.querySelector('.exercicio-check');if(ch)ch.innerHTML='<i class="ti ti-check" style="font-size:12px;color:#0a0908"></i>';const r=c.querySelector('.exercicio-resultado');if(r)r.style.display='block';}updateJornadaProgress();}
+function buildMod2HTML(){const st=loadJSt();const hoje=new Date().toDateString();const entry=(st.mod2||{})[hoje]||{};const sels=entry.motivadores||[];const resp=entry.resposta||'';let mh=MOD2_MOT.map(m=>`<div class="motivador-chip${sels.includes(m)?' sel':''}" onclick="this.classList.toggle('sel')"><div class="motivador-chip-circle"></div><div class="motivador-chip-text">${m}</div></div>`).join('');return`<div class="mod-detail-intro">Hoje minhas escolhas foram guiadas por... Toque em todos que se aplicam.</div><div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:10px">Meus motivadores hoje</div><div class="escolhas-motivadores" id="motivadoresC">${mh}</div><div style="font-size:14px;font-family:'Cormorant Garamond',serif;color:var(--cream);margin:16px 0 10px;line-height:1.5">Qual escolha consciente eu fiz hoje?</div><textarea class="exercicio-textarea" id="mod2Resp" placeholder="Descreva uma escolha guiada pelos seus valores...">${esc(resp)}</textarea><button class="exercicio-salvar" style="margin-top:10px" onclick="salvarMod2()">Registrar escolhas do dia</button><div id="mod2Confirm" style="display:none;margin-top:12px;background:rgba(26,46,26,.4);border:1px solid rgba(100,200,100,.2);border-radius:10px;padding:14px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:14px;color:#a8d8a8;line-height:1.7">Escolhas do dia registradas.</div>`;}
+function salvarMod2(){const hoje=new Date().toDateString();const chips=document.querySelectorAll('#motivadoresC .motivador-chip.sel');const motivadores=Array.from(chips).map(c=>c.querySelector('.motivador-chip-text').textContent);const resp=document.getElementById('mod2Resp')?.value.trim()||'';const st=loadJSt();if(!st.mod2)st.mod2={};st.mod2[hoje]={motivadores,resposta:resp,ts:Date.now()};saveJSt(st);const c=document.getElementById('mod2Confirm');if(c)c.style.display='block';}
+function buildMod3HTML(){const st=loadJSt();const hoje=new Date().toDateString();const dt=(st.mod3||{})[hoje]||[];let ih=MOD3_HAB.map((h,i)=>`<div class="habito-item${dt.includes(i)?' done':''}" onclick="toggleHabito(${i})" id="hab_${i}"><div class="habito-item-check">${dt.includes(i)?'<i class="ti ti-check" style="font-size:12px;color:#0a0908"></i>':''}</div><div class="habito-item-text">${h}</div></div>`).join('');return`<div class="mod-detail-intro">Hábito não é o que você faz uma vez. É o que você sustenta todos os dias.</div><div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:12px">Minha Reconstrução Diária</div>${ih}<div id="mod3Confirm" style="display:none;margin-top:12px;background:rgba(26,46,26,.4);border:1px solid rgba(100,200,100,.2);border-radius:10px;padding:14px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:14px;color:#a8d8a8;line-height:1.7">Checklist completo. Cada dia é uma semente plantada.</div>`;}
+function toggleHabito(i){const hoje=new Date().toDateString();const st=loadJSt();if(!st.mod3)st.mod3={};if(!st.mod3[hoje])st.mod3[hoje]=[];const idx=st.mod3[hoje].indexOf(i);if(idx>-1)st.mod3[hoje].splice(idx,1);else st.mod3[hoje].push(i);saveJSt(st);const el=document.getElementById('hab_'+i);if(el){const done=st.mod3[hoje].includes(i);el.classList.toggle('done',done);const ch=el.querySelector('.habito-item-check');if(ch)ch.innerHTML=done?'<i class="ti ti-check" style="font-size:12px;color:#0a0908"></i>':'';}if(st.mod3[hoje].length===4){const c=document.getElementById('mod3Confirm');if(c)c.style.display='block';}}
+function buildMod4HTML(){const st=loadJSt();const ev=st.mod4||{};const pausas=(st.pausas||[]).length;const mod2d=Object.keys(st.mod2||{}).length;return`<div class="mod-detail-intro">A colheita não é sobre tarefas concluídas. É sobre quem você está se tornando.</div><div class="evolucao-indicadores"><div class="evo-ind-card"><div class="evo-ind-num">${pausas}</div><div class="evo-ind-label">Pausas</div></div><div class="evo-ind-card"><div class="evo-ind-num">${mod2d}</div><div class="evo-ind-label">Dias escolhas</div></div><div class="evo-ind-card"><div class="evo-ind-num">${(st.mod1||[]).length}</div><div class="evo-ind-label">Exercícios</div></div><div class="evo-ind-card"><div class="evo-ind-num">${(st.j20Done||[]).length}</div><div class="evo-ind-label">Dias jornada</div></div></div><div class="evolucao-card"><div class="evolucao-card-title"><i class="ti ti-arrows-transfer-down"></i>Evolução de identidade</div><div class="evolucao-trio"><div class="evolucao-trio-row"><div class="evolucao-trio-label">Antes eu</div><textarea class="evolucao-trio-input" id="evo_antes" placeholder="repetia um padrão...">${esc(ev.antes||'')}</textarea></div><div class="evolucao-trio-row"><div class="evolucao-trio-label">Hoje percebo</div><textarea class="evolucao-trio-input" id="evo_percebo" placeholder="esse padrão antes de repetir...">${esc(ev.percebo||'')}</textarea></div><div class="evolucao-trio-row"><div class="evolucao-trio-label">Agora escolho</div><textarea class="evolucao-trio-input" id="evo_escolho" placeholder="uma resposta diferente...">${esc(ev.escolho||'')}</textarea></div></div></div><button class="exercicio-salvar" style="margin-top:10px" onclick="salvarMod4()">Salvar evolução</button><div id="mod4Confirm" style="display:none;margin-top:12px;background:rgba(26,46,26,.4);border:1px solid rgba(100,200,100,.2);border-radius:10px;padding:14px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:14px;color:#a8d8a8;line-height:1.7">Evolução registrada.</div>`;}
+function salvarMod4(){const st=loadJSt();st.mod4={antes:document.getElementById('evo_antes')?.value.trim()||'',percebo:document.getElementById('evo_percebo')?.value.trim()||'',escolho:document.getElementById('evo_escolho')?.value.trim()||'',ts:Date.now()};saveJSt(st);const c=document.getElementById('mod4Confirm');if(c)c.style.display='block';}
+function openPausaAVRS(){['pausaP1','pausaP2','pausaP3','pausaP4'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});const conf=document.getElementById('pausaConfirmacao');if(conf)conf.style.display='none';const sub=document.querySelector('.pausa-submit');if(sub)sub.style.display='block';document.getElementById('pausaOverlay').classList.add('open');}
+function closePausaAVRS(){document.getElementById('pausaOverlay').classList.remove('open');}
+function registrarPausa(){const p1=document.getElementById('pausaP1')?.value.trim()||'';const p2=document.getElementById('pausaP2')?.value.trim()||'';const p3=document.getElementById('pausaP3')?.value.trim()||'';const p4=document.getElementById('pausaP4')?.value.trim()||'';const st=loadJSt();if(!st.pausas)st.pausas=[];st.pausas.unshift({p1,p2,p3,p4,ts:Date.now()});if(st.pausas.length>50)st.pausas=st.pausas.slice(0,50);saveJSt(st);const conf=document.getElementById('pausaConfirmacao');const sub=document.querySelector('.pausa-submit');if(conf)conf.style.display='block';if(sub)sub.style.display='none';setTimeout(()=>closePausaAVRS(),3000);}
+function renderJornada20(){const c=document.getElementById('jornada20List');if(!c)return;const st=loadJSt();const done=st.j20Done||[];const next=done.length;let h='';J20.forEach((d,i)=>{const isDone=done.includes(i);const isToday=i===next&&!isDone;const isLocked=i>next;const needsPro=d.pro&&!isPro;let cls='jornada20-card';if(isDone)cls+=' done';else if(isToday)cls+=' today available';else if(!isLocked&&!needsPro)cls+=' available';else cls+=' locked-day';const num=isDone?'<i class="ti ti-check" style="font-size:14px;color:#0a0908"></i>':(i+1);const badge=d.pro?'<span class="jornada20-badge pro">Pro</span>':'<span class="jornada20-badge free">Grátis</span>';const lock=(isLocked||needsPro)&&!isDone?'<i class="ti ti-lock" style="font-size:15px;color:var(--text3);flex-shrink:0"></i>':'';const onclick=isDone?'':needsPro?'onclick="openPaywall()"':isLocked?'':`onclick="openDia20(${i})"`;h+=`<div class="${cls}" ${onclick}><div class="jornada20-num">${num}</div><div class="jornada20-info"><div class="jornada20-title">${d.titulo}</div><div class="jornada20-cap">${d.cap}${d.pro&&!isPro?' · Pro':''}</div></div>${badge}${lock}</div>`;});if(!isPro&&next>=5)h+=`<div class="jornada-pro-gate"><i class="ti ti-seedling"></i><div class="jornada-pro-gate-title">Continue a jornada</div><div class="jornada-pro-gate-sub">Os dias 6 a 20 fazem parte do plano Pro.</div><button class="jornada-pro-btn" onclick="openPaywall()">Ativar Pro — R$19/mês</button></div>`;c.innerHTML=h;}
+function openDia20(i){const d=J20[i];const o=document.getElementById('modDetailOverlay'),t=document.getElementById('modDetailTitle'),b=document.getElementById('modDetailBadge'),c=document.getElementById('modDetailContent');if(!o)return;if(t)t.textContent='Dia '+(i+1);if(b)b.innerHTML=d.pro?'<span class="jornada-badge-pro">Pro</span>':'<span class="jornada-badge-free">Grátis</span>';const st=loadJSt();const resp=(st.j20Resp||{})[i]||'';c.innerHTML=`<div class="mod-detail-intro">${d.cap} · ${d.titulo}</div><div class="question-card" style="margin-bottom:16px"><div class="qcard-eyebrow">Reflexão do dia</div><div class="qcard-question">${d.pergunta}</div></div><textarea class="exercicio-textarea" id="dia20_ta" placeholder="Sua reflexão..." style="min-height:100px">${esc(resp)}</textarea><button class="exercicio-salvar" style="margin-top:10px" onclick="salvarDia20(${i})">Concluir dia ${i+1}</button><div id="dia20Confirm" style="display:none;margin-top:12px;background:rgba(26,46,26,.4);border:1px solid rgba(100,200,100,.2);border-radius:10px;padding:14px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:14px;color:#a8d8a8;line-height:1.7">Dia ${i+1} concluído.</div>`;o.classList.add('open');}
+function salvarDia20(i){const val=document.getElementById('dia20_ta')?.value.trim()||'';const st=loadJSt();if(!st.j20Done)st.j20Done=[];if(!st.j20Resp)st.j20Resp={};if(!st.j20Done.includes(i))st.j20Done.push(i);st.j20Resp[i]=val;saveJSt(st);const c=document.getElementById('dia20Confirm');if(c)c.style.display='block';setTimeout(()=>{closeModDetail();renderJornada20();updateJornadaProgress();},2000);}
+function openManual(){document.getElementById('manualOverlay').classList.add('open');}
+function closeManual(){document.getElementById('manualOverlay').classList.remove('open');}
+
+
+
+// ── UNIVERSO AVR-S 5.1 ──────────────────────────────────────────
+
+function switchUnivTab(tab) {
+  ['avrs','mentor','protocolo'].forEach(t => {
+    const el = document.getElementById('univ-' + t);
+    if (el) el.style.display = t === tab ? 'block' : 'none';
+    const btn = document.getElementById('utab-' + t);
+    if (btn) btn.classList.toggle('active', t === tab);
+  });
+  if (tab === 'mentor') initMentor51();
+  if (tab === 'protocolo') renderUnivProtocolo();
+}
+
+function renderUnivProtocolo() {
+  const c = document.getElementById('univProtocoloContent');
+  if (!c || c.innerHTML) return;
+  // Clonar conteúdo do protocolo existente
+  const proto = document.getElementById('proto-protocolo');
+  if (proto) c.innerHTML = proto.innerHTML;
+}
+
+function initUniverso() {
+  renderAvrsEtapas();
+  const d = new Date();
+  const el = document.getElementById('mentor51Last');
+  if (el) el.textContent = entries.length ? `${entries.length} registros analisados` : 'Faça seus primeiros registros para receber análise.';
+}
+
+// ── A VIDA SEM RASCUNHO ──────────────────────────────────────────
+
+const AVRS_ETAPAS = [
+  {
+    key: 'a', letter: 'A', name: 'Autoconsciência', cls: 'a',
+    desc: 'Perceber quem você é e onde está agora.',
+    update: 'Hoje',
+    pro: false,
+    analise: function(entries) {
+      if (!entries.length) return 'Registre seus estados internos para receber sua análise de autoconsciência.';
+      const sc = {};
+      entries.slice(0, 30).forEach(e => {
+        if (e.state && e.state !== 'Não definido') sc[e.state] = (sc[e.state] || 0) + 1;
+      });
+      const top = Object.entries(sc).sort((a, b) => b[1] - a[1]);
+      const dom = top[0]?.[0];
+      const total = entries.length;
+      return dom
+        ? `Seu estado dominante nos últimos ${Math.min(total, 30)} registros é <strong>${dom}</strong>. Isso revela o padrão emocional que mais consome sua energia e atenção agora.`
+        : 'Continue registrando para revelar seu padrão dominante.';
+    }
+  },
+  {
+    key: 'v', letter: 'V', name: 'Valores', cls: 'v',
+    desc: 'Entender o que realmente importa para você.',
+    update: 'Baseado nos seus padrões de escolha',
+    pro: true,
+    analise: function(entries) {
+      const consciousEntries = entries.filter(e => e.decision && e.decision.length > 10);
+      if (!consciousEntries.length) return 'Registre decisões conscientes para identificar seus valores predominantes.';
+      return `Com base em <strong>${consciousEntries.length} decisões conscientes</strong>, seus valores mais ativos aparecem nas escolhas que você faz sob pressão. O padrão revela o que você prioriza quando precisa escolher.`;
+    }
+  },
+  {
+    key: 'r', letter: 'R', name: 'Ressignificação', cls: 'r',
+    desc: 'Transformar a forma como você interpreta.',
+    update: 'Identificando suas crenças e histórias',
+    pro: true,
+    analise: function(entries) {
+      const withLesson = entries.filter(e => e.lesson && e.lesson.length > 5);
+      return withLesson.length
+        ? `Você registrou <strong>${withLesson.length} aprendizados</strong>. Cada um representa uma nova interpretação sobre um padrão antigo — o começo da ressignificação real.`
+        : 'Adicione "o que aprendeu" nos seus registros para mapear sua ressignificação.';
+    }
+  },
+  {
+    key: 's', letter: 'S', name: 'Sustentação', cls: 's',
+    desc: 'Manter consistência até sua nova vida se tornar real.',
+    update: 'Plano, hábitos e evolução contínua',
+    pro: true,
+    analise: function(entries) {
+      const last7 = entries.filter(e => Date.now() - e.id < 7 * 86400000);
+      return last7.length >= 3
+        ? `<strong>${last7.length} registros nos últimos 7 dias</strong>. Você está sustentando a prática — isso é mais raro do que parece e mais poderoso do que você imagina.`
+        : 'Sustentação é sobre constância. Registre ao menos 3x por semana para construir esse padrão.';
+    }
+  }
 ];
-self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE).then(cache => {
-      return cache.addAll(ASSETS).catch(() => {});
-    })
-  );
-  self.skipWaiting();
-});
-self.addEventListener('activate', e => {
-  e.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-    )
-  );
-  self.clients.claim();
-});
-self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then(cached => {
-      return cached || fetch(e.request).then(response => {
-        if (response && response.status === 200 && response.type === 'basic') {
-          const clone = response.clone();
-          caches.open(CACHE).then(cache => cache.put(e.request, clone));
+
+function renderAvrsEtapas() {
+  const container = document.getElementById('avrsEtapas');
+  const footer = document.getElementById('avrsFooterBar');
+  if (!container) return;
+
+  let html = '';
+  AVRS_ETAPAS.forEach((etapa, i) => {
+    const bloqueado = etapa.pro && !isPro;
+    const analise = etapa.analise(entries);
+    const temDados = entries.length > 0;
+
+    html += `<div class="avrs-etapa-card${temDados && !bloqueado ? ' ativo' : ''}">
+      <div class="avrs-etapa-header" onclick="toggleAvrsEtapa(this, ${i})">
+        <div class="avrs-etapa-letter ${etapa.cls}">${etapa.letter}</div>
+        <div class="avrs-etapa-info">
+          <div class="avrs-etapa-name">${etapa.name}</div>
+          <div class="avrs-etapa-desc">${etapa.desc}</div>
+        </div>
+        <div class="avrs-etapa-status">
+          ${bloqueado
+            ? '<span class="avrs-etapa-badge-pro">🔒 PRO</span>'
+            : `<span class="avrs-etapa-badge-ativo">ATIVO</span>`
+          }
+          ${temDados && !bloqueado ? `<div class="avrs-etapa-update">Última atualização: ${etapa.update}</div>` : ''}
+        </div>
+        <i class="ti ti-chevron-down avrs-etapa-chevron" style="margin-left:8px"></i>
+      </div>
+      <div class="avrs-etapa-body">
+        ${bloqueado
+          ? `<div class="avrs-analise-label">Análise bloqueada</div>
+             <div class="avrs-analise-text" style="color:var(--text3)">Desbloqueie o AVR-S Pro para acessar sua análise de ${etapa.name}.</div>
+             <button class="avrs-ver-btn" onclick="openPaywall()"><i class="ti ti-crown" style="margin-right:4px"></i>Desbloquear</button>`
+          : `<div class="avrs-analise-label">Sua análise</div>
+             <div class="avrs-analise-text">${analise}</div>
+             ${temDados ? `<button class="avrs-ver-btn" onclick="openMentorChat()"><i class="ti ti-sparkles" style="margin-right:4px"></i>Ver análise completa</button>` : ''}
+          `
         }
-        return response;
-      }).catch(() => cached);
-    })
-  );
+      </div>
+    </div>`;
+  });
+
+  container.innerHTML = html;
+  if (footer) footer.style.display = !isPro ? 'flex' : 'none';
+  if (!isPro) {
+    const countEl = document.getElementById('avrsEtapaCount');
+    if (countEl) countEl.textContent = '1';
+  }
+}
+
+function toggleAvrsEtapa(header, idx) {
+  const card = header.parentElement;
+  const etapa = AVRS_ETAPAS[idx];
+  if (etapa.pro && !isPro) { openPaywall(); return; }
+  card.classList.toggle('open');
+  const chevron = header.querySelector('.avrs-etapa-chevron');
+  if (chevron) chevron.style.transform = card.classList.contains('open') ? 'rotate(180deg)' : '';
+}
+
+// ── MENTOR IA 5.1 ────────────────────────────────────────────────
+
+const MAPA_QUOTA_FREE = 3;
+let mapaGerado = false;
+
+function getMesAtualMapa() {
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+}
+
+function getMapaCount() {
+  const cu = localStorage.getItem('avrs4_current_user');
+  if (!cu) return 0;
+  return parseInt(localStorage.getItem('avrs4_mapa_' + cu.replace(/[^a-zA-Z0-9]/g, '_') + '_' + getMesAtualMapa()) || '0');
+}
+
+function incrementMapaCount() {
+  const cu = localStorage.getItem('avrs4_current_user');
+  if (!cu) return;
+  const k = 'avrs4_mapa_' + cu.replace(/[^a-zA-Z0-9]/g, '_') + '_' + getMesAtualMapa();
+  localStorage.setItem(k, getMapaCount() + 1);
+}
+
+function podeGerarMapa() {
+  if (isPro) return true;
+  return getMapaCount() < MAPA_QUOTA_FREE;
+}
+
+async function initMentor51() {
+  if (mapaGerado) return;
+  const quotaEl = document.getElementById('mentor51QuotaText');
+  const quotaCount = document.getElementById('mentor51QuotaCount');
+  const cards = document.getElementById('mapaCards');
+
+  if (!entries.length) {
+    if (quotaEl) quotaEl.textContent = 'Registre seu estado interno para receber sua análise.';
+    if (cards) cards.innerHTML = `<div class="empty-state" style="padding:32px 0"><div class="empty-icon"><i class="ti ti-chart-dots"></i></div><div class="empty-title">Nenhum dado ainda</div><div class="empty-sub">Registre seu estado interno, decisões e diário para o Mentor gerar seu mapa.</div></div>`;
+    return;
+  }
+
+  // Quota
+  const restantes = isPro ? '∞' : (MAPA_QUOTA_FREE - getMapaCount());
+  if (quotaEl) quotaEl.textContent = isPro ? 'Análise ilimitada ativa · Pro' : `${restantes} análises gratuitas restantes este mês`;
+  if (quotaCount) quotaCount.textContent = isPro ? '' : `${getMapaCount()}/${MAPA_QUOTA_FREE}`;
+
+  if (!podeGerarMapa()) {
+    if (cards) cards.innerHTML = `<div class="jornada-pro-gate"><i class="ti ti-lock"></i><div class="jornada-pro-gate-title">Limite mensal atingido</div><div class="jornada-pro-gate-sub">Você usou suas 3 análises gratuitas este mês. Ative o Pro para análises ilimitadas.</div><button class="jornada-pro-btn" onclick="openPaywall()">Ativar Pro</button></div>`;
+    return;
+  }
+
+  // Mostrar loading
+  if (cards) cards.innerHTML = ['Causa', 'Escolhas', 'Valores', 'Ciclo', 'Próxima Ação'].map(label =>
+    `<div class="mapa-card"><div class="mapa-card-loading"><div class="mentor-typing"><span></span><span></span><span></span></div><span style="font-size:12px;color:var(--text3)">${label}...</span></div></div>`
+  ).join('');
+
+  // Gerar análise via IA
+  const p = buildProfile();
+  const last10 = entries.slice(0, 10).map(e =>
+    `[${e.date}] ${e.state} | Situação: ${e.situation} | Distorção: ${e.distortion || 'nenhuma'} | Decisão: ${e.decision || '-'} | Aprendizado: ${e.lesson || '-'}`
+  ).join('\n');
+
+  const jSt = loadJSt ? loadJSt() : {};
+  const pausas = (jSt.pausas || []).length;
+  const mod2days = Object.keys(jSt.mod2 || {}).length;
+
+  const prompt = `Analise a jornada AVR-S deste usuário e gere um "Mapa de Reconstrução AVR-S" em JSON com exatamente estas 5 chaves:
+{
+  "causa": "1-2 frases identificando a causa/padrão dominante observado nos dados",
+  "escolhas": "1-2 frases sobre as escolhas predominantes e o que revelam",
+  "valores": "1-2 frases identificando valores percebidos nos registros",
+  "ciclo": "1-2 frases descrevendo o ciclo atual — progresso e oscilações",
+  "proxima_acao": "1 frase de próxima ação consciente e específica"
+}
+
+DADOS DO USUÁRIO:
+- Estado dominante: ${p.dominantState || 'variado'}
+- Distorção mais frequente: ${p.mainDistortion || 'não identificada'}
+- Total de registros: ${entries.length}
+- Pausas AVR-S realizadas: ${pausas}
+- Dias com diário de escolhas: ${mod2days}
+- Últimos 10 registros:
+${last10}
+
+Responda APENAS com o JSON válido, sem markdown, sem explicações adicionais.`;
+
+  try {
+    const resp = await callClaude([{ role: 'user', content: prompt }],
+      'Você é o Mentor IA AVR-S. Analise os dados e responda APENAS com JSON válido conforme solicitado. Seja específico, profundo e pessoal. Nunca genérico.');
+
+    incrementMapaCount();
+
+    let mapa;
+    try {
+      const clean = resp.replace(/```json|```/g, '').trim();
+      mapa = JSON.parse(clean);
+    } catch (e) {
+      mapa = {
+        causa: 'Padrão de reatividade identificado nos seus registros.',
+        escolhas: 'Suas decisões mostram consciência crescente mesmo em momentos difíceis.',
+        valores: 'Autenticidade e crescimento emergem como valores centrais.',
+        ciclo: 'Você está em um ciclo de reconstrução com constância crescente.',
+        proxima_acao: 'Realize uma Pausa AVR-S antes da próxima decisão importante.'
+      };
+    }
+
+    // Salvar para o mapa completo
+    localStorage.setItem('avrs4_mapa_atual', JSON.stringify({ mapa, ts: Date.now(), totalEntries: entries.length }));
+    mapaGerado = true;
+
+    renderMapaCards(mapa);
+
+  } catch (e) {
+    if (cards) cards.innerHTML = '<div style="text-align:center;padding:24px;font-size:13px;color:var(--text3)">Erro ao gerar análise. Tente novamente.</div>';
+  }
+}
+
+const MAPA_CONFIG = [
+  { key: 'causa',       icon: 'ti-brain',        cls: 'causa',    label: '🧠 Causa Identificada' },
+  { key: 'escolhas',    icon: 'ti-seedling',      cls: 'escolhas', label: '🌱 Escolhas Predominantes' },
+  { key: 'valores',     icon: 'ti-diamond',       cls: 'valores',  label: '💎 Valores Mais Fortes' },
+  { key: 'ciclo',       icon: 'ti-refresh',       cls: 'ciclo',    label: '🔄 Ciclo Atual' },
+  { key: 'proxima_acao',icon: 'ti-target-arrow',  cls: 'acao',     label: '🎯 Próxima Ação Recomendada' },
+];
+
+function renderMapaCards(mapa) {
+  const cards = document.getElementById('mapaCards');
+  if (!cards) return;
+  cards.innerHTML = MAPA_CONFIG.map(c =>
+    `<div class="mapa-card" onclick="openMapaCompleto()">
+      <div class="mapa-card-inner">
+        <div class="mapa-card-icon ${c.cls}"><i class="ti ${c.icon}"></i></div>
+        <div style="flex:1">
+          <div class="mapa-card-label">${c.label}</div>
+          <div class="mapa-card-text">${mapa[c.key] || '—'}</div>
+        </div>
+        <i class="ti ti-chevron-right mapa-card-chevron"></i>
+      </div>
+    </div>`
+  ).join('');
+}
+
+function openMapaCompleto() {
+  const overlay = document.getElementById('mapaFullOverlay');
+  const content = document.getElementById('mapaFullContent');
+  if (!overlay || !content) return;
+
+  const saved = localStorage.getItem('avrs4_mapa_atual');
+  if (!saved) { initMentor51(); return; }
+
+  const { mapa, ts, totalEntries } = JSON.parse(saved);
+  const date = new Date(ts).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' });
+  const p = buildProfile();
+
+  content.innerHTML = `
+    <div style="background:linear-gradient(135deg,var(--ai),rgba(26,46,26,.3));border:1px solid var(--ai-border);border-radius:var(--r);padding:20px;margin-bottom:20px">
+      <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#b8e0b8;margin-bottom:4px">Gerado em ${date}</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);margin-bottom:6px">Meu Mapa de Reconstrução</div>
+      <div style="font-size:12px;color:var(--text3)">${totalEntries} registros analisados · Estado dominante: ${p.dominantState || '—'}</div>
+    </div>
+
+    ${MAPA_CONFIG.map(c => `
+    <div class="mapa-section">
+      <div class="mapa-section-label" style="color:var(--gold)"><i class="ti ${c.icon}"></i>${c.label}</div>
+      <div class="mapa-section-card">
+        <div class="mapa-section-text">${mapa[c.key] || '—'}</div>
+      </div>
+    </div>`).join('')}
+
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:16px;margin-top:8px">
+      <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:10px">Dados da análise</div>
+      ${[
+        ['Total de registros', entries.length],
+        ['Estado dominante', p.dominantState || '—'],
+        ['Distorção recorrente', p.mainDistortion || '—'],
+        ['Sequência atual', streak + ' dias'],
+      ].map(([l, v]) => `<div class="mapa-data-row"><div class="mapa-data-label">${l}</div><div class="mapa-data-value">${v}</div></div>`).join('')}
+    </div>
+
+    <div style="text-align:center;padding:20px 0 8px">
+      <button onclick="mapaGerado=false;closeMapaCompleto();switchUnivTab('mentor');initMentor51()" style="background:var(--gold);border:none;border-radius:12px;padding:12px 24px;font-size:13px;font-weight:600;color:#0a0908;cursor:pointer;font-family:'DM Sans',sans-serif">
+        <i class="ti ti-refresh" style="margin-right:6px"></i>Gerar nova análise
+      </button>
+    </div>
+  `;
+
+  overlay.classList.add('open');
+}
+
+function closeMapaCompleto() {
+  document.getElementById('mapaFullOverlay').classList.remove('open');
+}
+
+
+
+function mdToHtml(text) {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/^#{1,3}\s+(.+)$/gm, '<strong>$1</strong>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br>')
+    .replace(/^/, '<p>').replace(/$/, '</p>');
+}
+
+if('serviceWorker'in navigator)navigator.serviceWorker.getRegistrations().then(r=>r.forEach(reg=>reg.unregister()));
+init();
+</script>
+
+<!-- FIREBASE AUTH + FIRESTORE -->
+<script type="module">
+import{initializeApp}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import{getFirestore,doc,setDoc,getDoc}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+const firebaseConfig={apiKey:"AIzaSyBy13fDtxYQlkMozofoIoYS27VykHMMuDw",authDomain:"avrs-app.firebaseapp.com",projectId:"avrs-app",storageBucket:"avrs-app.firebasestorage.app",messagingSenderId:"1036042586771",appId:"1:1036042586771:web:b4a9bac3dcc7c0ce461b66"};
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
+const auth=getAuth(app);
+
+// ── FIREBASE AUTH ──
+window.fbLogin=async function(email,pass){
+  try{
+    const cred=await signInWithEmailAndPassword(auth,email,pass);
+    return{ok:true,user:cred.user};
+  }catch(e){
+    return{ok:false,code:e.code};
+  }
+};
+window.fbRegister=async function(email,pass){
+  try{
+    const cred=await createUserWithEmailAndPassword(auth,email,pass);
+    return{ok:true,user:cred.user};
+  }catch(e){
+    return{ok:false,code:e.code};
+  }
+};
+window.fbLogout=async function(){
+  try{await signOut(auth);}catch(e){}
+};
+
+// Observar estado de autenticação
+onAuthStateChanged(auth,async(user)=>{
+  if(user){
+    // Usuário logado via Firebase Auth
+    const email=user.email;
+    localStorage.setItem('avrs4_current_user',email);
+    if(email===window._ADMIN_EMAIL)localStorage.setItem('avrs4_pro','true');
+    document.getElementById('loginOverlay').style.display='none';
+    // Se init ainda não rodou, rodar agora
+    if(!window._appInited){
+      window._appInited=true;
+      init();
+    }
+    // Sincronizar dados
+    setTimeout(()=>{
+      if(window.syncUserData)window.syncUserData(email.replace(/[^a-zA-Z0-9]/g,'_'));
+    },1500);
+  }
 });
+
+// ── FIRESTORE ──
+window.saveToFirebase=async function(userId,data){try{await setDoc(doc(db,'users',userId),data,{merge:true});}catch(e){}};
+window.loadFromFirebase=async function(userId){try{const d=await getDoc(doc(db,'users',userId));if(d.exists())return d.data();return null;}catch(e){return null;}};
+window.syncUserData=async function(userId){
+  try{
+    const cloud=await window.loadFromFirebase(userId);
+    if(cloud){
+      if(cloud.entries&&cloud.entries.length>0){
+        const local=JSON.parse(localStorage.getItem('avrs4_e')||'[]');
+        const ids=new Set(local.map(e=>e.id));
+        const newFromCloud=cloud.entries.filter(e=>!ids.has(e.id));
+        if(newFromCloud.length>0){
+          const merged=[...local,...newFromCloud].sort((a,b)=>b.id-a.id);
+          localStorage.setItem('avrs4_e',JSON.stringify(merged));
+          // ★ CRÍTICO: atualizar entries em memória após merge
+          if(typeof entries!=='undefined'){
+            entries=merged;
+            if(typeof renderEntries==='function')renderEntries();
+            if(typeof renderStats==='function')renderStats();
+          }
+        }
+      }
+      if(cloud.isPro)localStorage.setItem('avrs4_pro','true');
+    }
+    // Salvar dados locais (incluindo qualquer novo entry) para a nuvem
+    await window.saveUserToCloud(userId);
+    // Mostrar indicador de sync
+    const ts=document.getElementById('syncStatus');
+    if(ts){ts.textContent='✓ Sincronizado '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});ts.style.color='var(--ai-text)';}
+  }catch(e){
+    const ts=document.getElementById('syncStatus');
+    if(ts){ts.textContent='⚠ Erro na sincronização';ts.style.color='#d46a6a';}
+  }
+};
+window.saveUserToCloud=async function(userId){
+  const entries=JSON.parse(localStorage.getItem('avrs4_e')||'[]');
+  const isPro=localStorage.getItem('avrs4_pro')==='true';
+  const streak=localStorage.getItem('avrs4_s')||'0';
+  await window.saveToFirebase(userId,{entries,isPro,streak,lastSync:Date.now()});
+};
+</script>
+
+
+<!-- MÓDULO DETAIL -->
+<div class="mod-detail-overlay" id="modDetailOverlay">
+  <div class="mod-detail-topbar">
+    <button class="mod-detail-back" onclick="closeModDetail()"><i class="ti ti-arrow-left"></i></button>
+    <div class="mod-detail-title" id="modDetailTitle"></div>
+    <div style="margin-left:auto" id="modDetailBadge"></div>
+  </div>
+  <div class="mod-detail-content" id="modDetailContent"></div>
+</div>
+
+<!-- PAUSA AVR-S OVERLAY -->
+<div class="pausa-overlay" id="pausaOverlay">
+  <div class="pausa-panel">
+    <div class="pausa-handle"></div>
+    <div class="pausa-header">
+      <div class="pausa-header-title">Pausa AVR-S</div>
+      <div class="pausa-header-sub">Entre o estímulo e a resposta existe um espaço.<br>Neste espaço nasce sua reconstrução.</div>
+    </div>
+    <div class="pausa-body">
+      <div class="pausa-step-card active">
+        <div class="pausa-step-num">Passo 1 — O Fato</div>
+        <div class="pausa-step-q">O que aconteceu? Descreva sem interpretação.</div>
+        <textarea class="pausa-step-ta" id="pausaP1" placeholder="Apenas o fato observável..."></textarea>
+      </div>
+      <div class="pausa-step-card">
+        <div class="pausa-step-num">Passo 2 — Reação Automática</div>
+        <div class="pausa-step-q">Qual foi minha primeira reação?</div>
+        <textarea class="pausa-step-ta" id="pausaP2" placeholder="O automático respondeu..."></textarea>
+      </div>
+      <div class="pausa-step-card">
+        <div class="pausa-step-num">Passo 3 — A Causa</div>
+        <div class="pausa-step-q">Qual causa está por trás dessa reação?</div>
+        <textarea class="pausa-step-ta" id="pausaP3" placeholder="A causa invisível pode ser..."></textarea>
+      </div>
+      <div class="pausa-step-card">
+        <div class="pausa-step-num">Passo 4 — Escolha Consciente</div>
+        <div class="pausa-step-q">Qual escolha representa minha nova versão?</div>
+        <textarea class="pausa-step-ta" id="pausaP4" placeholder="Minha nova versão escolheria..."></textarea>
+      </div>
+    </div>
+    <button class="pausa-submit" onclick="registrarPausa()">Registrar Pausa <i class="ti ti-check"></i></button>
+    <div class="pausa-confirmacao" id="pausaConfirmacao">
+      <div class="pausa-confirmacao-icon"><i class="ti ti-check"></i></div>
+      <div class="pausa-confirmacao-text">Pausa registrada. Você criou um espaço entre o estímulo e a resposta.</div>
+    </div>
+    <div style="text-align:center;padding:14px 24px 0">
+      <button onclick="closePausaAVRS()" style="background:none;border:none;color:var(--text3);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif">Fechar</button>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- MAPA COMPLETO OVERLAY -->
+<div class="mapa-full-overlay" id="mapaFullOverlay">
+  <div class="mapa-full-topbar">
+    <button class="mapa-full-back" onclick="closeMapaCompleto()"><i class="ti ti-arrow-left"></i></button>
+    <div class="mapa-full-title">Meu Mapa de Reconstrução AVR-S</div>
+  </div>
+  <div class="mapa-full-content" id="mapaFullContent"></div>
+</div>
+
+
+</div><!-- /app -->
+</body>
+</html>
