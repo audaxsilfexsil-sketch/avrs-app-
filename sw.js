@@ -1,4 +1,4 @@
-const CACHE = 'avrs-v73';
+const CACHE = 'avrs-v74';
 const ASSETS = [
   '/avrs-app-/',
   '/avrs-app-/index.html',
@@ -34,4 +34,3 @@ self.addEventListener('fetch', e => {
     })
   );
 });
-
