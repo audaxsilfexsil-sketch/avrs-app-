@@ -2834,6 +2834,9 @@ async function init(){
   else{document.getElementById('mentorText').innerHTML='Desbloqueie o Mentor IA para receber análises personalizadas baseadas no seu perfil.';document.getElementById('mentorActions').innerHTML='<div class="mentor-pill" onclick="openPaywall()"><i class="ti ti-crown" style="margin-right:4px"></i>Ativar Pro — R$19/mês</div>';}
   verificarAlertas();
   setInterval(()=>{const el=document.getElementById('quoteText');el.style.opacity='0';setTimeout(()=>{el.textContent='"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';el.style.opacity='1';},400);},9000);
+
+  // Ativar tela home
+  goTo('home');
 }
 
 
