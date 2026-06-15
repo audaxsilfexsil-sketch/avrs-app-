@@ -1423,8 +1423,6 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 
 </div>
 
-</div>
-
 <!-- NAV -->
 <div class="nav">
   <button class="nav-btn active" id="nav-home" onclick="goTo('home')"><i class="ti ti-home"></i>Início</button>
@@ -1433,6 +1431,8 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
   <button class="nav-btn" id="nav-universo" onclick="goTo('universo')"><i class="ti ti-galaxy"></i>Universo</button>
   <button class="nav-btn" id="nav-settings" onclick="goTo('settings')"><i class="ti ti-settings"></i>Ajustes</button>
 </div>
+
+</div><!-- /app fechamento movido -->
 
 <!-- MODAL DECISÃO -->
 <div class="overlay" id="overlay" onclick="closeModal(event)">
@@ -2902,10 +2902,11 @@ function switchUnivTab(tab) {
 
 function renderUnivProtocolo() {
   const c = document.getElementById('univProtocoloContent');
-  if (!c || c.innerHTML) return;
-  // Clonar conteúdo do protocolo existente
+  if (!c) return;
+  if (c.innerHTML.trim()) return; // já populado
   const proto = document.getElementById('proto-protocolo');
   if (proto) c.innerHTML = proto.innerHTML;
+  else c.innerHTML = '<div style="padding:20px;color:var(--text3);font-size:13px">Protocolo não encontrado.</div>';
 }
 
 function initUniverso() {
