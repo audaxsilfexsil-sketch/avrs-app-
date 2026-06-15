@@ -2777,6 +2777,7 @@ function loadTheme(){if(localStorage.getItem('avrs4_theme')==='light'){document.
 
 // ── INIT ──
 async function init(){
+  window._appInited=true;
   if(!checkAuth())return;
   load();loadTheme();loadProStatus();updateStreak();
   // ── ABERTURA: passagens R·A·V·R·S ──
@@ -3261,6 +3262,11 @@ onAuthStateChanged(auth,async(user)=>{
     localStorage.setItem('avrs4_current_user',email);
     if(email===window._ADMIN_EMAIL)localStorage.setItem('avrs4_pro','true');
     document.getElementById('loginOverlay').style.display='none';
+    // Se init ainda não rodou, rodar agora
+    if(!window._appInited){
+      window._appInited=true;
+      init();
+    }
     // Sincronizar dados
     setTimeout(()=>{
       if(window.syncUserData)window.syncUserData(email.replace(/[^a-zA-Z0-9]/g,'_'));
