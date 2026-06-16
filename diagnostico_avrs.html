@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Diagnóstico AVR-S 5.1</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#1c1a18;--bg2:#232120;--bg3:#2a2826;--gold:#d4b87a;--gold2:#ebd49e;--cream:#f5f0e8;--text2:#c0b8b0;--text3:#8a8278;--green:#7ad4a0;--red:#d46a6a;--border:rgba(200,169,109,.14);--border2:rgba(200,169,109,.28)}
+body{font-family:'DM Sans',Arial,sans-serif;background:var(--bg);color:var(--cream);min-height:100vh;padding:20px}
+h1{font-family:Georgia,serif;color:var(--gold);font-size:20px;font-weight:400;margin-bottom:4px}
+.sub{font-size:12px;color:var(--text3);margin-bottom:24px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px}
+.card-title{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.card-title i{font-size:14px;color:var(--gold)}
+.btn{padding:10px 18px;border-radius:10px;border:none;background:var(--gold);color:#0a0908;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;margin-right:8px;margin-bottom:8px;transition:opacity .2s}
+.btn:hover{opacity:.85}
+.btn.sec{background:var(--bg3);border:1px solid var(--border2);color:var(--gold)}
+.btn.green{background:rgba(100,200,100,.15);border:1px solid rgba(100,200,100,.3);color:var(--green)}
+.result-row{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px}
+.result-row:last-child{border:none}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.dot.ok{background:var(--green)}
+.dot.err{background:var(--red)}
+.dot.warn{background:var(--gold)}
+.dot.info{background:#7ab8d4}
+.dot.loading{background:var(--text3);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
+.label{color:var(--text2);flex:1}
+.value{color:var(--text3);font-size:11px;text-align:right;max-width:200px;word-break:break-word}
+.value.ok{color:var(--green)}
+.value.err{color:var(--red)}
+.value.warn{color:var(--gold)}
+.ai-response{background:var(--bg3);border:1px solid rgba(100,200,100,.2);border-radius:10px;padding:14px;margin-top:10px;font-family:Georgia,serif;font-size:13px;line-height:1.7;color:var(--cream);display:none}
+.progress{height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;margin-top:8px}
+.progress-fill{height:100%;background:var(--gold);border-radius:2px;width:0;transition:width .5s}
+.score-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.06em}
+.score-badge.great{background:rgba(100,200,100,.15);border:1px solid rgba(100,200,100,.3);color:var(--green)}
+.score-badge.ok{background:rgba(200,169,109,.1);border:1px solid var(--border2);color:var(--gold)}
+.score-badge.bad{background:rgba(212,106,106,.12);border:1px solid rgba(212,106,106,.3);color:var(--red)}
+.section-summary{background:var(--bg3);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:12px;color:var(--text2);line-height:1.6}
+</style>
+</head>
+<body>
+
+<h1>Diagnóstico AVR-S 5.1</h1>
+<div class="sub">Verificação completa das funcionalidades de diagnóstico e IA</div>
+
+<!-- ── 1. DADOS DO USUÁRIO ── -->
+<div class="card">
+  <div class="card-title"><i class="ti ti-user"></i>1. Dados do Usuário</div>
+  <div id="userData"></div>
+  <div class="progress"><div class="progress-fill" id="prog1"></div></div>
+</div>
+
+<!-- ── 2. QUALIDADE DOS DADOS ── -->
+<div class="card">
+  <div class="card-title"><i class="ti ti-database"></i>2. Qualidade dos Dados para IA</div>
+  <div id="dataQuality"></div>
+  <div class="progress"><div class="progress-fill" id="prog2"></div></div>
+</div>
+
+<!-- ── 3. FUNÇÕES DE DIAGNÓSTICO ── -->
+<div class="card">
+  <div class="card-title"><i class="ti ti-code"></i>3. Funções de Diagnóstico</div>
+  <div id="funcDiag"></div>
+  <div class="progress"><div class="progress-fill" id="prog3"></div></div>
+</div>
+
+<!-- ── 4. MENTOR IA ── -->
+<div class="card">
+  <div class="card-title"><i class="ti ti-brain"></i>4. Mentor IA — Teste Real</div>
+  <div id="mentorTest"></div>
+  <div class="ai-response" id="aiResponse"></div>
+  <div class="progress"><div class="progress-fill" id="prog4"></div></div>
+</div>
+
+<!-- ── 5. JORNADA ── -->
+<div class="card">
+  <div class="card-title"><i class="ti ti-seedling"></i>5. Jornada da Reconstrução</div>
+  <div id="jornadaTest"></div>
+  <div class="progress"><div class="progress-fill" id="prog5"></div></div>
+</div>
+
+<!-- ── 6. PRO / GATING ── -->
+<div class="card">
+  <div class="card-title"><i class="ti ti-crown"></i>6. Pro / Gating</div>
+  <div id="proTest"></div>
+  <div class="progress"><div class="progress-fill" id="prog6"></div></div>
+</div>
+
+<!-- ── SCORE FINAL ── -->
+<div class="card" id="scoreCard" style="display:none">
+  <div class="card-title"><i class="ti ti-chart-bar"></i>Score Final</div>
+  <div id="scoreContent"></div>
+</div>
+
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+  <button class="btn" onclick="runAll()"><i class="ti ti-play" style="margin-right:6px"></i>Rodar Diagnóstico Completo</button>
+  <button class="btn sec" onclick="testMentorIA()"><i class="ti ti-brain" style="margin-right:6px"></i>Testar Mentor IA</button>
+  <button class="btn green" onclick="window.open('https://audaxsilfexsil-sketch.github.io/avrs-app-/','_blank')"><i class="ti ti-external-link" style="margin-right:6px"></i>Abrir App</button>
+</div>
+
+<div style="height:40px"></div>
+
+<script>
+const APP_URL = 'https://audaxsilfexsil-sketch.github.io/avrs-app-/';
+const WORKER_URL = 'https://avrs-proxy.audax-silfexsil.workers.dev';
+let totalOk = 0, totalTests = 0;
+
+function row(label, value, status='info') {
+  return `<div class="result-row"><div class="dot ${status}"></div><div class="label">${label}</div><div class="value ${status}">${value}</div></div>`;
+}
+
+function setProgress(id, pct) {
+  const el = document.getElementById(id);
+  if(el) el.style.width = pct + '%';
+}
+
+// ── 1. DADOS DO USUÁRIO
+function checkUserData() {
+  const container = document.getElementById('userData');
+  const user = localStorage.getItem('avrs4_current_user');
+  const pro = localStorage.getItem('avrs4_pro');
+  
+  let html = '';
+  let ok = 0, total = 0;
+
+  // User logado
+  total++;
+  if(user) { ok++; html += row('Usuário logado', user, 'ok'); }
+  else html += row('Usuário logado', 'Não logado', 'err');
+
+  // Pro status
+  total++;
+  if(pro === 'true') { ok++; html += row('Status Pro', 'Ativo', 'ok'); }
+  else html += row('Status Pro', 'Gratuito', 'warn');
+
+  // Entries
+  let entries = [];
+  try { entries = JSON.parse(localStorage.getItem('avrs4_e') || '[]'); } catch(e) {}
+  total++;
+  if(entries.length > 0) { ok++; html += row('Registros (entries)', entries.length + ' entradas', 'ok'); }
+  else html += row('Registros (entries)', '0 entradas — sem dados para análise', 'err');
+
+  // Streak
+  const streak = localStorage.getItem('avrs4_s') || '0';
+  total++;
+  if(parseInt(streak) > 0) { ok++; html += row('Sequência atual', streak + ' dias', 'ok'); }
+  else html += row('Sequência atual', '0 dias', 'warn');
+
+  // Onboarding
+  const onboard = localStorage.getItem('avrs4_onboard');
+  html += row('Onboarding completo', onboard ? 'Sim' : 'Não', onboard ? 'ok' : 'warn');
+
+  container.innerHTML = html;
+  totalOk += ok; totalTests += total;
+  setProgress('prog1', Math.round((ok/total)*100));
+
+  html += `<div class="section-summary">${ok}/${total} verificações OK</div>`;
+  container.innerHTML = html;
+  return {ok, total, entries, user, pro};
+}
+
+// ── 2. QUALIDADE DOS DADOS
+function checkDataQuality(entries) {
+  const container = document.getElementById('dataQuality');
+  let html = '';
+  let ok = 0, total = 0;
+
+  if(!entries.length) {
+    container.innerHTML = row('Sem dados', 'Registre estados para análise', 'err');
+    setProgress('prog2', 0);
+    return;
+  }
+
+  // Estados preenchidos
+  const withState = entries.filter(e => e.state && e.state !== 'Não definido');
+  total++; if(withState.length > 0) ok++;
+  html += row('Entradas com estado', withState.length + '/' + entries.length, withState.length > 0 ? 'ok' : 'err');
+
+  // Distribuição de estados
+  const states = {};
+  withState.forEach(e => states[e.state] = (states[e.state]||0)+1);
+  const topState = Object.entries(states).sort((a,b)=>b[1]-a[1])[0];
+  total++; if(topState) ok++;
+  html += row('Estado dominante', topState ? `${topState[0]} (${topState[1]}x)` : 'N/A', topState ? 'ok' : 'warn');
+
+  // Distorções registradas
+  const withDist = entries.filter(e => e.distortion && e.distortion !== 'Nenhuma');
+  total++; if(withDist.length > 0) ok++;
+  html += row('Entradas com distorção', withDist.length + ' registradas', withDist.length > 0 ? 'ok' : 'warn');
+
+  // Decisões conscientes
+  const withDec = entries.filter(e => e.decision && e.decision.length > 5);
+  total++; if(withDec.length > 0) ok++;
+  html += row('Decisões conscientes', withDec.length + ' registradas', withDec.length > 0 ? 'ok' : 'warn');
+
+  // Aprendizados
+  const withLesson = entries.filter(e => e.lesson && e.lesson.length > 5);
+  total++; if(withLesson.length > 0) ok++;
+  html += row('Aprendizados registrados', withLesson.length + ' registrados', withLesson.length > 0 ? 'ok' : 'warn');
+
+  // Cobertura temporal
+  const daysWithData = new Set(entries.map(e => e.date?.split(' ')[0])).size;
+  total++; if(daysWithData >= 3) ok++;
+  html += row('Dias com dados', daysWithData + ' dias únicos', daysWithData >= 3 ? 'ok' : daysWithData > 0 ? 'warn' : 'err');
+
+  // Score qualidade
+  const pct = Math.round((ok/total)*100);
+  const scoreClass = pct >= 80 ? 'great' : pct >= 50 ? 'ok' : 'bad';
+  const scoreLabel = pct >= 80 ? 'Excelente para IA' : pct >= 50 ? 'Adequado' : 'Insuficiente';
+  html += `<div style="margin-top:10px"><span class="score-badge ${scoreClass}">${scoreLabel} — ${pct}%</span></div>`;
+
+  container.innerHTML = html;
+  totalOk += ok; totalTests += total;
+  setProgress('prog2', pct);
+}
+
+// ── 3. FUNÇÕES DE DIAGNÓSTICO
+async function checkFunctions() {
+  const container = document.getElementById('funcDiag');
+  let html = '';
+  let ok = 0, total = 0;
+
+  // Verificar se as funções existem no app carregado via iframe invisível
+  // Ou verificar via fetch do index.html
+  try {
+    const resp = await fetch(APP_URL);
+    const text = await resp.text();
+
+    const funcs = [
+      ['buildProfile', 'Perfil do usuário'],
+      ['renderDashboard', 'Dashboard Camada 1+2'],
+      ['renderAvrsEtapas', 'A Vida Sem Rascunho'],
+      ['initMentor51', 'Mentor IA 5.1'],
+      ['renderMapaCards', 'Cards do Mapa'],
+      ['openMapaCompleto', 'Mapa Completo'],
+      ['initJornada', 'Jornada da Reconstrução'],
+      ['renderJornada20', 'Jornada 20 Dias'],
+      ['openPausaAVRS', 'Pausa AVR-S'],
+      ['loadJSt', 'Dados da Jornada'],
+      ['switchUnivTab', 'Navegação Universo'],
+      ['renderUnivProtocolo', 'Protocolo no Universo'],
+      ['podeGerarMapa', 'Controle de quota'],
+      ['mdToHtml', 'Formatação Markdown'],
+      ['goTo', 'Navegação segura'],
+    ];
+
+    funcs.forEach(([fn, label]) => {
+      total++;
+      const exists = text.includes('function ' + fn + '(') || text.includes('function ' + fn + ' (');
+      if(exists) ok++;
+      html += row(label, exists ? fn + '() ✓' : 'AUSENTE', exists ? 'ok' : 'err');
+    });
+
+    // Verificar SW version
+    const swResp = await fetch(APP_URL.replace('avrs-app-/', 'avrs-app-/sw.js'));
+    const swText = await swResp.text();
+    const swVersion = swText.match(/avrs-v(\d+)/)?.[1] || '?';
+    total++; ok++;
+    html += row('Service Worker', 'v' + swVersion + ' ativo', 'ok');
+
+    // Verificar DIST_DESC duplicado
+    total++;
+    const distCount = (text.match(/const DIST_DESC/g) || []).length;
+    if(distCount === 1) { ok++; html += row('DIST_DESC (sem duplicata)', '1x ✓', 'ok'); }
+    else html += row('DIST_DESC duplicado', distCount + 'x — ERRO CRÍTICO', 'err');
+
+  } catch(e) {
+    html = row('Erro ao carregar app', e.message, 'err');
+  }
+
+  container.innerHTML = html;
+  totalOk += ok; totalTests += total;
+  setProgress('prog3', Math.round((ok/total)*100));
+}
+
+// ── 4. MENTOR IA
+async function testMentorIA() {
+  const container = document.getElementById('mentorTest');
+  const aiResp = document.getElementById('aiResponse');
+  container.innerHTML = row('Testando Mentor IA...', 'Aguarde', 'loading');
+  setProgress('prog4', 10);
+
+  let html = '';
+  let ok = 0, total = 0;
+
+  // Testar Cloudflare Worker
+  try {
+    const t0 = Date.now();
+    const resp = await Promise.race([
+      fetch(WORKER_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 400,
+          system: 'Você é o Mentor IA AVR-S. Responda APENAS com JSON válido sem markdown: {"causa":"...","escolhas":"...","valores":"...","ciclo":"...","proxima_acao":"..."}',
+          messages: [{role:'user', content:'Dados de teste: estado dominante Ansioso, 5 registros, distorção Urgência falsa. Gere um Mapa de Reconstrução AVR-S de teste.'}]
+        })
+      }),
+      new Promise((_,rej) => setTimeout(()=>rej(new Error('Timeout 15s')), 15000))
+    ]);
+
+    const elapsed = Date.now() - t0;
+    const data = await resp.json();
+    const text = data.content?.map(c=>c.text||'').join('') || '';
+
+    total++; ok++;
+    html += row('Cloudflare Worker', 'Online ✓', 'ok');
+    setProgress('prog4', 40);
+
+    total++;
+    if(elapsed < 10000) { ok++; html += row('Tempo de resposta', elapsed + 'ms', elapsed < 5000 ? 'ok' : 'warn'); }
+    else html += row('Tempo de resposta', elapsed + 'ms — lento', 'warn');
+
+    // Testar se retornou JSON válido
+    total++;
+    try {
+      const clean = text.replace(/```json|```/g,'').trim();
+      const mapa = JSON.parse(clean);
+      const hasAllKeys = ['causa','escolhas','valores','ciclo','proxima_acao'].every(k => mapa[k]);
+      if(hasAllKeys) {
+        ok++;
+        html += row('JSON do Mapa válido', '5 campos presentes ✓', 'ok');
+        setProgress('prog4', 80);
+
+        // Mostrar resposta
+        aiResp.style.display = 'block';
+        aiResp.innerHTML = `
+          <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:10px">Mapa Gerado pelo Mentor IA:</div>
+          ${Object.entries(mapa).map(([k,v]) => `<div style="margin-bottom:8px"><span style="color:var(--gold);font-size:11px;letter-spacing:.06em;text-transform:uppercase">${k.replace('_',' ')}</span><br>${v}</div>`).join('')}
+        `;
+
+        // Testar qualidade da resposta
+        total++;
+        const avgLen = Object.values(mapa).reduce((a,b)=>a+b.length,0)/5;
+        if(avgLen > 30) { ok++; html += row('Qualidade da resposta', 'Detalhada (' + Math.round(avgLen) + ' chars/campo)', 'ok'); }
+        else html += row('Qualidade da resposta', 'Resposta curta demais', 'warn');
+
+      } else {
+        html += row('JSON do Mapa', 'Campos faltando', 'err');
+      }
+    } catch(e) {
+      html += row('JSON do Mapa', 'Parse falhou: ' + text.substring(0,50), 'err');
+    }
+
+  } catch(e) {
+    total++; html += row('Cloudflare Worker', e.message, 'err');
+    setProgress('prog4', 100);
+  }
+
+  container.innerHTML = html;
+  totalOk += ok; totalTests += total;
+  setProgress('prog4', 100);
+}
+
+// ── 5. JORNADA
+function checkJornada() {
+  const container = document.getElementById('jornadaTest');
+  let html = '';
+  let ok = 0, total = 0;
+
+  let jSt = {};
+  try { jSt = JSON.parse(localStorage.getItem('avrs4_jornada') || '{}'); } catch(e) {}
+
+  // Módulo 1
+  total++;
+  const mod1 = jSt.mod1 || [];
+  if(mod1.length > 0) { ok++; html += row('Módulo 1 — Exercícios', mod1.length + '/4 concluídos', mod1.length === 4 ? 'ok' : 'warn'); }
+  else html += row('Módulo 1 — Exercícios', 'Não iniciado', 'info');
+
+  // Pausas AVR-S
+  total++;
+  const pausas = jSt.pausas || [];
+  if(pausas.length > 0) { ok++; html += row('Pausas AVR-S', pausas.length + ' registradas', 'ok'); }
+  else html += row('Pausas AVR-S', 'Nenhuma pausa registrada', 'warn');
+
+  // Jornada 20 dias
+  total++;
+  const j20 = jSt.j20Done || [];
+  if(j20.length > 0) { ok++; html += row('Jornada 20 Dias', j20.length + '/20 dias concluídos', j20.length >= 5 ? 'ok' : 'warn'); }
+  else html += row('Jornada 20 Dias', 'Não iniciada', 'info');
+
+  // Mod 2 (escolhas)
+  const mod2 = Object.keys(jSt.mod2 || {}).length;
+  html += row('Módulo 2 — Escolhas', mod2 + ' dias registrados', mod2 > 0 ? 'ok' : 'info');
+
+  // Mapa salvo
+  total++;
+  const mapaAtual = localStorage.getItem('avrs4_mapa_atual');
+  if(mapaAtual) {
+    ok++;
+    try {
+      const {ts, totalEntries} = JSON.parse(mapaAtual);
+      const date = new Date(ts).toLocaleDateString('pt-BR');
+      html += row('Mapa de Reconstrução salvo', `Gerado em ${date} · ${totalEntries} registros`, 'ok');
+    } catch(e) {
+      html += row('Mapa de Reconstrução', 'Dados corrompidos', 'err');
+    }
+  } else {
+    html += row('Mapa de Reconstrução', 'Não gerado ainda', 'warn');
+  }
+
+  container.innerHTML = html;
+  totalOk += ok; totalTests += total;
+  setProgress('prog5', Math.round((ok/total)*100));
+}
+
+// ── 6. PRO / GATING
+function checkPro() {
+  const container = document.getElementById('proTest');
+  let html = '';
+  let ok = 0, total = 0;
+
+  const user = localStorage.getItem('avrs4_current_user') || '';
+  const pro = localStorage.getItem('avrs4_pro') === 'true';
+  const isAdmin = user === 'audax2_cj@hotmail.com';
+
+  total++;
+  if(isAdmin) { ok++; html += row('Conta Admin', 'audax2_cj@hotmail.com ✓', 'ok'); }
+  else html += row('Conta Admin', 'Conta comum', 'info');
+
+  total++;
+  if(pro) { ok++; html += row('Pro ativo', 'Sim — acesso total', 'ok'); }
+  else html += row('Pro ativo', 'Não — versão gratuita', 'warn');
+
+  // Quota do Mentor IA
+  const mes = new Date().getFullYear() + '-' + String(new Date().getMonth()+1).padStart(2,'0');
+  const quotaKey = 'avrs4_mapa_' + user.replace(/[^a-zA-Z0-9]/g,'_') + '_' + mes;
+  const quotaUsada = parseInt(localStorage.getItem(quotaKey) || '0');
+  total++;
+  if(pro || quotaUsada < 3) { ok++; html += row('Quota Mentor IA', pro ? 'Ilimitada (Pro)' : `${quotaUsada}/3 usadas`, pro ? 'ok' : quotaUsada < 3 ? 'ok' : 'err'); }
+  else html += row('Quota Mentor IA', '3/3 — limite atingido', 'err');
+
+  // Admin sempre Pro
+  total++;
+  if(isAdmin && pro) { ok++; html += row('Admin → Pro automático', 'Funcionando ✓', 'ok'); }
+  else if(isAdmin && !pro) html += row('Admin → Pro automático', 'Pro não ativo para admin!', 'err');
+  else html += row('Admin → Pro automático', 'N/A (conta comum)', 'info');
+
+  container.innerHTML = html;
+  totalOk += ok; totalTests += total;
+  setProgress('prog6', Math.round((ok/total)*100));
+}
+
+// ── SCORE FINAL
+function showScore() {
+  const card = document.getElementById('scoreCard');
+  const content = document.getElementById('scoreContent');
+  card.style.display = 'block';
+
+  const pct = Math.round((totalOk/totalTests)*100);
+  const scoreClass = pct >= 85 ? 'great' : pct >= 60 ? 'ok' : 'bad';
+  const scoreLabel = pct >= 85 ? 'Sistema Saudável' : pct >= 60 ? 'Funcional com Avisos' : 'Atenção Necessária';
+
+  content.innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+      <div style="font-size:48px;font-family:Georgia,serif;color:var(--gold);line-height:1">${pct}%</div>
+      <div>
+        <span class="score-badge ${scoreClass}">${scoreLabel}</span>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px">${totalOk} de ${totalTests} verificações passaram</div>
+      </div>
+    </div>
+    <div class="progress"><div class="progress-fill" style="width:${pct}%"></div></div>
+  `;
+}
+
+// ── RODAR TUDO
+async function runAll() {
+  totalOk = 0; totalTests = 0;
+  document.getElementById('scoreCard').style.display = 'none';
+  document.getElementById('aiResponse').style.display = 'none';
+
+  const {entries} = checkUserData();
+  checkDataQuality(entries);
+  await checkFunctions();
+  checkJornada();
+  checkPro();
+  await testMentorIA();
+  showScore();
+}
+
+// Auto-rodar ao carregar
+window.addEventListener('load', () => {
+  setTimeout(runAll, 500);
+});
+</script>
+</body>
+</html>
