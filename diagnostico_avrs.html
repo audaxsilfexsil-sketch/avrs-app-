@@ -319,7 +319,14 @@ async function testMentorIA() {
     // Testar se retornou JSON válido
     total++;
     try {
-      const clean = text.replace(/```json|```/g,'').trim();
+      // Parser robusto — extrai JSON mesmo com markdown
+      let clean = text;
+      // Remover blocos de código
+      clean = clean.replace(/```json/gi,'').replace(/```/g,'').trim();
+      // Encontrar o primeiro { e último }
+      const start = clean.indexOf('{');
+      const end = clean.lastIndexOf('}');
+      if(start !== -1 && end !== -1) clean = clean.substring(start, end+1);
       const mapa = JSON.parse(clean);
       const hasAllKeys = ['causa','escolhas','valores','ciclo','proxima_acao'].every(k => mapa[k]);
       if(hasAllKeys) {
