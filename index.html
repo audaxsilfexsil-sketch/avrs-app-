@@ -909,6 +909,26 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 .dash-quota-count{font-size:10px;color:var(--text3)}
 .dash-divider{height:1px;background:var(--border);margin:16px 0}
 
+
+/* ── GALERIA AVR-S ── */
+.galeria-section{margin-bottom:24px}
+.galeria-section-title{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.galeria-section-title i{font-size:14px;color:var(--gold)}
+.galeria-livros{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.galeria-livro{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;transition:transform .2s,border-color .2s;cursor:pointer}
+.galeria-livro:hover{transform:translateY(-3px);border-color:var(--border2)}
+.galeria-livro img{width:100%;display:block;aspect-ratio:2/3;object-fit:cover}
+.galeria-livro-info{padding:10px 12px}
+.galeria-livro-titulo{font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--cream);line-height:1.4;margin-bottom:3px}
+.galeria-livro-autor{font-size:10px;color:var(--text3)}
+.galeria-logo-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-bottom:10px}
+.galeria-logo-card img{width:100%;display:block;object-fit:cover}
+.galeria-logo-card-info{padding:12px 14px;border-top:1px solid var(--border)}
+.galeria-logo-card-title{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--cream);margin-bottom:3px}
+.galeria-logo-card-sub{font-size:11px;color:var(--text3);line-height:1.5}
+.galeria-quote{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:16px;text-align:center;margin-top:8px}
+.galeria-quote-text{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:var(--gold2);line-height:1.7}
+
 </style>
 </head>
 <body>
@@ -1364,11 +1384,48 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
     <div id="univ-protocolo" style="display:none">
       <div id="univProtocoloContent"></div>
     </div>
+
+    <!-- TAB: GALERIA -->
+    <div id="univ-galeria" style="display:none">
+      <div class="galeria-section">
+        <div class="galeria-section-title"><i class="ti ti-books"></i>Livros do Método</div>
+        <div class="galeria-livros">
+          <div class="galeria-livro">
+            <img src="https://raw.githubusercontent.com/audaxsilfexsil-sketch/avrs-app-/main/capa-mente-causa%20(1).jpg" alt="A Mente é a Causa. A Vida é o Efeito." loading="lazy"/>
+            <div class="galeria-livro-info">
+              <div class="galeria-livro-titulo">A Mente é a Causa. A Vida é o Efeito.</div>
+              <div class="galeria-livro-autor">André Fernandes · Método AVR-S</div>
+            </div>
+          </div>
+          <div class="galeria-livro">
+            <img src="https://raw.githubusercontent.com/audaxsilfexsil-sketch/avrs-app-/main/capa-vida-rascunho%20(1).jpg" alt="A Vida Sem Rascunho" loading="lazy"/>
+            <div class="galeria-livro-info">
+              <div class="galeria-livro-titulo">A Vida Sem Rascunho</div>
+              <div class="galeria-livro-autor">André Fernandes · Método AVR-S</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="galeria-section">
+        <div class="galeria-section-title"><i class="ti ti-trademark"></i>Identidade Visual</div>
+        <div class="galeria-logo-card">
+          <img src="https://raw.githubusercontent.com/audaxsilfexsil-sketch/avrs-app-/main/LOGO%2001%20AVR-S.png" alt="Logo AVR-S" loading="lazy"/>
+          <div class="galeria-logo-card-info">
+            <div class="galeria-logo-card-title">AVR-S</div>
+            <div class="galeria-logo-card-sub">Atenção · Visão · Resposta · Sistema</div>
+          </div>
+        </div>
+      </div>
+      <div class="galeria-quote">
+        <div class="galeria-quote-text">"A mente cria a causa.<br>As escolhas constroem o caminho.<br>A vida revela o efeito."</div>
+      </div>
+    </div>
 </div>
     <div class="univ-tab-row">
       <button class="univ-tab active" id="utab-avrs" onclick="switchUnivTab('avrs')">Vida Sem Rascunho</button>
       <button class="univ-tab" id="utab-mentor" onclick="switchUnivTab('mentor')">Mentor IA</button>
       <button class="univ-tab" id="utab-protocolo" onclick="switchUnivTab('protocolo')">Protocolo</button>
+      <button class="univ-tab" id="utab-galeria" onclick="switchUnivTab('galeria')">Galeria</button>
     </div>
 
     <!-- TAB: A VIDA SEM RASCUNHO -->
@@ -2898,7 +2955,7 @@ function closeManual(){document.getElementById('manualOverlay').classList.remove
 // ── UNIVERSO AVR-S 5.1 ──────────────────────────────────────────
 
 function switchUnivTab(tab) {
-  ['avrs','mentor','protocolo'].forEach(t => {
+  ['avrs','mentor','protocolo','galeria'].forEach(t => {
     const el = document.getElementById('univ-' + t);
     if (el) el.style.display = t === tab ? 'block' : 'none';
     const btn = document.getElementById('utab-' + t);
@@ -3128,13 +3185,13 @@ Responda APENAS com o JSON válido, sem markdown, sem explicações adicionais.`
 
   try {
     const resp = await callClaude([{ role: 'user', content: prompt }],
-      'Você é o Mentor IA AVR-S. Analise os dados e responda APENAS com JSON válido conforme solicitado. Seja específico, profundo e pessoal. Nunca genérico.');
+      'Você é o Mentor IA AVR-S. Responda APENAS com JSON válido. NUNCA use markdown, NUNCA use ```json, NUNCA adicione texto antes ou depois. Apenas o objeto JSON puro iniciando com { e terminando com }. Seja específico, profundo e pessoal.');
 
     incrementMapaCount();
 
     let mapa;
     try {
-      const clean = resp.replace(/```json|```/g, '').trim();
+      const clean = resp.replace(/```json|```/g, '').replace(/^[^{]*/,'').replace(/[^}]*$/,'').trim();
       mapa = JSON.parse(clean);
     } catch (e) {
       mapa = {
