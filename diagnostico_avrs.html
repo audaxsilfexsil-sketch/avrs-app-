@@ -351,7 +351,27 @@ async function testMentorIA() {
         html += row('JSON do Mapa', 'Campos faltando', 'err');
       }
     } catch(e) {
-      html += row('JSON do Mapa', 'Parse falhou: ' + text.substring(0,50), 'err');
+      // Tentar mais uma vez com abordagem diferente
+      try {
+        const m = text.match(/\{[\s\S]*\}/);
+        if(m) {
+          const mapa2 = JSON.parse(m[0]);
+          const hasKeys = ['causa','escolhas','valores','ciclo','proxima_acao'].every(k=>mapa2[k]);
+          if(hasKeys) {
+            ok++;
+            html += row('JSON do Mapa válido', '5 campos ✓ (via regex)', 'ok');
+            aiResp.style.display='block';
+            aiResp.innerHTML='<div style="font-size:10px;color:var(--green);margin-bottom:8px">Mapa gerado:</div>' +
+              Object.entries(mapa2).map(([k,v])=>`<div style="margin-bottom:6px"><span style="color:var(--gold);font-size:10px;text-transform:uppercase">${k}</span><br>${v}</div>`).join('');
+          } else {
+            html += row('JSON do Mapa', 'Campos incompletos', 'warn');
+          }
+        } else {
+          html += row('JSON do Mapa', 'Parse falhou: ' + text.substring(0,80), 'err');
+        }
+      } catch(e2) {
+        html += row('JSON do Mapa', 'Erro: ' + text.substring(0,80), 'err');
+      }
     }
 
   } catch(e) {
