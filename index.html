@@ -473,6 +473,9 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream);-webkit-font-smoothing:
 .login-toggle{background:none;border:none;color:var(--text3);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:16px;text-decoration:underline}
 .login-error{font-size:12px;color:#d46a6a;margin-top:8px;text-align:center;min-height:18px}
 .login-version{font-size:10px;color:#3a3630;margin-top:32px;letter-spacing:.1em}
+.login-forgot{background:none;border:none;color:var(--text3);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px;text-decoration:underline;opacity:.7}
+.login-forgot:hover{opacity:1;color:var(--gold)}
+.login-reset-msg{font-size:12px;color:#6abf8a;margin-top:6px;text-align:center;min-height:16px}
 .admin-overlay{position:fixed;inset:0;background:var(--bg);z-index:1000;display:none;flex-direction:column;overflow:hidden}
 .admin-overlay.open{display:flex}
 .admin-topbar{padding:16px 20px 14px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border);flex-shrink:0}
@@ -969,6 +972,8 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
     <div class="login-field" id="loginPassConfirmField" style="display:none"><input type="password" id="loginPassConfirm" placeholder="Confirme a senha"/></div>
     <div class="login-error" id="loginError"></div>
     <button class="login-btn" id="loginBtn" onclick="handleLogin()">Entrar</button>
+    <button class="login-forgot" id="loginForgot" onclick="handleForgotPassword()">Esqueci minha senha</button>
+    <div class="login-reset-msg" id="loginResetMsg"></div>
     <button class="login-toggle" id="loginToggle" onclick="toggleLoginMode()">Não tem conta? Cadastre-se</button>
     <div class="login-version">v4.0 · IA</div>
     <div style="font-size:10px;color:#3a3630;margin-top:8px;letter-spacing:.08em;text-align:center">© 2025 Audax Consultoria · Todos os direitos reservados</div>
@@ -2804,7 +2809,7 @@ function sendAdminMsg(){
 
 // ── LOGIN ──
 let loginMode='login';
-function toggleLoginMode(){loginMode=loginMode==='login'?'register':'login';if(loginMode==='register'){document.getElementById('loginTitle').textContent='Criar conta';document.getElementById('loginSub').textContent='Cadastre-se para começar sua jornada';document.getElementById('loginPassConfirmField').style.display='block';document.getElementById('loginBtn').textContent='Criar conta';document.getElementById('loginToggle').textContent='Já tem conta? Entrar';}else{document.getElementById('loginTitle').textContent='Bem-vindo';document.getElementById('loginSub').textContent='Entre com sua conta para continuar';document.getElementById('loginPassConfirmField').style.display='none';document.getElementById('loginBtn').textContent='Entrar';document.getElementById('loginToggle').textContent='Não tem conta? Cadastre-se';}document.getElementById('loginError').textContent='';}
+function toggleLoginMode(){loginMode=loginMode==='login'?'register':'login';if(loginMode==='register'){document.getElementById('loginTitle').textContent='Criar conta';document.getElementById('loginSub').textContent='Cadastre-se para começar sua jornada';document.getElementById('loginPassConfirmField').style.display='block';document.getElementById('loginBtn').textContent='Criar conta';document.getElementById('loginToggle').textContent='Já tem conta? Entrar';document.getElementById('loginForgot').style.display='none';}else{document.getElementById('loginTitle').textContent='Bem-vindo';document.getElementById('loginSub').textContent='Entre com sua conta para continuar';document.getElementById('loginPassConfirmField').style.display='none';document.getElementById('loginBtn').textContent='Entrar';document.getElementById('loginToggle').textContent='Não tem conta? Cadastre-se';document.getElementById('loginForgot').style.display='block';}document.getElementById('loginError').textContent='';document.getElementById('loginResetMsg').textContent='';}
 function hashSimple(str){let h=0;for(let i=0;i<str.length;i++){h=((h<<5)-h)+str.charCodeAt(i);h=h&h;}return h.toString(36);}
 function handleLogin(){
   const email=document.getElementById('loginEmail').value.trim().toLowerCase();
@@ -3388,7 +3393,7 @@ init();
 <script type="module">
 import{initializeApp}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
 import{getFirestore,doc,setDoc,getDoc}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,sendPasswordResetEmail}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
 const firebaseConfig={apiKey:"AIzaSyBy13fDtxYQlkMozofoIoYS27VykHMMuDw",authDomain:"avrs-app.firebaseapp.com",projectId:"avrs-app",storageBucket:"avrs-app.firebasestorage.app",messagingSenderId:"1036042586771",appId:"1:1036042586771:web:b4a9bac3dcc7c0ce461b66"};
 const app=initializeApp(firebaseConfig);
@@ -3414,6 +3419,21 @@ window.fbRegister=async function(email,pass){
 };
 window.fbLogout=async function(){
   try{await signOut(auth);}catch(e){}
+
+  window.handleForgotPassword=async function(){
+    const email=document.getElementById('loginEmail').value.trim().toLowerCase();
+    const errEl=document.getElementById('loginError');
+    const msgEl=document.getElementById('loginResetMsg');
+    errEl.textContent='';msgEl.textContent='';
+    if(!email){errEl.textContent='Digite seu e-mail para recuperar a senha.';return;}
+    try{
+      await sendPasswordResetEmail(auth,email);
+      msgEl.textContent='E-mail de recuperação enviado. Verifique sua caixa de entrada.';
+    }catch(e){
+      const erros={'auth/user-not-found':'E-mail não encontrado.','auth/invalid-email':'E-mail inválido.','auth/too-many-requests':'Muitas tentativas. Tente mais tarde.'};
+      errEl.textContent=erros[e.code]||'Erro ao enviar e-mail. Tente novamente.';
+    }
+  };
 };
 
 // Observar estado de autenticação
