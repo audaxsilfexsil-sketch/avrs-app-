@@ -325,6 +325,7 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream);-webkit-font-smoothing:
 .paywall-cta:active{background:var(--gold2)}
 .paywall-dismiss{display:block;text-align:center;margin-top:12px;font-size:12px;color:var(--text3);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;width:100%}
 .paywall-free-label{font-size:11px;color:var(--text3);text-align:center;margin-top:8px}
+@keyframes pwPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.85)}}
 .pro-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(200,169,109,.1);border:1px solid var(--border2);border-radius:20px;padding:3px 8px;font-size:9px;letter-spacing:.08em;color:var(--gold);text-transform:uppercase;vertical-align:middle;margin-left:6px}
 .pro-badge i{font-size:10px}
 .locked-card{position:relative;overflow:hidden}
@@ -1614,14 +1615,51 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
       <div class="paywall-feature"><div class="paywall-feature-icon"><i class="ti ti-sparkles"></i></div><div><div class="paywall-feature-title">Diagnóstico avançado</div><div class="paywall-feature-desc">Insight personalizado ao final de cada checklist.</div></div></div>
     </div>
     <div class="paywall-pricing">
-      <div class="paywall-price-card">
-        <div class="paywall-price-badge">AVR–S Pro</div>
-        <div class="paywall-price-value">R$19</div>
-        <div class="paywall-price-period">por mês · cancele quando quiser</div>
-        <a href="https://pag.ae/81P9a56Kv/button" target="_blank" style="display:block;width:100%;text-decoration:none"><button class="paywall-cta" style="width:100%">Assinar agora — R$19/mês</button></a>
+
+      <!-- ETAPA 1: E-mail -->
+      <div id="pw-step-email">
+        <div class="paywall-price-card">
+          <div class="paywall-price-badge">AVR–S Pro</div>
+          <div class="paywall-price-value">R$19</div>
+          <div class="paywall-price-period">por mês · cancele quando quiser</div>
+          <input id="pw-email-input" type="email" placeholder="Seu e-mail" autocomplete="email"
+            style="width:100%;box-sizing:border-box;background:var(--bg4);border:1px solid var(--border2);border-radius:10px;padding:13px 14px;font-size:13px;color:var(--cream);font-family:'DM Sans',sans-serif;margin-bottom:10px;outline:none">
+          <div id="pw-email-error" style="font-size:11px;color:#e07070;margin-bottom:8px;display:none">Informe um e-mail válido.</div>
+          <button class="paywall-cta" onclick="pwIniciarCheckout()">Gerar Pix — R$19/mês</button>
+        </div>
+        <div class="paywall-free-label">Versão gratuita: diário, protocolo e guia permanecem disponíveis</div>
+        <button class="paywall-dismiss" onclick="closePaywall()">Continuar com a versão gratuita</button>
       </div>
-      <div class="paywall-free-label">Versão gratuita: diário, protocolo e guia permanecem disponíveis</div>
-      <button class="paywall-dismiss" onclick="closePaywall()">Continuar com a versão gratuita</button>
+
+      <!-- ETAPA 2: QR Code Pix -->
+      <div id="pw-step-qr" style="display:none">
+        <div class="paywall-price-card" style="padding:24px 20px">
+          <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:14px">Pix gerado — pague para ativar</div>
+          <div id="pw-qr-img-wrap" style="width:180px;height:180px;margin:0 auto 16px;background:white;border-radius:12px;display:flex;align-items:center;justify-content:center">
+            <img id="pw-qr-img" src="" alt="QR Code Pix" style="width:160px;height:160px;display:none">
+            <div id="pw-qr-placeholder" style="font-size:11px;color:#888;text-align:center;padding:8px">Carregando<br>QR Code…</div>
+          </div>
+          <div style="font-size:11px;color:var(--text3);margin-bottom:8px">Ou copie o código:</div>
+          <div id="pw-pix-code" style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;font-size:10px;color:var(--text2);word-break:break-all;margin-bottom:10px;line-height:1.5;min-height:36px">…</div>
+          <button onclick="pwCopiarCodigo()" style="width:100%;background:none;border:1px solid var(--border2);border-radius:10px;padding:11px;font-size:12px;color:var(--gold);font-family:'DM Sans',sans-serif;cursor:pointer;margin-bottom:14px"><i class="ti ti-copy" style="margin-right:6px"></i>Copiar código Pix</button>
+          <div id="pw-polling-status" style="font-size:12px;color:var(--text3);text-align:center">
+            <span id="pw-polling-dot" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gold);margin-right:6px;animation:pwPulse 1.2s ease-in-out infinite"></span>
+            Aguardando confirmação do pagamento…
+          </div>
+        </div>
+        <button class="paywall-dismiss" onclick="pwVoltarEmail()">← Usar outro e-mail</button>
+      </div>
+
+      <!-- ETAPA 3: Confirmado -->
+      <div id="pw-step-ok" style="display:none">
+        <div class="paywall-price-card" style="padding:32px 20px;text-align:center">
+          <div style="font-size:48px;margin-bottom:12px">🎉</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);margin-bottom:8px">Pro ativado!</div>
+          <div style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:20px">Bem-vindo ao AVR–S Pro. Todos os recursos estão disponíveis agora.</div>
+          <button class="paywall-cta" onclick="pwFinalizarAtivacao()">Continuar</button>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -2617,8 +2655,155 @@ function loadProStatus(){
   }
   isPro=localStorage.getItem('avrs4_pro')==='true';
 }
-function openPaywall(){document.getElementById('paywallOverlay').classList.add('open');}
-function closePaywall(){document.getElementById('paywallOverlay').classList.remove('open');}
+function openPaywall(){
+  // Resetar para etapa 1 sempre que abrir
+  pwMostrarStep('email');
+  document.getElementById('pw-email-input').value = '';
+  document.getElementById('pw-email-error').style.display = 'none';
+  document.getElementById('paywallOverlay').classList.add('open');
+}
+function closePaywall(){
+  document.getElementById('paywallOverlay').classList.remove('open');
+  pwPararPolling();
+}
+
+// ── Checkout Pix ─────────────────────────────────────────────
+const PW_WORKER = 'https://avrs-proxy.audax-silfexsil.workers.dev';
+let _pwPollingTimer = null;
+let _pwEmail = '';
+let _pwChargeId = '';
+
+function pwMostrarStep(step){
+  ['email','qr','ok'].forEach(s=>{
+    const el = document.getElementById('pw-step-'+s);
+    if(el) el.style.display = s===step?'':'none';
+  });
+}
+
+async function pwIniciarCheckout(){
+  const input = document.getElementById('pw-email-input');
+  const email = input.value.trim();
+  const errEl = document.getElementById('pw-email-error');
+
+  if(!email || !email.includes('@') || !email.includes('.')){
+    errEl.style.display='block';
+    input.focus();
+    return;
+  }
+  errEl.style.display='none';
+
+  const btn = document.querySelector('#pw-step-email .paywall-cta');
+  btn.textContent = 'Gerando Pix…';
+  btn.disabled = true;
+
+  try{
+    const resp = await fetch(PW_WORKER+'/checkout/pix',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({email})
+    });
+    const data = await resp.json();
+
+    if(!data.ok){
+      btn.textContent = 'Gerar Pix — R$19/mês';
+      btn.disabled = false;
+      errEl.textContent = 'Erro ao gerar Pix. Tente novamente.';
+      errEl.style.display = 'block';
+      return;
+    }
+
+    _pwEmail = email;
+    _pwChargeId = data.charge_id || '';
+
+    // Preencher QR Code
+    const pixCode = document.getElementById('pw-pix-code');
+    pixCode.textContent = data.qr_code_text || '(código indisponível)';
+
+    const qrImg = document.getElementById('pw-qr-img');
+    const qrPh  = document.getElementById('pw-qr-placeholder');
+    if(data.qr_code){
+      qrImg.src = data.qr_code;
+      qrImg.style.display = 'block';
+      qrPh.style.display  = 'none';
+    }
+
+    pwMostrarStep('qr');
+    pwIniciarPolling(email);
+
+  }catch(e){
+    btn.textContent = 'Gerar Pix — R$19/mês';
+    btn.disabled = false;
+    errEl.textContent = 'Erro de conexão. Verifique sua internet.';
+    errEl.style.display = 'block';
+  }
+}
+
+function pwCopiarCodigo(){
+  const code = document.getElementById('pw-pix-code').textContent;
+  navigator.clipboard.writeText(code).then(()=>{
+    const btn = document.querySelector('#pw-step-qr button[onclick="pwCopiarCodigo()"]');
+    if(btn){ btn.innerHTML='<i class="ti ti-check" style="margin-right:6px"></i>Copiado!'; setTimeout(()=>{ btn.innerHTML='<i class="ti ti-copy" style="margin-right:6px"></i>Copiar código Pix'; },2000); }
+  });
+}
+
+function pwVoltarEmail(){
+  pwPararPolling();
+  pwMostrarStep('email');
+}
+
+// ── Polling Firebase ──────────────────────────────────────────
+function pwIniciarPolling(email){
+  pwPararPolling();
+  let tentativas = 0;
+  const maxTentativas = 72; // ~6 minutos
+  const emailKey = email.replace(/[^a-zA-Z0-9]/g,'_');
+
+  _pwPollingTimer = setInterval(async ()=>{
+    tentativas++;
+    if(tentativas > maxTentativas){
+      pwPararPolling();
+      document.getElementById('pw-polling-status').innerHTML =
+        '<span style="color:#e07070">Tempo esgotado. Pague o Pix e reabra o app.</span>';
+      return;
+    }
+    try{
+      // Consultar Firestore REST diretamente
+      const projectId = 'avrs-app';
+      const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${emailKey}`;
+      const r = await fetch(url);
+      if(!r.ok) return;
+      const d = await r.json();
+      const fields = d.fields || {};
+      const isPro = fields.isPro && (fields.isPro.booleanValue === true);
+      const proExpira = fields.proExpira ? parseInt(fields.proExpira.integerValue) : 0;
+
+      if(isPro && proExpira > Date.now()){
+        pwPararPolling();
+        pwConfirmarPro(proExpira);
+      }
+    }catch(e){}
+  }, 5000);
+}
+
+function pwPararPolling(){
+  if(_pwPollingTimer){ clearInterval(_pwPollingTimer); _pwPollingTimer=null; }
+}
+
+function pwConfirmarPro(expira){
+  pwMostrarStep('ok');
+}
+
+function pwFinalizarAtivacao(){
+  // Ativar Pro localmente para a sessão atual
+  isPro = true;
+  localStorage.setItem('isPro','true');
+  localStorage.setItem('proExpira', _pwPollingTimer ? '' : '');
+  closePaywall();
+  // Recarregar interface
+  if(typeof renderNav==='function') renderNav();
+  if(typeof renderHome==='function') renderHome();
+  if(typeof renderJornada==='function') renderJornada();
+}
 function applyProGating(){if(isPro)return;const mc=document.getElementById('mentorCard');if(mc){mc.classList.add('locked-card');const lb=document.createElement('div');lb.className='lock-badge';lb.innerHTML='<i class="ti ti-lock"></i><span>Recurso Pro</span>';lb.onclick=()=>openPaywall();mc.appendChild(lb);}const bb=document.querySelector('.icon-btn[title="Mentor IA"]');if(bb)bb.onclick=()=>openPaywall();}
 function updateSettingsProStatus(){const ps=document.getElementById('profileStatus');if(ps)ps.innerHTML=isPro?'Pro ativo':'Gratuito · <span style="color:var(--gold);cursor:pointer" onclick="openPaywall()">Upgrade</span>';}
 
