@@ -1647,18 +1647,16 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 
   </div>
 
-</div>
+  <!-- NAV -->
+  <div class="nav">
+    <button class="nav-btn active" id="nav-home" onclick="goTo('home')"><i class="ti ti-home"></i>Início</button>
+    <button class="nav-btn" id="nav-diary" onclick="goTo('diary')"><i class="ti ti-notebook"></i>Diário</button>
+    <button class="nav-btn" id="nav-jornada" onclick="goTo('jornada')"><i class="ti ti-seedling"></i>Jornada</button>
+    <button class="nav-btn" id="nav-universo" onclick="goTo('universo')"><i class="ti ti-galaxy"></i>Universo</button>
+    <button class="nav-btn" id="nav-settings" onclick="goTo('settings')"><i class="ti ti-settings"></i>Ajustes</button>
+  </div>
 
-<!-- NAV -->
-<div class="nav">
-  <button class="nav-btn active" id="nav-home" onclick="goTo('home')"><i class="ti ti-home"></i>Início</button>
-  <button class="nav-btn" id="nav-diary" onclick="goTo('diary')"><i class="ti ti-notebook"></i>Diário</button>
-  <button class="nav-btn" id="nav-jornada" onclick="goTo('jornada')"><i class="ti ti-seedling"></i>Jornada</button>
-  <button class="nav-btn" id="nav-universo" onclick="goTo('universo')"><i class="ti ti-galaxy"></i>Universo</button>
-  <button class="nav-btn" id="nav-settings" onclick="goTo('settings')"><i class="ti ti-settings"></i>Ajustes</button>
-</div>
-
-</div><!-- /app fechamento movido -->
+</div><!-- /app -->
 
 <!-- MODAL DECISÃO -->
 <div class="overlay" id="overlay" onclick="closeModal(event)">
