@@ -976,7 +976,7 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
     <button class="login-forgot" id="loginForgot" onclick="handleForgotPassword()">Esqueci minha senha</button>
     <div class="login-reset-msg" id="loginResetMsg"></div>
     <button class="login-toggle" id="loginToggle" onclick="toggleLoginMode()">Não tem conta? Cadastre-se</button>
-    <div class="login-version">v4.0 · IA</div>
+    <div class="login-version">v5.2 · Trilogia</div>
     <div style="font-size:10px;color:#3a3630;margin-top:8px;letter-spacing:.08em;text-align:center">© 2025 Audax Consultoria · Todos os direitos reservados</div>
   </div>
 </div>
@@ -1113,6 +1113,53 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
       <div class="qcard-hint" id="qcardHint"></div>
     </div>
     <button class="primary-btn" style="margin-bottom:16px" onclick="openModal()">Registrar decisão consciente</button>
+
+    <!-- CARD PROGRESSO JORNADA -->
+    <div id="jornadaHomeCard" style="display:none;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:16px;margin-bottom:12px;cursor:pointer" onclick="goTo('jornada')">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <i class="ti ti-map-route" style="color:var(--gold);font-size:16px"></i>
+          <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3)">Jornada da Reconstrução</div>
+        </div>
+        <i class="ti ti-chevron-right" style="color:var(--text3);font-size:14px"></i>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="flex:1">
+          <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden">
+            <div id="jornadaHomeBar" style="height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:2px;transition:width .4s ease;width:0%"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:6px">
+            <div id="jornadaHomeDia" style="font-size:12px;color:var(--cream)">Dia 1 de 20</div>
+            <div id="jornadaHomePct" style="font-size:11px;color:var(--text3)">0%</div>
+          </div>
+        </div>
+      </div>
+      <div id="jornadaHomeProximo" style="margin-top:10px;font-size:12px;color:var(--text3);font-style:italic;line-height:1.5;border-top:1px solid var(--border);padding-top:10px"></div>
+    </div>
+
+    <!-- BANNER TRILOGIA -->
+    <div style="background:linear-gradient(135deg,#1a1408 0%,#1e1a10 50%,#1a1408 100%);border:1px solid rgba(212,184,122,.25);border-radius:var(--r2);padding:16px;margin-bottom:12px">
+      <div style="font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);opacity:.7;margin-bottom:10px">Trilogia da Transformação · Lançamento 31 de julho</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">
+        <div style="text-align:center">
+          <div style="aspect-ratio:2/3;background:linear-gradient(135deg,#1a1209,#2a1f10);border:1px solid rgba(212,184,122,.2);border-radius:4px;display:flex;align-items:center;justify-content:center;margin-bottom:5px"><i class="ti ti-book" style="color:var(--gold);opacity:.4;font-size:18px"></i></div>
+          <div style="font-size:8px;color:var(--text3);line-height:1.3">Crônicas de um Campeão</div>
+        </div>
+        <div style="text-align:center">
+          <img src="https://raw.githubusercontent.com/audaxsilfexsil-sketch/avrs-app-/main/capa-mente-causa%20(1).jpg" style="width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:4px;border:1px solid rgba(212,184,122,.2);display:block;margin-bottom:5px" loading="lazy"/>
+          <div style="font-size:8px;color:var(--text3);line-height:1.3">A Mente É a Causa</div>
+        </div>
+        <div style="text-align:center">
+          <img src="https://raw.githubusercontent.com/audaxsilfexsil-sketch/avrs-app-/main/capa-vida-rascunho%20(1).jpg" style="width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:4px;border:1px solid rgba(212,184,122,.2);display:block;margin-bottom:5px" loading="lazy"/>
+          <div style="font-size:8px;color:var(--text3);line-height:1.3">A Vida Sem Rascunho</div>
+        </div>
+      </div>
+      <a href="https://avrs.com.br" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(212,184,122,.08);border:1px solid rgba(212,184,122,.2);border-radius:20px;padding:9px 16px;text-decoration:none">
+        <i class="ti ti-shopping-bag" style="color:var(--gold);font-size:14px"></i>
+        <span style="font-size:11px;color:var(--gold);letter-spacing:.06em">Adquirir o Kit Trilogia · avrs.com.br</span>
+      </a>
+    </div>
+
     <div class="quote-strip">
       <div class="quote-mark">"</div>
       <div class="quote-text" id="quoteText"></div>
@@ -1144,6 +1191,14 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
       <button class="proto-tab" id="ptab-ecossistema" onclick="switchProtoTab('ecossistema')">Ecossistema</button>
     </div>
     <div id="proto-protocolo">
+      <button onclick="openDecisaoGuiada()" style="width:100%;padding:14px;background:linear-gradient(135deg,rgba(212,184,122,.12),rgba(212,184,122,.06));border:1px solid rgba(212,184,122,.35);border-radius:var(--r2);margin-bottom:16px;cursor:pointer;display:flex;align-items:center;gap:12px">
+        <i class="ti ti-route" style="font-size:20px;color:var(--gold);flex-shrink:0"></i>
+        <div style="text-align:left">
+          <div style="font-size:13px;color:var(--cream);font-family:'DM Sans',sans-serif;margin-bottom:2px">Decisão Guiada AVR-S</div>
+          <div style="font-size:11px;color:var(--text3)">4 passos · Atenção → Visão → Resposta → Sistema</div>
+        </div>
+        <i class="ti ti-chevron-right" style="font-size:16px;color:var(--text3);margin-left:auto;flex-shrink:0"></i>
+      </button>
       <div class="protocol-intro">O AVR–S não é uma técnica.<br>É uma forma de perceber antes de agir.</div>
       <div class="layer-card" onclick="toggleLayer(this)"><div class="layer-header"><div class="layer-left"><div class="layer-num">R</div><div class="layer-name">Regular</div></div><i class="ti ti-chevron-down layer-chevron"></i></div><div class="layer-body"><div class="layer-desc">Antes de qualquer decisão, ajuste o estado interno. A decisão nasce do estado de quem decide.</div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Meu estado está regulado agora?</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Estou decidindo sob pressão ou com clareza?</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">O que preciso fazer para reduzir a intensidade?</div></div></div></div>
       <div class="layer-card" onclick="toggleLayer(this)"><div class="layer-header"><div class="layer-left"><div class="layer-num">A</div><div class="layer-name">Atenção</div></div><i class="ti ti-chevron-down layer-chevron"></i></div><div class="layer-body"><div class="layer-desc">Para onde você está olhando determina o que você percebe. Atenção não é neutra.</div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Onde está meu foco agora?</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Estou vendo o fato ou a história que construí?</div></div><div class="layer-q"><i class="ti ti-point-filled layer-q-icon"></i><div class="layer-q-text">Minha atenção foi capturada ou escolhida?</div></div></div></div>
@@ -1265,13 +1320,16 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
     </div>
     <div class="settings-section">
       <div class="settings-section-title">Sobre</div>
-      <div class="settings-row"><div class="settings-label">Livro</div><div class="settings-value">A Vida Sem Rascunho</div></div>
+      <div class="settings-row"><div class="settings-label">Coleção</div><div class="settings-value">Trilogia da Transformação</div></div>
+      <div class="settings-row"><div class="settings-label">Livro 1</div><div class="settings-value">Crônicas de um Campeão</div></div>
+      <div class="settings-row"><div class="settings-label">Livro 2</div><div class="settings-value">A Mente É a Causa. A Vida É o Efeito.</div></div>
+      <div class="settings-row"><div class="settings-label">Livro 3</div><div class="settings-value">A Vida Sem Rascunho — Método AVR–S</div></div>
       <div class="settings-row"><div class="settings-label">Método</div><div class="settings-value">AVR–S</div></div>
-      <div class="settings-row"><div class="settings-label">Versão</div><div class="settings-value">4.0 · IA</div></div>
+      <div class="settings-row"><div class="settings-label">Versão</div><div class="settings-value">5.2 · Trilogia</div></div>
       <div class="settings-row"><div class="settings-label">Empresa</div><div class="settings-value">Audax Consultoria</div></div>
       <div class="settings-row"><div class="settings-label">CNPJ</div><div class="settings-value">33.344.650/0001-03</div></div>
     </div>
-    <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:#4a4440;letter-spacing:.08em">© 2025 Audax Consultoria · Todos os direitos reservados<br><span style="font-size:10px;color:#3a3630">AVR–S · A Vida Sem Rascunho</span></div>
+    <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:#4a4440;letter-spacing:.08em">© 2026 Audax Consultoria · Todos os direitos reservados<br><span style="font-size:10px;color:#3a3630">AVR–S · Trilogia da Transformação</span></div>
     <div style="text-align:center;padding:0 0 16px"><button onclick="openPrivacidade()" style="background:none;border:none;font-size:11px;color:var(--gold);cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline;letter-spacing:.06em">Política de Privacidade</button></div>
     <div class="settings-section">
       <div class="settings-section-title">Alertas & Lembretes</div>
@@ -1424,23 +1482,37 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
     <!-- TAB: GALERIA -->
     <div id="univ-galeria" style="display:none">
       <div class="galeria-section">
-        <div class="galeria-section-title"><i class="ti ti-books"></i>Livros do Método</div>
-        <div class="galeria-livros">
+        <div class="galeria-section-title"><i class="ti ti-books"></i>Trilogia da Transformação</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px">
+          <div class="galeria-livro">
+            <div style="width:100%;aspect-ratio:2/3;background:linear-gradient(135deg,#1a1209 0%,#2a1f10 50%,#1a1209 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:8px">
+              <i class="ti ti-book" style="font-size:22px;color:#d4b87a;opacity:.5"></i>
+              <div style="font-size:8px;color:#6a5a40;text-align:center;letter-spacing:.05em;line-height:1.4">capa em<br>breve</div>
+            </div>
+            <div class="galeria-livro-info">
+              <div class="galeria-livro-titulo">Crônicas de um Campeão</div>
+              <div class="galeria-livro-autor">Livro 1 · André Fernandes</div>
+            </div>
+          </div>
           <div class="galeria-livro">
             <img src="https://raw.githubusercontent.com/audaxsilfexsil-sketch/avrs-app-/main/capa-mente-causa%20(1).jpg" alt="A Mente é a Causa. A Vida é o Efeito." loading="lazy"/>
             <div class="galeria-livro-info">
-              <div class="galeria-livro-titulo">A Mente é a Causa. A Vida é o Efeito.</div>
-              <div class="galeria-livro-autor">André Fernandes · Método AVR-S</div>
+              <div class="galeria-livro-titulo">A Mente É a Causa</div>
+              <div class="galeria-livro-autor">Livro 2 · André Fernandes</div>
             </div>
           </div>
           <div class="galeria-livro">
             <img src="https://raw.githubusercontent.com/audaxsilfexsil-sketch/avrs-app-/main/capa-vida-rascunho%20(1).jpg" alt="A Vida Sem Rascunho" loading="lazy"/>
             <div class="galeria-livro-info">
               <div class="galeria-livro-titulo">A Vida Sem Rascunho</div>
-              <div class="galeria-livro-autor">André Fernandes · Método AVR-S</div>
+              <div class="galeria-livro-autor">Livro 3 · Método AVR-S</div>
             </div>
           </div>
         </div>
+        <div style="text-align:center;margin-bottom:20px">
+          <a href="https://avrs.com.br" target="_blank" style="display:inline-block;padding:10px 20px;background:rgba(212,184,122,.1);border:1px solid rgba(212,184,122,.3);border-radius:20px;font-size:12px;color:var(--gold);text-decoration:none;letter-spacing:.06em"><i class="ti ti-shopping-bag" style="margin-right:6px"></i>Kit Trilogia · avrs.com.br</a>
+        </div>
+      </div>
       </div>
       <div class="galeria-section">
         <div class="galeria-section-title"><i class="ti ti-trademark"></i>Identidade Visual</div>
@@ -1458,7 +1530,8 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
     </div>
 </div>
     <div class="univ-tab-row">
-      <button class="univ-tab active" id="utab-avrs" onclick="switchUnivTab('avrs')">Vida Sem Rascunho</button>
+      <button class="univ-tab active" id="utab-trilogia" onclick="switchUnivTab('trilogia')">Trilogia</button>
+      <button class="univ-tab" id="utab-avrs" onclick="switchUnivTab('avrs')">Vida Sem Rascunho</button>
       <button class="univ-tab" id="utab-mentor" onclick="switchUnivTab('mentor')">Mentor IA</button>
       <button class="univ-tab" id="utab-protocolo" onclick="switchUnivTab('protocolo')">Protocolo</button>
       <button class="univ-tab" id="utab-biblioteca" onclick="switchUnivTab('biblioteca')">Biblioteca</button>
@@ -1466,7 +1539,71 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
     </div>
 
     <!-- TAB: A VIDA SEM RASCUNHO -->
-    <div id="univ-avrs">
+    <!-- ABA TRILOGIA -->
+    <div id="univ-trilogia">
+
+      <!-- LIVRO 1 -->
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:14px;overflow:hidden">
+        <div style="padding:16px;border-bottom:1px solid var(--border)">
+          <div style="font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#c8a97a;margin-bottom:6px">Livro 1 · Despertar</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);margin-bottom:4px">Crônicas de um Campeão</div>
+          <div style="font-size:11px;color:var(--text3);line-height:1.6">Você pode ganhar fora e perder dentro. Este livro começa onde as histórias de sucesso geralmente terminam — no silêncio depois da vitória.</div>
+        </div>
+        <div style="padding:16px" id="livro1Section">
+          <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:12px">Reflexão da sua história</div>
+          <div id="livro1Content"></div>
+          <button onclick="initLivro1()" id="livro1Btn" style="width:100%;padding:12px;background:rgba(200,169,122,.08);border:1px solid rgba(200,169,122,.2);border-radius:10px;color:var(--gold);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.04em">Iniciar reflexão</button>
+        </div>
+      </div>
+
+      <!-- LIVRO 2 -->
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:14px;overflow:hidden">
+        <div style="padding:16px;border-bottom:1px solid var(--border)">
+          <div style="font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#9a7ab8;margin-bottom:6px">Livro 2 · Reconstrução</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);margin-bottom:4px">A Mente É a Causa. A Vida É o Efeito.</div>
+          <div style="font-size:11px;color:var(--text3);line-height:1.6">A vida não muda quando o mundo muda. Muda quando a mente que interpreta o mundo muda.</div>
+        </div>
+        <div style="padding:16px">
+          <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:12px">Jornada da Reconstrução · 20 dias</div>
+          <div id="livro2Progress" style="margin-bottom:12px">
+            <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:6px">
+              <div id="livro2Bar" style="height:100%;background:linear-gradient(90deg,#9a7ab8,#b89ad8);border-radius:2px;width:0%;transition:width .4s"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between">
+              <div id="livro2DiaLabel" style="font-size:12px;color:var(--cream)">Dia 1 de 20</div>
+              <div id="livro2PctLabel" style="font-size:11px;color:var(--text3)">0%</div>
+            </div>
+          </div>
+          <button onclick="goTo('jornada')" style="width:100%;padding:12px;background:rgba(154,122,184,.08);border:1px solid rgba(154,122,184,.2);border-radius:10px;color:#b89ad8;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.04em">Continuar Jornada</button>
+        </div>
+      </div>
+
+      <!-- LIVRO 3 -->
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:14px;overflow:hidden">
+        <div style="padding:16px;border-bottom:1px solid var(--border)">
+          <div style="font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#7ab8d4;margin-bottom:6px">Livro 3 · Método</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);margin-bottom:4px">A Vida Sem Rascunho — Método AVR-S</div>
+          <div style="font-size:11px;color:var(--text3);line-height:1.6">Percepção limpa. Decisão consciente. O método que transforma o despertar em sistema.</div>
+        </div>
+        <div style="padding:16px">
+          <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:12px">Ferramentas do método</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+            <button onclick="switchUnivTab('protocolo')" style="padding:10px 8px;background:rgba(122,184,212,.08);border:1px solid rgba(122,184,212,.2);border-radius:8px;color:#7ab8d4;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">Protocolo AVR-S</button>
+            <button onclick="switchUnivTab('biblioteca')" style="padding:10px 8px;background:rgba(122,184,212,.08);border:1px solid rgba(122,184,212,.2);border-radius:8px;color:#7ab8d4;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">34 Respostas</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAPA DE EVOLUÇÃO PRO -->
+      <div id="mapaEvolucaoSection">
+        <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:12px">Mapa de Evolução · Trilogia</div>
+        <div id="mapaEvolucaoContent"></div>
+      </div>
+
+    </div>
+    <!-- FIM ABA TRILOGIA -->
+
+    <div id="univ-avrs" style="display:none">
       <div class="avrs-mapa">
         <div class="avrs-orbit-ring"></div>
         <div class="avrs-orbit-node node-a">A</div>
@@ -1521,7 +1658,7 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 <div class="nav">
   <button class="nav-btn active" id="nav-home" onclick="goTo('home')"><i class="ti ti-home"></i>Início</button>
   <button class="nav-btn" id="nav-diary" onclick="goTo('diary')"><i class="ti ti-notebook"></i>Diário</button>
-  <button class="nav-btn" id="nav-jornada" onclick="goTo('jornada')"><i class="ti ti-seedling"></i>Jornada</button>
+  <button class="nav-btn" id="nav-jornada" onclick="goTo('universo');switchUnivTab('trilogia')"><i class="ti ti-books"></i>Trilogia</button>
   <button class="nav-btn" id="nav-universo" onclick="goTo('universo')"><i class="ti ti-galaxy"></i>Universo</button>
   <button class="nav-btn" id="nav-settings" onclick="goTo('settings')"><i class="ti ti-settings"></i>Ajustes</button>
 </div>
@@ -1777,7 +1914,7 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 
     <div class="priv-section">
       <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--gold);margin-bottom:4px">Política de Privacidade</div>
-      <div style="font-size:11px;color:var(--text3);margin-bottom:16px">AVR–S · A Vida Sem Rascunho · Última atualização: junho de 2025</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:16px">AVR–S · Trilogia da Transformação · Versão 5.2</div>
       <div class="priv-text">Esta Política de Privacidade descreve como a <strong style="color:var(--cream)">Audax Consultoria</strong> (CNPJ: 33.344.650/0001-03) coleta, usa, armazena e protege as informações dos usuários do aplicativo AVR–S, em conformidade com a <strong style="color:var(--cream)">Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018)</strong>.</div>
     </div>
 
@@ -1972,7 +2109,7 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 
     <div class="priv-divider"></div>
     <div class="priv-section">
-      <div class="priv-text" style="font-size:11px;color:#4a4440;text-align:center">© 2025 Audax Consultoria · Todos os direitos reservados<br>AVR–S · A Vida Sem Rascunho · Versão 4.0<br>Última atualização: junho de 2025</div>
+      <div class="priv-text" style="font-size:11px;color:#4a4440;text-align:center">© 2026 Audax Consultoria · Todos os direitos reservados<br>AVR–S · Trilogia da Transformação · Versão 5.2</div>
     </div>
 
   </div>
@@ -1982,7 +2119,7 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 
     <div class="priv-section">
       <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--gold);margin-bottom:4px">Termos de Uso</div>
-      <div style="font-size:11px;color:var(--text3);margin-bottom:16px">AVR–S · A Vida Sem Rascunho · Última atualização: junho de 2025</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:16px">AVR–S · Trilogia da Transformação · Versão 5.2</div>
       <div class="priv-text">Ao criar uma conta e utilizar o aplicativo AVR–S, você concorda com os presentes Termos de Uso. Leia atentamente antes de usar o aplicativo.</div>
     </div>
 
@@ -2107,7 +2244,7 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 
     <div class="priv-divider"></div>
     <div class="priv-section">
-      <div class="priv-text" style="font-size:11px;color:#4a4440;text-align:center">© 2025 Audax Consultoria · Todos os direitos reservados<br>AVR–S · A Vida Sem Rascunho · Versão 4.0<br>Última atualização: junho de 2025</div>
+      <div class="priv-text" style="font-size:11px;color:#4a4440;text-align:center">© 2026 Audax Consultoria · Todos os direitos reservados<br>AVR–S · Trilogia da Transformação · Versão 5.2</div>
     </div>
 
   </div>
@@ -2217,7 +2354,7 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
       </div>
     </div>
 
-    <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:#4a4440">AVR–S · A Vida Sem Rascunho · Audax Consultoria</div>
+    <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:#4a4440">AVR–S · Trilogia da Transformação · Audax Consultoria</div>
 
   </div>
 </div>
@@ -2314,7 +2451,37 @@ const QUOTES=['Clareza não é pensar mais. É distorcer menos.','Você decide a
 const QUESTIONS=[{q:'Onde está sua atenção agora?',h:'Você está presente no que importa ou conduzido pelo que apareceu?'},{q:'O que é fato e o que é interpretação?',h:'Separe o que aconteceu do que você construiu sobre isso.'},{q:'Que comando invisível está ativo em você?',h:'Qual frase interna está conduzindo sua percepção hoje?'},{q:'Você está decidindo ou reagindo?',h:'Existe um espaço entre o estímulo e sua resposta. Você o está usando?'},{q:'O que você tem repetido sem perceber?',h:'Repetição não percebida vira padrão. Padrão vira identidade.'},{q:'Seu estado está regulado para decidir?',h:'Decisão boa em estado ruim tende a dar resultado ruim.'},{q:'Que ciclo você está dentro agora?',h:'Todo comportamento tem uma instrução na origem. Qual é a sua?'}];
 const CL={Presente:{intro:'Você está presente. Vamos verificar a qualidade dessa presença.',steps:[{q:'Sua atenção está onde você quer que esteja?',opts:['Sim, estou totalmente focado','Sim, mas com algum esforço','Não, estou dividido','Não sei dizer']},{q:'Você está observando os fatos ou já interpretando?',opts:['Observando apenas os fatos','Misturando fatos e interpretações','Principalmente interpretando','Não estou certo']},{q:'Há algo que está evitando perceber agora?',opts:['Não, estou aberto','Talvez algo pequeno','Sim, prefiro não olhar','Preciso refletir mais']},{q:'Descreva em uma frase o que está presente para você agora:',type:'text',ph:'O que está realmente acontecendo neste momento?'}]},Focado:{intro:'Foco é um recurso poderoso. Vamos entender a origem e a direção do seu.',steps:[{q:'Seu foco é escolhido ou foi capturado por algo externo?',opts:['Totalmente escolhido por mim','Mais escolhido do que capturado','Mais capturado do que escolhido','Completamente capturado']},{q:'O que você está focando é realmente o mais importante?',opts:['Sim, com certeza','Acho que sim','Tenho dúvidas','Provavelmente não']},{q:'Existe urgência real ou você está criando urgência artificialmente?',opts:['Urgência real e justificada','Urgência real mas exagerada','Urgência artificial','Não há urgência']},{q:'O que precisa da sua atenção e está sendo ignorado?',type:'text',ph:'Algo importante que você está evitando...'}]},Ansioso:{intro:'Ansiedade é um sinal. Vamos entender o que ela está tentando te dizer.',steps:[{q:'O que está gerando essa ansiedade?',opts:['Uma ameaça real e concreta','Uma ameaça possível mas incerta','Um pensamento sobre o futuro','Não consigo identificar']},{q:'Essa ansiedade é proporcional à situação real?',opts:['Sim, é proporcional','Está um pouco exagerada','Está muito exagerada','Não sei avaliar']},{q:'Qual distorção pode estar ativa?',opts:['Urgência falsa — parece mais urgente do que é','Escassez — medo de perder algo','Medo — evitando um desconforto','Outra coisa']},{q:'O que você tem controle de fazer agora nessa situação?',type:'text',ph:'Foque apenas no que depende de você...'}]},Sobrecarregado:{intro:'Sobrecarga é sinal de que o sistema opera além da capacidade. Vamos organizar.',steps:[{q:'De onde vem essa sensação de sobrecarga?',opts:['Excesso de tarefas reais','Excesso de preocupações mentais','Mistura dos dois','Não sei ao certo']},{q:'Você está tentando controlar coisas que não dependem de você?',opts:['Não, foco apenas no que posso controlar','Um pouco sim','Bastante','Sim, quase tudo']},{q:'Qual é a coisa mais importante a resolver agora?',opts:['Sei exatamente qual é','Tenho algumas ideias','Estou confuso sobre isso','Não consigo priorizar']},{q:'O que você pode eliminar, delegar ou adiar hoje?',type:'text',ph:'Liste pelo menos uma coisa...'}]},Reativo:{intro:'Reatividade significa que algo acionou uma resposta automática. Vamos identificar o gatilho.',steps:[{q:'O que disparou essa reação?',opts:['Uma palavra ou ação de alguém','Uma situação inesperada','Um pensamento interno','Não sei identificar']},{q:'Sua reação está sendo proporcional ao que aconteceu?',opts:['Sim, proporcional','Levemente desproporcional','Muito desproporcional','Não consigo avaliar agora']},{q:'Qual estado emocional está conduzindo essa reação?',opts:['Raiva ou frustração','Medo ou insegurança','Ego ou necessidade de estar certo','Cansaço ou sobrecarga']},{q:'Se você esperasse 10 minutos antes de agir, o que mudaria?',type:'text',ph:'Descreva como você responderia com mais clareza...'}]},Claro:{intro:'Clareza é um estado valioso. Vamos solidificar e aproveitar esse momento.',steps:[{q:'O que gerou essa clareza?',opts:['Um processo de reflexão','Uma conversa reveladora','Um momento de pausa','Veio naturalmente']},{q:'Existe alguma decisão importante que você pode tomar agora?',opts:['Sim, e já sei o que fazer','Sim, mas preciso de mais informação','Não há decisão urgente','Prefiro registrar e observar']},{q:'Essa clareza revela algo sobre um padrão seu?',opts:['Sim, identifiquei um padrão claro','Sim, mas ainda vago','Não percebi padrão','Preciso refletir mais']},{q:'Que ação concreta esse momento de clareza pede de você?',type:'text',ph:'Uma ação específica que você vai tomar...'}]}};
 const SUBS={Presente:{default:{icon:'ti-eye',name:'Presença Qualificada',dist:null,body:'Você está presente — isso é raro. Agora a pergunta é: sua presença está servindo ao que realmente importa?',actions:[{n:'01',t:'Nomeie em voz baixa o que está observando — sem julgamento, apenas o fato.'},{n:'02',t:'Pergunte: "O que este momento está pedindo de mim?" Responda com uma ação simples.'},{n:'03',t:'Registre essa clareza — presença consciente é o início de qualquer decisão bem tomada.'}]}},Focado:{capturado:{icon:'ti-target',name:'Foco Capturado',dist:'Atenção capturada: você está respondendo ao que aparece, não ao que escolheu.',body:'Seu foco foi sequestrado por algo externo.',actions:[{n:'01',t:'Pause por 60 segundos. Respire.'},{n:'02',t:'Pergunte: "O que eu escolheria focar se não houvesse pressão externa?"'},{n:'03',t:'Retorne ao que é importante — não ao que é barulhento.'}]},default:{icon:'ti-target',name:'Foco Consciente',dist:null,body:'Seu foco está alinhado e escolhido.',actions:[{n:'01',t:'Defina uma única entrega para as próximas 2 horas.'},{n:'02',t:'Bloqueie interrupções enquanto esse estado durar.'},{n:'03',t:'Ao final, registre o que esse foco produziu.'}]}},Ansioso:{urgencia:{icon:'ti-bolt',name:'Distorção: Urgência Falsa',dist:'Urgência falsa ativa.',body:'A ansiedade está sendo alimentada por uma sensação de urgência que pode não ser real.',actions:[{n:'01',t:'Pergunte: "Se eu agir amanhã, o que de fato muda?"'},{n:'02',t:'Respire por 4 tempos.'},{n:'03',t:'Decida conscientemente quando agir.'}]},escassez:{icon:'ti-bolt',name:'Distorção: Escassez',dist:'Escassez ativa.',body:'O medo de perder está distorcendo sua percepção.',actions:[{n:'01',t:'Pergunte: "O que realmente perco se não agir agora?"'},{n:'02',t:'Identifique outras oportunidades semelhantes.'},{n:'03',t:'Tome a decisão baseado em clareza, não em medo.'}]},medo:{icon:'ti-bolt',name:'Ansiedade por Evitação',dist:'Evitação ativa.',body:'Você está ansioso porque está evitando algo que precisa ser enfrentado.',actions:[{n:'01',t:'Nomeie o que está evitando.'},{n:'02',t:'Identifique a menor ação possível em direção ao que está evitando.'},{n:'03',t:'Faça essa ação agora.'}]},default:{icon:'ti-bolt',name:'Regulando a Ansiedade',dist:null,body:'Ansiedade é informação — não uma ordem.',actions:[{n:'01',t:'Separe o fato da história que você está contando sobre ele.'},{n:'02',t:'Respire profundamente por 4 tempos.'},{n:'03',t:'Decida uma ação pequena e concreta que você tem controle de fazer agora.'}]}},Sobrecarregado:{default:{icon:'ti-cloud-storm',name:'Organizando a Sobrecarga',dist:null,body:'Quando tudo parece urgente, nada é prioritário.',actions:[{n:'01',t:'Escolha UMA coisa que se concluída hoje geraria mais valor.'},{n:'02',t:'Elimine, delegue ou adie tudo o mais.'},{n:'03',t:'Avance nessa uma coisa por 25 minutos sem interrupção.'}]}},Reativo:{raiva:{icon:'ti-flame',name:'Reação Emocional Ativa',dist:'Sequestro da amígdala ativo.',body:'Raiva e frustração desativam temporariamente o raciocínio.',actions:[{n:'01',t:'Não decida agora. Mínimo 10-30 minutos de espera.'},{n:'02',t:'Mova o corpo: caminhe, respire, mude de ambiente.'},{n:'03',t:'Quando o estado baixar, pergunte: "O que realmente aconteceu?"'}]},ego:{icon:'ti-flame',name:'Reação do Ego',dist:'Ego ativo.',body:'A necessidade de estar certo está conduzindo a reação.',actions:[{n:'01',t:'Pergunte: "Quero estar certo ou quero o melhor resultado?"'},{n:'02',t:'Considere que a outra perspectiva pode conter informação útil.'},{n:'03',t:'Responda com base no objetivo, não na necessidade de vencer.'}]},default:{icon:'ti-flame',name:'Identificando o Gatilho',dist:null,body:'Reação automática significa que algo ativou um padrão sem passagem pela consciência.',actions:[{n:'01',t:'Pause antes de qualquer ação.'},{n:'02',t:'Identifique o gatilho real.'},{n:'03',t:'Escolha conscientemente como responder.'}]}},Claro:{default:{icon:'ti-sun',name:'Estado de Clareza',dist:null,body:'Clareza é um ativo raro. Use esse momento para registrar insights e tomar decisões.',actions:[{n:'01',t:'Registre o que você está enxergando com clareza.'},{n:'02',t:'Tome as decisões que vinha adiando.'},{n:'03',t:'Identifique o que gerou essa clareza e como recriar esse estado.'}]}}};
-const FRASES_LIVRO=['Clareza não é pensar mais. É distorcer menos.','Você decide a versão da realidade que percebe.','Toda decisão carrega o estado de quem decide.','A vida não tem rascunho. Só execução.','Entre o estímulo e a resposta existe a sua liberdade.','Você não vive o que aprende. Vive o que repete.','O automático continua até que algo consciente o interrompa.','Quem não escolhe onde colocar a atenção responde ao que aparece.','Percepção limpa. Decisão consciente.','Nem toda reação nasce do que aconteceu. Nasce do estado de quem interpreta.','A pressão reduz percepção. Estados acelerados criam distorções.','Você não reage ao que acontece. Reage ao significado que construiu.','Repetição não percebida vira padrão. Padrão vira identidade.','Decisão boa em estado ruim tende a dar resultado ruim.','O espaço entre o estímulo e a resposta é onde a escolha real acontece.','Não sofremos pelo fato. Sofremos pela interpretação que construímos sobre ele.'];
+const FRASES_TRILOGIA=[
+  // Livro 1 — Crônicas de um Campeão
+  {f:'Você pode ganhar fora e perder dentro. O campeão verdadeiro vence as duas batalhas.',livro:'Crônicas de um Campeão',n:1},
+  {f:'13 anos ensinaram o que nenhum livro de negócios mencionou: o maior risco não é o mercado. É quem você se torna enquanto tenta vencer.',livro:'Crônicas de um Campeão',n:1},
+  {f:'A pergunta não é o que aconteceu. A pergunta é quem você realmente se tornou.',livro:'Crônicas de um Campeão',n:1},
+  {f:'Existe uma diferença entre sobreviver a uma história e aprender com ela. A maioria sobrevive.',livro:'Crônicas de um Campeão',n:1},
+  {f:'O fracasso que não é examinado vira padrão. O fracasso que é examinado vira fundação.',livro:'Crônicas de um Campeão',n:1},
+  {f:'Nem toda derrota é sobre o que aconteceu. Algumas são sobre o que você ainda não estava pronto para ver.',livro:'Crônicas de um Campeão',n:1},
+  // Livro 2 — A Mente É a Causa. A Vida É o Efeito.
+  {f:'A vida não muda quando o mundo muda. Muda quando a mente que interpreta o mundo muda.',livro:'A Mente É a Causa',n:2},
+  {f:'Você não pode mudar a colheita sem mudar o solo. O solo é a mente.',livro:'A Mente É a Causa',n:2},
+  {f:'O que você repete não é fraqueza. É lealdade inconsciente a uma solução antiga.',livro:'A Mente É a Causa',n:2},
+  {f:'A mente que nos trouxe até aqui nem sempre será a mesma capaz de nos levar adiante.',livro:'A Mente É a Causa',n:2},
+  {f:'Ressignificar não é fingir que não doeu. É decidir que a dor não vai definir o destino.',livro:'A Mente É a Causa',n:2},
+  {f:'A mente não precisa ser vencida. Ela precisa ser compreendida, atualizada e direcionada.',livro:'A Mente É a Causa',n:2},
+  {f:'Não sofremos pelo que aconteceu. Sofremos pela interpretação que construímos sobre o que aconteceu.',livro:'A Mente É a Causa',n:2},
+  // Livro 3 — A Vida Sem Rascunho — Método AVR-S
+  {f:'Clareza não é pensar mais. É distorcer menos.',livro:'A Vida Sem Rascunho',n:3},
+  {f:'Você decide a versão da realidade que percebe.',livro:'A Vida Sem Rascunho',n:3},
+  {f:'Toda decisão carrega o estado de quem decide.',livro:'A Vida Sem Rascunho',n:3},
+  {f:'A vida não tem rascunho. Só execução.',livro:'A Vida Sem Rascunho',n:3},
+  {f:'Entre o estímulo e a resposta existe a sua liberdade.',livro:'A Vida Sem Rascunho',n:3},
+  {f:'Você não vive o que aprende. Vive o que repete.',livro:'A Vida Sem Rascunho',n:3},
+  {f:'O automático continua até que algo consciente o interrompa.',livro:'A Vida Sem Rascunho',n:3},
+  {f:'Quem não escolhe onde colocar a atenção responde ao que aparece.',livro:'A Vida Sem Rascunho',n:3},
+  {f:'Percepção limpa. Decisão consciente.',livro:'A Vida Sem Rascunho',n:3},
+  {f:'Nem toda reação nasce do que aconteceu. Nasce do estado de quem interpreta.',livro:'A Vida Sem Rascunho',n:3},
+  {f:'Repetição não percebida vira padrão. Padrão vira identidade.',livro:'A Vida Sem Rascunho',n:3},
+  {f:'O espaço entre o estímulo e a resposta é onde a escolha real acontece.',livro:'A Vida Sem Rascunho',n:3},
+];
+const FRASES_LIVRO=FRASES_TRILOGIA.map(x=>x.f);
 const GLOSSARIO_DATA=[{term:'Regulação',def:'Ajuste do estado interno antes de decidir ou agir.',ex:'"Antes de responder ao e-mail que me irritou, pausei e regulei meu estado."'},{term:'Distorção cognitiva',def:'Filtro mental que altera a percepção da realidade.',ex:'"Percebi que a urgência que sentia era emocional, não real."'},{term:'Atenção capturada',def:'Estado em que o foco foi sequestrado por algo externo sem escolha consciente.',ex:'"Meu foco estava no que apareceu, não no que escolhi priorizar."'},{term:'Resposta automática',def:'Comportamento gerado sem passagem pela consciência.',ex:'"Reagi sem pensar — foi um automático que preciso trabalhar."'},{term:'Espaço de escolha',def:'O intervalo entre o estímulo e a resposta. É nesse espaço que a decisão consciente acontece.',ex:'"Aprendi a criar um espaço antes de responder."'},{term:'Urgência falsa',def:'Distorção que faz uma situação parecer mais urgente do que realmente é.',ex:'"A sensação de que precisava decidir agora era urgência falsa."'},{term:'Estado interno',def:'Conjunto de condições emocionais e cognitivas que determinam a qualidade das decisões.',ex:'"Meu estado interno estava ansioso — não era hora de decidir."'},{term:'Padrão',def:'Comportamento repetido com frequência suficiente para se tornar automático.',ex:'"Percebi que evitar conflito era um padrão que carrego há anos."'},{term:'Ciclo',def:'Sequência de comportamentos que se retroalimenta.',ex:'"Entrei no ciclo de sobrecarga porque nunca dizia não."'},{term:'Percepção limpa',def:'Estado em que a realidade é observada sem filtros emocionais ou narrativas construídas.',ex:'"Com percepção limpa, vi que o problema era menor do que imaginei."'}];
 const BIBLIOTECA_DATA=[{tag:'Urgência falsa',state:'Ansioso',situation:'A proposta que parecia expirar amanhã',preview:'Um vendedor disse que a oferta acabava em 24h. A ansiedade tomou conta.',fato:'A oferta existia há semanas. O prazo era uma técnica de pressão.',distorcao:'Urgência falsa — a pressão era externa e emocional, não real.',decisao:'Pausei, pesquisei, e negociei sem pressa.',insight:'Urgência real é rara. Na maioria das vezes, é a emoção criando pressão onde não existe.'},{tag:'Reatividade',state:'Reativo',situation:'A mensagem que pareceu um ataque pessoal',preview:'Um colega enviou um feedback crítico. A primeira leitura pareceu agressiva.',fato:'O texto era direto, não agressivo. O tom foi interpretado pelo meu estado irritado.',distorcao:'Projeção emocional — o estado interno contaminou a leitura.',decisao:'Esperei 30 minutos, reli a mensagem e respondi com clareza.',insight:'Ler uma mensagem difícil no estado errado é garantia de interpretação errada.'},{tag:'Escassez',state:'Ansioso',situation:'A oportunidade que parecia única na vida',preview:'Uma oportunidade surgiu. Parecia que nunca mais apareceria igual.',fato:'Oportunidades similares existiam. O que era único era a pressão que sentia.',distorcao:'Escassez — o medo de perder distorceu a avaliação real.',decisao:'Pedi 48 horas para analisar. A oportunidade continuou disponível.',insight:'Decisões tomadas sob escassez raramente são as melhores.'}];
 
@@ -2413,6 +2580,401 @@ function verificarLimiteIA(){
   return true;
 }
 function atualizarContadorChat(){const s=document.getElementById('mentorChatStatus');if(s&&isPro)s.textContent='online · '+(getLimite()-getMsgCount())+'/'+getLimite()+' msgs';}
+
+// ── TRILOGIA ──────────────────────────────────────────────────────
+const LIVRO1_PERGUNTAS=[
+  {titulo:'O que você defendeu por anos',pergunta:'Por 13 anos — ou pelo tempo que a sua história durou — o que você defendeu que, no fundo, já não representava mais quem você queria ser?',placeholder:'Uma crença, um papel, uma posição que você sustentou mais tempo do que deveria...'},
+  {titulo:'O que a derrota revelou',pergunta:'Quando o cenário externo desmoronou, o que ficou de pé dentro de você? O que você descobriu sobre si mesmo que a vitória nunca teria revelado?',placeholder:'O que a crise, a saída, ou a perda deixou visível sobre quem você realmente é...'},
+  {titulo:'Quem você se tornou',pergunta:'Não quem você era antes, nem o que aconteceu. Mas quem você se tornou por ter vivido essa história? Qual versão de você nasceu do outro lado?',placeholder:'Escreva sobre a pessoa que emergiu — não o sobrevivente, o que foi construído...'},
+  {titulo:'A pergunta que essa história faz',pergunta:'Toda história verdadeira termina com uma pergunta. Qual é a que a sua história faz — não sobre o que aconteceu, mas sobre o que vem a seguir?',placeholder:'A pergunta que só quem viveu essa história pode responder...'}
+];
+
+function initLivro1(){
+  const st=loadJSt();
+  const resps=st.livro1||[];
+  const btn=document.getElementById('livro1Btn');
+  const content=document.getElementById('livro1Content');
+  if(btn)btn.style.display='none';
+  if(!content)return;
+  content.innerHTML=LIVRO1_PERGUNTAS.map((q,i)=>{
+    const saved=resps[i]||'';
+    const done=saved.length>0;
+    return`<div class="exercicio-card${done?' done':''}" id="l1ex_${i}" style="margin-bottom:10px">
+      <div class="exercicio-header" onclick="toggleExercicio('l1ex_${i}')">
+        <div><div class="exercicio-num">Reflexão ${i+1}</div><div class="exercicio-title">${q.titulo}</div></div>
+        <div class="exercicio-check">${done?'<i class="ti ti-check" style="font-size:12px;color:#0a0908"></i>':''}</div>
+      </div>
+      <div class="exercicio-body">
+        <div class="exercicio-pergunta">${q.pergunta}</div>
+        <textarea class="exercicio-textarea" id="l1ta_${i}" placeholder="${q.placeholder}">${esc(saved)}</textarea>
+        <button class="exercicio-salvar" onclick="salvarLivro1(${i})">Salvar reflexão</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function salvarLivro1(i){
+  const ta=document.getElementById('l1ta_'+i);
+  if(!ta||!ta.value.trim())return;
+  const st=loadJSt();
+  if(!st.livro1)st.livro1=[];
+  st.livro1[i]=ta.value.trim();
+  saveJSt(st);
+  const card=document.getElementById('l1ex_'+i);
+  if(card)card.classList.add('done');
+  const check=card?.querySelector('.exercicio-check');
+  if(check)check.innerHTML='<i class="ti ti-check" style="font-size:12px;color:#0a0908"></i>';
+  updateMapaEvolucao();
+}
+
+function initTrilogiaTab(){
+  // Livro 1 — verificar se já iniciou
+  const st=loadJSt();
+  const resps=st.livro1||[];
+  const btn=document.getElementById('livro1Btn');
+  const content=document.getElementById('livro1Content');
+  if(resps.length>0){
+    if(btn)btn.style.display='none';
+    initLivro1();
+  }
+  // Livro 2 — progresso
+  const done=(st.j20Done||[]).length;
+  const pct=Math.round((done/20)*100);
+  const bar=document.getElementById('livro2Bar');
+  const diaLabel=document.getElementById('livro2DiaLabel');
+  const pctLabel=document.getElementById('livro2PctLabel');
+  if(bar)bar.style.width=pct+'%';
+  if(diaLabel)diaLabel.textContent=done===20?'Jornada concluída ✓':`Dia ${done+1} de 20`;
+  if(pctLabel)pctLabel.textContent=pct+'%';
+  // Mapa de Evolução
+  updateMapaEvolucao();
+}
+
+function updateMapaEvolucao(){
+  const el=document.getElementById('mapaEvolucaoContent');
+  if(!el)return;
+  const st=loadJSt();
+  const livro1=st.livro1||[];
+  const j20done=(st.j20Done||[]).length;
+  const pausas=(st.pausas||[]).length;
+  const mod4=st.mod4||{};
+  const entries=JSON.parse(localStorage.getItem('avrs4_e')||'[]');
+  const streak=parseInt(localStorage.getItem('avrs4_s')||'0');
+
+  if(!isPro){
+    el.innerHTML=`<div style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:20px;text-align:center">
+      <i class="ti ti-map-2" style="font-size:28px;color:var(--gold);opacity:.5;margin-bottom:10px;display:block"></i>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--cream);margin-bottom:8px">Mapa de Evolução da Trilogia</div>
+      <div style="font-size:12px;color:var(--text3);line-height:1.6;margin-bottom:16px">Veja em uma única tela como você evoluiu desde o Despertar (Livro 1) até o Método (Livro 3) — suas próprias palavras, seus próprios dados.</div>
+      <button onclick="openPaywall()" style="padding:10px 20px;background:rgba(212,184,122,.1);border:1px solid rgba(212,184,122,.3);border-radius:20px;color:var(--gold);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif"><i class="ti ti-crown" style="margin-right:6px"></i>Ver meu Mapa de Evolução · Pro</button>
+    </div>`;
+    return;
+  }
+
+  // Pro — mostrar mapa completo
+  const l1done=livro1.filter(r=>r&&r.length>0).length;
+  const pct1=Math.round((l1done/4)*100);
+  const pct2=Math.round((j20done/20)*100);
+  const pct3=entries.length>0?Math.min(100,Math.round((entries.length/30)*100)):0;
+
+  el.innerHTML=`
+    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:20px;margin-bottom:12px">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--gold);margin-bottom:16px;text-align:center">Mapa de Evolução · Trilogia da Transformação</div>
+
+      <!-- Camada 1 -->
+      <div style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#c8a97a">Livro 1 · Quem eu era</div>
+          <div style="font-size:11px;color:var(--text3)">${l1done}/4 reflexões</div>
+        </div>
+        <div style="height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:8px">
+          <div style="height:100%;width:${pct1}%;background:#c8a97a;border-radius:2px;transition:width .4s"></div>
+        </div>
+        ${livro1[0]?`<div style="font-size:12px;color:var(--text3);font-style:italic;line-height:1.6;padding:10px;background:rgba(200,169,122,.05);border-left:2px solid rgba(200,169,122,.3);border-radius:0 6px 6px 0">"${livro1[0].substring(0,120)}${livro1[0].length>120?'...':''}"</div>`:'<div style="font-size:11px;color:#4a4440;font-style:italic">Complete as reflexões do Livro 1 para ver seu ponto de partida.</div>'}
+      </div>
+
+      <!-- Camada 2 -->
+      <div style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#9a7ab8">Livro 2 · O que estou transformando</div>
+          <div style="font-size:11px;color:var(--text3)">${j20done}/20 dias · ${pausas} pausas</div>
+        </div>
+        <div style="height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:8px">
+          <div style="height:100%;width:${pct2}%;background:#9a7ab8;border-radius:2px;transition:width .4s"></div>
+        </div>
+        ${mod4.percebo?`<div style="font-size:12px;color:var(--text3);font-style:italic;line-height:1.6;padding:10px;background:rgba(154,122,184,.05);border-left:2px solid rgba(154,122,184,.3);border-radius:0 6px 6px 0">"Hoje percebo: ${mod4.percebo.substring(0,100)}${mod4.percebo.length>100?'...':''}"</div>`:'<div style="font-size:11px;color:#4a4440;font-style:italic">Avance na Jornada 20 Dias para registrar sua transformação.</div>'}
+      </div>
+
+      <!-- Camada 3 -->
+      <div style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#7ab8d4">Livro 3 · Como estou vivendo</div>
+          <div style="font-size:11px;color:var(--text3)">${entries.length} registros · ${streak} dias</div>
+        </div>
+        <div style="height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:8px">
+          <div style="height:100%;width:${pct3}%;background:#7ab8d4;border-radius:2px;transition:width .4s"></div>
+        </div>
+        ${mod4.escolho?`<div style="font-size:12px;color:var(--text3);font-style:italic;line-height:1.6;padding:10px;background:rgba(122,184,212,.05);border-left:2px solid rgba(122,184,212,.3);border-radius:0 6px 6px 0">"Agora escolho: ${mod4.escolho.substring(0,100)}${mod4.escolho.length>100?'...':''}"</div>`:'<div style="font-size:11px;color:#4a4440;font-style:italic">Use o Diário e o Módulo 4 para registrar como está vivendo.</div>'}
+      </div>
+
+      <!-- Linha do tempo -->
+      <div style="border-top:1px solid var(--border);padding-top:14px;margin-top:4px">
+        <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;text-align:center">Progressão da Trilogia</div>
+        <div style="display:flex;align-items:center;gap:0">
+          <div style="flex:1;text-align:center">
+            <div style="width:32px;height:32px;border-radius:50%;background:${pct1>0?'rgba(200,169,122,.2)':'var(--border)'};border:2px solid ${pct1>0?'#c8a97a':'var(--border)'};display:flex;align-items:center;justify-content:center;margin:0 auto 4px">
+              <i class="ti ti-book" style="font-size:13px;color:${pct1>0?'#c8a97a':'var(--text3)'}"></i>
+            </div>
+            <div style="font-size:9px;color:${pct1>0?'#c8a97a':'var(--text3)'};letter-spacing:.05em">Despertar</div>
+          </div>
+          <div style="flex:1;height:2px;background:linear-gradient(90deg,${pct1>0?'#c8a97a':'var(--border)'},${pct2>0?'#9a7ab8':'var(--border)'})"></div>
+          <div style="flex:1;text-align:center">
+            <div style="width:32px;height:32px;border-radius:50%;background:${pct2>0?'rgba(154,122,184,.2)':'var(--border)'};border:2px solid ${pct2>0?'#9a7ab8':'var(--border)'};display:flex;align-items:center;justify-content:center;margin:0 auto 4px">
+              <i class="ti ti-brain" style="font-size:13px;color:${pct2>0?'#9a7ab8':'var(--text3)'}"></i>
+            </div>
+            <div style="font-size:9px;color:${pct2>0?'#9a7ab8':'var(--text3)'};letter-spacing:.05em">Reconstrução</div>
+          </div>
+          <div style="flex:1;height:2px;background:linear-gradient(90deg,${pct2>0?'#9a7ab8':'var(--border)'},${pct3>0?'#7ab8d4':'var(--border)'})"></div>
+          <div style="flex:1;text-align:center">
+            <div style="width:32px;height:32px;border-radius:50%;background:${pct3>0?'rgba(122,184,212,.2)':'var(--border)'};border:2px solid ${pct3>0?'#7ab8d4':'var(--border)'};display:flex;align-items:center;justify-content:center;margin:0 auto 4px">
+              <i class="ti ti-infinity" style="font-size:13px;color:${pct3>0?'#7ab8d4':'var(--text3)'}"></i>
+            </div>
+            <div style="font-size:9px;color:${pct3>0?'#7ab8d4':'var(--text3)'};letter-spacing:.05em">Método</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+
+// ── DECISÃO GUIADA AVR-S ─────────────────────────────────────────
+let decisaoStep = 0;
+let decisaoData = {};
+const DISTORCOES = ['Urgência falsa','Ego','Escassez','Medo','Percepção contaminada','Nenhuma identificada'];
+
+function openDecisaoGuiada(){
+  decisaoStep = 0;
+  decisaoData = {};
+  document.getElementById('decisaoOverlay').style.display='flex';
+  renderDecisaoStep();
+}
+
+function closeDecisaoGuiada(){
+  document.getElementById('decisaoOverlay').style.display='none';
+}
+
+function decisaoNext(){
+  // Coletar dados do passo atual
+  if(decisaoStep===0){
+    const v=document.getElementById('dg_fato')?.value?.trim();
+    if(!v){alert('Descreva o que está acontecendo antes de continuar.');return;}
+    decisaoData.fato=v;
+  } else if(decisaoStep===1){
+    const hist=document.getElementById('dg_historia')?.value?.trim()||'';
+    const dist=[...document.querySelectorAll('.dg-dist-chip.sel')].map(el=>el.dataset.v);
+    decisaoData.historia=hist;
+    decisaoData.distorcoes=dist;
+  } else if(decisaoStep===2){
+    const aut=document.getElementById('dg_automatica')?.value?.trim();
+    const con=document.getElementById('dg_consciente')?.value?.trim();
+    if(!aut||!con){alert('Preencha os dois campos antes de continuar.');return;}
+    decisaoData.automatica=aut;
+    decisaoData.consciente=con;
+  } else if(decisaoStep===3){
+    const rep=document.querySelector('.dg-rep-chip.sel')?.dataset?.v;
+    const comp=document.getElementById('dg_compromisso')?.value?.trim();
+    if(!rep){alert('Selecione uma opção antes de finalizar.');return;}
+    if(!comp){alert('Escreva o que você vai fazer antes de finalizar.');return;}
+    decisaoData.repete=rep;
+    decisaoData.compromisso=comp;
+    finalizarDecisaoGuiada();
+    return;
+  }
+  decisaoStep++;
+  renderDecisaoStep();
+}
+
+function decisaoBack(){
+  if(decisaoStep>0){decisaoStep--;renderDecisaoStep();}
+}
+
+function renderDecisaoStep(){
+  const content=document.getElementById('decisaoContent');
+  const bar=document.getElementById('decisaoProgressBar');
+  const ind=document.getElementById('decisaoStepIndicator');
+  const btnBack=document.getElementById('decisaoBtnBack');
+  const btnNext=document.getElementById('decisaoBtnNext');
+  const pct=[25,50,75,100];
+  if(bar)bar.style.width=pct[decisaoStep]+'%';
+  if(ind)ind.textContent=`Passo ${decisaoStep+1} de 4`;
+  if(btnBack)btnBack.style.display=decisaoStep>0?'block':'none';
+
+  const steps=[buildDGStep0,buildDGStep1,buildDGStep2,buildDGStep3];
+  if(content)content.innerHTML=steps[decisaoStep]();
+
+  // Restaurar valores se voltar
+  if(decisaoStep===0&&decisaoData.fato){
+    const el=document.getElementById('dg_fato');
+    if(el)el.value=decisaoData.fato;
+  }
+  if(decisaoStep===1){
+    if(decisaoData.historia){const el=document.getElementById('dg_historia');if(el)el.value=decisaoData.historia;}
+    if(decisaoData.distorcoes){decisaoData.distorcoes.forEach(d=>{document.querySelectorAll('.dg-dist-chip').forEach(c=>{if(c.dataset.v===d)c.classList.add('sel');});});}
+  }
+  if(decisaoStep===2){
+    if(decisaoData.automatica){const el=document.getElementById('dg_automatica');if(el)el.value=decisaoData.automatica;}
+    if(decisaoData.consciente){const el=document.getElementById('dg_consciente');if(el)el.value=decisaoData.consciente;}
+  }
+  if(decisaoStep===3){
+    if(decisaoData.compromisso){const el=document.getElementById('dg_compromisso');if(el)el.value=decisaoData.compromisso;}
+    if(decisaoData.repete){document.querySelectorAll('.dg-rep-chip').forEach(c=>{if(c.dataset.v===decisaoData.repete)c.classList.add('sel');});}
+  }
+
+  if(btnNext)btnNext.textContent=decisaoStep===3?'Finalizar e gerar diagnóstico':'Continuar';
+}
+
+function buildDGStep0(){
+  return`<div style="margin-bottom:20px">
+    <div style="font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:6px">A · Atenção</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);margin-bottom:8px;line-height:1.3">O que está acontecendo?</div>
+    <div style="font-size:13px;color:var(--text3);line-height:1.6;margin-bottom:20px">Descreva apenas o fato — o que aconteceu de verdade, sem julgamento, sem interpretação. Só o que qualquer pessoa poderia observar.</div>
+    <textarea id="dg_fato" class="exercicio-textarea" style="min-height:120px" placeholder="O fato é: ..."></textarea>
+    <div style="margin-top:12px;background:rgba(212,184,122,.05);border-left:2px solid rgba(212,184,122,.3);border-radius:0 6px 6px 0;padding:10px 12px">
+      <div style="font-size:11px;color:var(--text3);line-height:1.6;font-style:italic">"Para onde você está olhando determina o que você percebe. Atenção não é neutra."</div>
+    </div>
+  </div>`;
+}
+
+function buildDGStep1(){
+  return`<div style="margin-bottom:20px">
+    <div style="font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#9a7ab8;margin-bottom:6px">V · Visão</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);margin-bottom:8px;line-height:1.3">Que história sua mente está contando?</div>
+    <div style="font-size:13px;color:var(--text3);line-height:1.6;margin-bottom:16px">O fato e a história que você constrói sobre ele são coisas diferentes. O que sua mente está dizendo — e qual distorção pode estar ativa?</div>
+    <textarea id="dg_historia" class="exercicio-textarea" style="min-height:90px;margin-bottom:16px" placeholder="Minha mente está dizendo que..."></textarea>
+    <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:10px">Distorção ativa (selecione todas que se aplicam)</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      ${DISTORCOES.map(d=>`<div class="dg-dist-chip" data-v="${d}" onclick="this.classList.toggle('sel')" style="padding:7px 12px;border:1px solid var(--border);border-radius:20px;font-size:11px;color:var(--text3);cursor:pointer;transition:all .2s">${d}</div>`).join('')}
+    </div>
+    <style>.dg-dist-chip.sel{border-color:#9a7ab8;color:#b89ad8;background:rgba(154,122,184,.1)}</style>
+  </div>`;
+}
+
+function buildDGStep2(){
+  return`<div style="margin-bottom:20px">
+    <div style="font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#7ab8d4;margin-bottom:6px">R · Resposta</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);margin-bottom:8px;line-height:1.3">Qual é a escolha consciente?</div>
+    <div style="font-size:13px;color:var(--text3);line-height:1.6;margin-bottom:20px">Entre o estímulo e a resposta existe um espaço. Nomeie a resposta automática — e depois escolha conscientemente.</div>
+    <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:6px">Resposta automática</div>
+    <textarea id="dg_automatica" class="exercicio-textarea" style="min-height:80px;margin-bottom:14px;border-color:rgba(212,80,80,.2)" placeholder="O que eu faria no automático..."></textarea>
+    <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:6px">Resposta consciente</div>
+    <textarea id="dg_consciente" class="exercicio-textarea" style="min-height:80px;border-color:rgba(122,184,212,.2)" placeholder="O que escolho fazer quando estou no centro..."></textarea>
+  </div>`;
+}
+
+function buildDGStep3(){
+  const repOpts=[
+    {v:'sim',label:'Sim, quero repetir',sub:'Essa resposta fortalece quem estou me tornando'},
+    {v:'ajustar',label:'Preciso ajustar',sub:'A direção está certa, mas há algo a calibrar'},
+    {v:'nao',label:'Não é o padrão que quero',sub:'Essa resposta ainda carrega o automático'}
+  ];
+  return`<div style="margin-bottom:20px">
+    <div style="font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#a8d8a8;margin-bottom:6px">S · Sistema</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);margin-bottom:8px;line-height:1.3">Essa resposta cria o padrão que você quer?</div>
+    <div style="font-size:13px;color:var(--text3);line-height:1.6;margin-bottom:20px">Você não toma decisões isoladas — você constrói padrões. Essa resposta consciente é um padrão que você quer tornar automático?</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+      ${repOpts.map(o=>`<div class="dg-rep-chip" data-v="${o.v}" onclick="document.querySelectorAll('.dg-rep-chip').forEach(c=>c.classList.remove('sel'));this.classList.add('sel')" style="padding:12px 14px;border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s">
+        <div style="font-size:13px;color:var(--cream);margin-bottom:2px">${o.label}</div>
+        <div style="font-size:11px;color:var(--text3)">${o.sub}</div>
+      </div>`).join('')}
+    </div>
+    <style>.dg-rep-chip.sel{border-color:rgba(168,216,168,.4);background:rgba(168,216,168,.06)}.dg-rep-chip.sel div:first-child{color:#a8d8a8}</style>
+    <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:8px">O que vou fazer</div>
+    <textarea id="dg_compromisso" class="exercicio-textarea" style="min-height:80px" placeholder="Uma ação concreta que honra minha resposta consciente..."></textarea>
+  </div>`;
+}
+
+async function finalizarDecisaoGuiada(){
+  const content=document.getElementById('decisaoContent');
+  const btnNext=document.getElementById('decisaoBtnNext');
+  const btnBack=document.getElementById('decisaoBtnBack');
+  if(btnNext)btnNext.disabled=true;
+  if(btnBack)btnBack.style.display='none';
+
+  // Mostrar loading
+  if(content)content.innerHTML=`<div style="text-align:center;padding:40px 20px">
+    <div class="mentor-typing" style="justify-content:center;margin-bottom:16px"><span></span><span></span><span></span></div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--cream);margin-bottom:8px">Analisando sua decisão...</div>
+    <div style="font-size:12px;color:var(--text3)">O Mentor AVR-S está processando os 4 campos.</div>
+  </div>`;
+
+  // Gerar diagnóstico via IA
+  const prompt=`Você é o Mentor AVR-S. Analise esta decisão guiada e gere um diagnóstico conciso (máximo 4 parágrafos curtos).
+
+FATO (Atenção): ${decisaoData.fato}
+HISTÓRIA DA MENTE (Visão): ${decisaoData.historia||'Não informado'}
+DISTORÇÕES IDENTIFICADAS: ${decisaoData.distorcoes?.join(', ')||'Nenhuma'}
+RESPOSTA AUTOMÁTICA: ${decisaoData.automatica}
+RESPOSTA CONSCIENTE: ${decisaoData.consciente}
+CRIA PADRÃO QUE QUER: ${decisaoData.repete}
+COMPROMISSO: ${decisaoData.compromisso}
+
+Estruture assim:
+1. O que você percebeu (validar ou questionar a separação fato/história)
+2. A distorção em ação (se houver, nomeie com precisão)
+3. A qualidade da resposta consciente (é realmente consciente ou ainda carrega automático?)
+4. Uma frase de fechamento sobre o padrão que essa decisão está construindo
+
+Tom: direto, sem elogios vazios, como um mentor que respeita a inteligência do usuário.`;
+
+  let diagnostico='';
+  try{
+    const r=await callClaude([{role:'user',content:prompt}],`Você é o Mentor AVR-S — um guia de consciência e decisão baseado na metodologia AVR-S (Atenção, Visão, Resposta, Sistema) de André Fernandes. Seja direto, preciso e útil.`);
+    diagnostico=r||'';
+  }catch(e){diagnostico='';}
+
+  // Salvar decisão guiada no histórico
+  const entry={
+    id:Date.now(),
+    tipo:'decisao_guiada',
+    date:new Date().toISOString(),
+    ...decisaoData,
+    diagnostico
+  };
+  const st=loadJSt();
+  if(!st.decisoesGuiadas)st.decisoesGuiadas=[];
+  st.decisoesGuiadas.unshift(entry);
+  saveJSt(st);
+
+  // Mostrar resultado
+  if(content)content.innerHTML=`
+    <div style="margin-bottom:20px">
+      <div style="font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:12px">Diagnóstico AVR-S</div>
+      <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:16px;margin-bottom:16px">
+        <div style="font-size:13px;color:var(--cream);line-height:1.8">${diagnostico?mdToHtml(diagnostico):'<span style="color:var(--text3)">Diagnóstico indisponível no momento.</span>'}</div>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:14px;margin-bottom:12px">
+        <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:8px">Seu compromisso</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:var(--gold2);line-height:1.7">"${esc(decisaoData.compromisso)}"</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <div style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
+          <div style="font-size:10px;color:var(--text3);margin-bottom:4px">Distorção</div>
+          <div style="font-size:12px;color:var(--cream)">${decisaoData.distorcoes?.length?decisaoData.distorcoes[0]:'—'}</div>
+        </div>
+        <div style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
+          <div style="font-size:10px;color:var(--text3);margin-bottom:4px">Padrão</div>
+          <div style="font-size:12px;color:${decisaoData.repete==='sim'?'#a8d8a8':decisaoData.repete==='ajustar'?'var(--gold)':'#d46a6a'}">${decisaoData.repete==='sim'?'Consciente':decisaoData.repete==='ajustar'?'Calibrar':'Revisar'}</div>
+        </div>
+      </div>
+    </div>
+    <button onclick="closeDecisaoGuiada()" style="width:100%;padding:13px;background:rgba(212,184,122,.08);border:1px solid rgba(212,184,122,.2);border-radius:20px;color:var(--gold);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif">Concluir</button>
+  `;
+
+  if(btnNext)btnNext.style.display='none';
+  if(btnBack)btnBack.style.display='none';
+  updateMapaEvolucao();
+}
+
 // ── NAV ──
 function goTo(s){
   const cur=document.querySelector('.screen.active');
@@ -2513,8 +3075,11 @@ function closeBiblioDetail(){document.getElementById('biblioDPanel').classList.r
 // ── FRASES ──
 let frasesFav=[];
 function loadFrasesFav(){try{frasesFav=JSON.parse(localStorage.getItem('avrs4_fav'))||[];}catch(e){frasesFav=[];}}
-function saveFrasesFav(){localStorage.setItem('avrs4_fav',JSON.stringify(frasesFav));}
-function renderFrases(){const el=document.getElementById('frasesList'),favEl=document.getElementById('frasesFavList');if(!el)return;el.innerHTML=FRASES_LIVRO.map((f,i)=>{const isFav=frasesFav.includes(i);return`<div class="frase-card"><div class="frase-mark">"</div><div class="frase-text">"${f}"</div><div class="frase-actions"><button class="frase-fav-btn ${isFav?'saved':''}" onclick="toggleFav(${i})"><i class="ti ${isFav?'ti-bookmark-filled':'ti-bookmark'}"></i></button></div></div>`;}).join('');if(favEl){const favs=frasesFav.map(i=>FRASES_LIVRO[i]);favEl.innerHTML=favs.length?favs.map(f=>`<div class="frase-card" style="border-color:var(--border2)"><div class="frase-mark">"</div><div class="frase-text">"${f}"</div></div>`).join(''):'<div style="font-size:13px;color:#6a6460;text-align:center;padding:20px">Nenhuma frase salva ainda.</div>';}}
+function saveFrasesFav(){
+  localStorage.setItem('avrs4_fav',JSON.stringify(frasesFav));
+  try{const uid=localStorage.getItem('avrs4_uid');if(uid&&window.saveUserToCloud)window.saveUserToCloud(uid);}catch(e){}
+}
+function renderFrases(){const el=document.getElementById('frasesList'),favEl=document.getElementById('frasesFavList');if(!el)return;const LIVRO_COLORS={1:'#c8a97a',2:'#9a7ab8',3:'#7ab8d4'};el.innerHTML=FRASES_TRILOGIA.map((item,i)=>{const isFav=frasesFav.includes(i);const cor=LIVRO_COLORS[item.n]||'var(--gold)';return`<div class="frase-card"><div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:${cor};margin-bottom:6px;opacity:.8">Livro ${item.n} · ${item.livro}</div><div class="frase-mark">"</div><div class="frase-text">"${item.f}"</div><div class="frase-actions"><button class="frase-fav-btn ${isFav?'saved':''}" onclick="toggleFav(${i})"><i class="ti ${isFav?'ti-bookmark-filled':'ti-bookmark'}"></i></button></div></div>`;}).join('');if(favEl){const favs=frasesFav.map(i=>FRASES_TRILOGIA[i]);favEl.innerHTML=favs.length?favs.map(item=>`<div class="frase-card" style="border-color:var(--border2)"><div class="frase-mark">"</div><div class="frase-text">"${item.f}"</div></div>`).join(''):'<div style="font-size:13px;color:#6a6460;text-align:center;padding:20px">Nenhuma frase salva ainda.</div>';}}
 function toggleFav(i){if(frasesFav.includes(i))frasesFav=frasesFav.filter(x=>x!==i);else frasesFav.push(i);saveFrasesFav();renderFrases();}
 
 // ── GLOSSÁRIO ──
@@ -3146,8 +3711,17 @@ const MOD2_MOT=['Medo','Automático — não percebi na hora','Pressão externa 
 const MOD3_HAB=['Percebi um padrão antigo em ação','Fiz uma pausa antes de reagir automaticamente','Agi baseado nos meus valores, não no automático','Fortaleci minha nova versão com uma escolha consciente'];
 const J20=[{cap:'Cap. 1',titulo:'O Efeito que Você Enxerga',pergunta:'O que tento mudar fora sem olhar dentro?',pro:false},{cap:'Cap. 2',titulo:'A Mente Que Você Não Escolheu',pergunta:'Que crenças herdei sem questionar?',pro:false},{cap:'Cap. 3',titulo:'O Solo Que Produz a Colheita',pergunta:'Que solo interno produz minha colheita atual?',pro:false},{cap:'Cap. 4',titulo:'Como a Mente Aprende a Sobreviver',pergunta:'Que padrão de proteção virou limitação?',pro:false},{cap:'Cap. 5',titulo:'A Repetição Que Ninguém Vê',pergunta:'Onde rastrear a origem do padrão?',pro:false},{cap:'Cap. 6',titulo:'A Identidade Que Aprendemos a Defender',pergunta:'O que defendo que já não me representa?',pro:true},{cap:'Cap. 7',titulo:'O Silêncio Que Decide',pergunta:'Que decisões tomo no automático?',pro:true},{cap:'Cap. 8',titulo:'O Momento em Que a Máscara Pesa',pergunta:'Onde gasto energia sendo quem não sou?',pro:true},{cap:'Cap. 9',titulo:'A Dor Que Não É Fraqueza',pergunta:'Que dor posso ressignificar hoje?',pro:true},{cap:'Cap. 10',titulo:'Quando o Progresso Incomoda',pergunta:'Como separar feedback de julgamento?',pro:true},{cap:'Cap. 11',titulo:'Não Vencer a Mente — Compreendê-la',pergunta:'Como ficar curioso com meus padrões?',pro:true},{cap:'Cap. 12',titulo:'Ressignificar Não É Apagar',pergunta:'Que história posso reescrever sem negar?',pro:true},{cap:'Cap. 13',titulo:'Reconstruir a Identidade',pergunta:'Quem estou me tornando — não quem fui?',pro:true},{cap:'Cap. 14',titulo:'A Disciplina Como Ato de Amor Próprio',pergunta:'Que compromisso honra minha nova versão?',pro:true},{cap:'Cap. 15',titulo:'Quando a Vida Começa a Refletir',pergunta:'Que mudança externa já reflete minha causa nova?',pro:true},{cap:'Cap. 16',titulo:'O Invisível Que Outros Enxergam',pergunta:'Estou habitando o resultado ou justificando?',pro:true},{cap:'Cap. 17',titulo:'As Relações Que Mudam',pergunta:'Que relação mudou quando eu mudei?',pro:true},{cap:'Cap. 18',titulo:'O Trabalho Que Nasce do Propósito',pergunta:'Trabalho para provar ou para expressar?',pro:true},{cap:'Cap. 19',titulo:'Viver Sem Aprovação',pergunta:'Que decisão adiada espera aprovação externa?',pro:true},{cap:'Cap. 20',titulo:'Uma Vida Sem Rascunho — A Origem',pergunta:'Meu novo mapa AVR-S. Quem sou agora?',pro:true}];
 function loadJSt(){try{return JSON.parse(localStorage.getItem('avrs4_jornada')||'{}');}catch(e){return{};}}
-function saveJSt(st){localStorage.setItem('avrs4_jornada',JSON.stringify(st));}
-function initJornada(){const d=new Date();const el=document.getElementById('jornadaFrase');if(el)el.textContent=JORNADA_FRASES[d.getDay()%JORNADA_FRASES.length];updateJornadaProgress();renderJornada20();applyJornadaProGating();}
+function saveJSt(st){
+  localStorage.setItem('avrs4_jornada',JSON.stringify(st));
+  // Sync na nuvem se usuário estiver logado
+  try{
+    const uid=localStorage.getItem('avrs4_uid');
+    if(uid&&window.saveUserToCloud)window.saveUserToCloud(uid);
+  }catch(e){}
+}
+function initJornada(){const d=new Date();const el=document.getElementById('jornadaFrase');if(el)el.textContent=JORNADA_FRASES[d.getDay()%JORNADA_FRASES.length];updateJornadaProgress();updateJornadaHomeCard();renderJornada20();applyJornadaProGating();}
+function updateJornadaHomeCard(){const st=loadJSt();const done=(st.j20Done||[]).length;const card=document.getElementById('jornadaHomeCard');if(!card)return;// Só mostrar se o usuário já iniciou a jornada
+if(done===0&&!(st.mod1||[]).length)return;card.style.display='block';const pct=Math.round((done/20)*100);const bar=document.getElementById('jornadaHomeBar');const diaEl=document.getElementById('jornadaHomeDia');const pctEl=document.getElementById('jornadaHomePct');const proxEl=document.getElementById('jornadaHomeProximo');if(bar)bar.style.width=pct+'%';if(diaEl)diaEl.textContent=done===20?'Jornada concluída ✓':`Dia ${done+1} de 20`;if(pctEl)pctEl.textContent=pct+'%';if(proxEl){const prox=J20[done];if(prox&&done<20)proxEl.textContent='Próximo: "'+prox.titulo+'" — '+prox.pergunta;else if(done===20)proxEl.textContent='Você completou a Jornada da Reconstrução.';else proxEl.style.display='none';}}
 function updateJornadaProgress(){const st=loadJSt();const done=(st.j20Done||[]).length;const pct=Math.round((done/20)*100);const f=document.getElementById('jornadaProgressFill'),l=document.getElementById('jornadaProgressLabel'),p=document.getElementById('jornadaProgressPct');if(f)f.style.width=pct+'%';if(l)l.textContent=done+' dias concluídos';if(p)p.textContent=pct+'%';const ex1=(st.mod1||[]).length;const f1=document.getElementById('mod1ProgFill'),l1=document.getElementById('mod1ProgLabel');if(f1)f1.style.width=Math.round((ex1/4)*100)+'%';if(l1)l1.textContent=ex1+' de 4 exercícios';}
 function applyJornadaProGating(){if(!isPro)return;[2,3,4].forEach(n=>{const c=document.getElementById('jmod'+n);if(c){c.classList.remove('locked');c.onclick=()=>openModDetail(n);}});}
 function checkJornadaPro(n){if(isPro){openModDetail(n);return;}openPaywall();}
@@ -3176,12 +3750,13 @@ function closeManual(){document.getElementById('manualOverlay').classList.remove
 // ── UNIVERSO AVR-S 5.1 ──────────────────────────────────────────
 
 function switchUnivTab(tab) {
-  ['avrs','mentor','protocolo','biblioteca','galeria'].forEach(t => {
+  ['trilogia','avrs','mentor','protocolo','biblioteca','galeria'].forEach(t => {
     const el = document.getElementById('univ-' + t);
     if (el) el.style.display = t === tab ? 'block' : 'none';
     const btn = document.getElementById('utab-' + t);
     if (btn) btn.classList.toggle('active', t === tab);
   });
+  if (tab === 'trilogia') initTrilogiaTab();
   if (tab === 'mentor') initMentor51();
   if (tab === 'protocolo') renderUnivProtocolo();
   if (tab === 'biblioteca') renderBiblioteca34();
@@ -3626,7 +4201,9 @@ onAuthStateChanged(auth,async(user)=>{
   if(user){
     // Usuário logado via Firebase Auth
     const email=user.email;
+    const uid=email.replace(/[^a-zA-Z0-9]/g,'_');
     localStorage.setItem('avrs4_current_user',email);
+    localStorage.setItem('avrs4_uid',uid);
     if(email===window._ADMIN_EMAIL)localStorage.setItem('avrs4_pro','true');
     document.getElementById('loginOverlay').style.display='none';
     // Se init ainda não rodou, rodar agora
@@ -3636,7 +4213,7 @@ onAuthStateChanged(auth,async(user)=>{
     }
     // Sincronizar dados
     setTimeout(()=>{
-      if(window.syncUserData)window.syncUserData(email.replace(/[^a-zA-Z0-9]/g,'_'));
+      if(window.syncUserData)window.syncUserData(uid);
     },1500);
   }
 });
@@ -3664,6 +4241,29 @@ window.syncUserData=async function(userId){
         }
       }
       if(cloud.isPro)localStorage.setItem('avrs4_pro','true');
+      // Restaurar dados da Jornada
+      if(cloud.jornada&&Object.keys(cloud.jornada).length>0){
+        const localJ=JSON.parse(localStorage.getItem('avrs4_jornada')||'{}');
+        // Merge: preferir dados da nuvem, mas preservar entradas locais mais recentes
+        const merged=Object.assign({},cloud.jornada);
+        // Para arrays de dias (mod2, mod3), mesclar chaves por data
+        if(localJ.mod2)merged.mod2=Object.assign({},cloud.jornada.mod2||{},localJ.mod2);
+        if(localJ.mod3)merged.mod3=Object.assign({},cloud.jornada.mod3||{},localJ.mod3);
+        // Para arrays simples, usar o maior
+        if((localJ.mod1||[]).length>(cloud.jornada.mod1||[]).length)merged.mod1=localJ.mod1;
+        if((localJ.mod1Resp||[]).length>(cloud.jornada.mod1Resp||[]).length)merged.mod1Resp=localJ.mod1Resp;
+        if((localJ.j20Done||[]).length>(cloud.jornada.j20Done||[]).length)merged.j20Done=localJ.j20Done;
+        if((localJ.pausas||[]).length>(cloud.jornada.pausas||[]).length)merged.pausas=localJ.pausas;
+        // Para mod4 (texto), preferir local se preenchido
+        if(localJ.mod4&&(localJ.mod4.antes||localJ.mod4.percebo||localJ.mod4.escolho))merged.mod4=localJ.mod4;
+        localStorage.setItem('avrs4_jornada',JSON.stringify(merged));
+      }
+      // Restaurar frases favoritas
+      if(cloud.frasesFav&&cloud.frasesFav.length>0){
+        const localFav=JSON.parse(localStorage.getItem('avrs4_fav')||'[]');
+        const mergedFav=[...new Set([...cloud.frasesFav,...localFav])];
+        localStorage.setItem('avrs4_fav',JSON.stringify(mergedFav));
+      }
     }
     // Salvar dados locais (incluindo qualquer novo entry) para a nuvem
     await window.saveUserToCloud(userId);
@@ -3679,10 +4279,34 @@ window.saveUserToCloud=async function(userId){
   const entries=JSON.parse(localStorage.getItem('avrs4_e')||'[]');
   const isPro=localStorage.getItem('avrs4_pro')==='true';
   const streak=localStorage.getItem('avrs4_s')||'0';
-  await window.saveToFirebase(userId,{entries,isPro,streak,lastSync:Date.now()});
+  const jornada=JSON.parse(localStorage.getItem('avrs4_jornada')||'{}');
+  const frasesFav=JSON.parse(localStorage.getItem('avrs4_fav')||'[]');
+  await window.saveToFirebase(userId,{entries,isPro,streak,jornada,frasesFav,lastSync:Date.now()});
 };
 </script>
 
+
+
+<!-- DECISÃO GUIADA AVR-S -->
+<div id="decisaoOverlay" style="position:fixed;inset:0;background:var(--bg);z-index:960;display:none;flex-direction:column;overflow:hidden">
+  <div style="padding:16px 20px 14px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border);flex-shrink:0">
+    <button onclick="closeDecisaoGuiada()" style="background:none;border:none;color:var(--text3);cursor:pointer;padding:4px"><i class="ti ti-arrow-left" style="font-size:20px"></i></button>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--cream)">Decisão Guiada AVR-S</div>
+    <div id="decisaoStepIndicator" style="margin-left:auto;font-size:11px;color:var(--text3)">Passo 1 de 4</div>
+  </div>
+
+  <!-- Barra de progresso -->
+  <div style="height:3px;background:var(--border);flex-shrink:0">
+    <div id="decisaoProgressBar" style="height:100%;background:var(--gold);transition:width .4s;width:25%"></div>
+  </div>
+
+  <div id="decisaoContent" style="flex:1;overflow-y:auto;padding:20px"></div>
+
+  <div style="padding:16px 20px;border-top:1px solid var(--border);flex-shrink:0;display:flex;gap:10px">
+    <button id="decisaoBtnBack" onclick="decisaoBack()" style="padding:12px 20px;background:none;border:1px solid var(--border);border-radius:20px;color:var(--text3);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;display:none">Voltar</button>
+    <button id="decisaoBtnNext" onclick="decisaoNext()" style="flex:1;padding:12px;background:rgba(212,184,122,.1);border:1px solid rgba(212,184,122,.3);border-radius:20px;color:var(--gold);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif">Continuar</button>
+  </div>
+</div>
 
 <!-- MÓDULO DETAIL -->
 <div class="mod-detail-overlay" id="modDetailOverlay">
