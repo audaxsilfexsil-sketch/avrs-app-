@@ -51,7 +51,7 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream);-webkit-font-smoothing:
 .icon-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;padding:2px;transition:color .2s}
 .icon-btn:hover{color:var(--gold)}
 .nav{display:flex;border-top:1px solid var(--border);background:var(--bg);flex-shrink:0;position:fixed;bottom:0;left:0;right:0;z-index:100}
-.nav-btn{flex:1;padding:14px 8px 12px;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;color:#7a7470;font-size:9px;letter-spacing:.1em;text-transform:uppercase;transition:color .2s} @media(min-width:520px){.nav-btn{font-size:10px;padding:16px 12px 14px;}} @media(min-width:900px){.nav-btn{font-size:10px;}}
+.nav-btn{flex:1;padding:14px 8px 12px;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;color:#7a7470;font-size:clamp(9px,1vw,13px);letter-spacing:.1em;text-transform:uppercase;transition:color .2s} @media(min-width:520px){.nav-btn{font-size:10px;padding:16px 12px 14px;}} @media(min-width:900px){.nav-btn{font-size:10px;}}
 .nav-btn i{font-size:20px}
 .nav-btn.active{color:var(--gold)}
 .screens{flex:1;position:relative;overflow:hidden}
@@ -326,7 +326,7 @@ body{font-family:'DM Sans',sans-serif;color:var(--cream);-webkit-font-smoothing:
 .paywall-dismiss{display:block;text-align:center;margin-top:12px;font-size:12px;color:var(--text3);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;width:100%}
 .paywall-free-label{font-size:11px;color:var(--text3);text-align:center;margin-top:8px}
 @keyframes pwPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.85)}}
-.pro-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(200,169,109,.1);border:1px solid var(--border2);border-radius:20px;padding:3px 8px;font-size:9px;letter-spacing:.08em;color:var(--gold);text-transform:uppercase;vertical-align:middle;margin-left:6px}
+.pro-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(200,169,109,.1);border:1px solid var(--border2);border-radius:20px;padding:3px 8px;font-size:clamp(9px,1vw,13px);letter-spacing:.08em;color:var(--gold);text-transform:uppercase;vertical-align:middle;margin-left:6px}
 .pro-badge i{font-size:10px}
 .locked-card{position:relative;overflow:hidden}
 .locked-card::after{content:'';position:absolute;inset:0;background:rgba(10,9,8,.45);border-radius:inherit;}
@@ -657,7 +657,7 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 .mod-card:not(.locked){cursor:pointer}
 .mod-card:not(.locked):hover{border-color:var(--border2)}
 .mod-card-top{display:flex;justify-content:space-between;align-items:flex-start}
-.mod-card-num{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:3px}
+.mod-card-num{font-size:clamp(9px,1vw,13px);letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:3px}
 .mod-card-title{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--cream);margin-bottom:2px}
 .mod-card-sub{font-size:11px;color:var(--gold);font-style:italic}
 .mod-card-desc{font-size:12px;color:var(--text3);line-height:1.5;margin-top:8px}
@@ -665,8 +665,8 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 .mod-card-prog-bar{height:2px;background:var(--bg4);border-radius:1px;overflow:hidden}
 .mod-card-prog-fill{height:100%;background:var(--gold);border-radius:1px;transition:width .4s ease}
 .mod-card-prog-label{font-size:10px;color:var(--text3);margin-top:3px}
-.jornada-badge-free{background:rgba(100,200,100,.1);border:1px solid rgba(100,200,100,.25);border-radius:20px;padding:3px 9px;font-size:9px;letter-spacing:.06em;color:#7ad4a0;white-space:nowrap}
-.jornada-badge-pro{background:rgba(200,169,109,.1);border:1px solid var(--border2);border-radius:20px;padding:3px 9px;font-size:9px;letter-spacing:.06em;color:var(--gold);white-space:nowrap}
+.jornada-badge-free{background:rgba(100,200,100,.1);border:1px solid rgba(100,200,100,.25);border-radius:20px;padding:3px 9px;font-size:clamp(9px,1vw,13px);letter-spacing:.06em;color:#7ad4a0;white-space:nowrap}
+.jornada-badge-pro{background:rgba(200,169,109,.1);border:1px solid var(--border2);border-radius:20px;padding:3px 9px;font-size:clamp(9px,1vw,13px);letter-spacing:.06em;color:var(--gold);white-space:nowrap}
 .jornada-lock{font-size:15px;color:var(--bg5);margin-top:2px}
 .pausa-avrs-card{background:rgba(26,46,26,.6);border:1px solid rgba(100,200,100,.2);border-radius:var(--r);padding:16px;margin-bottom:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px}
 .pausa-avrs-card:hover{background:rgba(26,46,26,.8)}
@@ -686,7 +686,7 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 .exercicio-card.done{border-color:rgba(200,169,109,.35)}
 .exercicio-header{padding:16px 18px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;background:var(--bg3);transition:background .2s}
 .exercicio-header:hover{background:var(--bg4)}
-.exercicio-num{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:3px}
+.exercicio-num{font-size:clamp(9px,1vw,13px);letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:3px}
 .exercicio-title{font-size:14px;font-weight:600;color:var(--cream)}
 .exercicio-check{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--text3);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .25s}
 .exercicio-card.done .exercicio-check{background:var(--gold);border-color:var(--gold)}
@@ -739,7 +739,7 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 .pausa-body{padding:16px 24px 0}
 .pausa-step-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:16px;margin-bottom:10px}
 .pausa-step-card.active{border-color:var(--gold)}
-.pausa-step-num{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.pausa-step-num{font-size:clamp(9px,1vw,13px);letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
 .pausa-step-q{font-size:14px;color:var(--cream);margin-bottom:12px;line-height:1.5}
 .pausa-step-ta{width:100%;background:var(--bg4);border:1px solid var(--border);color:var(--cream);padding:12px 14px;border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;resize:none;min-height:70px;outline:none;transition:border-color .2s}
 .pausa-step-ta:focus{border-color:var(--gold)}
@@ -759,7 +759,7 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 .jornada20-info{flex:1}
 .jornada20-title{font-size:13px;color:var(--cream);margin-bottom:2px;line-height:1.4}
 .jornada20-cap{font-size:10px;color:var(--text3)}
-.jornada20-badge{font-size:9px;letter-spacing:.06em;padding:2px 8px;border-radius:20px}
+.jornada20-badge{font-size:clamp(9px,1vw,13px);letter-spacing:.06em;padding:2px 8px;border-radius:20px}
 .jornada20-badge.free{background:rgba(100,200,100,.1);color:#7ad4a0;border:1px solid rgba(100,200,100,.2)}
 .jornada20-badge.pro{background:rgba(200,169,109,.1);color:var(--gold);border:1px solid var(--border2)}
 .jornada-pro-gate{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:24px;text-align:center;margin-bottom:10px}
@@ -803,9 +803,9 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 .avrs-etapa-name{font-size:14px;font-weight:600;color:var(--cream);letter-spacing:.02em}
 .avrs-etapa-desc{font-size:11px;color:var(--text3);margin-top:2px}
 .avrs-etapa-status{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
-.avrs-etapa-badge-ativo{background:rgba(100,200,100,.12);border:1px solid rgba(100,200,100,.3);border-radius:20px;padding:3px 10px;font-size:9px;letter-spacing:.06em;color:#7ad4a0}
-.avrs-etapa-badge-pro{background:rgba(200,169,109,.1);border:1px solid var(--border2);border-radius:20px;padding:3px 10px;font-size:9px;letter-spacing:.06em;color:var(--gold)}
-.avrs-etapa-update{font-size:9px;color:var(--text3);display:flex;align-items:center;gap:4px}
+.avrs-etapa-badge-ativo{background:rgba(100,200,100,.12);border:1px solid rgba(100,200,100,.3);border-radius:20px;padding:3px 10px;font-size:clamp(9px,1vw,13px);letter-spacing:.06em;color:#7ad4a0}
+.avrs-etapa-badge-pro{background:rgba(200,169,109,.1);border:1px solid var(--border2);border-radius:20px;padding:3px 10px;font-size:clamp(9px,1vw,13px);letter-spacing:.06em;color:var(--gold)}
+.avrs-etapa-update{font-size:clamp(9px,1vw,13px);color:var(--text3);display:flex;align-items:center;gap:4px}
 .avrs-etapa-update::before{content:'';width:5px;height:5px;border-radius:50%;background:#7ad4a0;flex-shrink:0}
 .avrs-etapa-chevron{font-size:14px;color:var(--text3)}
 .avrs-etapa-body{display:none;padding:16px 18px;background:var(--bg2);border-top:1px solid var(--border)}
@@ -842,7 +842,7 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 .mapa-card-icon.ciclo i{color:var(--gold)}
 .mapa-card-icon.acao{background:rgba(122,180,212,.12);color:#7ab8d4}
 .mapa-card-icon.acao i{color:#7ab8d4}
-.mapa-card-label{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:4px}
+.mapa-card-label{font-size:clamp(9px,1vw,13px);letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:4px}
 .mapa-card-text{font-size:13px;color:var(--cream);line-height:1.5}
 .mapa-card-chevron{margin-left:auto;font-size:15px;color:var(--text3);flex-shrink:0;margin-top:4px}
 .mapa-card-loading{display:flex;align-items:center;gap:8px;padding:14px 16px}
@@ -878,7 +878,7 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 /* ── DASHBOARD FASE 3 — CAMADA 2 ── */
 .dash-camada-header{display:flex;align-items:center;gap:8px;padding:14px 0 10px;border-bottom:1px solid var(--border)}
 .dash-camada-title{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);flex:1}
-.dash-camada-badge{font-size:9px;letter-spacing:.06em;padding:3px 9px;border-radius:20px}
+.dash-camada-badge{font-size:clamp(9px,1vw,13px);letter-spacing:.06em;padding:3px 9px;border-radius:20px}
 .dash-camada-badge.c1{background:rgba(200,169,109,.1);border:1px solid var(--border2);color:var(--gold)}
 .dash-camada-badge.c2{background:rgba(26,46,26,.6);border:1px solid rgba(100,200,100,.3);color:#7ad4a0}
 .dash-interp-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:8px;overflow:hidden;transition:border-color .2s}
@@ -896,7 +896,7 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 .dash-interp-icon.ciclo i{color:var(--gold)}
 .dash-interp-icon.acao{background:rgba(122,180,212,.12)}
 .dash-interp-icon.acao i{color:#7ab8d4}
-.dash-interp-label{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:3px}
+.dash-interp-label{font-size:clamp(9px,1vw,13px);letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:3px}
 .dash-interp-text{font-size:12px;color:var(--cream);line-height:1.5}
 .dash-interp-chevron{margin-left:auto;font-size:13px;color:var(--text3);flex-shrink:0;margin-top:2px}
 .dash-gerar-btn{width:100%;background:linear-gradient(135deg,rgba(26,46,26,.8),rgba(26,46,26,.5));border:1px solid rgba(100,200,100,.3);border-radius:var(--r2);padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;margin-top:6px}
@@ -1003,6 +1003,24 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
   .frase-text{font-size:20px !important;}
   .galeria-livro-titulo{font-size:15px !important;}
   .galeria-livro-autor{font-size:12px !important;}
+}
+
+@media(min-width:900px){
+  #mapaEvolucaoContent *{font-size:inherit;}
+  #mapaEvolucaoContent [style*="font-size:17px"]{font-size:22px !important;}
+  #mapaEvolucaoContent [style*="font-size:10px"]{font-size:13px !important;}
+  #mapaEvolucaoContent [style*="font-size:11px"]{font-size:14px !important;}
+  #mapaEvolucaoContent [style*="font-size:12px"]{font-size:15px !important;}
+  #mapaEvolucaoContent [style*="font-size:9px"]{font-size:12px !important;}
+  #mapaEvolucaoContent [style*="font-size:3px"]{font-size:4px !important;}
+  #mapaEvolucaoSection [style*="font-size:10px"]{font-size:13px !important;}
+  #mapaEvolucaoSection [style*="font-size:9px"]{font-size:12px !important;}
+}
+
+@media(min-width:900px){
+  #mapaEvolucaoSection{font-size:15px;}
+  #mapaEvolucaoContent{font-size:15px;}
+  #mapaEvolucaoContent div[style]{font-size:15px;}
 }
 </style>
 </head>
@@ -1186,7 +1204,7 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 
     <!-- BANNER TRILOGIA -->
     <div style="background:linear-gradient(135deg,#1a1408 0%,#1e1a10 50%,#1a1408 100%);border:1px solid rgba(212,184,122,.25);border-radius:var(--r2);padding:16px;margin-bottom:12px">
-      <div style="font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);opacity:.7;margin-bottom:10px">Trilogia da Transformação · Lançamento 31 de julho</div>
+      <div style="font-size:clamp(9px,1vw,13px);letter-spacing:.15em;text-transform:uppercase;color:var(--gold);opacity:.7;margin-bottom:10px">Trilogia da Transformação · Lançamento 31 de julho</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">
         <div style="text-align:center">
           <img src="https://raw.githubusercontent.com/audaxsilfexsil-sketch/avrs-app-/main/Cronicas_CAPA.png.png" style="width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:4px;border:1px solid rgba(212,184,122,.2);display:block;margin-bottom:5px" loading="lazy"/>
@@ -1641,7 +1659,7 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 
       <!-- MAPA DE EVOLUÇÃO PRO -->
       <div id="mapaEvolucaoSection">
-        <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:12px">Mapa de Evolução · Trilogia</div>
+        <div style="font-size:clamp(10px,1.1vw,14px);letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:12px">Mapa de Evolução · Trilogia</div>
         <div id="mapaEvolucaoContent"></div>
       </div>
 
@@ -2720,67 +2738,67 @@ function updateMapaEvolucao(){
 
   el.innerHTML=`
     <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:20px;margin-bottom:12px">
-      <div style="font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--gold);margin-bottom:16px;text-align:center">Mapa de Evolução · Trilogia da Transformação</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(17px,1.8vw,24px);color:var(--gold);margin-bottom:16px;text-align:center">Mapa de Evolução · Trilogia da Transformação</div>
 
       <!-- Camada 1 -->
       <div style="margin-bottom:16px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-          <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#c8a97a">Livro 1 · Quem eu era</div>
+          <div style="font-size:clamp(10px,1.1vw,14px);letter-spacing:.1em;text-transform:uppercase;color:#c8a97a">Livro 1 · Quem eu era</div>
           <div style="font-size:11px;color:var(--text3)">${l1done}/4 reflexões</div>
         </div>
         <div style="height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:8px">
           <div style="height:100%;width:${pct1}%;background:#c8a97a;border-radius:2px;transition:width .4s"></div>
         </div>
-        ${livro1[0]?`<div style="font-size:12px;color:var(--text3);font-style:italic;line-height:1.6;padding:10px;background:rgba(200,169,122,.05);border-left:2px solid rgba(200,169,122,.3);border-radius:0 6px 6px 0">"${livro1[0].substring(0,120)}${livro1[0].length>120?'...':''}"</div>`:'<div style="font-size:11px;color:#4a4440;font-style:italic">Complete as reflexões do Livro 1 para ver seu ponto de partida.</div>'}
+        ${livro1[0]?`<div style="font-size:clamp(12px,1.2vw,15px);color:var(--text3);font-style:italic;line-height:1.6;padding:10px;background:rgba(200,169,122,.05);border-left:2px solid rgba(200,169,122,.3);border-radius:0 6px 6px 0">"${livro1[0].substring(0,120)}${livro1[0].length>120?'...':''}"</div>`:'<div style="font-size:11px;color:#4a4440;font-style:italic">Complete as reflexões do Livro 1 para ver seu ponto de partida.</div>'}
       </div>
 
       <!-- Camada 2 -->
       <div style="margin-bottom:16px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-          <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#9a7ab8">Livro 2 · O que estou transformando</div>
+          <div style="font-size:clamp(10px,1.1vw,14px);letter-spacing:.1em;text-transform:uppercase;color:#9a7ab8">Livro 2 · O que estou transformando</div>
           <div style="font-size:11px;color:var(--text3)">${j20done}/20 dias · ${pausas} pausas</div>
         </div>
         <div style="height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:8px">
           <div style="height:100%;width:${pct2}%;background:#9a7ab8;border-radius:2px;transition:width .4s"></div>
         </div>
-        ${mod4.percebo?`<div style="font-size:12px;color:var(--text3);font-style:italic;line-height:1.6;padding:10px;background:rgba(154,122,184,.05);border-left:2px solid rgba(154,122,184,.3);border-radius:0 6px 6px 0">"Hoje percebo: ${mod4.percebo.substring(0,100)}${mod4.percebo.length>100?'...':''}"</div>`:'<div style="font-size:11px;color:#4a4440;font-style:italic">Avance na Jornada 20 Dias para registrar sua transformação.</div>'}
+        ${mod4.percebo?`<div style="font-size:clamp(12px,1.2vw,15px);color:var(--text3);font-style:italic;line-height:1.6;padding:10px;background:rgba(154,122,184,.05);border-left:2px solid rgba(154,122,184,.3);border-radius:0 6px 6px 0">"Hoje percebo: ${mod4.percebo.substring(0,100)}${mod4.percebo.length>100?'...':''}"</div>`:'<div style="font-size:11px;color:#4a4440;font-style:italic">Avance na Jornada 20 Dias para registrar sua transformação.</div>'}
       </div>
 
       <!-- Camada 3 -->
       <div style="margin-bottom:16px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-          <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#7ab8d4">Livro 3 · Como estou vivendo</div>
+          <div style="font-size:clamp(10px,1.1vw,14px);letter-spacing:.1em;text-transform:uppercase;color:#7ab8d4">Livro 3 · Como estou vivendo</div>
           <div style="font-size:11px;color:var(--text3)">${entries.length} registros · ${streak} dias</div>
         </div>
         <div style="height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:8px">
           <div style="height:100%;width:${pct3}%;background:#7ab8d4;border-radius:2px;transition:width .4s"></div>
         </div>
-        ${mod4.escolho?`<div style="font-size:12px;color:var(--text3);font-style:italic;line-height:1.6;padding:10px;background:rgba(122,184,212,.05);border-left:2px solid rgba(122,184,212,.3);border-radius:0 6px 6px 0">"Agora escolho: ${mod4.escolho.substring(0,100)}${mod4.escolho.length>100?'...':''}"</div>`:'<div style="font-size:11px;color:#4a4440;font-style:italic">Use o Diário e o Módulo 4 para registrar como está vivendo.</div>'}
+        ${mod4.escolho?`<div style="font-size:clamp(12px,1.2vw,15px);color:var(--text3);font-style:italic;line-height:1.6;padding:10px;background:rgba(122,184,212,.05);border-left:2px solid rgba(122,184,212,.3);border-radius:0 6px 6px 0">"Agora escolho: ${mod4.escolho.substring(0,100)}${mod4.escolho.length>100?'...':''}"</div>`:'<div style="font-size:11px;color:#4a4440;font-style:italic">Use o Diário e o Módulo 4 para registrar como está vivendo.</div>'}
       </div>
 
       <!-- Linha do tempo -->
       <div style="border-top:1px solid var(--border);padding-top:14px;margin-top:4px">
-        <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;text-align:center">Progressão da Trilogia</div>
+        <div style="font-size:clamp(10px,1.1vw,14px);letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;text-align:center">Progressão da Trilogia</div>
         <div style="display:flex;align-items:center;gap:0">
           <div style="flex:1;text-align:center">
             <div style="width:32px;height:32px;border-radius:50%;background:${pct1>0?'rgba(200,169,122,.2)':'var(--border)'};border:2px solid ${pct1>0?'#c8a97a':'var(--border)'};display:flex;align-items:center;justify-content:center;margin:0 auto 4px">
               <i class="ti ti-book" style="font-size:13px;color:${pct1>0?'#c8a97a':'var(--text3)'}"></i>
             </div>
-            <div style="font-size:9px;color:${pct1>0?'#c8a97a':'var(--text3)'};letter-spacing:.05em">Despertar</div>
+            <div style="font-size:clamp(9px,1vw,13px);color:${pct1>0?'#c8a97a':'var(--text3)'};letter-spacing:.05em">Despertar</div>
           </div>
           <div style="flex:1;height:2px;background:linear-gradient(90deg,${pct1>0?'#c8a97a':'var(--border)'},${pct2>0?'#9a7ab8':'var(--border)'})"></div>
           <div style="flex:1;text-align:center">
             <div style="width:32px;height:32px;border-radius:50%;background:${pct2>0?'rgba(154,122,184,.2)':'var(--border)'};border:2px solid ${pct2>0?'#9a7ab8':'var(--border)'};display:flex;align-items:center;justify-content:center;margin:0 auto 4px">
               <i class="ti ti-brain" style="font-size:13px;color:${pct2>0?'#9a7ab8':'var(--text3)'}"></i>
             </div>
-            <div style="font-size:9px;color:${pct2>0?'#9a7ab8':'var(--text3)'};letter-spacing:.05em">Reconstrução</div>
+            <div style="font-size:clamp(9px,1vw,13px);color:${pct2>0?'#9a7ab8':'var(--text3)'};letter-spacing:.05em">Reconstrução</div>
           </div>
           <div style="flex:1;height:2px;background:linear-gradient(90deg,${pct2>0?'#9a7ab8':'var(--border)'},${pct3>0?'#7ab8d4':'var(--border)'})"></div>
           <div style="flex:1;text-align:center">
             <div style="width:32px;height:32px;border-radius:50%;background:${pct3>0?'rgba(122,184,212,.2)':'var(--border)'};border:2px solid ${pct3>0?'#7ab8d4':'var(--border)'};display:flex;align-items:center;justify-content:center;margin:0 auto 4px">
               <i class="ti ti-infinity" style="font-size:13px;color:${pct3>0?'#7ab8d4':'var(--text3)'}"></i>
             </div>
-            <div style="font-size:9px;color:${pct3>0?'#7ab8d4':'var(--text3)'};letter-spacing:.05em">Método</div>
+            <div style="font-size:clamp(9px,1vw,13px);color:${pct3>0?'#7ab8d4':'var(--text3)'};letter-spacing:.05em">Método</div>
           </div>
         </div>
       </div>
@@ -2882,7 +2900,7 @@ function renderDecisaoStep(){
 
 function buildDGStep0(){
   return`<div style="margin-bottom:20px">
-    <div style="font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:6px">A · Atenção</div>
+    <div style="font-size:clamp(9px,1vw,13px);letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:6px">A · Atenção</div>
     <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);margin-bottom:8px;line-height:1.3">O que está acontecendo?</div>
     <div style="font-size:13px;color:var(--text3);line-height:1.6;margin-bottom:20px">Descreva apenas o fato — o que aconteceu de verdade, sem julgamento, sem interpretação. Só o que qualquer pessoa poderia observar.</div>
     <textarea id="dg_fato" class="exercicio-textarea" style="min-height:120px" placeholder="O fato é: ..."></textarea>
@@ -2925,7 +2943,7 @@ function buildDGStep3(){
     {v:'nao',label:'Não é o padrão que quero',sub:'Essa resposta ainda carrega o automático'}
   ];
   return`<div style="margin-bottom:20px">
-    <div style="font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#a8d8a8;margin-bottom:6px">S · Sistema</div>
+    <div style="font-size:clamp(9px,1vw,13px);letter-spacing:.15em;text-transform:uppercase;color:#a8d8a8;margin-bottom:6px">S · Sistema</div>
     <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);margin-bottom:8px;line-height:1.3">Essa resposta cria o padrão que você quer?</div>
     <div style="font-size:13px;color:var(--text3);line-height:1.6;margin-bottom:20px">Você não toma decisões isoladas — você constrói padrões. Essa resposta consciente é um padrão que você quer tornar automático?</div>
     <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
@@ -2995,7 +3013,7 @@ Tom: direto, sem elogios vazios, como um mentor que respeita a inteligência do 
   // Mostrar resultado
   if(content)content.innerHTML=`
     <div style="margin-bottom:20px">
-      <div style="font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:12px">Diagnóstico AVR-S</div>
+      <div style="font-size:clamp(9px,1vw,13px);letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:12px">Diagnóstico AVR-S</div>
       <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:16px;margin-bottom:16px">
         <div style="font-size:13px;color:var(--cream);line-height:1.8">${diagnostico?mdToHtml(diagnostico):'<span style="color:var(--text3)">Diagnóstico indisponível no momento.</span>'}</div>
       </div>
@@ -3126,7 +3144,7 @@ function saveFrasesFav(){
   localStorage.setItem('avrs4_fav',JSON.stringify(frasesFav));
   try{const uid=localStorage.getItem('avrs4_uid');if(uid&&window.saveUserToCloud)window.saveUserToCloud(uid);}catch(e){}
 }
-function renderFrases(){const el=document.getElementById('frasesList'),favEl=document.getElementById('frasesFavList');if(!el)return;const LIVRO_COLORS={1:'#c8a97a',2:'#9a7ab8',3:'#7ab8d4'};el.innerHTML=FRASES_TRILOGIA.map((item,i)=>{const isFav=frasesFav.includes(i);const cor=LIVRO_COLORS[item.n]||'var(--gold)';return`<div class="frase-card"><div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:${cor};margin-bottom:6px;opacity:.8">Livro ${item.n} · ${item.livro}</div><div class="frase-mark">"</div><div class="frase-text">"${item.f}"</div><div class="frase-actions"><button class="frase-fav-btn ${isFav?'saved':''}" onclick="toggleFav(${i})"><i class="ti ${isFav?'ti-bookmark-filled':'ti-bookmark'}"></i></button></div></div>`;}).join('');if(favEl){const favs=frasesFav.map(i=>FRASES_TRILOGIA[i]);favEl.innerHTML=favs.length?favs.map(item=>`<div class="frase-card" style="border-color:var(--border2)"><div class="frase-mark">"</div><div class="frase-text">"${item.f}"</div></div>`).join(''):'<div style="font-size:13px;color:#6a6460;text-align:center;padding:20px">Nenhuma frase salva ainda.</div>';}}
+function renderFrases(){const el=document.getElementById('frasesList'),favEl=document.getElementById('frasesFavList');if(!el)return;const LIVRO_COLORS={1:'#c8a97a',2:'#9a7ab8',3:'#7ab8d4'};el.innerHTML=FRASES_TRILOGIA.map((item,i)=>{const isFav=frasesFav.includes(i);const cor=LIVRO_COLORS[item.n]||'var(--gold)';return`<div class="frase-card"><div style="font-size:clamp(9px,1vw,13px);letter-spacing:.12em;text-transform:uppercase;color:${cor};margin-bottom:6px;opacity:.8">Livro ${item.n} · ${item.livro}</div><div class="frase-mark">"</div><div class="frase-text">"${item.f}"</div><div class="frase-actions"><button class="frase-fav-btn ${isFav?'saved':''}" onclick="toggleFav(${i})"><i class="ti ${isFav?'ti-bookmark-filled':'ti-bookmark'}"></i></button></div></div>`;}).join('');if(favEl){const favs=frasesFav.map(i=>FRASES_TRILOGIA[i]);favEl.innerHTML=favs.length?favs.map(item=>`<div class="frase-card" style="border-color:var(--border2)"><div class="frase-mark">"</div><div class="frase-text">"${item.f}"</div></div>`).join(''):'<div style="font-size:13px;color:#6a6460;text-align:center;padding:20px">Nenhuma frase salva ainda.</div>';}}
 function toggleFav(i){if(frasesFav.includes(i))frasesFav=frasesFav.filter(x=>x!==i);else frasesFav.push(i);saveFrasesFav();renderFrases();}
 
 // ── GLOSSÁRIO ──
