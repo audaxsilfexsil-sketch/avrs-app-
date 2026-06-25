@@ -1552,21 +1552,21 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
       <div class="galeria-section">
         <div class="galeria-section-title"><i class="ti ti-books"></i>Trilogia da Transformação</div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px">
-          <div class="galeria-livro">
+          <div class="galeria-livro" onclick="openLivroDetalhe(1)" style="cursor:pointer">
             <img src="https://raw.githubusercontent.com/audaxsilfexsil-sketch/avrs-app-/main/Cronicas_CAPA.png.png" alt="Crônicas de um Campeão" loading="lazy"/>
             <div class="galeria-livro-info">
               <div class="galeria-livro-titulo">Crônicas de um Campeão</div>
               <div class="galeria-livro-autor">Livro 1 · André Fernandes</div>
             </div>
           </div>
-          <div class="galeria-livro">
+          <div class="galeria-livro" onclick="openLivroDetalhe(2)" style="cursor:pointer">
             <img src="https://raw.githubusercontent.com/audaxsilfexsil-sketch/avrs-app-/main/capa-mente-causa%20(1).jpg.png" alt="A Mente é a Causa. A Vida é o Efeito." loading="lazy"/>
             <div class="galeria-livro-info">
               <div class="galeria-livro-titulo">A Mente É a Causa</div>
               <div class="galeria-livro-autor">Livro 2 · André Fernandes</div>
             </div>
           </div>
-          <div class="galeria-livro">
+          <div class="galeria-livro" onclick="openLivroDetalhe(3)" style="cursor:pointer">
             <img src="https://raw.githubusercontent.com/audaxsilfexsil-sketch/avrs-app-/main/capa-vida-rascunho%20(1).jpg.png" alt="A Vida Sem Rascunho" loading="lazy"/>
             <div class="galeria-livro-info">
               <div class="galeria-livro-titulo">A Vida Sem Rascunho</div>
@@ -3076,6 +3076,65 @@ Tom: direto, sem elogios vazios, como um mentor que respeita a inteligência do 
   updateMapaEvolucao();
 }
 
+
+// ── DETALHE DOS LIVROS ──────────────────────────────────────────
+const LIVROS_INFO = {
+  1: {
+    titulo: 'Crônicas de um Campeão',
+    subtitulo: 'Livro 1 · Despertar',
+    cor: '#c8a97a',
+    resumo: 'Você pode ganhar fora e perder dentro. Este livro começa onde as histórias de sucesso geralmente terminam — no silêncio depois da vitória. É a história de 13 anos como sócio minoritário, das batalhas invisíveis, das escolhas que custaram mais do que apareceram nos resultados. Uma narrativa que revela o que nenhum livro de negócios menciona: o maior risco não é o mercado. É quem você se torna enquanto tenta vencer.',
+    frase: 'Nem tudo que vence é visto. Nem tudo que custa aparece.',
+    btnLabel: 'Iniciar reflexão pessoal',
+    btnAction: "goTo('universo');switchUnivTab('trilogia');setTimeout(()=>initLivro1(),300)",
+  },
+  2: {
+    titulo: 'A Mente É a Causa. A Vida É o Efeito.',
+    subtitulo: 'Livro 2 · Reconstrução',
+    cor: '#9a7ab8',
+    resumo: 'A vida não muda quando o mundo muda. Muda quando a mente que interpreta o mundo muda. Este livro mapeia os padrões invisíveis que constroem os resultados visíveis — crenças herdadas, escolhas automáticas, ciclos que se repetem sem percepção. Em 20 capítulos, você vai da causa ao efeito, do solo à colheita. Não é sobre motivação. É sobre compreender o que realmente direciona sua vida.',
+    frase: 'Você não pode mudar a colheita sem mudar o solo. O solo é a mente.',
+    btnLabel: 'Continuar Jornada 20 Dias',
+    btnAction: "goTo('jornada')",
+  },
+  3: {
+    titulo: 'A Vida Sem Rascunho — Método AVR-S',
+    subtitulo: 'Livro 3 · Método',
+    cor: '#7ab8d4',
+    resumo: 'A vida não tem rascunho. Só execução. Este livro entrega o método que transforma consciência em decisão sustentável — o AVR-S: Atenção, Visão, Resposta e Sistema. Quatro movimentos que criam um espaço entre o estímulo e a resposta. Entre o automático e o consciente. Entre quem você foi e quem você está se tornando. O método não pede que você mude. Pede que você perceba antes de agir.',
+    frase: 'Entre o estímulo e a resposta existe a sua liberdade.',
+    btnLabel: 'Acessar o Método AVR-S',
+    btnAction: "goTo('universo');switchUnivTab('protocolo')",
+  }
+};
+
+function openLivroDetalhe(n){
+  const info = LIVROS_INFO[n];
+  if(!info) return;
+  const content = document.getElementById('livroDetalheContent');
+  if(content) content.innerHTML = `
+    <div style="font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:${info.cor};margin-bottom:6px">${info.subtitulo}</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);margin-bottom:16px;line-height:1.3">${info.titulo}</div>
+    <div style="font-size:14px;color:var(--text2);line-height:1.8;margin-bottom:20px">${info.resumo}</div>
+    <div style="background:rgba(${n==1?'200,169,122':n==2?'154,122,184':'122,184,212'},.06);border-left:3px solid ${info.cor};border-radius:0 10px 10px 0;padding:14px 16px;margin-bottom:24px">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:${info.cor};line-height:1.7">"${info.frase}"</div>
+    </div>
+    <button onclick="${info.btnAction};closeLivroDetalhe()" style="width:100%;padding:14px;background:rgba(${n==1?'200,169,122':n==2?'154,122,184':'122,184,212'},.1);border:1px solid rgba(${n==1?'200,169,122':n==2?'154,122,184':'122,184,212'},.3);border-radius:12px;color:${info.cor};font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.04em;margin-bottom:10px">${info.btnLabel}</button>
+    <button onclick="closeLivroDetalhe()" style="width:100%;padding:12px;background:none;border:1px solid var(--border);border-radius:12px;color:var(--text3);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif">Fechar</button>
+  `;
+  const overlay = document.getElementById('livroDetalheOverlay');
+  const panel = document.getElementById('livroDetalhePanel');
+  if(overlay) overlay.style.display='flex';
+  setTimeout(()=>{ if(panel) panel.style.transform='translateY(0)'; }, 10);
+}
+
+function closeLivroDetalhe(){
+  const panel = document.getElementById('livroDetalhePanel');
+  const overlay = document.getElementById('livroDetalheOverlay');
+  if(panel) panel.style.transform='translateY(100%)';
+  setTimeout(()=>{ if(overlay) overlay.style.display='none'; }, 350);
+}
+
 // ── NAV ──
 function goTo(s,navId){
   const cur=document.querySelector('.screen.active');
@@ -4409,6 +4468,14 @@ window.saveUserToCloud=async function(userId){
   </div>
 </div>
 
+
+<!-- LIVRO DETALHE OVERLAY -->
+<div id="livroDetalheOverlay" style="position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:965;display:none;align-items:flex-end;justify-content:center">
+  <div id="livroDetalhePanel" style="background:var(--bg2);width:100%;max-width:860px;border-radius:28px 28px 0 0;max-height:88vh;overflow-y:auto;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1);padding-bottom:32px">
+    <div style="width:36px;height:3px;border-radius:2px;background:var(--bg5);margin:14px auto 0"></div>
+    <div id="livroDetalheContent" style="padding:20px 24px 0"></div>
+  </div>
+</div>
 <!-- MÓDULO DETAIL -->
 <div class="mod-detail-overlay" id="modDetailOverlay">
   <div class="mod-detail-topbar">
