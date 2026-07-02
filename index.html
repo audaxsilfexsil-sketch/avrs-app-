@@ -1022,6 +1022,60 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
   #mapaEvolucaoContent{font-size:15px;}
   #mapaEvolucaoContent div[style]{font-size:15px;}
 }
+
+/* ══════════ SOS · PAUSA DE EMERGÊNCIA ══════════ */
+.sos-fab{position:fixed;left:16px;bottom:92px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#c65d5d,#a84545);border:1px solid rgba(255,255,255,.15);box-shadow:0 4px 18px rgba(166,60,60,.45);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:60;animation:sosPulse 2.4s ease-in-out infinite;}
+.sos-fab i{font-size:22px;color:#fff;}
+@keyframes sosPulse{0%,100%{box-shadow:0 4px 18px rgba(166,60,60,.45);}50%{box-shadow:0 4px 28px rgba(166,60,60,.75);}}
+.sos-overlay{position:fixed;inset:0;background:#0c0b09;z-index:300;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;}
+.sos-overlay.open{display:flex;}
+.sos-close{position:absolute;top:20px;right:20px;background:none;border:none;color:var(--text3);font-size:22px;cursor:pointer;}
+.sos-eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#c65d5d;margin-bottom:10px;}
+.sos-title{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--cream);margin-bottom:28px;line-height:1.4;max-width:320px;}
+.sos-breath-circle{width:180px;height:180px;border-radius:50%;border:1.5px solid rgba(200,169,109,.35);display:flex;align-items:center;justify-content:center;margin-bottom:28px;transition:transform 4s ease-in-out;background:radial-gradient(circle,rgba(200,169,109,.12),transparent 70%);}
+.sos-breath-circle.inhale{transform:scale(1.35);}
+.sos-breath-circle.exhale{transform:scale(.85);}
+.sos-breath-label{font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--gold2);}
+.sos-timer{font-size:13px;color:var(--text3);letter-spacing:.06em;margin-bottom:20px;}
+.sos-progress-wrap{width:100%;max-width:280px;height:3px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-bottom:32px;}
+.sos-progress-fill{height:100%;background:#c65d5d;border-radius:2px;width:0%;transition:width 1s linear;}
+.sos-reflection{width:100%;max-width:320px;display:none;}
+.sos-reflection.show{display:block;}
+.sos-reflection textarea{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:14px;color:var(--cream);font-size:14px;font-family:'DM Sans',sans-serif;resize:none;min-height:80px;margin-bottom:14px;}
+.sos-finish-btn{width:100%;max-width:320px;padding:14px;background:rgba(200,169,109,.12);border:1px solid var(--border2);border-radius:12px;color:var(--gold);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.04em;}
+
+/* ══════════ FECHAMENTO DO DIA ══════════ */
+.fech-card{background:linear-gradient(135deg,rgba(200,169,109,.08),rgba(200,169,109,.02));border:1px solid var(--border2);border-radius:var(--r);padding:18px;margin-bottom:16px;cursor:pointer;}
+.fech-card-top{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.fech-card-eyebrow{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);}
+.fech-card-title{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--gold2);}
+.fech-overlay{position:fixed;inset:0;background:rgba(8,8,8,.85);z-index:300;display:none;align-items:flex-end;justify-content:center;}
+.fech-overlay.open{display:flex;}
+.fech-panel{width:100%;max-width:480px;max-height:88vh;overflow-y:auto;background:var(--bg2);border-radius:24px 24px 0 0;padding:24px 20px 28px;transform:translateY(100%);transition:transform .35s ease;}
+.fech-overlay.open .fech-panel{transform:translateY(0);}
+.fech-indice-wrap{display:flex;align-items:center;justify-content:center;margin:18px 0 22px;}
+.fech-indice-circle{width:120px;height:120px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid var(--gold);background:rgba(200,169,109,.06);}
+.fech-indice-num{font-family:'Cormorant Garamond',serif;font-size:38px;color:var(--gold2);line-height:1;}
+.fech-indice-label{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-top:4px;}
+.fech-stats-row{display:flex;gap:10px;margin-bottom:18px;}
+.fech-stat{flex:1;background:var(--bg3);border-radius:12px;padding:12px;text-align:center;}
+.fech-stat-num{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--cream);}
+.fech-stat-label{font-size:9px;color:var(--text3);letter-spacing:.06em;margin-top:2px;}
+.fech-ai-box{background:var(--ai);border:1px solid var(--ai-border);border-radius:var(--r2);padding:16px;margin-bottom:18px;font-size:13px;color:var(--ai-text);line-height:1.7;}
+.fech-input textarea{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:14px;color:var(--cream);font-size:14px;font-family:'DM Sans',sans-serif;resize:none;min-height:70px;margin-bottom:14px;}
+
+/* ══════════ TERAPIA POR VOZ ══════════ */
+.voice-therapy-toggle{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:18px;padding:10px 18px;border:1px solid var(--border2);border-radius:20px;cursor:pointer;font-size:12px;color:var(--text2);}
+.voice-therapy-toggle.active{background:rgba(200,169,109,.12);color:var(--gold);border-color:var(--gold);}
+.voice-therapy-status{font-size:11px;color:var(--text3);margin-top:10px;letter-spacing:.04em;}
+
+/* ══════════ INSIGHTS PREDITIVOS ══════════ */
+.insight-card{background:linear-gradient(135deg,rgba(120,150,200,.08),rgba(120,150,200,.02));border:1px solid rgba(120,150,200,.25);border-radius:var(--r);padding:18px;margin-bottom:16px;}
+.insight-card-top{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.insight-card-eyebrow{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#9ab8e0;}
+.insight-body{font-size:13px;color:var(--text2);line-height:1.75;}
+.insight-empty{font-size:13px;color:var(--text3);line-height:1.7;}
+.insight-btn{margin-top:12px;display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:14px;background:rgba(120,150,200,.1);border:1px solid rgba(120,150,200,.3);color:#9ab8e0;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;}
 </style>
 </head>
 <body>
@@ -1171,6 +1225,13 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
         <button class="analysis-btn" onclick="requestWeeklyAnalysis()"><i class="ti ti-sparkles"></i> Analisar</button>
       </div>
       <div id="patternBars"></div>
+    </div>
+    <div class="insight-card" id="insightCard" style="display:none">
+      <div class="insight-card-top"><i class="ti ti-telescope" style="color:#9ab8e0;font-size:16px"></i><div class="insight-card-eyebrow">Insight Preditivo AVR–S</div></div>
+      <div class="insight-body" id="insightBody">
+        <div class="insight-empty">Com base nos seus últimos registros, a IA pode antecipar o padrão mais provável dos próximos dias.</div>
+      </div>
+      <div class="insight-btn" onclick="gerarInsightPreditivo()"><i class="ti ti-sparkles"></i><span id="insightBtnLabel">Gerar previsão</span></div>
     </div>
     <div class="question-card">
       <div class="qcard-eyebrow">Pergunta do dia</div>
@@ -1358,6 +1419,12 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
           <div id="msgCountBar" style="height:100%;border-radius:2px;background:var(--gold);transition:width .4s ease;width:0%"></div>
         </div>
       </div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-section-title">Bem-Estar AVR–S</div>
+      <div class="settings-row"><div class="settings-label"><i class="ti ti-heart-bolt" style="margin-right:6px;color:#c65d5d"></i>Pausa de Emergência (SOS)</div><button class="settings-action" onclick="startSOSFlow()">Iniciar agora</button></div>
+      <div class="settings-row"><div class="settings-label"><i class="ti ti-moon-stars" style="margin-right:6px;color:var(--gold)"></i>Fechamento do Dia</div><button class="settings-action" onclick="openFechamentoDoDia()">Abrir</button></div>
+      <div class="settings-row"><div class="settings-label"><i class="ti ti-microphone-2" style="margin-right:6px;color:var(--gold)"></i>Terapia por Voz</div><button class="settings-action" onclick="startVoiceChat();setTimeout(toggleVoiceTherapy,150)">Iniciar</button></div>
     </div>
     <div class="settings-section">
       <div class="settings-section-title">Aparência</div>
@@ -1829,6 +1896,7 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
     <div class="chat-msgs" id="chatMsgs"></div>
     <div class="chat-input-row">
       <button class="voice-btn" id="voiceChatBtn" onclick="startVoiceChat()" title="Comando de voz"><i class="ti ti-microphone"></i></button>
+      <button class="sos-fab" id="sosFab" onclick="startSOSFlow()" title="Pausa de Emergência"><i class="ti ti-heart-bolt"></i></button>
       <input class="chat-input" id="chatInput" placeholder="Escreva ou fale..." onkeydown="if(event.key==='Enter')sendChat()"/>
       <button class="chat-send" onclick="sendChat()"><i class="ti ti-send"></i></button>
     </div>
@@ -1978,10 +2046,12 @@ input:checked + .theme-slider:before{transform:translateX(20px);background:#fff}
 
 <!-- COMANDO DE VOZ -->
 <div class="voice-overlay" id="voiceOverlay">
-  <div class="voice-circle"><i class="ti ti-microphone"></i></div>
-  <div class="voice-text">Ouvindo...</div>
+  <div class="voice-circle" id="voiceCircle"><i class="ti ti-microphone"></i></div>
+  <div class="voice-text" id="voiceStatusText">Ouvindo...</div>
   <div class="voice-sub">Fale com o Mentor AVR–S</div>
   <div class="voice-transcript" id="voiceTranscript"></div>
+  <div class="voice-therapy-toggle" id="voiceTherapyToggle" onclick="toggleVoiceTherapy()"><i class="ti ti-repeat"></i><span id="voiceTherapyLabel">Ativar Terapia por Voz (conversa contínua)</span></div>
+  <div class="voice-therapy-status" id="voiceTherapyStatus"></div>
   <button class="voice-cancel" onclick="stopVoice()">Cancelar</button>
 </div>
 
@@ -3534,9 +3604,210 @@ function updateSettingsProStatus(){const ps=document.getElementById('profileStat
 
 // ── VOZ ──
 let recognition=null,isListening=false;
-function initVoice(){if(!('webkitSpeechRecognition'in window)&&!('SpeechRecognition'in window))return false;const SR=window.SpeechRecognition||window.webkitSpeechRecognition;recognition=new SR();recognition.lang='pt-BR';recognition.continuous=false;recognition.interimResults=true;recognition.onresult=(event)=>{const t=Array.from(event.results).map(r=>r[0].transcript).join('');document.getElementById('voiceTranscript').textContent=t;if(event.results[event.results.length-1].isFinal){stopVoice();document.getElementById('chatInput').value=t;openMentorChat();setTimeout(()=>sendChat(),300);}};recognition.onerror=()=>stopVoice();recognition.onend=()=>{if(isListening)stopVoice();};return true;}
-function startVoiceChat(){if(!initVoice()){alert('Seu navegador não suporta reconhecimento de voz.');return;}isListening=true;document.getElementById('voiceOverlay').classList.add('open');document.getElementById('voiceTranscript').textContent='';document.getElementById('voiceChatBtn')?.classList.add('listening');recognition.start();}
-function stopVoice(){isListening=false;document.getElementById('voiceOverlay').classList.remove('open');document.getElementById('voiceChatBtn')?.classList.remove('listening');if(recognition){try{recognition.stop();}catch(e){}}}
+let voiceTherapyOn=false,voiceTherapyBusy=false;
+function initVoice(){if(!('webkitSpeechRecognition'in window)&&!('SpeechRecognition'in window))return false;const SR=window.SpeechRecognition||window.webkitSpeechRecognition;recognition=new SR();recognition.lang='pt-BR';recognition.continuous=false;recognition.interimResults=true;recognition.onresult=(event)=>{const t=Array.from(event.results).map(r=>r[0].transcript).join('');document.getElementById('voiceTranscript').textContent=t;if(event.results[event.results.length-1].isFinal){const texto=t.trim();if(!texto)return;if(voiceTherapyOn){voiceTherapySend(texto);}else{stopVoice();document.getElementById('chatInput').value=texto;openMentorChat();setTimeout(()=>sendChat(),300);}}};recognition.onerror=()=>{if(voiceTherapyOn){setVoiceTherapyStatus('Não ouvi direito. Toque no microfone para tentar de novo.');isListening=false;setVoiceUI('idle');}else{stopVoice();}};recognition.onend=()=>{if(isListening&&!voiceTherapyOn)stopVoice();};return true;}
+function startVoiceChat(){if(!initVoice()){alert('Seu navegador não suporta reconhecimento de voz.');return;}isListening=true;document.getElementById('voiceOverlay').classList.add('open');document.getElementById('voiceTranscript').textContent='';document.getElementById('voiceChatBtn')?.classList.add('listening');setVoiceUI('listening');recognition.start();}
+function stopVoice(){isListening=false;voiceTherapyOn=false;voiceTherapyBusy=false;document.getElementById('voiceOverlay').classList.remove('open');document.getElementById('voiceChatBtn')?.classList.remove('listening');updateVoiceTherapyToggleUI();setVoiceTherapyStatus('');if(recognition){try{recognition.stop();}catch(e){}}stopSpeak();}
+function setVoiceUI(state){const c=document.getElementById('voiceCircle'),t=document.getElementById('voiceStatusText');if(!c||!t)return;if(state==='listening'){t.textContent='Ouvindo...';c.style.borderColor='';}else if(state==='thinking'){t.textContent='Pensando...';}else if(state==='speaking'){t.textContent='Respondendo...';}else{t.textContent='Toque para falar';}}
+// ── TERAPIA POR VOZ (modo conversa contínua) ──
+function toggleVoiceTherapy(){voiceTherapyOn=!voiceTherapyOn;updateVoiceTherapyToggleUI();if(voiceTherapyOn){setVoiceTherapyStatus('Modo conversa contínua ativado. Fale normalmente — eu respondo e volto a ouvir.');if(!isListening&&!voiceTherapyBusy){isListening=true;setVoiceUI('listening');try{recognition.start();}catch(e){}}}else{setVoiceTherapyStatus('Modo conversa contínua desativado.');}}
+function updateVoiceTherapyToggleUI(){const el=document.getElementById('voiceTherapyToggle'),lbl=document.getElementById('voiceTherapyLabel');if(!el||!lbl)return;el.classList.toggle('active',voiceTherapyOn);lbl.textContent=voiceTherapyOn?'Terapia por Voz ativa · toque para desativar':'Ativar Terapia por Voz (conversa contínua)';}
+function setVoiceTherapyStatus(msg){const el=document.getElementById('voiceTherapyStatus');if(el)el.textContent=msg;}
+async function voiceTherapySend(texto){
+  if(!verificarLimiteIA()){voiceTherapyOn=false;updateVoiceTherapyToggleUI();return;}
+  incrementMsgCount();
+  voiceTherapyBusy=true;isListening=false;
+  document.getElementById('voiceTranscript').textContent=texto;
+  setVoiceUI('thinking');
+  chatHistory.push({role:'user',content:texto});
+  const messages=chatHistory.slice(-12).map(m=>({role:m.role,content:m.content}));
+  const response=await callClaude(messages,getMentorSystem());
+  const reply=response||'Não consegui processar agora. Vamos tentar de novo?';
+  chatHistory.push({role:'assistant',content:reply});
+  localStorage.setItem('avrs4_chat',JSON.stringify(chatHistory.slice(-20)));
+  document.getElementById('voiceTranscript').textContent=reply;
+  setVoiceUI('speaking');
+  voiceTherapyBusy=false;
+  falarERecomecar(reply);
+}
+function falarERecomecar(texto){
+  if(!window.speechSynthesis){setVoiceUI('idle');return;}
+  const clean=texto.replace(/[*_~`#]/g,'').trim();
+  const utt=new SpeechSynthesisUtterance(clean);
+  utt.lang='pt-BR';utt.rate=0.97;utt.volume=1;
+  const voices=window.speechSynthesis.getVoices();
+  const v=voices.find(v=>v.lang==='pt-BR')||voices.find(v=>v.lang.startsWith('pt'));
+  if(v)utt.voice=v;
+  utt.onend=()=>{if(voiceTherapyOn&&document.getElementById('voiceOverlay').classList.contains('open')){setVoiceUI('listening');isListening=true;try{recognition.start();}catch(e){}}else{setVoiceUI('idle');}};
+  utt.onerror=()=>{setVoiceUI('idle');};
+  window.speechSynthesis.speak(utt);
+}
+
+// ── SOS · PAUSA DE EMERGÊNCIA ──
+let sosInterval=null,sosPhaseTimer=null,sosSecondsLeft=60;
+function startSOSFlow(){
+  document.getElementById('sosReflection').classList.remove('show');
+  document.getElementById('sosTextInput').value='';
+  document.getElementById('sosTimer').textContent='60 segundos';
+  document.getElementById('sosProgressFill').style.width='0%';
+  document.getElementById('sosTitle').textContent='Você está seguro agora. Vamos respirar juntos.';
+  sosSecondsLeft=60;
+  document.getElementById('sosOverlay').classList.add('open');
+  tocarSomAlerta&&somAtivado&&somAtivado()&&tocarSomAlerta();
+  runSOSBreathCycle();
+  sosInterval=setInterval(()=>{
+    sosSecondsLeft--;
+    document.getElementById('sosTimer').textContent=sosSecondsLeft+' segundos';
+    document.getElementById('sosProgressFill').style.width=Math.round(((60-sosSecondsLeft)/60)*100)+'%';
+    if(sosSecondsLeft<=0){clearInterval(sosInterval);clearTimeout(sosPhaseTimer);showSOSReflection();}
+  },1000);
+}
+function runSOSBreathCycle(){
+  const circle=document.getElementById('sosCircle'),label=document.getElementById('sosBreathLabel');
+  const seq=[{c:'inhale',t:'Inspire',ms:4000},{c:'',t:'Segure',ms:4000},{c:'exhale',t:'Solte o ar',ms:4000},{c:'',t:'Pausa',ms:2000}];
+  let i=0;
+  function step(){
+    if(!document.getElementById('sosOverlay').classList.contains('open'))return;
+    const s=seq[i%seq.length];
+    circle.className='sos-breath-circle'+(s.c?' '+s.c:'');
+    label.textContent=s.t;
+    i++;
+    sosPhaseTimer=setTimeout(step,s.ms);
+  }
+  step();
+}
+function showSOSReflection(){
+  document.getElementById('sosTitle').textContent='Muito bem. Você regulou o corpo.';
+  document.getElementById('sosReflection').classList.add('show');
+}
+function finishSOSBreathing(){
+  const texto=document.getElementById('sosTextInput').value.trim();
+  const st=loadJSt();
+  if(!st.pausas)st.pausas=[];
+  st.pausas.unshift({tipo:'sos',texto,ts:Date.now()});
+  if(st.pausas.length>50)st.pausas=st.pausas.slice(0,50);
+  saveJSt(st);
+  closeSOSFlow();
+}
+function closeSOSFlow(){
+  clearInterval(sosInterval);clearTimeout(sosPhaseTimer);
+  document.getElementById('sosOverlay').classList.remove('open');
+}
+
+// ── FECHAMENTO DO DIA · ÍNDICE DE CONSCIÊNCIA ──
+function calcularIndiceConsciencia(){
+  const hoje=new Date().toDateString();
+  const entradasHoje=entries.filter(e=>new Date(e.id).toDateString()===hoje);
+  const st=loadJSt();
+  const pausasHoje=(st.pausas||[]).filter(p=>new Date(p.ts).toDateString()===hoje).length;
+  const habitosHoje=((st.mod3||{})[hoje]||[]).length;
+  let score=30;
+  score+=Math.min(entradasHoje.length*15,30);
+  score+=Math.min(pausasHoje*10,20);
+  score+=Math.min(habitosHoje*5,20);
+  const estadosNegativos=['Ansioso','Reativo','Sobrecarregado'];
+  const negCount=entradasHoje.filter(e=>estadosNegativos.includes(e.state)).length;
+  score-=Math.min(negCount*8,20);
+  score=Math.max(10,Math.min(100,Math.round(score)));
+  const sc={};
+  entradasHoje.forEach(e=>{if(e.state&&e.state!=='Não definido')sc[e.state]=(sc[e.state]||0)+1;});
+  const estadoDom=Object.entries(sc).sort((a,b)=>b[1]-a[1])[0]?.[0]||'—';
+  return{score,entradasHoje,pausasHoje,estadoDom};
+}
+function openFechamentoDoDia(){
+  const now=new Date();
+  document.getElementById('fechDataHoje').textContent=now.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+  const r=calcularIndiceConsciencia();
+  document.getElementById('fechIndiceNum').textContent=r.score;
+  document.getElementById('fechStatEntradas').textContent=r.entradasHoje.length;
+  document.getElementById('fechStatPausas').textContent=r.pausasHoje;
+  document.getElementById('fechStatEstado').textContent=r.estadoDom;
+  document.getElementById('fechReflexao').value='';
+  document.getElementById('fechOverlay').classList.add('open');
+  gerarMensagemFechamento(r);
+}
+async function gerarMensagemFechamento(r){
+  const box=document.getElementById('fechAiBox');
+  box.innerHTML='<div class="mentor-typing"><span></span><span></span><span></span></div>';
+  if(!isPro){box.innerHTML='<div style="color:var(--text3)"><i class="ti ti-lock" style="margin-right:6px"></i>Desbloqueie o Pro para receber uma leitura personalizada do seu dia.</div>';return;}
+  if(!verificarLimiteIA()){box.innerHTML='<div style="color:var(--text3)">Limite de mensagens IA do mês atingido.</div>';return;}
+  incrementMsgCount();
+  const prompt=`Resuma o dia do usuário em tom acolhedor e direto, no método AVR-S. Índice de Consciência calculado: ${r.score}/100. Registros hoje: ${r.entradasHoje.length}. Estado predominante: ${r.estadoDom}. Pausas de regulação usadas: ${r.pausasHoje}. Dê um fechamento breve (2-3 frases) reconhecendo o esforço do dia e uma orientação simples para amanhã.`;
+  const resp=await callClaude([{role:'user',content:prompt}],getMentorSystem());
+  box.innerHTML=resp?mdToHtml(resp):'Hoje foi mais um dia de prática consciente. Descanse — amanhã o sistema continua.';
+}
+function salvarFechamentoDoDia(){
+  const hoje=new Date().toDateString();
+  const reflexao=document.getElementById('fechReflexao').value.trim();
+  const r=calcularIndiceConsciencia();
+  const st=loadJSt();
+  if(!st.fechamentos)st.fechamentos={};
+  st.fechamentos[hoje]={score:r.score,reflexao,ts:Date.now()};
+  saveJSt(st);
+  localStorage.setItem('avrs4_fechamento_last',hoje);
+  closeFechamentoDoDia();
+}
+function closeFechamentoDoDia(){document.getElementById('fechOverlay').classList.remove('open');}
+function checkFechamentoDoDia(){
+  const hoje=new Date().toDateString();
+  const last=localStorage.getItem('avrs4_fechamento_last');
+  const hora=new Date().getHours();
+  if(last===hoje)return;
+  if(hora<19)return;
+  if(!entries.some(e=>new Date(e.id).toDateString()===hoje))return;
+  setTimeout(()=>{if(!document.getElementById('fechOverlay').classList.contains('open'))openFechamentoDoDia();},3500);
+}
+
+// ── INSIGHTS PREDITIVOS ──
+function analisarPadroesPreditivos(){
+  const last30=entries.slice(0,30);
+  if(last30.length<3)return null;
+  const porDiaSemana={};
+  last30.forEach(e=>{
+    const d=new Date(e.id).getDay();
+    if(!porDiaSemana[d])porDiaSemana[d]=[];
+    if(e.state&&e.state!=='Não definido')porDiaSemana[d].push(e.state);
+  });
+  const diasNomes=['domingo','segunda','terça','quarta','quinta','sexta','sábado'];
+  let padraoDia=null,maxOcorrencias=0;
+  Object.entries(porDiaSemana).forEach(([dia,estados])=>{
+    const sc={};estados.forEach(s=>sc[s]=(sc[s]||0)+1);
+    const top=Object.entries(sc).sort((a,b)=>b[1]-a[1])[0];
+    if(top&&top[1]>=2&&top[1]>maxOcorrencias){maxOcorrencias=top[1];padraoDia={dia:diasNomes[dia],estado:top[0],ocorrencias:top[1]};}
+  });
+  const dc={};last30.forEach(e=>{if(e.distortion&&e.distortion!=='Nenhuma')dc[e.distortion]=(dc[e.distortion]||0)+1;});
+  const distorcaoTop=Object.entries(dc).sort((a,b)=>b[1]-a[1])[0];
+  return{padraoDia,distorcaoTop:distorcaoTop?{nome:distorcaoTop[0],count:distorcaoTop[1]}:null,totalEntries:last30.length};
+}
+async function gerarInsightPreditivo(){
+  const body=document.getElementById('insightBody'),btnLabel=document.getElementById('insightBtnLabel');
+  if(entries.length<3){body.innerHTML='<div class="insight-empty">Registre pelo menos 3 decisões conscientes para a IA começar a identificar padrões preditivos.</div>';return;}
+  if(!isPro){body.innerHTML='<div class="insight-empty"><i class="ti ti-lock" style="margin-right:6px"></i>Insights preditivos são um recurso Pro.</div><div class="insight-btn" onclick="openPaywall()"><i class="ti ti-crown"></i><span>Ver plano Pro</span></div>';return;}
+  if(!verificarLimiteIA())return;
+  incrementMsgCount();
+  btnLabel.textContent='Analisando...';
+  const padrao=analisarPadroesPreditivos();
+  body.innerHTML='<div class="mentor-typing"><span></span><span></span><span></span></div>';
+  const p=buildProfile();
+  const prompt=`Com base no perfil do usuário, gere um insight PREDITIVO curto (2-3 frases) apontando o padrão mais provável de se repetir nos próximos dias e uma ação preventiva concreta.\nEstado dominante geral: ${p.dominantState||'—'}\nDistorção mais frequente: ${p.mainDistortion||'—'}\n${padrao?.padraoDia?`Padrão detectado: às ${padrao.padraoDia.dia}s o usuário tende ao estado \"${padrao.padraoDia.estado}\" (${padrao.padraoDia.ocorrencias}x).`:''}\n${padrao?.distorcaoTop?`Distorção recorrente: ${padrao.distorcaoTop.nome} (${padrao.distorcaoTop.count}x nos últimos registros).`:''}\nFale diretamente com o usuário, tom AVR-S.`;
+  const resp=await callClaude([{role:'user',content:prompt}],getMentorSystem());
+  btnLabel.textContent='Gerar nova previsão';
+  body.innerHTML=resp?`<div class="insight-body">${mdToHtml(resp)}</div>`:'<div class="insight-empty">Não consegui gerar a previsão agora. Tente novamente em instantes.</div>';
+  localStorage.setItem('avrs4_insight_last',JSON.stringify({text:resp,ts:Date.now()}));
+}
+function checkInsightCard(){
+  const card=document.getElementById('insightCard');
+  if(!card)return;
+  if(entries.length<3)return;
+  card.style.display='block';
+  try{
+    const cached=JSON.parse(localStorage.getItem('avrs4_insight_last')||'null');
+    if(cached&&cached.text&&(Date.now()-cached.ts)<24*60*60*1000){
+      document.getElementById('insightBody').innerHTML=`<div class="insight-body">${mdToHtml(cached.text)}</div>`;
+      document.getElementById('insightBtnLabel').textContent='Gerar nova previsão';
+    }
+  }catch(e){}
+}
 
 // ── ONBOARDING ──
 function checkOnboarding(){const seen=localStorage.getItem('avrs4_onboard');if(!seen){setTimeout(()=>{document.getElementById('onboardOverlay').classList.add('open');localStorage.setItem('avrs4_onboard','1');},2500);}}
@@ -3853,7 +4124,7 @@ async function init(){
   document.getElementById('qcardHint').textContent=dq.h;
   renderStats();renderEntries();
   if(entries.length>=3){document.getElementById('analysisCard').style.display='block';requestWeeklyAnalysis();}
-  checkOnboarding();checkDailyNotif();applyProGating();updateSettingsProStatus();
+  checkOnboarding();checkDailyNotif();applyProGating();updateSettingsProStatus();checkFechamentoDoDia();checkInsightCard();
   if(isPro)loadMentorMessage();
   else{document.getElementById('mentorText').innerHTML='Desbloqueie o Mentor IA para receber análises personalizadas baseadas no seu perfil.';document.getElementById('mentorActions').innerHTML='<div class="mentor-pill" onclick="openPaywall()"><i class="ti ti-crown" style="margin-right:4px"></i>Ativar Pro — R$19/mês</div>';}
   verificarAlertas();
@@ -4547,6 +4818,45 @@ window.saveUserToCloud=async function(userId){
   <div class="b34-content" id="b34Content"></div>
 </div>
 
+<!-- SOS · PAUSA DE EMERGÊNCIA -->
+<div class="sos-overlay" id="sosOverlay">
+  <button class="sos-close" onclick="closeSOSFlow()"><i class="ti ti-x"></i></button>
+  <div class="sos-eyebrow">Pausa de Emergência</div>
+  <div class="sos-title" id="sosTitle">Você está seguro agora.<br>Vamos respirar juntos.</div>
+  <div class="sos-breath-circle" id="sosCircle"><div class="sos-breath-label" id="sosBreathLabel">Inspire</div></div>
+  <div class="sos-timer" id="sosTimer">60 segundos</div>
+  <div class="sos-progress-wrap"><div class="sos-progress-fill" id="sosProgressFill"></div></div>
+  <div class="sos-reflection" id="sosReflection">
+    <div class="sos-title" style="font-size:18px;margin-bottom:14px">O que está acontecendo agora, em uma frase?</div>
+    <textarea id="sosTextInput" placeholder="Nomeie o que sente..."></textarea>
+    <button class="sos-finish-btn" onclick="finishSOSBreathing()">Concluir pausa</button>
+  </div>
+</div>
+
+<!-- FECHAMENTO DO DIA -->
+<div class="fech-overlay" id="fechOverlay">
+  <div class="fech-panel">
+    <div style="text-align:center;margin-bottom:4px">
+      <div class="fech-card-eyebrow">Fechamento do Dia</div>
+      <div class="fech-card-title" style="font-size:20px" id="fechDataHoje">—</div>
+    </div>
+    <div class="fech-indice-wrap">
+      <div class="fech-indice-circle"><div class="fech-indice-num" id="fechIndiceNum">—</div><div class="fech-indice-label">Índice de<br>Consciência</div></div>
+    </div>
+    <div class="fech-stats-row">
+      <div class="fech-stat"><div class="fech-stat-num" id="fechStatEntradas">0</div><div class="fech-stat-label">Registros hoje</div></div>
+      <div class="fech-stat"><div class="fech-stat-num" id="fechStatPausas">0</div><div class="fech-stat-label">Pausas usadas</div></div>
+      <div class="fech-stat"><div class="fech-stat-num" id="fechStatEstado">—</div><div class="fech-stat-label">Estado predominante</div></div>
+    </div>
+    <div class="fech-ai-box" id="fechAiBox"><div class="mentor-typing"><span></span><span></span><span></span></div></div>
+    <div class="fech-input">
+      <div style="font-size:13px;color:var(--text2);margin-bottom:8px">Uma frase para fechar o dia:</div>
+      <textarea id="fechReflexao" placeholder="Hoje eu percebi..."></textarea>
+    </div>
+    <button class="primary-btn" onclick="salvarFechamentoDoDia()">Salvar e fechar o dia</button>
+    <div style="text-align:center;padding-top:12px"><button onclick="closeFechamentoDoDia()" style="background:none;border:none;color:var(--text3);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif">Fechar sem salvar</button></div>
+  </div>
+</div>
 
 </div><!-- /app -->
 </body>
