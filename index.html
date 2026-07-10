@@ -2674,7 +2674,26 @@ function updateStreak(){const t=new Date().toDateString(),l=localStorage.getItem
 function buildProfile(){const last30=entries.slice(0,30);if(!last30.length)return{};const sc={},dc={};last30.forEach(e=>{if(e.state&&e.state!=='Não definido')sc[e.state]=(sc[e.state]||0)+1;if(e.distortion&&e.distortion!=='Nenhuma')dc[e.distortion]=(dc[e.distortion]||0)+1;});const ds=Object.entries(sc).sort((a,b)=>b[1]-a[1])[0]?.[0]||'';const md=Object.entries(dc).sort((a,b)=>b[1]-a[1])[0]?.[0]||'';const p={dominantState:ds,mainDistortion:md,totalEntries:last30.length,stateCounts:sc,distCounts:dc};mentorProfile=p;saveData();return p;}
 function getProfileSummary(){const p=buildProfile();if(!p.totalEntries)return null;const l=[];if(p.dominantState)l.push(`Estado mais frequente: ${p.dominantState}`);if(p.mainDistortion)l.push(`Distorção recorrente: ${p.mainDistortion}`);l.push(`${p.totalEntries} registros analisados`);return l.join('\n');}
 
-async function callClaude(messages,systemPrompt){try{const r=await fetch('https://avrs-proxy.audax-silfexsil.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1000,system:systemPrompt,messages})});const d=await r.json();return d.content?.map(c=>c.type==='text'?c.text:'').join('').trim()||null;}catch(e){return null;}}
+async function callClaude(messages,systemPrompt){
+  try{
+    const r=await fetch('https://avrs-proxy.audax-silfexsil.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1000,system:systemPrompt,messages})});
+    const d=await r.json();
+    if(!r.ok){
+      // O Worker respondeu, mas com erro (401, 429, 500...) — registrar o motivo real
+      // em vez de deixar isso virar um "Algo deu errado" genérico e sem rastro.
+      const motivo = d?.error?.message || d?.error || `HTTP ${r.status}`;
+      console.error('[Mentor IA] Worker retornou erro:', r.status, motivo);
+      if(window.Sentry) Sentry.captureMessage('Mentor IA: erro do Worker', {level:'error', extra:{status:r.status, motivo}});
+      return null;
+    }
+    return d.content?.map(c=>c.type==='text'?c.text:'').join('').trim()||null;
+  }catch(e){
+    // Falha de rede, timeout, ou resposta que nem chegou a ser JSON válido
+    console.error('[Mentor IA] Falha ao chamar o Worker:', e.message);
+    if(window.Sentry) Sentry.captureException(e, {tags:{feature:'mentor-ia'}});
+    return null;
+  }
+}
 
 function getMentorSystem(){const p=buildProfile();const re=entries.slice(0,10).map(e=>`[${e.date}] Estado: ${e.state} | Situação: ${e.situation} | Distorção: ${e.distortion}`).join('\n');return`Você é o Mentor AVR–S, um guia de consciência e decisão baseado no método AVR–S do livro "A Vida Sem Rascunho".\n\nMétodo AVR–S:\n- R (Regular): ajustar o estado interno\n- A (Atenção): perceber para onde o foco vai\n- V (Visão): separar fato de interpretação\n- R (Resposta): criar espaço entre estímulo e resposta\n- S (Sistema): construir padrões sustentáveis\n\nPERFIL:\n${p.dominantState?`Estado dominante: ${p.dominantState}`:''}\n${p.mainDistortion?`Distorção mais frequente: ${p.mainDistortion}`:''}\nTotal de registros: ${p.totalEntries||0}\n\nÚLTIMOS REGISTROS:\n${re||'Nenhum ainda.'}\n\nResposta sempre em português brasileiro. Direto, profundo. Máximo 3-4 parágrafos curtos.`;}
 
