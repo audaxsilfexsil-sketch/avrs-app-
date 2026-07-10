@@ -3591,13 +3591,17 @@ function pwConfirmarPro(expira){
 function pwFinalizarAtivacao(){
   // Ativar Pro localmente para a sessão atual
   isPro = true;
-  localStorage.setItem('isPro','true');
-  localStorage.setItem('proExpira', _pwPollingTimer ? '' : '');
+  localStorage.setItem('avrs4_pro','true');
   closePaywall();
   // Recarregar interface
   if(typeof renderNav==='function') renderNav();
   if(typeof renderHome==='function') renderHome();
   if(typeof renderJornada==='function') renderJornada();
+  // Sincronizar imediatamente com a nuvem, já que o status mudou agora
+  try{
+    const uid=localStorage.getItem('avrs4_uid');
+    if(uid && window.saveUserToCloud) window.saveUserToCloud(uid);
+  }catch(e){}
 }
 function applyProGating(){if(isPro)return;const mc=document.getElementById('mentorCard');if(mc){mc.classList.add('locked-card');const lb=document.createElement('div');lb.className='lock-badge';lb.innerHTML='<i class="ti ti-lock"></i><span>Recurso Pro</span>';lb.onclick=()=>openPaywall();mc.appendChild(lb);}const bb=document.querySelector('.icon-btn[title="Mentor IA"]');if(bb)bb.onclick=()=>openPaywall();}
 function updateSettingsProStatus(){const ps=document.getElementById('profileStatus');if(ps)ps.innerHTML=isPro?'Pro ativo':'Gratuito · <span style="color:var(--gold);cursor:pointer" onclick="openPaywall()">Upgrade</span>';}
