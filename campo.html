@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CCR · Campo — protótipo</title>
+<style>
+  /* ============ TOKENS (identidade editorial AVR-S) ============ */
+  :root{
+    --bg:#0a0908; --bg-2:#100e0a; --bg-3:#181410; --raise:#1e1912;
+    --gold:#d4b87a; --gold-bright:#ebd49e; --cream:#f5f0e8;
+    --muted:#8c8172; --faint:#5a5346;
+    --line:rgba(212,184,122,.14);
+    --line-strong:rgba(212,184,122,.30);
+    --open:#e6c988;      /* sistema aberto — quente, troca */
+    --closed:#6f6656;    /* sistema fechado — apagado */
+    --good:#8fbf9a; --warn:#e0b56a; --tense:#d98d78;
+    --serif:Georgia,"Times New Roman",serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --r:18px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{
+    background:
+      radial-gradient(1200px 700px at 50% -10%, #1a150e 0%, var(--bg) 60%),
+      var(--bg);
+    color:var(--cream); font-family:var(--sans);
+    min-height:100dvh;
+  }
+
+  /* ============ APP OCUPA A TELA (mobile-first; centrado no desktop) ============ */
+  .device{
+    width:100%; max-width:440px; margin:0 auto;
+    min-height:100dvh; height:100dvh;
+    background:var(--bg); position:relative; overflow:hidden;
+    display:flex; flex-direction:column;
+  }
+  @media (min-width:600px){
+    .device{ border-left:1px solid var(--line); border-right:1px solid var(--line);
+      box-shadow:0 0 90px -20px rgba(0,0,0,.8); }
+  }
+
+  /* ============ APP SHELL ============ */
+  .app{flex:1;display:flex;flex-direction:column;overflow:hidden}
+  .scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;
+    padding:calc(env(safe-area-inset-top) + 22px) 20px 96px}
+  .scroll::-webkit-scrollbar{width:0}
+
+  .eyebrow{font-family:var(--sans);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--gold);opacity:.85;margin:0 0 6px}
+  .h-serif{font-family:var(--serif);color:var(--cream);letter-spacing:.01em;line-height:1.15;margin:0}
+
+  /* topo */
+  .top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}
+  .top h1{font-family:var(--serif);font-size:23px;font-weight:400;margin:2px 0 0;line-height:1.15}
+  .top .sub{color:var(--muted);font-size:12px;margin-top:5px}
+  .icr{flex:none;text-align:center;border:1px solid var(--line-strong);border-radius:14px;
+    padding:8px 12px 9px;background:linear-gradient(180deg,rgba(212,184,122,.09),transparent)}
+  .icr b{font-family:var(--serif);font-size:22px;color:var(--gold-bright);display:block;line-height:1}
+  .icr small{display:block;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+  .icr .cap{font-size:9px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-top:3px}
+
+  /* ============ ASSINATURA: O CAMPO ============ */
+  .field-wrap{position:relative;margin:2px -8px 4px;border-radius:22px;overflow:hidden;
+    background:radial-gradient(120% 90% at 50% 40%,rgba(212,184,122,.06),transparent 70%)}
+  #campo{display:block;width:100%;height:300px}
+  .field-cap{text-align:center;color:var(--muted);font-size:11px;margin:-6px 0 2px;font-style:italic}
+  .field-hint{position:absolute;left:0;right:0;bottom:8px;text-align:center;font-size:10px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--faint);pointer-events:none}
+  .tag{position:absolute;padding:3px 8px;border-radius:20px;font-size:11px;white-space:nowrap;
+    background:rgba(24,20,16,.92);border:1px solid var(--line-strong);color:var(--cream);
+    transform:translate(-50%,-140%);pointer-events:none;opacity:0;transition:opacity .18s;z-index:10}
+  .tag.on{opacity:1}
+  .tag i{color:var(--gold);font-style:normal;font-size:9.5px;margin-left:5px;letter-spacing:.08em}
+
+  /* estado do dia */
+  .state-row{display:flex;gap:9px;margin:16px 0 6px}
+  .chip{flex:1;border:1px solid var(--line);border-radius:14px;padding:11px 12px;background:var(--bg-3)}
+  .chip .k{font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+  .chip .v{font-family:var(--serif);font-size:16px;margin-top:4px;display:flex;align-items:center;gap:7px}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none}
+
+  /* pergunta-guia */
+  .ask{margin:18px 0 4px;padding:18px 18px 20px;border-radius:var(--r);
+    border:1px solid var(--line);background:
+      linear-gradient(180deg,rgba(212,184,122,.07),transparent),var(--bg-2);position:relative}
+  .ask .lei{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);opacity:.8}
+  .ask p{font-family:var(--serif);font-size:19px;line-height:1.4;margin:8px 0 0;color:var(--cream)}
+  .ask .from{margin-top:12px;font-size:11px;color:var(--muted)}
+
+  .section-title{display:flex;align-items:baseline;justify-content:space-between;margin:8px 2px 12px}
+  .section-title .m{color:var(--muted);font-size:11px}
+
+  /* ============ MAPA DOS CAMPOS ============ */
+  .fields{display:flex;flex-direction:column;gap:11px}
+  .fcard{border:1px solid var(--line);border-radius:16px;padding:14px 15px;background:var(--bg-3);
+    display:flex;flex-direction:column;gap:11px;cursor:pointer;transition:border-color .2s,transform .12s}
+  .fcard:active{transform:scale(.99)}
+  .fcard:hover{border-color:var(--line-strong)}
+  .fcard .hd{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .fname{font-family:var(--serif);font-size:16.5px;display:flex;align-items:center;gap:10px}
+  .sys{display:flex;align-items:center;gap:6px;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase}
+  .sys .ring{width:14px;height:14px;border-radius:50%;border:2px solid var(--closed);position:relative}
+  .sys.aberto .ring{border-color:var(--open);border-style:dashed;
+    box-shadow:0 0 10px -1px rgba(230,201,136,.6)}
+  .sys.aberto{color:var(--open)} .sys.fechado{color:var(--muted)}
+  .bars{display:flex;flex-direction:column;gap:7px}
+  .bar{display:grid;grid-template-columns:78px 1fr 30px;align-items:center;gap:8px}
+  .bar .lbl{font-size:10px;color:var(--muted);letter-spacing:.04em}
+  .track{height:5px;border-radius:4px;background:rgba(255,255,255,.06);overflow:hidden}
+  .fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--gold),var(--gold-bright))}
+  .fill.reat{background:linear-gradient(90deg,#8a5a4a,var(--tense))}
+  .bar .num{font-size:10px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+
+  /* ============ DIÁRIO ============ */
+  .lead{color:var(--muted);font-size:13px;line-height:1.55;margin:0 0 18px}
+  .q{border:1px solid var(--line);border-radius:15px;padding:15px 16px;background:var(--bg-3);margin-bottom:11px}
+  .q .qn{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);opacity:.8}
+  .q p{font-family:var(--serif);font-size:16px;line-height:1.35;margin:7px 0 12px}
+  .q textarea, .q .choices{width:100%}
+  .q textarea{background:var(--bg);border:1px solid var(--line);border-radius:11px;color:var(--cream);
+    font-family:var(--sans);font-size:13px;padding:10px 12px;resize:none;min-height:52px;line-height:1.5}
+  .q textarea:focus{outline:none;border-color:var(--gold)}
+  .choices{display:flex;gap:8px;flex-wrap:wrap}
+  .choice{border:1px solid var(--line-strong);background:transparent;color:var(--cream);
+    border-radius:20px;padding:8px 14px;font-family:var(--sans);font-size:12.5px;cursor:pointer;transition:.15s}
+  .choice:hover{border-color:var(--gold)}
+  .choice.sel{background:var(--gold);color:#17130c;border-color:var(--gold);font-weight:600}
+  .save{width:100%;margin-top:6px;border:none;border-radius:13px;padding:14px;cursor:pointer;
+    background:linear-gradient(180deg,var(--gold-bright),var(--gold));color:#17130c;
+    font-family:var(--sans);font-weight:600;font-size:14px;letter-spacing:.02em}
+  .save:active{transform:translateY(1px)}
+
+  /* ============ BIBLIOTECA VIVA ============ */
+  .book{display:flex;flex-direction:column;gap:11px}
+  .chap{border:1px solid var(--line);border-radius:15px;padding:15px 16px;background:var(--bg-3);cursor:pointer;transition:.18s}
+  .chap:hover{border-color:var(--line-strong)}
+  .chap .cn{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);opacity:.8}
+  .chap h3{font-family:var(--serif);font-weight:400;font-size:17px;margin:6px 0 8px}
+  .chap .exp{font-size:12.5px;color:var(--muted);line-height:1.5;display:flex;gap:8px}
+  .chap .exp b{color:var(--cream);font-weight:600}
+
+  /* ============ LEIS ============ */
+  .law{display:flex;gap:14px;padding:15px 2px;border-bottom:1px solid var(--line)}
+  .law:last-child{border-bottom:none}
+  .law .rn{font-family:var(--serif);font-size:22px;color:var(--gold);width:34px;flex:none;line-height:1}
+  .law p{margin:0;font-size:14px;line-height:1.5;color:var(--cream)}
+  .vocab{margin-top:20px}
+  .term{padding:13px 0;border-bottom:1px solid var(--line)}
+  .term .tt{font-family:var(--serif);font-size:15px;color:var(--gold-bright);display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  .term .tt small{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);flex:none}
+  .term .td{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:5px}
+
+  /* ============ NAV ============ */
+  .nav{flex:none;display:flex;background:linear-gradient(180deg,rgba(16,14,10,.6),var(--bg-2));
+    border-top:1px solid var(--line);padding:8px 6px calc(8px + env(safe-area-inset-bottom));backdrop-filter:blur(8px)}
+  .nav button{flex:1;background:none;border:none;cursor:pointer;color:var(--faint);
+    display:flex;flex-direction:column;align-items:center;gap:4px;padding:5px 2px;font-family:var(--sans);
+    font-size:9.5px;letter-spacing:.04em;transition:color .18s}
+  .nav button svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.6}
+  .nav button.on{color:var(--gold-bright)}
+  .nav button.on svg{filter:drop-shadow(0 0 6px rgba(235,212,158,.5))}
+
+  .view{display:none;animation:fade .35s ease both}
+  .view.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  .caption-ext{max-width:390px;margin:14px auto 0;color:var(--muted);font-size:11.5px;
+    text-align:center;line-height:1.6;font-family:var(--sans)}
+  .caption-ext b{color:var(--gold)}
+
+  /* legenda sistemas aberto/fechado (sob a animação) */
+  .sys-legend{display:flex;flex-direction:column;gap:7px;margin:10px 4px 2px}
+  .sys-legend .row{display:flex;align-items:center;gap:9px;font-size:11.5px;color:var(--muted);line-height:1.35}
+  .sys-legend .lg{width:12px;height:12px;border-radius:50%;flex:none;position:relative}
+  .sys-legend .lg-open{background:var(--open);box-shadow:0 0 8px -1px rgba(230,201,136,.7)}
+  .sys-legend .lg-closed{background:transparent;border:2px solid var(--closed)}
+  .sys-legend b{color:var(--cream);font-weight:600}
+
+  /* card explicativo (Cap. 2) */
+  .explain{border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:14px;
+    padding:14px 16px;background:var(--bg-2);margin-bottom:16px}
+  .explain .cap2{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);opacity:.85;margin-bottom:7px}
+  .explain p{margin:0;font-size:13px;line-height:1.6;color:var(--cream)}
+  .explain p b{color:var(--gold-bright);font-weight:600}
+  .explain p + p{margin-top:9px;color:var(--muted)}
+  .explain .quote{font-family:var(--serif);font-style:italic;color:var(--cream)}
+
+  .fnote{font-size:11px;color:var(--muted);line-height:1.45;padding-top:2px;border-top:1px dashed var(--line);margin-top:2px}
+  .fnote b{color:var(--open);font-weight:600}
+
+  /* ---- IA do Campo: insights (Motor CCR) ---- */
+  .insight{border:1px solid var(--line);border-radius:16px;padding:15px 16px;background:var(--bg-3);margin-bottom:11px;position:relative}
+  .insight .obs{font-family:var(--serif);font-size:15.5px;line-height:1.45;color:var(--cream);margin:0}
+  .insight .why{display:flex;align-items:center;gap:7px;margin-top:11px;font-size:10.5px;color:var(--muted);
+    padding-top:10px;border-top:1px solid var(--line)}
+  .insight .why b{color:var(--gold);font-weight:600}
+  .insight .why .eye{width:13px;height:13px;flex:none;stroke:var(--gold);fill:none;stroke-width:1.6;opacity:.9}
+  .insight .when{font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+
+  /* ---- Exercício Inteligente ---- */
+  .exlead{margin:22px 2px 12px}
+  .exercise{border:1px solid var(--line-strong);border-radius:18px;overflow:hidden;background:
+    linear-gradient(180deg,rgba(212,184,122,.09),transparent),var(--bg-2)}
+  .exercise .trig{padding:14px 16px;font-size:12.5px;color:var(--muted);line-height:1.5;border-bottom:1px solid var(--line)}
+  .exercise .trig b{color:var(--tense);font-weight:600}
+  .exercise .body{padding:16px}
+  .exercise h3{font-family:var(--serif);font-weight:400;font-size:18px;margin:0 0 3px}
+  .exercise .dur{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);opacity:.85;margin-bottom:14px}
+  .steps{display:flex;flex-direction:column;gap:0;margin-bottom:16px}
+  .step{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+  .step:last-child{border-bottom:none}
+  .step .sd{width:8px;height:8px;border-radius:50%;background:var(--gold);flex:none}
+  .step .st{font-size:13.5px;color:var(--cream)}
+  .step .st span{color:var(--muted);font-size:11.5px;margin-left:6px}
+
+  /* ---- ICR detalhado ---- */
+  .icr-hero{display:flex;align-items:center;gap:16px;margin:6px 0 20px;padding:18px;border-radius:18px;
+    border:1px solid var(--line-strong);background:radial-gradient(120% 120% at 20% 0%,rgba(212,184,122,.12),transparent),var(--bg-3)}
+  .icr-hero .big{font-family:var(--serif);font-size:48px;color:var(--gold-bright);line-height:.9}
+  .icr-hero .big small{font-size:15px;color:var(--muted)}
+  .icr-hero .lab{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+  .icr-hero .desc{font-size:12px;color:var(--muted);line-height:1.45;margin-top:3px}
+  .sub-metrics{display:flex;flex-direction:column;gap:13px;margin-bottom:20px}
+  .metric .top{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:6px}
+  .metric .top .mn{color:var(--cream)} .metric .top .mv{color:var(--gold-bright);font-variant-numeric:tabular-nums}
+  .mirror{border-left:3px solid var(--gold);background:var(--bg-2);border-radius:0 12px 12px 0;padding:14px 16px;margin-bottom:12px}
+  .mirror p{margin:0;font-size:12.5px;line-height:1.55;color:var(--cream)}
+  .mirror p b{color:var(--gold-bright)}
+  .mirror .eng{margin-top:9px;font-size:11px;color:var(--muted)}
+
+  .back{display:inline-flex;align-items:center;gap:6px;background:none;border:none;color:var(--gold);
+    font-family:var(--sans);font-size:12.5px;cursor:pointer;padding:0;margin-bottom:6px}
+  .icr.tappable{cursor:pointer;transition:transform .12s} .icr.tappable:active{transform:scale(.96)}
+
+  @media (prefers-reduced-motion:reduce){.view{animation:none}}
+</style>
+</head>
+<body>
+
+<div class="device" role="application" aria-label="Protótipo do app CCR">
+  <div class="app">
+    <div class="scroll" id="scroll">
+
+      <!-- ===================== CAMPO (home) ===================== -->
+      <section class="view on" id="v-campo">
+        <div class="top">
+          <div>
+            <div class="eyebrow">Terça · 30 de julho</div>
+            <h1>Seu Campo hoje</h1>
+            <div class="sub">Estável, com uma órbita pedindo atenção.</div>
+          </div>
+          <div class="icr tappable" role="button" tabindex="0" onclick="openICR()" aria-label="Ver ICR detalhado">
+            <b>84</b><small>ICR</small><div class="cap">Campo forte</div>
+          </div>
+        </div>
+
+        <div class="field-wrap">
+          <canvas id="campo" aria-label="Visualização do seu Campo: você no centro, suas relações em órbita"></canvas>
+          <div class="tag" id="tag"></div>
+          <div class="field-hint">toque em uma órbita</div>
+        </div>
+        <div class="field-cap">Você é centro e partícula. As órbitas mais próximas exercem mais gravidade.</div>
+
+        <div class="sys-legend">
+          <div class="row"><span class="lg lg-open"></span><span><b>Sistema aberto</b> — troca com o mundo e cresce nessa troca. No Campo, ele pulsa.</span></div>
+          <div class="row"><span class="lg lg-closed"></span><span><b>Sistema fechado</b> — não troca com o exterior: se protege, mas empobrece o campo.</span></div>
+        </div>
+
+        <div class="state-row">
+          <div class="chip">
+            <div class="k">Emissão de hoje</div>
+            <div class="v"><span class="dot" style="background:var(--good)"></span>Serena</div>
+          </div>
+          <div class="chip">
+            <div class="k">Maior gravidade</div>
+            <div class="v"><span class="dot" style="background:var(--gold)"></span>Família</div>
+          </div>
+        </div>
+
+        <div class="ask">
+          <div class="lei">Lei II · Todo estado interno é uma emissão</div>
+          <p>Que influência você está emitindo hoje — e quem os outros conseguem ser perto de você?</p>
+          <div class="from">A pergunta que abre o Diário do Campo.</div>
+        </div>
+
+        <p style="text-align:center;color:var(--faint);font-size:10.5px;line-height:1.6;margin:22px 6px 0;letter-spacing:.02em">
+          Protótipo · Núcleo Solo do app do CCR · dados fictícios, nada é salvo.
+        </p>
+      </section>
+
+      <!-- ===================== MAPA ===================== -->
+      <section class="view" id="v-mapa">
+        <div class="top"><div>
+          <div class="eyebrow">Mapa dos Campos</div>
+          <h1>Seus campos</h1>
+          <div class="sub">Cada relação é um sistema — aberto troca, fechado se protege.</div>
+        </div></div>
+
+        <div class="explain">
+          <div class="cap2">Cap. 2 · Somos sistemas em movimento</div>
+          <p><b>Sistema aberto</b> troca com o mundo e vive dessa troca. <b>Sistema fechado</b> não troca com o exterior — se protege, mas empobrece o campo.</p>
+          <p class="quote">O ser humano é, por natureza, um sistema aberto. Fechar-se é uma escolha — e toda escolha de fechar tem um custo no campo.</p>
+        </div>
+
+        <div class="fields" id="fields"></div>
+      </section>
+
+      <!-- ===================== DIÁRIO ===================== -->
+      <section class="view" id="v-diario">
+        <div class="top"><div>
+          <div class="eyebrow">Diário do Campo</div>
+          <h1>Registro de hoje</h1>
+        </div></div>
+        <p class="lead">Não é um diário de humor. É um diário do que passou <i>entre</i> você e os outros — as perguntas vêm do livro.</p>
+
+        <div class="q">
+          <div class="qn">Emissão</div>
+          <p>Que influência você emitiu hoje?</p>
+          <div class="choices" data-single>
+            <button class="choice">Serena</button><button class="choice sel">Presente</button>
+            <button class="choice">Tensa</button><button class="choice">Ausente</button>
+          </div>
+        </div>
+        <div class="q">
+          <div class="qn">Centro e partícula</div>
+          <p>Em qual encontro você foi partícula — recebeu mais do que emitiu?</p>
+          <textarea placeholder="Escreva livremente…"></textarea>
+        </div>
+        <div class="q">
+          <div class="qn">O saldo do encontro</div>
+          <p>Você saiu maior ou menor deste encontro?</p>
+          <div class="choices" data-single>
+            <button class="choice">Maior</button><button class="choice">Igual</button><button class="choice">Menor</button>
+          </div>
+        </div>
+        <div class="q">
+          <div class="qn">O campo que você deixou</div>
+          <p>Você deixou o ambiente melhor ou pior do que encontrou?</p>
+          <div class="choices" data-single>
+            <button class="choice">Melhor</button><button class="choice">Igual</button><button class="choice">Pior</button>
+          </div>
+        </div>
+        <button class="save" onclick="saved(this)">Registrar no Campo</button>
+      </section>
+
+      <!-- ===================== BIBLIOTECA VIVA ===================== -->
+      <section class="view" id="v-livro">
+        <div class="top"><div>
+          <div class="eyebrow">Biblioteca Viva</div>
+          <h1>O livro vira prática</h1>
+          <div class="sub">Cada capítulo abre uma experiência de 24 horas.</div>
+        </div></div>
+        <div class="book" id="book"></div>
+      </section>
+
+      <!-- ===================== IA DO CAMPO (Motor CCR) ===================== -->
+      <section class="view" id="v-ia">
+        <div class="top"><div>
+          <div class="eyebrow">Motor CCR</div>
+          <h1>A IA do Campo</h1>
+          <div class="sub">Ela não responde perguntas — observa padrões que você sozinho não veria.</div>
+        </div></div>
+
+        <div class="section-title"><div class="eyebrow" style="margin:0">Insights</div><span class="m">o que o Campo revelou</span></div>
+        <div id="insights"></div>
+
+        <p class="exlead eyebrow" style="margin-bottom:12px">Exercício sugerido para agora</p>
+        <div class="exercise">
+          <div class="trig">Seu campo <b>Trabalho</b> está fechado, com reatividade em 48%. Quando um campo fecha, a resposta consciente é reabrir a troca — não forçar a conversa.</div>
+          <div class="body">
+            <h3>Reabrir o campo</h3>
+            <div class="dur">Regulação AVR-S · 3 minutos</div>
+            <div class="steps">
+              <div class="step"><span class="sd"></span><span class="st">Pausar<span>— saia do automático antes de responder</span></span></div>
+              <div class="step"><span class="sd"></span><span class="st">Nomear<span>— diga a si mesmo em que campo você está</span></span></div>
+              <div class="step"><span class="sd"></span><span class="st">Respirar<span>— quatro tempos: 4-4-4-4</span></span></div>
+              <div class="step"><span class="sd"></span><span class="st">Registrar<span>— o que mudou no campo depois</span></span></div>
+            </div>
+            <button class="save" onclick="saved(this)">Começar prática</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== ICR DETALHADO ===================== -->
+      <section class="view" id="v-icr">
+        <button class="back" onclick="go('campo')">‹ Voltar ao Campo</button>
+        <div class="top"><div>
+          <div class="eyebrow">Índice do Campo</div>
+          <h1>Seu ICR</h1>
+        </div></div>
+        <div class="icr-hero">
+          <div class="big">84<small>/100</small></div>
+          <div>
+            <div class="lab">Campo forte</div>
+            <div class="desc">A leitura geral dos seus campos hoje. Sobe com coerência e constância; cai com reatividade.</div>
+          </div>
+        </div>
+        <div class="section-title"><div class="eyebrow" style="margin:0">Do que ele é feito</div></div>
+        <div class="sub-metrics" id="icrmetrics"></div>
+        <div class="mirror">
+          <p><b>Espelho, não diagnóstico.</b> O ICR devolve as tendências dos seus próprios registros — para você observar, não para julgar. Ninguém "passa" ou "reprova" no Campo.</p>
+          <div class="eng">Os números vêm do Motor do Campo — um cálculo fixo, sempre igual para a mesma entrada. A IA lê e narra; nunca inventa o número.</div>
+        </div>
+      </section>
+
+      <!-- ===================== LEIS ===================== -->
+      <section class="view" id="v-leis">
+        <div class="top"><div>
+          <div class="eyebrow">O CCR em uma página</div>
+          <h1>As Cinco Leis</h1>
+        </div></div>
+        <p class="lead" style="font-family:var(--serif);font-size:15px;color:var(--cream);font-style:italic">
+          Onde duas ou mais consciências interagem, forma-se um campo — e esse campo participa de tudo o que você percebe, decide e responde.</p>
+        <div id="laws"></div>
+        <div class="vocab">
+          <div class="eyebrow" style="margin:8px 0 4px">Vocabulário do Campo</div>
+          <div id="vocab"></div>
+        </div>
+      </section>
+
+    </div><!-- /scroll -->
+
+    <!-- ===================== NAV ===================== -->
+    <nav class="nav" id="nav">
+      <button data-go="campo" class="on" aria-label="Campo">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.4"/><ellipse cx="12" cy="12" rx="9" ry="4"/><ellipse cx="12" cy="12" rx="4" ry="9" transform="rotate(60 12 12)"/></svg>
+        Campo</button>
+      <button data-go="mapa" aria-label="Mapa">
+        <svg viewBox="0 0 24 24"><circle cx="7" cy="8" r="2.3"/><circle cx="17" cy="7" r="2.3"/><circle cx="12" cy="16" r="2.3"/><path d="M8.6 9.2 15 8M9 10 11 14M15.5 9 13 14.4"/></svg>
+        Mapa</button>
+      <button data-go="diario" aria-label="Diário">
+        <svg viewBox="0 0 24 24"><path d="M5 4h11a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2Z"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>
+        Diário</button>
+      <button data-go="ia" aria-label="IA do Campo">
+        <svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M4.5 7.5 6.7 9M17.3 15l2.2 1.5M4.5 16.5 6.7 15M17.3 9l2.2-1.5"/><circle cx="12" cy="12" r="3.2"/></svg>
+        IA</button>
+      <button data-go="livro" aria-label="Livro">
+        <svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5Z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H19v3"/></svg>
+        Livro</button>
+      <button data-go="leis" aria-label="Leis">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.6 8.4 11 11l-2.6 4.6L13 13Z"/></svg>
+        Leis</button>
+    </nav>
+  </div>
+</div>
+
+<script>
+/* ---------- dados fictícios, alinhados ao livro ---------- */
+const REL = [
+  {n:"Família",       infl:.92, sys:"aberto",  emis:74, reat:26, ang:-1.1},
+  {n:"Casamento",     infl:.78, sys:"aberto",  emis:71, reat:29, ang: 0.4},
+  {n:"Filhos",        infl:.88, sys:"aberto",  emis:83, reat:17, ang: 2.3},
+  {n:"Trabalho",      infl:.64, sys:"fechado", emis:52, reat:48, ang: 3.5},
+  {n:"Amigos",        infl:.55, sys:"aberto",  emis:66, reat:34, ang:-2.4},
+  {n:"Eu comigo",     infl:.82, sys:"aberto",  emis:70, reat:30, ang: 1.5}
+];
+const LAWS = [
+  ["I","Onde consciências interagem, forma-se um campo."],
+  ["II","Todo estado interno é uma emissão."],
+  ["III","Força invisível manda; força percebida negocia."],
+  ["IV","Nenhuma interação começa do zero."],
+  ["V","Campos resistem antes de aprender — e aprendem por repetição."]
+];
+const VOCAB = [
+  ["Campo de Consciência Relacional","Cap. 5","O espaço dinâmico e invisível que se forma quando duas ou mais consciências interagem. Invisível, mas não imaginário: revela-se pelos efeitos."],
+  ["Centro e Partícula","Cap. 4","A dupla condição humana: soberano no próprio céu e presença que viaja pelos céus alheios. Viver só metade produz egocentrismo ou dissolução."],
+  ["Gravidade Relacional","Cap. 7","A influência que toda consciência exerce sobre as trajetórias das próximas. Suas fontes: intensidade, constância e coerência."],
+  ["Sistema Aberto","Cap. 2","Aquele que troca com o exterior e vive dessa troca. O ser humano é um sistema aberto: fechar-se é empobrecer o campo."]
+];
+const INSIGHTS = [
+  {obs:"Nas últimas quatro semanas, o Campo com sua filha cresceu de forma consistente em serenidade.",
+   when:"Padrão de 4 semanas", n:28, corr:"pessoas presentes e emissão"},
+  {obs:"As discussões dos últimos oito domingos aparecem após cansaço e baixa disponibilidade — o padrão parece menos ligado ao seu filho e mais ao estado do Campo antes do encontro.",
+   when:"Padrão semanal", n:15, corr:"sono, horário e reatividade"},
+  {obs:"Sua melhor versão aparece em ambientes onde você se sente ouvido. Como ampliar esse tipo de Campo nesta semana?",
+   when:"Padrão recorrente", n:32, corr:"emissão e contexto do encontro"}
+];
+const ICRSUB = [
+  ["Influência positiva", 88],
+  ["Coerência", 91],
+  ["Estabilidade", 87],
+  ["Reatividade (quanto menor, melhor)", 12]
+];
+const CHAPTERS = [
+  ["Cap. 2","Somos Sistemas em Movimento","Observe, por 24h, uma relação onde você <b>trocou</b> e outra onde se <b>fechou</b>. O que cada uma te custou?"],
+  ["Cap. 4","O Ser Humano como Centro e Partícula","Liste três céus onde você é <b>partícula</b>. Que influência você emite em cada um?"],
+  ["Cap. 5","O Campo de Consciência Relacional","Escolha um encontro de hoje e descreva o <b>campo</b> que se formou — não as pessoas, o que ficou entre elas."],
+  ["Cap. 7","A Gravidade das Emoções","Repare quando seu estado <b>curvou</b> o campo de alguém. Foi por intensidade ou por constância?"],
+  ["Cap. 13","Atenção: percebendo o campo","Antes de responder, hoje, faça uma pausa e <b>nomeie</b> o campo em que você está entrando."],
+  ["Cap. 20","Alfabetização Relacional","Ao fim do dia, dê nome a três forças que agiram nos seus campos. Nomear é o primeiro gesto de consciência."]
+];
+
+/* ---------- render listas ---------- */
+const el = s => document.querySelector(s);
+function color(v){ return v>=70?'var(--good)':v>=45?'var(--warn)':'var(--tense)'; }
+
+el('#fields').innerHTML = REL.map(r=>`
+  <div class="fcard" role="button" tabindex="0">
+    <div class="hd">
+      <div class="fname"><span class="dot" style="background:${r.infl>.8?'var(--gold-bright)':'var(--gold)'}"></span>${r.n}</div>
+      <div class="sys ${r.sys}"><span class="ring"></span>${r.sys==='aberto'?'Sistema aberto':'Sistema fechado'}</div>
+    </div>
+    <div class="bars">
+      <div class="bar"><span class="lbl">Gravidade</span><div class="track"><div class="fill" style="width:${Math.round(r.infl*100)}%"></div></div><span class="num">${Math.round(r.infl*100)}%</span></div>
+      <div class="bar"><span class="lbl">Emissão +</span><div class="track"><div class="fill" style="width:${r.emis}%"></div></div><span class="num">${r.emis}%</span></div>
+      <div class="bar"><span class="lbl">Reatividade</span><div class="track"><div class="fill reat" style="width:${r.reat}%"></div></div><span class="num">${r.reat}%</span></div>
+    </div>
+    ${r.sys==='fechado'
+      ? `<div class="fnote"><b>Fechado hoje:</b> reatividade alta e pouca troca. Um campo fechado protege — e cobra o preço em conexão.</div>`
+      : `<div class="fnote"><b>Aberto hoje:</b> trocando bem. É o estado em que o campo cresce.</div>`}
+  </div>`).join('');
+
+el('#laws').innerHTML = LAWS.map(([n,t])=>`<div class="law"><div class="rn">${n}</div><p>${t}</p></div>`).join('');
+el('#vocab').innerHTML = VOCAB.map(([t,c,d])=>`<div class="term"><div class="tt">${t}<small>${c}</small></div><div class="td">${d}</div></div>`).join('');
+el('#book').innerHTML = CHAPTERS.map(([c,t,e])=>`<div class="chap" role="button" tabindex="0"><div class="cn">${c}</div><h3>${t}</h3><div class="exp"><b>Experiência:</b> <span>${e}</span></div></div>`).join('');
+
+el('#insights').innerHTML = INSIGHTS.map(i=>`
+  <div class="insight">
+    <div class="when">${i.when}</div>
+    <p class="obs">${i.obs}</p>
+    <div class="why"><svg class="eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="2.6"/></svg>
+      <span>Baseado em <b>${i.n} registros</b> · correlacionou ${i.corr}</span></div>
+  </div>`).join('');
+
+el('#icrmetrics').innerHTML = ICRSUB.map(([n,v])=>`
+  <div class="metric">
+    <div class="top"><span class="mn">${n}</span><span class="mv">${v}%</span></div>
+    <div class="track"><div class="fill${/Reatividade/.test(n)?' reat':''}" style="width:${v}%"></div></div>
+  </div>`).join('');
+
+/* ---------- navegação ---------- */
+const nav = el('#nav'), scroll = el('#scroll');
+function go(dest){
+  document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('on', x.dataset.go===dest));
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on', v.id==='v-'+dest));
+  scroll.scrollTop = 0;
+  if(dest==='campo') startField();
+}
+nav.addEventListener('click', e=>{
+  const b = e.target.closest('button'); if(!b) return; go(b.dataset.go);
+});
+function openICR(){
+  document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on', v.id==='v-icr'));
+  scroll.scrollTop = 0;
+}
+
+/* ---------- diário: seleção de escolha ---------- */
+document.querySelectorAll('.choices[data-single]').forEach(grp=>{
+  grp.addEventListener('click', e=>{
+    const c = e.target.closest('.choice'); if(!c) return;
+    grp.querySelectorAll('.choice').forEach(x=>x.classList.toggle('sel', x===c));
+  });
+});
+function saved(btn){ btn.textContent='Registrado ✓'; btn.style.opacity=.75;
+  setTimeout(()=>{btn.textContent='Registrar no Campo';btn.style.opacity=1;}, 1600); }
+
+/* ============ CANVAS: O CAMPO (centro + partículas em órbita) ============ */
+const cv = el('#campo'), ctx = cv.getContext('2d'), tag = el('#tag');
+let W,H,cx,cy, DPR = Math.min(window.devicePixelRatio||1, 2);
+const reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+let nodes=[], raf=null, t=0;
+
+function sizeCanvas(){
+  const r = cv.getBoundingClientRect();
+  W=r.width; H=r.height; cx=W/2; cy=H/2+6;
+  cv.width=W*DPR; cv.height=H*DPR; ctx.setTransform(DPR,0,0,DPR,0,0);
+  const maxR = Math.min(W,H)/2 - 26;
+  nodes = REL.map(r0=>({
+    ...r0,
+    R: (1 - r0.infl)*maxR*0.82 + 34,          // mais gravidade → órbita mais perto
+    a: r0.ang,
+    speed: (0.12 + (1-r0.infl)*0.22)/60,      // externas giram um pouco mais rápido
+    size: 4 + r0.infl*4
+  }));
+}
+function pos(n){ return {x: cx + Math.cos(n.a)*n.R, y: cy + Math.sin(n.a)*n.R*0.82}; }
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  // órbitas
+  nodes.forEach(n=>{
+    ctx.beginPath();
+    ctx.ellipse(cx,cy,n.R,n.R*0.82,0,0,Math.PI*2);
+    ctx.strokeStyle = n.sys==='aberto' ? 'rgba(230,201,136,.16)' : 'rgba(212,184,122,.07)';
+    if(n.sys==='aberto'){ ctx.setLineDash([2,6]); } else { ctx.setLineDash([]); }
+    ctx.lineWidth=1; ctx.stroke(); ctx.setLineDash([]);
+  });
+  // linhas de gravidade + partículas
+  nodes.forEach(n=>{
+    const p = pos(n);
+    const g = ctx.createLinearGradient(cx,cy,p.x,p.y);
+    g.addColorStop(0,'rgba(212,184,122,.28)'); g.addColorStop(1,'rgba(212,184,122,0)');
+    ctx.strokeStyle=g; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(p.x,p.y); ctx.stroke();
+
+    // sistema aberto: halo pulsante (troca)
+    if(n.sys==='aberto'){
+      const pulse = reduce?0.5:(0.5+0.5*Math.sin(t*2 + n.a*3));
+      ctx.beginPath(); ctx.arc(p.x,p.y,n.size+4+pulse*3,0,Math.PI*2);
+      ctx.fillStyle=`rgba(230,201,136,${0.10+pulse*0.08})`; ctx.fill();
+    }
+    ctx.beginPath(); ctx.arc(p.x,p.y,n.size,0,Math.PI*2);
+    ctx.fillStyle = n.sys==='aberto' ? '#ebd49e' : '#8c8172'; ctx.fill();
+    n._p=p;
+  });
+  // centro — VOCÊ (centro e partícula)
+  const cg = ctx.createRadialGradient(cx,cy,0,cx,cy,26);
+  cg.addColorStop(0,'rgba(235,212,158,.55)'); cg.addColorStop(1,'rgba(235,212,158,0)');
+  ctx.fillStyle=cg; ctx.beginPath(); ctx.arc(cx,cy,26,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(cx,cy,7,0,Math.PI*2); ctx.fillStyle='#f5f0e8'; ctx.fill();
+  ctx.font='600 10px system-ui,sans-serif'; ctx.fillStyle='rgba(245,240,232,.7)';
+  ctx.textAlign='center'; ctx.fillText('VOCÊ', cx, cy+24);
+}
+function loop(){ t+=1/60; nodes.forEach(n=> n.a += n.speed); draw(); raf=requestAnimationFrame(loop); }
+function startField(){
+  cancelAnimationFrame(raf); sizeCanvas(); draw();
+  if(!reduce) loop();
+}
+/* toque numa órbita → nome + capítulo do conceito */
+cv.addEventListener('pointerdown', e=>{
+  const r = cv.getBoundingClientRect(); const mx=e.clientX-r.left, my=e.clientY-r.top;
+  let hit=null,best=22;
+  nodes.forEach(n=>{ if(!n._p) return; const d=Math.hypot(n._p.x-mx,n._p.y-my); if(d<best){best=d;hit=n;} });
+  if(hit){
+    tag.innerHTML = `${hit.n} <i>${hit.sys==='aberto'?'aberto':'fechado'} · ${Math.round(hit.infl*100)}% grav.</i>`;
+    tag.style.left = hit._p.x+'px'; tag.style.top = hit._p.y+'px'; tag.classList.add('on');
+    clearTimeout(tag._t); tag._t=setTimeout(()=>tag.classList.remove('on'), 2200);
+  }
+});
+window.addEventListener('resize', ()=>{ if(el('#v-campo').classList.contains('on')) startField(); });
+startField();
+</script>
+</body>
+</html>
