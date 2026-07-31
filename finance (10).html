@@ -1,0 +1,1034 @@
+<!--
+  AVR-S FINANCE — versão LOCAL funcional (uso pessoal / teste)
+  Fase 1: login Firebase compartilhado + sync na nuvem (users/{uid}.finance) + Pro autoritativo do Worker + coach real.
+  Ajustes da seção 6 aplicados + decisões da seção 8. Índice de Consciência comportamental honesto.
+-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>AVR-S Finance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" media="all" onerror="this.media='all'">
+<style>
+  :root{
+    --ink:#0c0b09; --ink-2:#14120e; --card:#1a1712; --line:rgba(212,184,122,.16);
+    --gold:#d4b87a; --gold-bright:#ebd49e; --gold-deep:#b8860b; --cream:#f5f0e8;
+    --muted:rgba(245,240,232,.52); --muted-2:rgba(245,240,232,.40);
+    --green:#8fb98a; --red:#c98a7a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--ink);color:var(--cream);font-family:"DM Sans",sans-serif;-webkit-font-smoothing:antialiased}
+  body{min-height:100vh;display:flex;justify-content:center}
+  .app{width:100%;max-width:430px;min-height:100vh;position:relative;overflow:hidden;
+    background:radial-gradient(120% 60% at 50% -10%, rgba(184,134,11,.10), transparent 60%), var(--ink)}
+  .screen{display:none;padding:34px 24px 150px;animation:fade .45s ease}
+  .screen.active{display:block}
+  #login.active{display:flex}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion: reduce){.screen{animation:none}*{transition:none!important}}
+
+  .wordmark{font-family:"Cormorant Garamond",serif;font-weight:600;letter-spacing:.02em;line-height:1}
+  .eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .serif{font-family:"Cormorant Garamond",serif}
+
+  /* LOGIN */
+  #login{flex-direction:column;justify-content:center;min-height:100vh;text-align:center}
+  .brand-lg{font-size:52px;color:var(--cream)} .brand-lg .fin{color:var(--gold)}
+  .brand-sub{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:20px;color:var(--muted);margin-top:6px}
+  .login-thesis{margin:38px auto 0;max-width:300px;font-family:"Cormorant Garamond",serif;font-size:23px;line-height:1.42;color:var(--cream)}
+  .login-thesis b{color:var(--gold);font-weight:600}
+  .btn{display:block;width:100%;border:none;cursor:pointer;font-family:"DM Sans",sans-serif;font-size:15px;font-weight:600;padding:16px;border-radius:14px;transition:.25s}
+  .btn-gold{background:linear-gradient(180deg,var(--gold-bright),var(--gold));color:#1a1408;margin-top:40px}
+  .btn-gold:hover{filter:brightness(1.06)}
+  .btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--line);margin-top:12px}
+  .login-note{margin-top:26px;font-size:12px;color:var(--muted-2)}
+
+  .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+  .brand-sm{font-size:26px;color:var(--cream)} .brand-sm .fin{color:var(--gold)}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:7px 12px;border-radius:999px;border:1px solid var(--line);color:var(--gold);cursor:pointer}
+  .pill .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold)}
+  .pill.free{color:var(--muted)} .pill.free .dot{background:var(--muted);box-shadow:none}
+
+  .page-title{font-family:"Cormorant Garamond",serif;font-size:34px;line-height:1.1;margin-bottom:4px}
+  .page-sub{font-size:13.5px;color:var(--muted);line-height:1.5;margin-bottom:22px;max-width:330px}
+  .hello{font-family:"Cormorant Garamond",serif;font-size:30px;line-height:1.15;margin-bottom:4px}
+  .hello .name{color:var(--gold)}
+  .home-thesis{font-size:14px;line-height:1.5;color:var(--muted);max-width:320px;margin-bottom:22px}
+
+  .state-card{background:linear-gradient(160deg, rgba(184,134,11,.14), rgba(26,23,18,.6));border:1px solid var(--line);border-radius:20px;padding:22px;margin-bottom:14px}
+  .state-card .eyebrow{margin-bottom:10px}
+  .state-name{font-family:"Cormorant Garamond",serif;font-size:32px;color:var(--gold-bright);line-height:1}
+  .state-desc{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.5}
+  .state-motor{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+  .state-motor b{color:var(--gold)}
+
+  .alert{display:flex;gap:12px;align-items:flex-start;background:rgba(201,138,122,.08);border:1px solid rgba(201,138,122,.28);border-radius:14px;padding:14px 16px;margin-bottom:14px}
+  .alert .a-ic{color:var(--red);font-size:16px;line-height:1.3}
+  .alert p{font-size:13px;line-height:1.45;color:rgba(245,240,232,.82)}
+
+  .mirror{display:none;background:linear-gradient(160deg, rgba(184,134,11,.16), rgba(26,23,18,.65));border:1px solid rgba(212,184,122,.35);border-radius:18px;padding:20px;margin-bottom:14px}
+  .mirror.show{display:block}
+  .mirror .eyebrow{margin-bottom:10px}
+  .mirror h3{font-family:"Cormorant Garamond",serif;font-size:23px;color:var(--gold-bright);line-height:1.25;margin-bottom:10px}
+  .mirror p{font-size:13.5px;color:rgba(245,240,232,.8);line-height:1.55}
+  .mirror p b{color:var(--gold);font-weight:600}
+
+  .section-label{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted-2);font-weight:600;margin:24px 4px 12px}
+  .tile{display:flex;align-items:center;gap:15px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:17px;margin-bottom:11px;cursor:pointer;transition:.22s;text-align:left;width:100%}
+  .tile:hover{border-color:rgba(212,184,122,.4);transform:translateY(-1px)}
+  .tile .ic{width:42px;height:42px;flex:0 0 42px;border-radius:12px;display:grid;place-items:center;background:rgba(184,134,11,.12);font-family:"Cormorant Garamond",serif;font-size:22px;color:var(--gold)}
+  .tile h4{font-size:15px;font-weight:600;color:var(--cream)}
+  .tile p{font-size:12.5px;color:var(--muted);margin-top:2px;line-height:1.4}
+  .tile .lock{margin-left:auto;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border:1px solid var(--line);border-radius:999px;padding:4px 9px;white-space:nowrap}
+
+  .back{background:none;border:none;color:var(--muted);font-family:"DM Sans";font-size:13px;cursor:pointer;margin-bottom:20px}
+
+  .q-progress{height:3px;background:rgba(245,240,232,.1);border-radius:2px;margin-bottom:26px;overflow:hidden}
+  .q-progress span{display:block;height:100%;background:linear-gradient(90deg,var(--gold-deep),var(--gold-bright));border-radius:2px;transition:width .4s ease;width:0}
+  .q-count{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:14px}
+  .q-text{font-family:"Cormorant Garamond",serif;font-size:26px;line-height:1.28;margin-bottom:24px;color:var(--cream)}
+  .opt{display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);color:var(--cream);border-radius:14px;padding:16px 18px;margin-bottom:11px;cursor:pointer;font-family:"DM Sans";font-size:14.5px;line-height:1.4;transition:.2s}
+  .opt:hover{border-color:var(--gold);background:var(--ink-2)} .opt:active{transform:scale(.99)}
+  .avrs-letter{display:inline-block;font-family:"Cormorant Garamond",serif;font-size:15px;color:var(--gold);border:1px solid var(--line);border-radius:8px;padding:2px 9px;margin-bottom:12px;letter-spacing:.1em}
+
+  .result-name{font-family:"Cormorant Garamond",serif;font-size:44px;text-align:center;color:var(--gold-bright);line-height:1.05;margin-bottom:6px}
+  .result-tag{text-align:center;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:18px;color:var(--muted);margin-bottom:24px}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:13px}
+  .box h5{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  .box p{font-size:14px;line-height:1.6;color:rgba(245,240,232,.82)}
+  .belief{background:rgba(184,134,11,.07);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:13px}
+  .belief h5{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+  .belief p{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:19px;line-height:1.4;color:var(--cream)}
+  .quote{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:19px;line-height:1.5;color:var(--cream);text-align:center;padding:22px 8px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:20px 0}
+  .quote b{color:var(--gold);font-weight:600;font-style:normal}
+
+  .entry{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px;margin-bottom:11px;position:relative}
+  .entry .e-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:6px}
+  .entry .e-buy{font-size:15px;font-weight:600;color:var(--cream)}
+  .entry .e-tag{font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:999px;white-space:nowrap}
+  .e-tag.need{color:var(--green);border:1px solid rgba(143,185,138,.35)}
+  .e-tag.imp{color:var(--red);border:1px solid rgba(201,138,122,.35)}
+  .entry .e-meta{font-size:12.5px;color:var(--muted);line-height:1.5}
+  .entry .e-meta b{color:var(--gold);font-weight:600}
+  .entry .e-date{font-size:10.5px;color:var(--muted-2);margin-top:6px;letter-spacing:.04em}
+  .entry .e-del{position:absolute;top:12px;right:14px;background:none;border:none;color:var(--muted-2);font-size:15px;cursor:pointer;line-height:1}
+  .empty{text-align:center;padding:30px 20px;color:var(--muted-2);font-size:13.5px;line-height:1.6;border:1px dashed var(--line);border-radius:16px}
+  .empty .em-ic{font-family:"Cormorant Garamond",serif;font-size:34px;color:var(--gold);display:block;margin-bottom:10px}
+  .promise{background:linear-gradient(160deg, rgba(184,134,11,.13), rgba(26,23,18,.6));border:1px solid var(--line);border-radius:20px;padding:24px 22px}
+  .promise h3{font-family:"Cormorant Garamond",serif;font-size:25px;line-height:1.28;color:var(--gold-bright);margin-bottom:14px}
+  .promise p{font-size:13.5px;color:rgba(245,240,232,.8);line-height:1.6;margin-bottom:14px}
+  .promise p b{color:var(--gold);font-weight:600}
+  .promise-how{margin:18px 0 6px}
+  .ph-step{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
+  .ph-step .ph-n{flex:0 0 26px;height:26px;border-radius:50%;display:grid;place-items:center;background:rgba(184,134,11,.16);border:1px solid var(--line);font-family:"Cormorant Garamond",serif;font-size:15px;color:var(--gold)}
+  .ph-step div{font-size:13.5px;color:rgba(245,240,232,.82);line-height:1.5;padding-top:2px}
+  .ph-step div b{color:var(--gold);font-weight:600}
+  .promise-note{border-top:1px solid var(--line);padding-top:14px;margin-top:6px;font-size:12.5px;color:var(--muted);line-height:1.55}
+  .promise-note b{color:var(--gold-bright);font-weight:600}
+  .form-row{margin-bottom:13px}
+  .form-row label{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);margin-bottom:7px;font-weight:600}
+  .inp,.sel{width:100%;background:var(--ink-2);border:1px solid var(--line);color:var(--cream);border-radius:12px;padding:13px 14px;font-family:"DM Sans";font-size:14px}
+  .inp:focus,.sel:focus{outline:none;border-color:var(--gold)}
+  .toggle{display:flex;gap:8px}
+  .toggle button{flex:1;background:var(--ink-2);border:1px solid var(--line);color:var(--muted);border-radius:12px;padding:12px;font-family:"DM Sans";font-size:13px;font-weight:600;cursor:pointer;transition:.2s}
+  .toggle button.on-need{border-color:var(--green);color:var(--green);background:rgba(143,185,138,.08)}
+  .toggle button.on-imp{border-color:var(--red);color:var(--red);background:rgba(201,138,122,.08)}
+
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:12px}
+  .kpi .k-lab{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+  .kpi .k-val{font-family:"Cormorant Garamond",serif;font-size:40px;color:var(--gold-bright);line-height:1}
+  .kpi .k-val small{font-size:20px;color:var(--muted)}
+  .kpi .k-desc{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.45}
+  .subcomp{display:flex;gap:10px;margin-top:16px}
+  .subcomp .sc{flex:1;background:var(--ink-2);border:1px solid var(--line);border-radius:12px;padding:12px 10px;text-align:center}
+  .subcomp .sc .sc-v{font-family:"Cormorant Garamond",serif;font-size:22px;color:var(--gold);line-height:1}
+  .subcomp .sc .sc-l{font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-2);margin-top:6px;line-height:1.3}
+  .summary-line{display:flex;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:13.5px;color:rgba(245,240,232,.85)}
+  .summary-line:last-child{border-bottom:none}
+  .summary-line .s-ic{font-size:16px}
+  .summary-line b{color:var(--gold);font-weight:600}
+  .declared-note{font-size:11.5px;color:var(--muted-2);line-height:1.5;margin-top:4px;font-style:italic}
+  .acc-row{display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:13.5px;color:var(--muted)}
+  .acc-row b{color:var(--cream);font-weight:600;text-align:right}
+
+  .chat{display:flex;flex-direction:column;gap:12px;margin-bottom:18px}
+  .msg{max-width:85%;padding:13px 15px;border-radius:16px;font-size:14px;line-height:1.5}
+  .msg.coach{align-self:flex-start;background:var(--card);border:1px solid var(--line);color:var(--cream);border-bottom-left-radius:4px}
+  .msg.me{align-self:flex-end;background:rgba(184,134,11,.16);border:1px solid var(--line);color:var(--cream);border-bottom-right-radius:4px}
+  .chat-note{font-size:12px;color:var(--muted-2);text-align:center;border:1px dashed var(--line);border-radius:12px;padding:13px;line-height:1.5}
+
+  .method-epigraph{font-family:"Cormorant Garamond",serif;font-size:25px;line-height:1.42;text-align:center;color:var(--cream);margin:8px 0 26px;padding-bottom:24px;border-bottom:1px solid var(--line)}
+  .method-epigraph b{color:var(--gold);font-weight:600}
+  .method-intro{font-family:"Cormorant Garamond",serif;font-size:22px;line-height:1.5;color:var(--cream);margin-bottom:10px}
+  .method-intro b{color:var(--gold);font-weight:600}
+  .method-sub{font-size:13.5px;color:var(--muted);line-height:1.55;margin-bottom:22px}
+  .loop{background:linear-gradient(160deg, rgba(184,134,11,.09), rgba(26,23,18,.5));border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:22px}
+  .loop .eyebrow{margin-bottom:14px;text-align:center}
+  .loop-chain{display:flex;flex-direction:column;gap:2px}
+  .loop-chain .lc{font-family:"Cormorant Garamond",serif;font-size:16px;color:var(--cream);text-align:center;padding:3px 0}
+  .loop-chain .lc.hot{color:var(--red)}
+  .loop-chain .arr{text-align:center;color:var(--muted-2);font-size:11px;line-height:1}
+  .loop-note{font-size:12px;color:var(--muted);line-height:1.5;text-align:center;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+  .loop-note b{color:var(--gold)}
+  .layer{display:flex;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:15px;padding:16px 17px;margin-bottom:11px}
+  .layer .l-let{flex:0 0 40px;height:40px;border-radius:11px;display:grid;place-items:center;font-family:"Cormorant Garamond",serif;font-size:22px;color:var(--gold);background:rgba(184,134,11,.12);border:1px solid var(--line)}
+  .layer h4{font-size:14.5px;font-weight:600;color:var(--cream);margin-bottom:3px}
+  .layer .l-def{font-size:13px;color:rgba(245,240,232,.8);line-height:1.5}
+  .layer .l-money{font-size:12px;color:var(--gold);margin-top:7px;line-height:1.45}
+  .layer .l-money b{color:var(--gold-bright);font-weight:600}
+  .cycle{text-align:center;font-family:"Cormorant Garamond",serif;font-size:16px;color:var(--muted);line-height:1.7;padding:16px;border:1px dashed var(--line);border-radius:14px;margin:16px 0}
+  .cycle b{color:var(--gold)}
+  .reg-note{font-size:12.5px;color:var(--muted);line-height:1.55;background:rgba(184,134,11,.07);border:1px solid var(--line);border-radius:12px;padding:14px 15px;margin-bottom:14px}
+  .reg-note b{color:var(--gold)}
+  .book{display:flex;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:15px;padding:14px 15px;margin-bottom:11px;cursor:pointer;transition:.22s;width:100%;text-align:left}
+  .book:hover{border-color:rgba(212,184,122,.4);transform:translateY(-1px)}
+  .book .cover{flex:0 0 52px;height:76px;border-radius:5px;background:linear-gradient(155deg,#191410,#0e0b08);border:1px solid var(--gold-deep);display:grid;place-items:center;padding:6px;text-align:center;box-shadow:2px 2px 8px rgba(0,0,0,.4)}
+  .book .cover span{font-family:"Cormorant Garamond",serif;font-size:8.5px;line-height:1.25;color:var(--gold);letter-spacing:.01em}
+  .book h4{font-family:"Cormorant Garamond",serif;font-size:18px;color:var(--cream);line-height:1.15}
+  .book .b-sub{font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.35}
+  .book .b-role{font-size:11.5px;color:var(--gold);margin-top:6px;line-height:1.4}
+  .eco{background:linear-gradient(160deg, rgba(184,134,11,.10), rgba(26,23,18,.55));border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:16px}
+  .eco .eco-lab{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .eco-apps{display:flex;gap:10px;margin:14px 0 12px}
+  .eco-app{flex:1;background:var(--ink-2);border:1px solid var(--line);border-radius:13px;padding:14px 10px;text-align:center;cursor:pointer;transition:.2s;position:relative}
+  .eco-app:hover{border-color:rgba(212,184,122,.4)}
+  .eco-app.current{border-color:var(--gold-deep);background:rgba(184,134,11,.1)}
+  .eco-app .ea-ic{font-family:"Cormorant Garamond",serif;font-size:24px;color:var(--gold);line-height:1}
+  .eco-app h5{font-size:13px;font-weight:600;color:var(--cream);margin-top:6px}
+  .eco-app p{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.35}
+  .eco-app .here{position:absolute;top:8px;right:8px;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);border:1px solid var(--line);border-radius:999px;padding:2px 7px}
+  .eco-note{font-size:12px;color:var(--muted);line-height:1.5;text-align:center}
+  .eco-note b{color:var(--gold);font-weight:600}
+
+  .valask{display:none;margin-top:6px}
+  .valask.show{display:block;animation:fade .35s ease}
+
+  .nav{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:none;justify-content:space-around;background:rgba(20,18,14,.94);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px 6px 12px}
+  .nav.show{display:flex}
+  .nav button{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--muted-2);font-family:"DM Sans";font-size:10.5px;letter-spacing:.04em;padding:4px 10px;transition:.2s}
+  .nav button .n-ic{font-family:"Cormorant Garamond",serif;font-size:19px;line-height:1}
+  .nav button.active{color:var(--gold)}
+
+  .proto-flag{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(12,11,9,.96);border-top:1px solid var(--line);padding:7px 20px;font-size:10.5px;color:var(--muted-2);text-align:center;z-index:5;cursor:pointer}
+  .proto-flag b{color:var(--gold)}
+
+  .toast{position:fixed;left:50%;bottom:110px;transform:translate(-50%,20px);max-width:360px;width:calc(100% - 48px);background:var(--ink-2);border:1px solid var(--line);border-radius:14px;padding:15px 18px;font-size:13.5px;line-height:1.45;color:var(--cream);opacity:0;pointer-events:none;transition:.3s;z-index:30;box-shadow:0 12px 40px rgba(0,0,0,.5)}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+  .toast b{color:var(--gold)}
+
+  /* DEV / TESTE */
+  .devmodal{position:fixed;inset:0;background:rgba(6,5,4,.82);display:none;align-items:center;justify-content:center;z-index:60;padding:24px}
+  .devmodal.show{display:flex}
+  .devcard{width:100%;max-width:340px;background:var(--ink-2);border:1px solid var(--line);border-radius:18px;padding:22px}
+  .devcard h4{font-family:"Cormorant Garamond",serif;font-size:22px;color:var(--gold-bright);margin-bottom:4px}
+  .devcard .devsub{font-size:12px;color:var(--muted-2);margin-bottom:18px;line-height:1.5}
+  .devbtn{display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);color:var(--cream);border-radius:12px;padding:13px 15px;margin-bottom:9px;cursor:pointer;font-family:"DM Sans";font-size:13.5px}
+  .devbtn:hover{border-color:var(--gold)}
+  .devbtn.danger{color:var(--red);border-color:rgba(201,138,122,.3)}
+  .devclose{background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;margin-top:6px;width:100%;padding:8px}
+
+  
+
+  /* ===== DESKTOP: mesmo modelo do app AVR-S principal (full-bleed, conteúdo centralizado) ===== */
+  @media (min-width:520px){
+    body{display:block}
+    .app{max-width:none}
+    .screen{padding:32px calc(50% - 420px) 140px}
+    #login{padding-left:calc(50% - 420px);padding-right:calc(50% - 420px)}
+    .nav{left:0;transform:none;width:100%;max-width:none;bottom:26px;padding:16px calc(50% - 420px) 18px}
+    .nav button{flex:1;font-size:13px;gap:7px;padding:8px 12px;letter-spacing:.08em}
+    .nav button .n-ic{font-size:27px}
+    .proto-flag{left:0;transform:none;width:100%;max-width:none;padding:9px 20px;font-size:11.5px}
+    .toast{left:50%}
+  }
+  @media (min-width:1200px){
+    .screen{padding:40px calc(50% - 500px) 140px}
+    .nav{padding:16px calc(50% - 500px) 18px}
+  }
+  @media (min-width:900px){
+    body{background:radial-gradient(ellipse at 30% 20%, rgba(184,134,11,.06) 0%, var(--ink) 60%)}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- LOGIN -->
+  <section id="login" class="screen active">
+    <div class="wordmark brand-lg">AVR-S <span class="fin">Finance</span></div>
+    <div class="brand-sub">Consciência Financeira Aplicada</div>
+    <div class="login-thesis">Antes de administrar o dinheiro, aprendemos a administrar <b>a mente que decide.</b></div>
+    <input id="loginEmail" type="email" autocomplete="email" placeholder="seu e-mail" style="width:100%;box-sizing:border-box;padding:13px 14px;margin-bottom:10px;background:var(--card,#1a1512);border:1px solid var(--line,#3a2f28);border-radius:12px;color:var(--cream,#f5f0e8);font-size:15px;outline:none"/>
+    <input id="loginPass" type="password" autocomplete="current-password" placeholder="sua senha" style="width:100%;box-sizing:border-box;padding:13px 14px;margin-bottom:8px;background:var(--card,#1a1512);border:1px solid var(--line,#3a2f28);border-radius:12px;color:var(--cream,#f5f0e8);font-size:15px;outline:none"/>
+    <div id="loginError" style="color:#e08a5d;font-size:13px;min-height:15px;margin-bottom:2px"></div>
+    <div id="loginMsg" style="color:#8ec98a;font-size:13px;min-height:15px;margin-bottom:6px"></div>
+    <button id="btnEntrar" class="btn btn-gold">Entrar</button>
+    <button id="btnCriar" class="btn btn-ghost">Criar conta</button>
+    <div id="btnForgot" style="text-align:center;color:var(--muted,#9a8f85);font-size:13px;margin-top:12px;cursor:pointer;text-decoration:underline">Esqueci minha senha</div>
+    <div class="login-note">Mesmo login e mesmo Pro do app AVR-S principal.</div>
+  </section>
+
+  <!-- HOME -->
+  <section id="home" class="screen">
+    <div class="top">
+      <div class="wordmark brand-sm">AVR-S <span class="fin">Finance</span></div>
+      <div style="display:flex;align-items:center;gap:9px">
+        <span id="proPill" class="pill"><span class="dot"></span>Pro</span>
+        <button id="accBtn" class="pill" style="padding:7px 11px;background:transparent" aria-label="Conta">⚙</button>
+      </div>
+    </div>
+    <div class="hello">Olá.</div>
+    <div class="home-thesis">O dinheiro nunca é apenas dinheiro. Aqui você observa a mente que decide antes do saldo aparecer.</div>
+
+    <!-- espelho do dia 14 (acende sozinho) -->
+    <div class="mirror" id="mirror">
+      <div class="eyebrow">Seu padrão</div>
+      <h3 id="mirrorTitle"></h3>
+      <p id="mirrorBody"></p>
+    </div>
+
+    <div class="state-card">
+      <div class="eyebrow">Seu perfil consciente</div>
+      <div id="stateName" class="state-name">A descobrir</div>
+      <div id="stateDesc" class="state-desc">Faça o diagnóstico para revelar seu perfil financeiro consciente.</div>
+      <div class="state-motor" id="stateMotor">Motor Adaptativo: <b>aguardando diagnóstico</b></div>
+    </div>
+
+    <button class="tile" data-nav="metodo">
+      <div class="ic">✦</div><div><h4>O Método AVR-S</h4><p>Conheça a base de todo o ecossistema — inclusive do seu dinheiro</p></div>
+    </button>
+
+    <!-- alerta real, baseado em dados locais (some quando não há padrão) -->
+    <div class="alert" id="realAlert" style="display:none">
+      <span class="a-ic">⚠</span>
+      <p id="realAlertText"></p>
+    </div>
+
+    <div class="section-label">Comece por aqui</div>
+    <button class="tile" data-action="diag">
+      <div class="ic">◈</div><div><h4>Diagnóstico de Perfil</h4><p>5 perguntas · como você decide com dinheiro</p></div>
+    </button>
+    <button class="tile" data-action="pausa">
+      <div class="ic">❙❙</div><div><h4>Pausa AVR-S</h4><p>Vou comprar — parar e decidir consciente</p></div>
+    </button>
+    <button class="tile" data-nav="diario">
+      <div class="ic">✎</div><div><h4>Diário Financeiro Consciente</h4><p>Compra · emoção · motivo · necessidade ou impulso</p></div>
+    </button>
+
+    <div class="section-label">Recursos Pro</div>
+    <button class="tile" data-nav="coach">
+      <div class="ic">✦</div><div><h4>Coach Financeiro</h4><p>Perguntas que revelam a emoção por trás da decisão</p></div><span class="lock" id="coachLock">Pro</span>
+    </button>
+    <button class="tile" data-nav="evolucao">
+      <div class="ic">↗</div><div><h4>Índice de Consciência</h4><p>Seu processo de decisão, medido com honestidade</p></div><span class="lock" id="evoLock">Pro</span>
+    </button>
+  </section>
+
+  <!-- DIAGNÓSTICO -->
+  <section id="diag" class="screen">
+    <button class="back" data-nav="home">← Voltar</button>
+    <div class="q-progress"><span id="qbar"></span></div>
+    <div id="qcount" class="q-count">Pergunta 1 de 5</div>
+    <div id="qtext" class="q-text"></div>
+    <div id="qopts"></div>
+  </section>
+
+  <!-- RESULTADO -->
+  <section id="result" class="screen">
+    <button class="back" data-nav="home">← Início</button>
+    <div class="eyebrow" style="text-align:center;margin-bottom:16px">Mapa de Perfil Financeiro Consciente</div>
+    <div id="rName" class="result-name"></div>
+    <div id="rTag" class="result-tag"></div>
+    <div class="box"><h5>O que isso revela</h5><p id="rDesc"></p></div>
+    <div class="belief"><h5>A crença inconsciente</h5><p id="rBelief"></p></div>
+    <div class="box"><h5>A emoção na raiz</h5><p id="rRoot"></p></div>
+    <div class="quote" id="rQuote"></div>
+    <button class="btn btn-gold" data-nav="home">Ver no meu início</button>
+  </section>
+
+  <!-- PAUSA AVR-S -->
+  <section id="pausa" class="screen">
+    <button class="back" data-nav="home">← Voltar</button>
+    <div class="q-progress"><span id="pbar"></span></div>
+    <div id="pletter" class="avrs-letter">A · Atenção</div>
+    <div id="ptext" class="q-text"></div>
+    <div id="popts"></div>
+    <!-- pergunta de valor opcional (só aparece na etapa Resposta se "não comprar") -->
+    <div class="valask" id="valask">
+      <div class="form-row" style="margin-top:8px">
+        <label>Quanto você acha que preservou? (opcional)</label>
+        <input class="inp" id="pVal" inputmode="numeric" placeholder="R$ — pode deixar em branco">
+      </div>
+      <button class="btn btn-gold" id="pValConfirm">Confirmar decisão</button>
+      <button class="btn btn-ghost" id="pValSkip">Pular</button>
+    </div>
+  </section>
+
+  <!-- DIÁRIO -->
+  <section id="diario" class="screen">
+    <button class="back" data-nav="home">← Início</button>
+    <div class="top"><div class="page-title">Diário Consciente</div><span class="pill"><span class="dot"></span>Hoje</span></div>
+    <div class="page-sub">Aqui você não registra só o gasto — registra a emoção, o motivo e se foi necessidade ou impulso. Com o tempo, isso vira um mapa do seu comportamento.</div>
+
+    <div class="box">
+      <h5>Novo registro</h5>
+      <div class="form-row"><label>O que você comprou (ou pensou em comprar)</label><input class="inp" id="fBuy" placeholder="Ex.: tênis novo"></div>
+      <div class="form-row"><label>Qual emoção estava presente</label>
+        <select class="sel" id="fEmo"><option>Ansiedade</option><option>Medo</option><option>Culpa</option><option>Euforia</option><option>Insegurança</option><option>Satisfação</option></select>
+      </div>
+      <div class="form-row"><label>Motivo real</label><input class="inp" id="fMot" placeholder="Ex.: tive um dia difícil"></div>
+      <div class="form-row"><label>Foi necessidade ou impulso?</label>
+        <div class="toggle"><button id="tNeed" data-tipo="need">Necessidade</button><button id="tImp" data-tipo="imp">Impulso</button></div>
+      </div>
+      <button class="btn btn-gold" id="addEntry" style="margin-top:6px">Registrar</button>
+    </div>
+
+    <div class="section-label">Seus registros</div>
+    <div id="entryList"></div>
+  </section>
+
+  <!-- EVOLUÇÃO / ÍNDICE DE CONSCIÊNCIA -->
+  <section id="evolucao" class="screen">
+    <button class="back" data-nav="home">← Início</button>
+    <div class="top"><div class="page-title">Índice de Consciência</div><span class="pill"><span class="dot"></span>Pro</span></div>
+    <div class="page-sub">A maioria dos apps mede dinheiro ganho e gasto. O AVR-S mede o seu processo de decisão: parar, decidir consciente, continuar.</div>
+    <div id="evoBody"></div>
+  </section>
+
+  <!-- COACH (amostra) -->
+  <section id="coach" class="screen">
+    <button class="back" data-nav="home">← Voltar</button>
+    <div class="page-title" style="margin-bottom:2px">Coach Financeiro</div>
+    <div class="page-sub">Um coach de consciência que não te diz o que fazer — te devolve a pergunta certa.</div>
+    <div class="chat" id="coachChat">
+      <div class="msg coach">Sou seu coach de consciência financeira. Me conte uma compra ou decisão de dinheiro que está passando pela sua cabeça agora.</div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <input id="coachInput" type="text" placeholder="Escreva aqui..." style="flex:1;box-sizing:border-box;padding:12px 14px;background:var(--card,#1a1512);border:1px solid var(--line,#3a2f28);border-radius:12px;color:var(--cream,#f5f0e8);font-size:15px;outline:none"/>
+      <button id="coachSend" class="btn btn-gold" style="width:auto;padding:12px 18px;margin:0">Enviar</button>
+    </div>
+    <div class="chat-note" id="coachNote">O coach roda na mesma IA e no mesmo Worker do app principal. Ele divide o mesmo limite mensal do Mentor IA (5 mensagens no gratuito, 150 no Pro).</div>
+  </section>
+
+  <!-- MÉTODO AVR-S -->
+  <section id="metodo" class="screen">
+    <button class="back" data-nav="home">← Início</button>
+    <div class="eyebrow" style="margin-bottom:14px">O Método</div>
+    <div class="page-title" style="margin-bottom:14px">AVR-S</div>
+
+    <div class="method-epigraph">A mente é a causa. A vida é o efeito.<br><b>E a vida não tem rascunho.</b></div>
+
+    <div class="method-intro">Entre o estímulo e a resposta existe um espaço — e é nesse espaço que mora a liberdade.</div>
+    <div class="method-sub">Reagir é automático. Responder é escolha. O AVR-S é o método que transforma reação em decisão consciente — nas relações, no trabalho e, aqui, também no dinheiro. É a mesma base dos livros e de todo o ecossistema.</div>
+
+    <!-- loop recuperado dos documentos-mãe -->
+    <div class="loop">
+      <div class="eyebrow">Por que o padrão se repete</div>
+      <div class="loop-chain">
+        <div class="lc">Evento financeiro</div>
+        <div class="arr">↓</div>
+        <div class="lc hot">Emoção — medo, ansiedade, euforia, culpa</div>
+        <div class="arr">↓</div>
+        <div class="lc">Percepção</div>
+        <div class="arr">↓</div>
+        <div class="lc">Decisão</div>
+        <div class="arr">↓</div>
+        <div class="lc">Comportamento financeiro</div>
+        <div class="arr">↓</div>
+        <div class="lc">Resultado</div>
+        <div class="arr">↓</div>
+        <div class="lc hot">Reforço da crença</div>
+      </div>
+      <div class="loop-note">O ciclo se retroalimenta: o resultado reforça a crença, que volta a colorir a próxima emoção. O AVR-S entra <b>entre a emoção e a decisão</b> — e quebra o loop.</div>
+    </div>
+
+    <div class="reg-note"><b>R · Regulação</b> prepara o terreno. Nos momentos de alta ativação — impulso, ansiedade, euforia — ela acalma a reação o suficiente para que a Atenção volte a ser possível. É a Pausa de Emergência. Os quatro pilares seguintes — <b>A · V · R · S</b> — dão nome ao método.</div>
+
+    <div class="layer"><div class="l-let">R</div><div><h4>Regulação</h4><div class="l-def">Ajustar o estado interno antes de decidir. A decisão nasce do estado de quem decide.</div><div class="l-money">No dinheiro: <b>acalmar a ativação</b> antes de uma compra feita sob impulso.</div></div></div>
+    <div class="layer"><div class="l-let">A</div><div><h4>Atenção</h4><div class="l-def">Escolher onde colocar o foco. A atenção não é neutra — ela foi capturada ou foi escolhida.</div><div class="l-money">No dinheiro: <b>perceber a emoção presente</b> antes do gasto acontecer.</div></div></div>
+    <div class="layer"><div class="l-let">V</div><div><h4>Visão</h4><div class="l-def">Separar o fato da interpretação. Você não reage ao que acontece — reage ao significado que construiu.</div><div class="l-money">No dinheiro: <b>a promoção é oportunidade</b> ou é o gatilho vestido de desconto?</div></div></div>
+    <div class="layer"><div class="l-let">R</div><div><h4>Resposta</h4><div class="l-def">Criar o espaço entre o estímulo e a ação. Entre o estímulo e a resposta existe a sua liberdade.</div><div class="l-money">No dinheiro: a decisão <b>mais consciente</b> — não a mais dura nem a mais fácil.</div></div></div>
+    <div class="layer"><div class="l-let">S</div><div><h4>Sistema</h4><div class="l-def">Construir padrões sustentáveis. Você não vive o que aprende — vive o que repete.</div><div class="l-money">No dinheiro: <b>mecanismos que te protegem</b> do piloto automático.</div></div></div>
+
+    <div class="cycle">As camadas não são lineares. Formam um ciclo que se retroalimenta:<br><b>Atenção → Visão → Resposta → Sistema</b> → e de volta à Atenção.</div>
+
+    <div class="quote">Antes de todo resultado existe uma causa.<br><b>Inclusive o saldo da sua conta.</b></div>
+    <button class="btn btn-gold" data-action="pausa">Aplicar agora — fazer uma Pausa AVR-S</button>
+
+    <div class="section-label">Aprofunde no método</div>
+    <button class="book" data-soon="A Vida Sem Rascunho — O Método AVR-S. O livro que dá nome e forma ao método. Trilogia da Transformação.">
+      <div class="cover"><span>A VIDA<br>SEM<br>RASCUNHO</span></div>
+      <div><h4>A Vida Sem Rascunho</h4><div class="b-sub">O Método AVR-S</div><div class="b-role">O livro que dá nome e forma ao método.</div></div>
+    </button>
+    <button class="book" data-soon="A Mente É a Causa. A Vida É o Efeito. A base: por que a mente é a causa de tudo — inclusive do saldo. Trilogia da Transformação.">
+      <div class="cover"><span>A MENTE<br>É A<br>CAUSA</span></div>
+      <div><h4>A Mente É a Causa</h4><div class="b-sub">A Vida É o Efeito</div><div class="b-role">A base: por que a mente é a causa — inclusive do saldo.</div></div>
+    </button>
+    <button class="book" data-soon="Crônicas de um Campeão. Nem tudo que vence é visto. Nem tudo que custa aparece. O método vivido. Trilogia da Transformação.">
+      <div class="cover"><span>CRÔNICAS<br>DE UM<br>CAMPEÃO</span></div>
+      <div><h4>Crônicas de um Campeão</h4><div class="b-sub">Nem tudo que vence é visto</div><div class="b-role">O método vivido — a história por trás da consciência.</div></div>
+    </button>
+    <div style="text-align:center;font-size:11.5px;color:var(--muted-2);margin-top:6px;letter-spacing:.03em">A Trilogia da Transformação — três livros, uma só causa</div>
+
+    <div class="eco">
+      <div class="eco-lab">Um ecossistema, dois apps</div>
+      <div class="eco-apps">
+        <button class="eco-app" data-soon="App AVR-S — o método aplicado ao dia a dia, além do dinheiro. Mesmo login, mesmo Pro. No app conectado, este cartão levará ao app.">
+          <div class="ea-ic">◐</div><h5>AVR-S</h5><p>O método no dia a dia</p>
+        </button>
+        <div class="eco-app current">
+          <span class="here">Você está aqui</span>
+          <div class="ea-ic">◈</div><h5>AVR-S Finance</h5><p>O método no dinheiro</p>
+        </div>
+      </div>
+      <div class="eco-note">Dois apps do mesmo ecossistema. <b>Mesmo login, mesmo Pro</b> — você transita entre um e outro sem recomeçar.</div>
+    </div>
+  </section>
+
+  <!-- CONTA -->
+  <section id="conta" class="screen">
+    <button class="back" data-nav="home">← Início</button>
+    <div class="eyebrow" style="margin-bottom:14px">Conta</div>
+    <div class="page-title" style="margin-bottom:20px">Sua conta</div>
+
+    <div class="box">
+      <div class="acc-row"><span>Conectado como</span><b id="accEmail">—</b></div>
+      <div class="acc-row" style="margin-top:12px"><span>Plano</span><b id="accPlan">—</b></div>
+    </div>
+
+    <button id="btnSair" class="btn btn-ghost" style="margin-top:6px">Sair da conta</button>
+    <div id="finUserLabel" style="color:var(--muted,#9a8f85);font-size:12px;margin-top:8px;text-align:center"></div>
+
+    <div id="adminArea" style="display:none">
+      <div class="section-label">Área administrativa</div>
+      <div class="box">
+        <div class="acc-row"><span>UID</span><b id="admUid" style="font-size:11px;word-break:break-all">—</b></div>
+        <div class="acc-row" style="margin-top:12px"><span>Registros locais</span><b id="admCounts">—</b></div>
+        <div class="acc-row" style="margin-top:12px"><span>Índice de Consciência</span><b id="admIc">—</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <button data-nav="home" data-tab="home"><span class="n-ic">⌂</span>Início</button>
+    <button data-nav="diario" data-tab="diario"><span class="n-ic">✎</span>Diário</button>
+    <button data-action="pausa" data-tab="pausa"><span class="n-ic">❙❙</span>Pausa</button>
+    <button data-nav="evolucao" data-tab="evolucao"><span class="n-ic">↗</span>Evolução</button>
+  </nav>
+
+  <div class="toast" id="toast"></div>
+  <div class="proto-flag" id="protoFlag">Conectado · sincroniza na nuvem</div>
+</div>
+
+<!-- DEV / TESTE -->
+<div class="devmodal" id="devmodal">
+  <div class="devcard">
+    <h4>Ferramentas de teste</h4>
+    <div class="devsub">Só para você experimentar. Nada disso existe na versão que vai a usuários — a lógica real permanece honesta.</div>
+    <button class="devbtn" id="devPro">Pro (definido pelo servidor)</button>
+    <button class="devbtn" id="devSeed">Preencher com dados de exemplo</button>
+    <button class="devbtn" id="devDay14">Simular passagem de 14 dias (ver o espelho)</button>
+    <button class="devbtn danger" id="devReset">Apagar tudo e recomeçar</button>
+    <button class="devclose" id="devClose">Fechar</button>
+  </div>
+</div>
+
+<script>
+try{
+/* ============ STORE (localStorage) ============ */
+var K = {
+  diario:"avrsfin_diario", pausas:"avrsfin_pausas", perfil:"avrsfin_perfil",
+  first:"avrsfin_first", pro:"avrsfin_pro", owner:"avrsfin_owner"
+};
+function load(key, def){ try{ var v=localStorage.getItem(key); return v==null?def:JSON.parse(v); }catch(e){ return def; } }
+function save(key, val){ try{ localStorage.setItem(key, JSON.stringify(val)); }catch(e){} }
+
+var diario = load(K.diario, []);
+var pausas = load(K.pausas, []);
+var perfil = load(K.perfil, null);
+var isPro  = load(K.pro, false);
+var currentUid=null, currentEmail=null, isAdmin=false;
+if(load(K.first, null)==null){ save(K.first, Date.now()); }
+
+function firstTs(){ return load(K.first, Date.now()); }
+function daysSinceFirst(){ return Math.floor((Date.now()-firstTs())/86400000); }
+function persist(){ save(K.diario,diario); save(K.pausas,pausas); save(K.perfil,perfil); save(K.pro,isPro);
+  if(currentUid && window.finSaveCloud){ window.finSaveCloud(currentUid,{diario:diario,pausas:pausas,perfil:perfil}); } }
+
+/* ============ NAV ============ */
+var navScreens = { home:1, diario:1, evolucao:1 };
+function go(id){
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  var nav=document.getElementById('nav');
+  if(navScreens[id]){ nav.classList.add('show'); } else { nav.classList.remove('show'); }
+  document.querySelectorAll('.nav button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-tab')===id); });
+  window.scrollTo(0,0);
+  if(id==='home'){ paintPro(); paintHome(); }
+  if(id==='diario') renderEntries();
+  if(id==='evolucao') renderEvo();
+  if(id==='conta') paintConta();
+}
+function paintPro(){
+  var p=document.getElementById('proPill');
+  if(isPro){ p.className='pill'; p.innerHTML='<span class="dot"></span>Pro'; }
+  else { p.className='pill free'; p.innerHTML='<span class="dot"></span>Gratuito'; }
+}
+function paintConta(){
+  var em=document.getElementById('accEmail'); if(em) em.textContent=currentEmail||'—';
+  var pl=document.getElementById('accPlan'); if(pl) pl.textContent = isPro ? (isAdmin?'Pro (admin)':'Pro') : 'Gratuito';
+  var aa=document.getElementById('adminArea'); if(aa) aa.style.display = isAdmin ? 'block' : 'none';
+  if(isAdmin){
+    var u=document.getElementById('admUid'); if(u) u.textContent=currentUid||'—';
+    var c=document.getElementById('admCounts'); if(c) c.textContent=diario.length+' no diário · '+pausas.length+(pausas.length===1?' pausa':' pausas');
+    var ic=document.getElementById('admIc'); if(ic) ic.textContent=computeIndex().ic+'%';
+  }
+}
+var toastTimer;
+function showToast(html){
+  var t=document.getElementById('toast'); t.innerHTML=html; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer=setTimeout(function(){ t.classList.remove('show'); },3400);
+}
+function esc(s){ var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+function fmtMoney(n){ return n.toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:2}); }
+function fmtDate(ts){ var d=new Date(ts); return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'}); }
+
+/* ============ ÍNDICE DE CONSCIÊNCIA (comportamental, honesto) ============ */
+function decisionsTotal(){ return diario.length + pausas.length; }
+function computeIndex(){
+  // componentes 0..1
+  var consNeed = diario.filter(function(e){return e.tipo==='need';}).length;
+  var consPausa = pausas.length; // toda pausa é ato consciente
+  var autom = diario.filter(function(e){return e.tipo==='imp';}).length;
+  var total = decisionsTotal();
+  var proporcao = total>0 ? (consNeed+consPausa)/total : 0;
+  // consistência: dias distintos com atividade / dias desde o início (cap 14, mín 1)
+  var span = Math.max(1, Math.min(14, daysSinceFirst()+1));
+  var days = {};
+  diario.concat(pausas).forEach(function(x){ if(x.date) days[fmtDate(x.date)]=1; });
+  var activeDays = Object.keys(days).length;
+  var consistencia = Math.min(1, activeDays/span);
+  // frequência normalizada (alvo simbólico: 8 pausas)
+  var freqNorm = Math.min(1, pausas.length/8);
+  var ic = Math.round(100*(0.45*proporcao + 0.30*consistencia + 0.25*freqNorm));
+  return { ic:ic, proporcao:proporcao, consistencia:consistencia, freqNorm:freqNorm,
+           pausas:pausas.length, activeDays:activeDays, total:total };
+}
+function declaredTotal(){
+  return pausas.reduce(function(a,p){ return a + (p.valor? Number(p.valor)||0 : 0); },0);
+}
+function declaredCount(){ return pausas.filter(function(p){ return p.valor && Number(p.valor)>0; }).length; }
+
+/* ============ HOME (espelho + alerta reais) ============ */
+function paintHome(){
+  // perfil
+  if(perfil && profiles[perfil.key]){
+    var p=profiles[perfil.key];
+    document.getElementById('stateName').textContent=p.name;
+    document.getElementById('stateDesc').textContent=p.tag;
+    document.getElementById('stateMotor').innerHTML='Motor Adaptativo: <b>'+p.motor+'</b>';
+  }
+  // alerta REAL: >=3 impulsos nos últimos 7 dias
+  var cut=Date.now()-7*86400000;
+  var recentImp=diario.filter(function(e){return e.tipo==='imp' && e.date>=cut;});
+  var al=document.getElementById('realAlert');
+  if(recentImp.length>=3){
+    var emo=recentImp[recentImp.length-1].emo;
+    document.getElementById('realAlertText').innerHTML='Você registrou <b>'+recentImp.length+' compras por impulso</b> nos últimos 7 dias. Um padrão sob '+esc((emo||'emoção').toLowerCase())+' pode estar se formando.';
+    al.style.display='flex';
+  } else { al.style.display='none'; }
+  // espelho do dia 14
+  paintMirror();
+}
+function paintMirror(){
+  var m=document.getElementById('mirror');
+  var ready = daysSinceFirst()>=14 && declaredCount()>=3;
+  if(!ready){ m.classList.remove('show'); return; }
+  var idx=computeIndex();
+  var dt=declaredTotal();
+  document.getElementById('mirrorTitle').textContent='Seu padrão está começando a aparecer.';
+  document.getElementById('mirrorBody').innerHTML=
+    'Em '+declaredCount()+' momentos você fez uma Pausa e escolheu preservar — e declarou, ao todo, <b>R$ '+fmtMoney(dt)+'</b> (número que você mesmo estimou). '+
+    'Seu Índice de Consciência está em <b>'+idx.ic+'%</b>. Quanto mais você registra, mais nítido esse mapa fica.';
+  m.classList.add('show');
+}
+
+/* ============ DIAGNÓSTICO ============ */
+var qi=0, scores={};
+var questions=[
+  { t:"Sobra dinheiro no fim do mês. O que sente primeiro?", o:[["Alívio, mas já penso no que pode dar errado","acumulador"],["Vontade de aproveitar enquanto dá","impulsivo"],["Tranquilidade — já sei o destino dele","equilibrado"],["Depende do mês; oscilo muito","oscilante"]] },
+  { t:"Uma promoção forte aparece de repente.", o:[["Ignoro. Gastar me dá desconforto","acumulador"],["Costumo comprar na hora","impulsivo"],["Pergunto se eu já queria aquilo antes da promoção","equilibrado"],["Às vezes resisto, às vezes caio","oscilante"]] },
+  { t:"Como você se sente ao ver a fatura do cartão?", o:[["Controlo tudo, raramente me surpreendo","acumulador"],["Frequentemente me arrependo de algo","impulsivo"],["Bate com o que eu esperava","equilibrado"],["Varia demais de um mês para o outro","oscilante"]] },
+  { t:"Dinheiro guardado, para você, é principalmente…", o:[["Proteção contra um futuro que pode faltar","acumulador"],["Algo que some rápido quando bate a vontade","impulsivo"],["Uma ferramenta a serviço dos meus planos","equilibrado"],["Uma intenção que nem sempre se cumpre","oscilante"]] },
+  { t:"Num dia difícil, sua relação com gastar é…", o:[["Fecho ainda mais a mão","acumulador"],["Compro algo para me sentir melhor","impulsivo"],["Percebo a emoção antes de decidir","equilibrado"],["Um dia me controlo, no outro estouro","oscilante"]] }
+];
+// ordem de desempate: prioriza o perfil mais "de risco" para não mascarar padrão
+var tieOrder=["impulsivo","acumulador","oscilante","equilibrado"];
+var profiles={
+  acumulador:{ name:"Acumulador", tag:"Guarda por medo, não por projeto.", motor:"Estado de Escassez",
+    desc:"Você tem disciplina — e é elogiado por isso. Mas por dentro há vigilância, não paz. O dinheiro parado não compra segurança; adia o pânico. O risco é ter recursos e não ter vida.",
+    belief:"\u201CSe eu perder dinheiro, perderei minha segurança.\u201D",
+    root:"Medo da escassez. A privação que você teme já não está na conta — está na memória.",
+    quote:"Guardar também pode ser <b>uma forma de fugir</b>. A pergunta não é quanto você tem, mas de quê você se protege." },
+  impulsivo:{ name:"Consumidor Impulsivo", tag:"Gasta para sentir algo agora.", motor:"Estado de Compensação",
+    desc:"Visto de fora, você parece leve e generoso. Por dentro há urgência: prazer, alívio ou pertencimento imediato. Cada compra empurra para frente uma conversa que você evita ter consigo mesmo.",
+    belief:"\u201CEu mereço isso\u201D — ou \u201Ccomprar vai me fazer sentir melhor.\u201D",
+    root:"Compensação emocional. O dinheiro tenta pagar uma conta que não é dele.",
+    quote:"Nem toda compra é sobre o produto. Às vezes é sobre <b>o que você não quer sentir.</b>" },
+  equilibrado:{ name:"Equilibrado", tag:"Sabe por que guarda e por que gasta.", motor:"Estado de Equilíbrio",
+    desc:"Você vive num estado diferente de consciência: decide com clareza, inclusive quando decide gastar. A emoção aparece, mas não assina sozinha a transação.",
+    belief:"\u201CO dinheiro serve à minha vida — não o contrário.\u201D",
+    root:"Consciência aplicada. Existe um espaço entre o impulso e a decisão — e ele é seu.",
+    quote:"A liberdade não é ter muito. É <b>decidir sem ser decidido</b> pelo medo ou pela vontade." },
+  oscilante:{ name:"Oscilante", tag:"Alterna entre guardar e gastar.", motor:"Estado Oscilante",
+    desc:"Você vive entre os dois extremos: dias de controle rígido seguidos de dias de escape. É um piloto automático que muda de direção conforme a emoção do dia.",
+    belief:"\u201CDepende do dia\u201D — e é o dia que decide, não você.",
+    root:"Instabilidade emocional diante do dinheiro. A decisão segue o humor, não o plano.",
+    quote:"O padrão não está no dinheiro. Está <b>na emoção que muda de mãos</b> a cada semana." }
+};
+function startDiag(){ qi=0; scores={acumulador:0,impulsivo:0,equilibrado:0,oscilante:0}; go('diag'); renderQ(); }
+function renderQ(){
+  var q=questions[qi];
+  document.getElementById('qbar').style.width=(qi/questions.length*100)+'%';
+  document.getElementById('qcount').textContent='Pergunta '+(qi+1)+' de '+questions.length;
+  document.getElementById('qtext').textContent=q.t;
+  var box=document.getElementById('qopts'); box.innerHTML='';
+  q.o.forEach(function(pair){
+    var b=document.createElement('button'); b.className='opt'; b.textContent=pair[0];
+    b.addEventListener('click',function(){ scores[pair[1]]++; qi++; if(qi<questions.length){ renderQ(); } else { document.getElementById('qbar').style.width='100%'; showResult(); } });
+    box.appendChild(b);
+  });
+}
+function showResult(){
+  // desempate por tieOrder em vez de "primeira chave"
+  var max=-1; tieOrder.forEach(function(k){ if(scores[k]>max) max=scores[k]; });
+  var top=null; for(var i=0;i<tieOrder.length;i++){ if(scores[tieOrder[i]]===max){ top=tieOrder[i]; break; } }
+  perfil={ key:top, date:Date.now() }; persist();
+  var p=profiles[top];
+  document.getElementById('rName').textContent=p.name;
+  document.getElementById('rTag').textContent=p.tag;
+  document.getElementById('rDesc').textContent=p.desc;
+  document.getElementById('rBelief').textContent=p.belief;
+  document.getElementById('rRoot').textContent=p.root;
+  document.getElementById('rQuote').innerHTML=p.quote;
+  go('result');
+}
+
+/* ============ PAUSA ============ */
+var pi=0, pausaChoice={};
+var pausaSteps=[
+  { L:"A · Atenção", t:"Pare um instante. O que você está sentindo agora, antes de comprar?", o:[["Ansiedade"],["Vontade forte / euforia"],["Cansaço ou frustração"],["Estou tranquilo"]] },
+  { L:"V · Visão", t:"Como você está interpretando essa compra neste momento?", o:[["É uma necessidade real"],["É um desejo do momento"],["É um alívio para uma emoção"],["É sobre imagem ou status"]] },
+  { L:"R · Resposta", t:"Qual é a decisão mais consciente agora?", o:[["Vou comprar — com consciência"],["Vou esperar 24 horas"],["Decidi não comprar"]] },
+  { L:"S · Sistema", t:"Seu mecanismo de proteção para a próxima vez:", o:[["Intervalo de 24h antes de compras não planejadas"],["Reservar um valor antes que a emoção o encontre"],["Registrar no diário o que senti ao gastar"]] }
+];
+function startPausa(){ pi=0; pausaChoice={}; document.getElementById('valask').classList.remove('show'); document.getElementById('pVal').value=''; go('pausa'); renderPausa(); }
+function renderPausa(){
+  document.getElementById('valask').classList.remove('show');
+  document.getElementById('popts').style.display='block';
+  var s=pausaSteps[pi];
+  document.getElementById('pbar').style.width=(pi/pausaSteps.length*100)+'%';
+  document.getElementById('pletter').textContent=s.L;
+  document.getElementById('ptext').textContent=s.t;
+  var box=document.getElementById('popts'); box.innerHTML='';
+  s.o.forEach(function(pair){
+    var b=document.createElement('button'); b.className='opt'; b.textContent=pair[0];
+    b.addEventListener('click',function(){
+      pausaChoice[pi]=pair[0];
+      // etapa Resposta: se "não comprar" ou "esperar", oferece o campo de valor (opcional)
+      if(pi===2 && (pair[0]==='Decidi não comprar' || pair[0]==='Vou esperar 24 horas')){
+        pausaChoice.preservou=true;
+        document.getElementById('popts').style.display='none';
+        document.getElementById('valask').classList.add('show');
+        document.getElementById('pbar').style.width=((pi+1)/pausaSteps.length*100)+'%';
+        return;
+      }
+      pi++;
+      if(pi<pausaSteps.length){ renderPausa(); } else { finishPausa(); }
+    });
+    box.appendChild(b);
+  });
+}
+function afterValue(valOrNull){
+  pausaChoice.valor = valOrNull;
+  document.getElementById('valask').classList.remove('show');
+  document.getElementById('popts').style.display='block';
+  pi=3; renderPausa();
+}
+function finishPausa(){
+  document.getElementById('pbar').style.width='100%';
+  var rec={ atencao:pausaChoice[0]||'', visao:pausaChoice[1]||'', resposta:pausaChoice[2]||'',
+            sistema:pausaChoice[3]||'', valor:(pausaChoice.valor!=null?pausaChoice.valor:null), date:Date.now() };
+  pausas.push(rec); persist();
+  if(pausaChoice.preservou && rec.valor){
+    showToast('<b>R$ '+fmtMoney(Number(rec.valor))+' preservados</b> — valor que você declarou. Entra no seu histórico, nunca somado como veredito.');
+  } else if(pausaChoice.preservou){
+    showToast('Decisão de preservar registrada com consciência. O espaço entre o estímulo e a resposta foi seu.');
+  } else {
+    showToast('Decisão registrada com consciência. Entre o estímulo e a resposta, o espaço foi seu.');
+  }
+  go('home');
+}
+
+/* ============ DIÁRIO ============ */
+var newTipo=null;
+function renderEntries(){
+  var box=document.getElementById('entryList'); box.innerHTML='';
+  if(diario.length===0){
+    box.innerHTML='<div class="empty"><span class="em-ic">✎</span>Você ainda não tem registros.<br>Cada registro é um pedaço do mapa do seu comportamento com dinheiro.</div>';
+    return;
+  }
+  diario.slice().reverse().forEach(function(e){
+    var idx=diario.indexOf(e);
+    var d=document.createElement('div'); d.className='entry';
+    var tagClass = e.tipo==='need' ? 'need' : 'imp';
+    var tagText = e.tipo==='need' ? 'Necessidade' : 'Impulso';
+    d.innerHTML='<button class="e-del" data-del="'+idx+'">✕</button>'+
+      '<div class="e-head"><span class="e-buy">'+esc(e.buy)+'</span><span class="e-tag '+tagClass+'">'+tagText+'</span></div>'+
+      '<div class="e-meta">Emoção: <b>'+esc(e.emo)+'</b> · '+esc(e.mot)+'</div>'+
+      '<div class="e-date">'+fmtDate(e.date)+'</div>';
+    box.appendChild(d);
+  });
+  box.querySelectorAll('[data-del]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var i=Number(b.getAttribute('data-del'));
+      diario.splice(i,1); persist(); renderEntries();
+    });
+  });
+}
+
+/* ============ EVOLUÇÃO ============ */
+function renderEvo(){
+  var body=document.getElementById('evoBody');
+  if(decisionsTotal()<3){
+    var faltam=3-decisionsTotal();
+    body.innerHTML=
+      '<div class="promise">'+
+        '<div class="eyebrow" style="margin-bottom:12px">O que vai aparecer aqui</div>'+
+        '<h3>Sua economia consciente — construída por você, não estimada pelo app.</h3>'+
+        '<p>Este é o lugar onde você vê o quanto suas <b>decisões conscientes</b> preservaram, lado a lado com a evolução da sua consciência ao decidir. Mas ele funciona ao contrário da maioria dos apps: em vez de inventar um número, ele mostra o que <b>você mesmo registra</b>.</p>'+
+        '<div class="promise-how">'+
+          '<div class="ph-step"><span class="ph-n">1</span><div>Antes de comprar por impulso, faça uma <b>Pausa AVR-S</b>.</div></div>'+
+          '<div class="ph-step"><span class="ph-n">2</span><div>Se decidir <b>não comprar</b> ou <b>esperar</b>, o app pergunta quanto você acha que preservou.</div></div>'+
+          '<div class="ph-step"><span class="ph-n">3</span><div>Com o tempo, essas escolhas viram um <b>mapa</b>: sua economia declarada + seu Índice de Consciência subindo juntos.</div></div>'+
+        '</div>'+
+        '<p class="promise-note">Faltam <b>'+faltam+'</b> '+(faltam===1?'registro':'registros')+' para seu Índice de Consciência aparecer. A economia começa a se formar assim que você declara na primeira Pausa.</p>'+
+      '</div>'+
+      '<button class="btn btn-gold" id="promiseGoPausa" style="margin-top:14px">Fazer minha primeira Pausa</button>';
+    var gp=document.getElementById('promiseGoPausa');
+    if(gp) gp.addEventListener('click',startPausa);
+    return;
+  }
+  var x=computeIndex();
+  var html='';
+  html+='<div class="kpi"><div class="k-lab">Índice de Consciência</div><div class="k-val">'+x.ic+'<small>%</small></div>'+
+        '<div class="k-desc">Reúne três coisas observáveis: o quanto você para antes de decidir, a proporção das suas decisões que foram conscientes, e a sua consistência.</div>'+
+        '<div class="subcomp">'+
+        '<div class="sc"><div class="sc-v">'+Math.round(x.proporcao*100)+'%</div><div class="sc-l">Proporção consciente</div></div>'+
+        '<div class="sc"><div class="sc-v">'+x.pausas+'</div><div class="sc-l">Pausas feitas</div></div>'+
+        '<div class="sc"><div class="sc-v">'+x.activeDays+'</div><div class="sc-l">Dias ativos</div></div>'+
+        '</div></div>';
+  // valor declarado — secundário, sempre rotulado
+  var dc=declaredCount();
+  if(dc>0){
+    html+='<div class="kpi"><div class="k-lab">Preservado (autodeclarado)</div><div class="k-val">R$ '+fmtMoney(declaredTotal())+'</div>'+
+          '<div class="k-desc">Soma do que <b style="color:var(--gold)">você declarou</b> ter preservado em '+dc+' '+(dc===1?'Pausa':'Pausas')+'. É a sua estimativa, não um veredito do app.</div>'+
+          '<div class="declared-note">Nunca apresentado como total garantido — apenas como amostra do que você registrou.</div></div>';
+  }
+  html+='<div class="section-label">O que isso significa</div>'+
+        '<div class="box">'+
+        '<div class="summary-line"><span class="s-ic">🧠</span><div>Das suas decisões registradas, <b>'+Math.round(x.proporcao*100)+'%</b> foram conscientes.</div></div>'+
+        '<div class="summary-line"><span class="s-ic">❙❙</span><div>Você fez <b>'+x.pausas+'</b> '+(x.pausas===1?'Pausa':'Pausas')+' — cada uma é um espaço que você criou.</div></div>'+
+        '<div class="summary-line"><span class="s-ic">📅</span><div>Apareceu em <b>'+x.activeDays+'</b> '+(x.activeDays===1?'dia':'dias')+'. Consistência é o que transforma consciência em hábito.</div></div>'+
+        '</div>';
+  html+='<div class="quote">Cada decisão consciente gera <b>dois lucros</b>: um na conta e outro na consciência.</div>';
+  body.innerHTML=html;
+}
+
+/* ============ EVENTOS ============ */
+document.querySelectorAll('[data-nav]').forEach(function(el){ el.addEventListener('click',function(){ go(el.getAttribute('data-nav')); }); });
+
+/* ===== login / logout / coach wiring ===== */
+(function(){
+  var be=document.getElementById('btnEntrar'); if(be) be.addEventListener('click',function(){ if(window.finLogin)window.finLogin(); });
+  var bc=document.getElementById('btnCriar'); if(bc) bc.addEventListener('click',function(){ if(window.finRegister)window.finRegister(); });
+  var bf=document.getElementById('btnForgot'); if(bf) bf.addEventListener('click',function(){ if(window.finForgot)window.finForgot(); });
+  var lp=document.getElementById('loginPass'); if(lp) lp.addEventListener('keydown',function(e){ if(e.key==='Enter'&&window.finLogin)window.finLogin(); });
+  var bs=document.getElementById('btnSair'); if(bs) bs.addEventListener('click',function(){ if(window.finLogout)window.finLogout(); });
+  var ab=document.getElementById('accBtn'); if(ab) ab.addEventListener('click',function(){ go('conta'); });
+  var cs=document.getElementById('coachSend'); if(cs) cs.addEventListener('click',finCoach);
+  var ci=document.getElementById('coachInput'); if(ci) ci.addEventListener('keydown',function(e){ if(e.key==='Enter')finCoach(); });
+})();
+
+/* ===== ponte de autenticação (chamada pelo módulo Firebase) ===== */
+function mergeByDate(a,b){ var seen={},out=[]; (a||[]).concat(b||[]).forEach(function(x){ var k=x.date||0; if(!seen[k]){seen[k]=1;out.push(x);} }); return out.sort(function(p,q){return (p.date||0)-(q.date||0);}); }
+window.onFinAuthed=async function(uid,email,admin){
+  currentUid=uid; currentEmail=email; isAdmin=!!admin;
+  try{ localStorage.setItem('avrsfin_email',email); }catch(e){}
+  // Guard por dono: se os dados locais pertencem a OUTRA conta, zera antes de carregar.
+  // owner==null = visitante anônimo → preserva o local para migrar os dados de teste.
+  try{
+    var owner=load(K.owner,null);
+    if(owner && owner!==uid){
+      diario=[]; pausas=[]; perfil=null;
+      save(K.diario,diario); save(K.pausas,pausas); save(K.perfil,perfil);
+      save(K.first,Date.now()); // reinicia o relógio do espelho para a nova conta
+    }
+  }catch(e){}
+  save(K.owner,uid);
+  var lbl=document.getElementById('finUserLabel'); if(lbl) lbl.textContent='Conectado como '+email;
+  if(window.finLoadCloud){
+    var cloud=await window.finLoadCloud(uid);
+    if(cloud){
+      isPro = admin || (cloud.isPro===true && (!cloud.proExpira || cloud.proExpira>Date.now()));
+      save(K.pro,isPro);
+      var f=cloud.finance||{};
+      if(Array.isArray(f.diario)) diario=mergeByDate(diario,f.diario);
+      if(Array.isArray(f.pausas)) pausas=mergeByDate(pausas,f.pausas);
+      if(f.perfil && !perfil) perfil=f.perfil;
+      save(K.diario,diario); save(K.pausas,pausas); save(K.perfil,perfil);
+      if(window.finSaveCloud) window.finSaveCloud(uid,{diario:diario,pausas:pausas,perfil:perfil});
+    } else {
+      isPro = !!admin; save(K.pro,isPro);
+      if(window.finSaveCloud) window.finSaveCloud(uid,{diario:diario,pausas:pausas,perfil:perfil});
+    }
+  }
+  paintPro(); go('home');
+};
+window.onFinLoggedOut=function(){ currentUid=null; currentEmail=null; isAdmin=false;
+  var lbl=document.getElementById('finUserLabel'); if(lbl) lbl.textContent='';
+  go('login'); };
+
+/* ===== coach real (mesmo Worker/IA do app principal) ===== */
+var coachHist=[];
+/* COACH_SYS agora vive no Worker (/finance/coach) — não é mais enviado pelo cliente. */
+function coachCtx(){ var c=''; if(perfil&&perfil.key){c+='Perfil financeiro declarado: '+perfil.key+'. ';} if(diario&&diario.length){var ult=diario.slice(-3).map(function(e){return e.buy+' ('+e.tipo+', '+e.emo+')';}).join('; ');c+='Últimos registros do diário: '+ult+'. ';} return c; }
+async function finCoach(){
+  var inp=document.getElementById('coachInput'), chat=document.getElementById('coachChat');
+  if(!inp||!chat) return;
+  var txt=(inp.value||'').trim(); if(!txt) return;
+  if(!currentUid){ showToast('Entre na sua conta para falar com o coach.'); go('login'); return; }
+  inp.value='';
+  var me=document.createElement('div'); me.className='msg me'; me.textContent=txt; chat.appendChild(me);
+  coachHist.push({role:'user',content:txt});
+  var typ=document.createElement('div'); typ.className='msg coach'; typ.textContent='…'; chat.appendChild(typ); chat.scrollTop=chat.scrollHeight;
+  var ctx=coachCtx(); var msgs=coachHist.slice(-8);
+  if(ctx){ msgs=[{role:'user',content:ctx+'(Isto é contexto — não responda a esta mensagem.)'},{role:'assistant',content:'Entendi o contexto.'}].concat(msgs); }
+  try{
+    var tok=window.getIdToken?await window.getIdToken():null;
+    var hdrs={'Content-Type':'application/json'}; if(tok)hdrs['Authorization']='Bearer '+tok;
+    var r=await fetch('https://avrs-proxy.audax-silfexsil.workers.dev/finance/coach',{method:'POST',headers:hdrs,body:JSON.stringify({messages:msgs})});
+    var d=await r.json();
+    if(!r.ok){ typ.textContent = r.status===429 ? 'Você atingiu o limite de mensagens deste mês. No Pro o limite é bem maior.' : 'Não consegui responder agora. Tente de novo em instantes.'; return; }
+    var out=(d.content||[]).map(function(c){return c.type==='text'?c.text:'';}).join('').trim()||'(sem resposta)';
+    typ.textContent=out; coachHist.push({role:'assistant',content:out}); chat.scrollTop=chat.scrollHeight;
+  }catch(e){ typ.textContent='Falha de conexão. Tente de novo.'; }
+}
+document.querySelectorAll('[data-action="diag"]').forEach(function(el){ el.addEventListener('click',startDiag); });
+document.querySelectorAll('[data-action="pausa"]').forEach(function(el){ el.addEventListener('click',startPausa); });
+
+// livros / eco (data-soon) — agora ligados
+document.querySelectorAll('[data-soon]').forEach(function(el){ el.addEventListener('click',function(){ showToast(el.getAttribute('data-soon')); }); });
+
+// valor opcional na pausa
+document.getElementById('pValConfirm').addEventListener('click',function(){
+  var v=document.getElementById('pVal').value.replace(/[^\d,.-]/g,'').replace('.','').replace(',','.');
+  afterValue(v && !isNaN(Number(v)) ? Number(v) : null);
+});
+document.getElementById('pValSkip').addEventListener('click',function(){ afterValue(null); });
+
+// pro pill toggle (teste rápido)
+document.getElementById('proPill').addEventListener('click',function(){ showToast(isPro?'Você é <b>Pro</b>.':'O Pro é ativado no app AVR-S principal — e vale aqui também.'); });
+
+// diário
+document.getElementById('tNeed').addEventListener('click',function(){ newTipo='need'; this.className='on-need'; document.getElementById('tImp').className=''; });
+document.getElementById('tImp').addEventListener('click',function(){ newTipo='imp'; this.className='on-imp'; document.getElementById('tNeed').className=''; });
+document.getElementById('addEntry').addEventListener('click',function(){
+  var buy=document.getElementById('fBuy').value.trim();
+  var mot=document.getElementById('fMot').value.trim();
+  var emo=document.getElementById('fEmo').value;
+  if(!buy){ showToast('Escreva o que você comprou ou pensou em comprar.'); return; }
+  if(!newTipo){ showToast('Marque se foi <b>necessidade</b> ou <b>impulso</b>.'); return; }
+  diario.push({ buy:buy, emo:emo, mot:mot||'—', tipo:newTipo, date:Date.now() }); persist();
+  document.getElementById('fBuy').value=''; document.getElementById('fMot').value='';
+  document.getElementById('tNeed').className=''; document.getElementById('tImp').className=''; newTipo=null;
+  renderEntries();
+  showToast('Registrado. Seu mapa comportamental acaba de crescer.');
+});
+
+/* ============ DEV / TESTE ============ */
+var tapCount=0, tapTimer;
+document.getElementById('protoFlag').addEventListener('click',function(){
+  tapCount++; clearTimeout(tapTimer); tapTimer=setTimeout(function(){ tapCount=0; },600);
+  if(tapCount>=3){ tapCount=0; if(isAdmin){ document.getElementById('devmodal').classList.add('show'); } }
+});
+document.getElementById('devClose').addEventListener('click',function(){ document.getElementById('devmodal').classList.remove('show'); });
+document.getElementById('devPro').addEventListener('click',function(){ showToast('O Pro agora vem do servidor (login compartilhado). Não é mais alternável aqui.'); });
+document.getElementById('devDay14').addEventListener('click',function(){
+  save(K.first, Date.now()-15*86400000); document.getElementById('devmodal').classList.remove('show'); go('home');
+  showToast('Simulado: 15 dias desde o início. Se você já declarou 3+ valores, o espelho acende.');
+});
+document.getElementById('devReset').addEventListener('click',function(){
+  if(!confirm('Apagar todos os dados deste aparelho e recomeçar?')) return;
+  [K.diario,K.pausas,K.perfil,K.first,K.pro,K.owner].forEach(function(k){ localStorage.removeItem(k); });
+  diario=[]; pausas=[]; perfil=null; isPro=false; save(K.first,Date.now());
+  document.getElementById('devmodal').classList.remove('show'); go('home');
+  showToast('Tudo apagado. Começando do zero.');
+});
+document.getElementById('devSeed').addEventListener('click',function(){
+  var now=Date.now(), d=86400000;
+  diario=[
+    { buy:"Curso online", emo:"Satisfação", mot:"Já planejava há tempo", tipo:"need", date:now-12*d },
+    { buy:"Roupa por app", emo:"Ansiedade", mot:"Dia difícil no trabalho", tipo:"imp", date:now-9*d },
+    { buy:"Comida por delivery", emo:"Cansaço", mot:"Sem vontade de cozinhar", tipo:"imp", date:now-3*d }
+  ];
+  pausas=[
+    { atencao:"Ansiedade", visao:"É um alívio para uma emoção", resposta:"Decidi não comprar", sistema:"Intervalo de 24h antes de compras não planejadas", valor:180, date:now-11*d },
+    { atencao:"Vontade forte / euforia", visao:"É um desejo do momento", resposta:"Vou esperar 24 horas", sistema:"Reservar um valor antes que a emoção o encontre", valor:250, date:now-6*d },
+    { atencao:"Cansaço ou frustração", visao:"É sobre imagem ou status", resposta:"Decidi não comprar", sistema:"Registrar no diário o que senti ao gastar", valor:90, date:now-2*d }
+  ];
+  perfil={ key:"impulsivo", date:now-12*d };
+  persist();
+  document.getElementById('devmodal').classList.remove('show'); go('home');
+  showToast('Dados de exemplo carregados. Toque em “Simular 14 dias” para ver o espelho.');
+});
+
+/* ============ INIT ============ */
+paintPro();
+}catch(e){
+  // Se algo falhar (ex.: Safari mais rígido), mostra o erro em vez de deixar os botões mortos.
+  var box=document.createElement('div');
+  box.style.cssText='position:fixed;left:0;right:0;bottom:0;background:#2a1410;color:#f5d0c5;font:13px/1.5 -apple-system,sans-serif;padding:14px 18px;z-index:999;border-top:1px solid #c98a7a';
+  box.textContent='Aviso técnico: '+(e && e.message ? e.message : e);
+  document.body.appendChild(box);
+}
+</script>
+
+<script type="module">
+import{initializeApp}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import{getFirestore,doc,setDoc,getDoc}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,sendPasswordResetEmail}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+const firebaseConfig={apiKey:"AIzaSyBy13fDtxYQlkMozofoIoYS27VykHMMuDw",authDomain:"avrs-app.firebaseapp.com",projectId:"avrs-app",storageBucket:"avrs-app.firebasestorage.app",messagingSenderId:"1036042586771",appId:"1:1036042586771:web:b4a9bac3dcc7c0ce461b66"};
+const fbapp=initializeApp(firebaseConfig);
+const db=getFirestore(fbapp);
+const auth=getAuth(fbapp);
+const ADMIN_EMAIL='audax2_cj@hotmail.com';
+function mapErr(code){var m={'auth/invalid-email':'E-mail inválido.','auth/user-not-found':'E-mail não encontrado.','auth/wrong-password':'Senha incorreta.','auth/invalid-credential':'E-mail ou senha incorretos.','auth/email-already-in-use':'Este e-mail já tem conta. Toque em Entrar.','auth/weak-password':'Senha muito fraca (mínimo 6 caracteres).','auth/too-many-requests':'Muitas tentativas. Tente mais tarde.','auth/network-request-failed':'Sem conexão. Verifique a internet.'};return m[code]||'Não foi possível. Tente novamente.';}
+window.getIdToken=async function(){try{return auth.currentUser?await auth.currentUser.getIdToken():null;}catch(e){return null;}};
+window.finLogin=async function(){var email=(document.getElementById('loginEmail').value||'').trim().toLowerCase();var pass=document.getElementById('loginPass').value||'';var err=document.getElementById('loginError'),msg=document.getElementById('loginMsg');err.textContent='';msg.textContent='';if(!email||!pass){err.textContent='Preencha e-mail e senha.';return;}try{await signInWithEmailAndPassword(auth,email,pass);}catch(e){err.textContent=mapErr(e.code);}};
+window.finRegister=async function(){var email=(document.getElementById('loginEmail').value||'').trim().toLowerCase();var pass=document.getElementById('loginPass').value||'';var err=document.getElementById('loginError'),msg=document.getElementById('loginMsg');err.textContent='';msg.textContent='';if(!email||!pass){err.textContent='Preencha e-mail e senha para criar a conta.';return;}if(pass.length<6){err.textContent='A senha precisa de ao menos 6 caracteres.';return;}try{await createUserWithEmailAndPassword(auth,email,pass);}catch(e){err.textContent=mapErr(e.code);}};
+window.finForgot=async function(){var email=(document.getElementById('loginEmail').value||'').trim().toLowerCase();var err=document.getElementById('loginError'),msg=document.getElementById('loginMsg');err.textContent='';msg.textContent='';if(!email){err.textContent='Digite seu e-mail para recuperar a senha.';return;}try{await sendPasswordResetEmail(auth,email);msg.textContent='E-mail de recuperação enviado. Verifique sua caixa de entrada.';}catch(e){err.textContent=mapErr(e.code);}};
+window.finLogout=async function(){try{await signOut(auth);}catch(e){}};
+window.finSaveCloud=async function(uid,finance){try{await setDoc(doc(db,'users',uid),{finance:finance},{merge:true});return true;}catch(e){console.error('[FinSync] gravar:',e);return false;}};
+window.finLoadCloud=async function(uid){try{var d=await getDoc(doc(db,'users',uid));if(d.exists())return d.data();return null;}catch(e){console.error('[FinSync] ler:',e);return null;}};
+onAuthStateChanged(auth,async(user)=>{
+  if(user){var email=user.email;var uid=email.replace(/[^a-zA-Z0-9]/g,'_');var admin=email===ADMIN_EMAIL;if(window.onFinAuthed)window.onFinAuthed(uid,email,admin);}
+  else{if(window.onFinLoggedOut)window.onFinLoggedOut();}
+});
+</script>
+</body>
+</html>
