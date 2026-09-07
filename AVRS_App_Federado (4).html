@@ -1,0 +1,386 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AVR-S · App Unificado (protótipo)</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0d0d;--bg2:#121716;--bg3:#19201e;--border:#26332f;--border2:#3a4b45;
+  --text:#f5f0e8;--text2:#b8bdb3;--text3:#899891;--gold:#d4b87a;--gold2:#d4b87a;--cream:#f5f0e8;--federation:#7ec8c3;--federation2:#b8e5df;--panel:#101615}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(90% 42% at 50% 0%,rgba(126,200,195,.09),transparent 65%),var(--bg);color:var(--cream);font-family:'DM Sans',sans-serif;line-height:1.55;display:flex;justify-content:center}
+.wrap{width:100%;max-width:560px;padding:0 22px 78px}
+.brand{font-weight:500;letter-spacing:2px;font-size:12px;color:var(--gold);text-align:center;margin-bottom:14px}
+.serienav{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-start;margin:0 0 20px;padding:10px;background:rgba(16,22,21,.74);border:1px solid var(--border);border-radius:15px}
+.serienav button{font-size:11px;color:var(--text2);background:transparent;border:1px solid transparent;border-radius:999px;padding:7px 11px;cursor:pointer;font-family:'DM Sans';transition:.2s}
+.serienav button:hover{border-color:var(--border2);color:var(--cream)}
+.serienav button.on{color:#111;background:var(--gold);border-color:var(--gold);font-weight:600}
+.top{display:flex;justify-content:flex-end;align-items:center;margin-bottom:6px}
+.mode{display:flex;gap:6px}
+.mode button{font-size:11px;color:var(--text3);background:none;border:1px solid var(--border);border-radius:999px;padding:5px 12px;cursor:pointer}
+.mode button.on{color:#111;background:var(--gold);border-color:var(--gold);font-weight:600}
+.prop{font-size:11px;border-radius:10px;padding:8px 12px;margin:0 0 20px;line-height:1.45}
+.prop.proposta{color:#c99;border:1px dashed #6a4a4a}.prop.proposta b{color:#e0a0a0}
+.prop.aprovada{color:#8db99a;border:1px dashed #3f5c46}.prop.aprovada b{color:#a7d3b3}
+.saud .h{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--cream);margin:0 0 4px}
+.saud .s{font-size:13px;color:var(--text2);margin-bottom:8px}
+.stepcap{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin:24px 0 10px}
+.cenas{display:flex;flex-direction:column;gap:9px}
+.cena{text-align:left;background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:13px 15px;cursor:pointer;color:var(--cream);font-family:'DM Sans'}
+.cena:hover{border-color:var(--border2)}.cena.sel{border-color:var(--gold);background:var(--bg3)}
+.cena b{display:block;font-size:14px;margin-bottom:3px}.cena span{font-size:12px;color:var(--text2);line-height:1.45}
+.bar{display:flex;gap:10px;margin-top:20px}
+.btn{flex:1;font-family:'DM Sans';font-weight:600;border-radius:11px;padding:13px;cursor:pointer;border:1px solid var(--border);background:#1e1a14;color:var(--cream)}
+.btn.primary{background:var(--gold);color:#111;border-color:var(--gold)}.btn:disabled{opacity:.4;cursor:not-allowed}
+.espM1-card{position:relative;background:radial-gradient(120% 80% at 50% -10%,rgba(212,184,122,.10),transparent 60%),linear-gradient(180deg,var(--bg3),var(--bg2));border:1px solid var(--border);border-radius:14px;padding:30px 24px 24px;overflow:hidden}
+.espM1-card::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:60%;height:1px;background:linear-gradient(90deg,transparent,var(--gold2),transparent);opacity:.6}
+.espM1-cap{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:var(--gold2);text-align:center;margin-bottom:20px}
+.espM1-devolver{font-family:'Cormorant Garamond',serif;font-size:21px;line-height:1.4;color:var(--cream);margin-bottom:20px}
+.espM1-repare{font-size:13px;color:var(--text2);text-align:center;margin-bottom:20px;position:relative}
+.espM1-repare::before,.espM1-repare::after{content:"";position:absolute;top:50%;width:14%;height:1px;background:var(--border2)}
+.espM1-repare::before{left:4%}.espM1-repare::after{right:4%}
+.espM1-costura{font-family:'Cormorant Garamond',serif;font-size:18px;line-height:1.5;color:var(--gold2);margin-bottom:22px;font-style:italic}
+.espM1-abrir{font-size:13px;line-height:1.55;color:var(--text2);border-top:1px solid var(--border);padding-top:16px}
+.espM1-ponte{margin-top:16px;font-size:12px;color:var(--text3);text-align:center;line-height:1.5}.espM1-ponte b{color:var(--gold2);font-weight:500}
+.espM1-card.acolhe{background:radial-gradient(120% 80% at 50% -10%,rgba(126,200,195,.10),transparent 60%),linear-gradient(180deg,var(--bg3),var(--bg2))}
+.espM1-card.acolhe::before{background:linear-gradient(90deg,transparent,#7ec8c3,transparent)}
+.espM1-card.acolhe .espM1-cap{color:#7ec8c3}
+.espM1-acolhe-p{font-family:'Cormorant Garamond',serif;font-size:19px;line-height:1.45;color:var(--cream);margin-bottom:16px}.espM1-acolhe-p:last-of-type{margin-bottom:0}
+.gate{text-align:center;font-size:11px;color:var(--text3);margin-top:14px}.gate b{color:var(--gold2)}
+
+/* ===== shell do app unificado ===== */
+body{padding-bottom:74px}
+.appbar{position:sticky;top:0;background:rgba(11,13,13,.90);backdrop-filter:blur(12px);z-index:5;padding:15px 0 12px;text-align:left;border-bottom:1px solid rgba(126,200,195,.14);display:flex;align-items:center;justify-content:space-between;gap:14px}
+.appbar .b{font-weight:600;letter-spacing:2px;font-size:13px;color:var(--gold);display:flex;align-items:center;gap:8px}.appbar .b::before{content:'◈';font-size:16px;color:var(--federation)}
+.appbar .chip{display:inline-flex;gap:6px;align-items:center;font-size:10px;color:var(--text2);border:1px solid var(--border);border-radius:999px;padding:5px 10px;margin-top:0;background:rgba(18,23,22,.7)}
+.appbar .chip .d{width:6px;height:6px;border-radius:50%;background:var(--federation);box-shadow:0 0 0 3px rgba(126,200,195,.12)}
+.screen{display:none}.screen.on{display:block;animation:fade .35s ease both}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.screen.on{animation:none}}
+.hero{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,7vw,38px);line-height:1.16;margin:30px 0 9px;letter-spacing:-.01em}
+.lead{color:var(--text2);font-size:14px;margin-bottom:22px;max-width:48ch}.federation-note{display:flex;gap:10px;align-items:flex-start;background:linear-gradient(110deg,rgba(126,200,195,.11),rgba(212,184,122,.06));border:1px solid rgba(126,200,195,.23);border-radius:14px;padding:13px 14px;margin:0 0 22px;color:var(--text2);font-size:12px}.federation-note strong{display:block;color:var(--federation2);font-size:11px;letter-spacing:.11em;text-transform:uppercase;margin-bottom:3px}.federation-mark{color:var(--federation);font-size:18px;line-height:1}
+.tile{display:block;width:100%;text-align:left;background:linear-gradient(110deg,rgba(18,23,22,.96),rgba(22,28,25,.86));border:1px solid var(--border);border-radius:16px;padding:18px 19px;margin-bottom:11px;cursor:pointer;color:var(--cream);font-family:'DM Sans';position:relative;transition:border-color .2s,transform .2s,background .2s}.tile::after{content:'›';position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:22px;color:var(--federation);opacity:.7}
+.tile:hover{border-color:rgba(126,200,195,.55);transform:translateY(-1px);background:linear-gradient(110deg,rgba(25,36,33,.98),rgba(23,30,27,.92))}
+.tile .t{display:block;font-size:15px;font-weight:600;margin-bottom:4px;padding-right:22px}.tile .t::before{content:'MÓDULO';display:block;color:var(--federation);font-size:9px;letter-spacing:.14em;font-weight:500;margin-bottom:5px}
+.tile .d{font-size:12px;color:var(--text2);padding-right:22px}.tile.locked::after{content:'⌁';color:var(--gold)}
+.tile .tag{float:right;font-size:10px;letter-spacing:.5px;border:1px solid var(--border2);border-radius:999px;padding:2px 8px;color:var(--text3)}
+.tile .tag.free{color:#8db99a;border-color:#3f5c46}
+.tile .tag.pro{color:var(--gold);border-color:var(--g-line,#c9a45c55)}
+.tile.locked{opacity:.62}
+.dseq{display:flex;flex-direction:column;gap:10px}
+.dentry{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:13px 15px}
+.dentry .h{font-size:12px;color:var(--gold);letter-spacing:.4px;margin-bottom:4px}
+.dentry .m{font-size:13px;color:var(--text2)}
+.dentry .w{font-size:11px;color:var(--text3);margin-top:5px}
+.empty{color:var(--text3);font-size:13px;text-align:center;padding:34px 10px;border:1px dashed var(--border);border-radius:12px}
+.pausa{text-align:center;padding:20px 0}
+.breath{width:150px;height:150px;border-radius:50%;margin:26px auto;background:radial-gradient(circle at 50% 45%,rgba(212,184,122,.22),transparent 70%);border:1px solid var(--g-line,#c9a45c55);display:flex;align-items:center;justify-content:center;color:var(--text2);font-family:'Cormorant Garamond',serif;font-size:18px;animation:breathe 8s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(.82)}50%{transform:scale(1.12)}}
+@media (prefers-reduced-motion:reduce){.breath{animation:none}}
+.nav-label{position:fixed;z-index:6;bottom:74px;left:50%;transform:translateX(-50%);width:100%;max-width:560px;padding:5px 22px 4px;background:rgba(11,13,13,.96);color:var(--federation);font-size:9px;letter-spacing:.16em;text-align:center;border-top:1px solid rgba(126,200,195,.10)}.home-orientation{margin-top:34px;padding:22px 18px;text-align:center;border:1px solid var(--border);border-radius:16px;background:rgba(16,22,21,.55)}.home-orientation-kicker{font-size:10px;letter-spacing:.16em;color:var(--federation);font-weight:500}.home-orientation p{font-family:'Cormorant Garamond',serif;font-size:20px;line-height:1.45;color:var(--text2);margin:12px 0 18px}.home-orientation p b{color:var(--cream);font-weight:600}.home-orientation-arrow{font-size:10px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase}button:focus-visible{outline:2px solid var(--federation);outline-offset:3px}
+@media(max-width:420px){.wrap{padding-left:16px;padding-right:16px}.appbar .b span{display:none}.serienav{overflow-x:auto;flex-wrap:nowrap;justify-content:flex-start;scrollbar-width:none}.serienav::-webkit-scrollbar{display:none}.serienav button{white-space:nowrap}.tile{padding:16px}.tile .tag{float:none;margin-left:6px}.nav{padding-left:4px;padding-right:4px}.nav button{font-size:9px;min-height:58px}.nav-label{bottom:70px;padding-left:16px;padding-right:16px}}
+.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:560px;display:flex;background:rgba(11,13,13,.96);backdrop-filter:blur(12px);border-top:1px solid rgba(126,200,195,.18);padding:5px 8px 2px;gap:4px}
+.nav button{flex:1;background:none;border:1px solid transparent;border-radius:12px;color:var(--text3);font-family:'DM Sans';font-size:10px;padding:10px 2px 11px;cursor:pointer;letter-spacing:.3px;transition:.2s;min-height:62px}.nav button:hover{background:rgba(126,200,195,.07);color:var(--text2)}
+.nav button .i{display:block;font-size:17px;margin-bottom:2px;filter:grayscale(1) opacity(.7)}
+.nav button.on{color:var(--federation2);background:rgba(126,200,195,.10);border-color:rgba(126,200,195,.18)}.nav button.on .i{filter:none}
+</style></head><body>
+
+<div class="wrap">
+  <div class="appbar"><div class="b">AVR-S <span style="font-size:10px;letter-spacing:.08em;color:var(--text3);font-weight:400">REDE DE ESPELHOS</span></div><div class="chip"><span class="d"></span><span id="estado">Núcleo pessoal</span></div></div>
+
+  <section class="screen on" id="s-inicio">
+    <p class="hero" id="saud-h">Como você chega?</p>
+    <p class="lead">Um espaço para se olhar sem juízo. A rede começa no rodapé: cada entrada leva a um núcleo diferente da sua jornada.</p>
+    <div class="home-orientation"><span class="home-orientation-kicker">COMO NAVEGAR</span><p><b>Jornada</b> acompanha seu percurso. <b>Espelhos</b> abre os núcleos de reflexão. <b>Diário</b> reúne o que você reconheceu. <b>Pausa</b> está sempre disponível.</p><span class="home-orientation-arrow">↓ escolha uma entrada no rodapé</span></div>
+  </section>
+
+  <section class="screen" id="s-jornada">
+    <p class="hero">Jornada da Reconstrução</p>
+    <p class="lead">Por contagem, não por data — faltar nunca pune. Um passo de cada vez.</p>
+    <button class="tile" onclick="irEspelho('m1')"><span class="t">M1 · A Causa <span class="tag free">livre</span></span><span class="d">Efeito → Padrão → Crença → Conexão. O mini-espelho.</span></button>
+    <div class="tile locked"><span class="t">M2 · O Padrão <span class="tag pro">Pro</span></span><span class="d">Aprofundar exige Pro.</span></div>
+    <div class="tile locked"><span class="t">M3 · A Crença <span class="tag pro">Pro</span></span><span class="d">A escrita vai ao Mentor, não ao espelho grátis.</span></div>
+    <div class="tile locked"><span class="t">M4 · A Reconstrução <span class="tag pro">Pro</span></span><span class="d">Aprofundar exige Pro.</span></div>
+  </section>
+
+  <section class="screen" id="s-espelhos">
+    <p class="hero">Os Espelhos</p>
+    <p class="lead">Escolha um núcleo. A mesma plataforma, seis vozes e caminhos de reflexão.</p>
+    <div class="serienav" id="serienav"></div>
+    <div id="esp"></div>
+  </section>
+
+  <section class="screen" id="s-diario">
+    <p class="hero">Diário</p>
+    <p class="lead">A sequência do que você reconheceu — ao longo do período. É o que o Mentor lê depois.</p>
+    <div id="diario"></div>
+  </section>
+
+  <section class="screen" id="s-pausa">
+    <p class="hero">Pausa</p>
+    <div class="pausa"><div class="breath">inspire… expire</div><p class="lead">Sem próximo passo obrigatório. Fique o tempo que quiser.</p></div>
+  </section>
+</div>
+
+<div class="nav-label">NÚCLEOS DA REDE</div>
+<nav class="nav" id="nav">
+  <button data-s="s-inicio" class="on" onclick="ir('s-inicio')"><span class="i">⌂</span>Início</button>
+  <button data-s="s-jornada" onclick="ir('s-jornada')"><span class="i">◌</span>Jornada</button>
+  <button data-s="s-espelhos" onclick="ir('s-espelhos')"><span class="i">◈</span>Espelhos</button>
+  <button data-s="s-diario" onclick="ir('s-diario')"><span class="i">≡</span>Diário</button>
+  <button data-s="s-pausa" onclick="ir('s-pausa')"><span class="i">·</span>Pausa</button>
+</nav>
+
+<script>
+const DIARIO=[];
+const nucleo={auth:{usuarioAtual:()=>({uid:'demo-uid'})},isPro:async()=>true,
+  dominio:(c)=>({gravar:async(r)=>{DIARIO.push({campo:c,...r});renderDiario();return{ok:true};}}),
+  mentor:{aprofundar:(e)=>console.log('[Mentor Pro]',e)}};
+const ESC=s=>(s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ================= PACOTES — só o conteúdo muda; o motor é um só ================= */
+const PACKS = {
+
+  /* M1 · A Causa — VOZ APROVADA, verbatim */
+  m1:{ id:'m1', livro:'M1 · A Causa', dominio:'eu', voz:'aprovada', status:'Voz aprovada, verbatim das conversas de 21–22/08.',
+    saudacao:{h:'Em qual estado você chega e por quê?', s:'Marque o estado com que você chegou. Não é teste nem nota — é um espelho: eu devolvo o que você me mostrar.'},
+    marcacoes:[
+      {id:'efeito',cap:'O que você vive hoje',cenas:[
+        {k:'agitacao',b:'Agitação',s:'a sensação de correr o dia inteiro e, no fim, sentir que não saiu do lugar'},
+        {k:'peso',b:'Peso',s:'um cansaço que o descanso não resolve, como se ele viesse de outro lugar'},
+        {k:'repeticao',b:'Repetição',s:'a impressão de cair sempre na mesma situação, mesmo quando tudo à volta muda'},
+        {k:'trava',b:'Trava',s:'saber com clareza o que precisa mudar — e mesmo assim não conseguir dar o primeiro passo'},
+        {k:'apagado',b:'Apagado',s:'uma energia que baixou, as coisas perdendo um pouco a cor'}]},
+      {id:'padrao',cap:'O jeito que se repete',cenas:[
+        {k:'abandono',b:'Abandono',s:'começar as coisas com força e largar na metade, quando a empolgação esfria'},
+        {k:'fuga',b:'Fuga',s:'se afastar quando a coisa aperta ou chega perto demais'},
+        {k:'sobrecarga',b:'Sobrecarga',s:'assumir mais do que cabe e depois se afogar tentando dar conta de tudo'},
+        {k:'adiamento',b:'Adiamento',s:'ficar esperando o momento certo, juntando informação, e não começar nunca'},
+        {k:'apagamento',b:'Apagamento de si',s:'deixar o que você quer em segundo plano para dar conta do que os outros esperam'}]}],
+    _EF:{agitacao:"a sensação de correr o dia inteiro e, no fim, sentir que não saiu do lugar",peso:"um cansaço que o descanso não resolve, como se ele viesse de outro lugar",repeticao:"a impressão de cair sempre na mesma situação, mesmo quando tudo à volta muda",trava:"saber com clareza o que precisa mudar — e mesmo assim não conseguir dar o primeiro passo",apagado:"uma energia que baixou, as coisas perdendo um pouco a cor"},
+    _PA:{abandono:"começar as coisas com força e largar na metade, quando a empolgação esfria",fuga:"se afastar quando a coisa aperta ou chega perto demais",sobrecarga:"assumir mais do que cabe e depois se afogar tentando dar conta de tudo",adiamento:"ficar esperando o momento certo, juntando informação, e não começar nunca",apagamento:"deixar o que você quer em segundo plano para dar conta do que os outros esperam"},
+    _FAMILIA:{sobrecarga:"excesso",adiamento:"excesso",fuga:"recuo",abandono:"recuo",apagamento:"ausencia"},
+    _COSTURA:{excesso:"Talvez isso que te incomoda não venha de fazer pouco — venha de não caber tudo o que você acha que precisa segurar. O que você sente e o jeito de assumir demais podem ser a mesma coisa, vista por dois ângulos.",recuo:"Talvez o que se repete e o hábito de sair antes da hora estejam segurando um ao outro. O que te incomoda pode ser menos sobre o que acontece, e mais sobre o instante em que você se afasta.",ausencia:"Talvez isso que você sente não seja de fazer demais — seja de aparecer de menos na própria vida. Quando o que você quer fica sempre por último, o ânimo costuma ser o primeiro a avisar."},
+    _ABRIR:"Isto é só o que você me mostrou hoje — um retrato de agora, não uma sentença. Quando quiser, a Pausa é um bom lugar para ficar um instante com isso.",
+    _PONTE_FULL:'Hoje isso é uma <b>foto</b>. Com o tempo, esse padrão pode virar <b>filme</b> — dá pra ver como ele se move.',
+    _PONTE_LEVE:'Hoje isso é uma <b>foto</b>. Com o tempo, isso pode virar <b>filme</b> — dá pra ver como se move.',
+    gerar(m,o={}){const ef=m.efeito,pa=m.padrao,leve=o.leve||!pa;
+      if(ef==='apagado')return{tipo:'acolhimento',paragrafos:["Olhando o que você trouxe: uma energia que baixou, as coisas perdendo um pouco a cor. Isso não é preguiça nem falha — é um estado, e estados passam.","Você ainda assim veio até aqui e se olhou. Isso já é movimento, mesmo que não pareça.","Não precisa resolver nada agora. Se quiser, a Pausa é um lugar de respiro — sem cobrança, sem próximo passo obrigatório. Um de cada vez."],ponte:null};
+      if(leve)return{tipo:'espelho',devolver:"Olhando o que você trouxe: "+this._EF[ef]+".",repare:null,costura:null,abrir:this._ABRIR,ponte:this._PONTE_LEVE};
+      return{tipo:'espelho',devolver:"Olhando o que você trouxe: "+this._EF[ef]+". E, por baixo disso, um jeito que se repete — "+this._PA[pa]+".",repare:"Repare como os dois conversam.",costura:this._COSTURA[this._FAMILIA[pa]],abrir:this._ABRIR,ponte:this._PONTE_FULL};}
+  },
+
+  /* L5 · A Escolha da Resposta — proposta */
+  l5:{ id:'l5', livro:'L5 · A Escolha da Resposta', dominio:'eu', voz:'aprovada', status:'Arquitetura real (colheita→semente, 3 faces); voz aprovada.',
+    saudacao:{h:'O que você faz quando cuidou da causa e a colheita não veio?', s:'Você cuidou da causa e a colheita não veio. Isto é um espelho da sua resposta — oferecido, nunca cobrado.'},
+    marcacoes:[
+      {id:'face',cap:'O desencontro que você vive',cenas:[
+        {k:'recaida',b:'A recaída',s:'Fiz o trabalho, cuidei da causa — e recaí mesmo assim.'},
+        {k:'frustracao',b:'A frustração legítima',s:'Fiz o que era certo, e o resultado simplesmente não veio.'},
+        {k:'sem_agencia',b:'O que não depende de mim',s:'Estou diante de algo que eu não escolhi e não posso mudar.'}]},
+      {id:'resposta',cap:'O que você faz diante disso',cenas:[
+        {k:'culpar_promessa',b:'Culpo a promessa',s:'Concluo que o método falhou comigo.'},
+        {k:'culpar_si',b:'Culpo a mim',s:'Concluo que o problema sou eu — não fiz o bastante.'},
+        {k:'agarrar',b:'Fico na colheita',s:'Fico remoendo o resultado que não veio.'},
+        {k:'semente',b:'Volto à semente',s:'Olho o que ainda está nas minhas mãos.'}]}],
+    _FACE:{recaida:"a recaída — cuidar da causa e cair mesmo assim",frustracao:"a frustração de fazer o certo e o resultado não vir"},
+    _RESP:{culpar_promessa:"conclui que a promessa falhou",culpar_si:"vira juiz de si mesmo",agarrar:"fica preso na colheita que não veio",semente:"volta a olhar a semente"},
+    _FAMILIA:{culpar_promessa:"fora",culpar_si:"dentro",agarrar:"colheita",semente:"semente"},
+    _COSTURA:{fora:"Talvez a promessa não tenha falhado — talvez ela nunca tenha sido um contrato de resultado. Você cuidou da causa; a colheita é que tem tempo próprio.",dentro:"Fazer o trabalho e o resultado não vir não é prova de que você falhou. A semente foi cuidada; a colheita não obedece a esforço — obedece a tempo, e o tempo não é seu.",colheita:"O que dói é a colheita que não veio — e ela nunca esteve inteira nas suas mãos. O que sempre esteve foi a semente: o que você planta a partir de agora.",semente:"Você já está olhando para onde existe liberdade — a semente, não a colheita. Essa é a resposta que sobra quando o resultado não vem."},
+    _ABRIR:"Isto é só o que você me mostrou hoje — um retrato de agora, não uma sentença. A resposta é oferecida, nunca cobrada. Quando quiser, a Pausa é um bom lugar para ficar um instante com isso.",
+    _PONTE_FULL:'Hoje isso é uma <b>resposta</b>. Com o tempo, pode virar um <b>jeito de responder</b> — uma liberdade que não pede permissão ao resultado.',
+    _PONTE_LEVE:'Hoje isso é o que você trouxe. Com o tempo, dá pra ver <b>como você responde</b> quando a vida não obedece.',
+    gerar(m,o={}){const f=m.face,r=m.resposta,leve=o.leve||!r;
+      if(f==='sem_agencia')return{tipo:'acolhimento',paragrafos:["Olhando o que você trouxe: algo que você não escolheu e não pode mudar. Isso não pede de você uma solução — pede, no máximo, um lugar para ser sentido.","Não é verdade que 'sempre há uma escolha' diante do que já aconteceu. O que às vezes existe, e nem sempre agora, é escolha em como você atravessa — e ela não se cobra.","Não precisa responder nada hoje. A Pausa é um lugar de respiro, sem próximo passo obrigatório."],ponte:null};
+      if(leve)return{tipo:'espelho',devolver:"Olhando o que você trouxe: "+this._FACE[f]+".",repare:null,costura:null,abrir:this._ABRIR,ponte:this._PONTE_LEVE};
+      return{tipo:'espelho',devolver:"Olhando o que você trouxe: "+this._FACE[f]+". E, diante disso, você "+this._RESP[r]+".",repare:"Repare: a colheita e a resposta não são a mesma coisa.",costura:this._COSTURA[this._FAMILIA[r]],abrir:this._ABRIR,ponte:this._PONTE_FULL};}
+  },
+
+  /* L6 · O Nome que Você Assina — proposta */
+  l6:{ id:'l6', livro:'L6 · O Nome que Você Assina', dominio:'eu', voz:'aprovada', status:'Arquitetura real (estou→sou); voz aprovada. Cicatriz→acolhimento confirmado.',
+    saudacao:{h:'Qual a identidade que você herdou, sem saber?', s:'Um estado que virou essência, uma frase que virou cela. Isto é um espelho — devolvido, nunca cravado.'},
+    marcacoes:[
+      {id:'frase',cap:'A frase que virou cela',cenas:[
+        {k:'herdado',b:'O roteiro herdado',s:'Uma frase que me deram — assinei sem ler.'},
+        {k:'cicatriz',b:'A cicatriz que virou nome',s:'Virou meu nome depois de uma dor.'},
+        {k:'repetida',b:'"Eu sou assim"',s:'De tanto repetir, virou cela.'}]},
+      {id:'grafia',cap:'Como você segura essa frase',cenas:[
+        {k:'parede',b:'Como parede (sou)',s:'"Sou assim e pronto."'},
+        {k:'varanda',b:'Como varanda (estou)',s:'"Estou assim, por ora."'},
+        {k:'luto',b:'No luto do nome antigo',s:'Sei que não sou mais isso, mas custa soltar.'},
+        {k:'caneta',b:'Com a caneta na mão',s:'Quero reler e reassinar — retomar a autoria.'}]}],
+    _FRASE:{herdado:"um roteiro que você assinou sem ler",repetida:"um \u201Ceu sou assim\u201D que, de tanto repetir, virou cela"},
+    _RESP:{parede:"segura como parede — \u201Csou e pronto\u201D",varanda:"já começa a ver como varanda — \u201Cestou, por ora\u201D",luto:"está no luto do nome antigo",caneta:"quer reler e reassinar"},
+    _FAMILIA:{parede:"sentenca",varanda:"varanda",luto:"luto",caneta:"autoria"},
+    _COSTURA:{sentenca:"Talvez o que você chama de \u201Csou\u201D seja um \u201Cestou\u201D que ficou tempo demais. Uma parede feita de repetição ainda é feita de frases — e frase se pode reler.",varanda:"Você já trocou a parede pela varanda: \u201Cestou\u201D, não \u201Csou\u201D. É a diferença entre uma cela e um lugar de onde se pode sair quando quiser.",luto:"Soltar um nome antigo tem luto de verdade — ele te explicou por um tempo, te serviu. Deixá-lo ir não apaga o que passou; só devolve a caneta à sua mão.",autoria:"A caneta sempre foi sua, mesmo quando outro escreveu a primeira linha. Assinar não é achar um eu escondido — é reconhecer a letra e reescrever a frase."},
+    _ABRIR:"Isto é só o que você me mostrou hoje — um retrato de agora, não uma sentença. O nome é assinado, nunca cravado. Quando quiser, a Pausa é um bom lugar para ficar um instante com isso.",
+    _PONTE_FULL:'Hoje isso é uma <b>frase</b>. Com o tempo, dá pra ver que ela foi <b>assinada</b> — e o que se assina, se pode reassinar.',
+    _PONTE_LEVE:'Hoje isso é uma <b>frase</b> que você carrega. Com o tempo, dá pra ver se você a assinou ou só a herdou.',
+    gerar(m,o={}){const fr=m.frase,g=m.grafia,leve=o.leve||!g;
+      if(fr==='cicatriz')return{tipo:'acolhimento',paragrafos:["Olhando o que você trouxe: um nome que nasceu de uma dor. Isso não é uma frase qualquer para reassinar — é uma cicatriz, e cicatriz merece cuidado, não pressa.","Não precisa trocar esse nome agora, nem provar que já superou. Que ele tenha te protegido um dia não é fraqueza sua.","Se quiser, a Pausa é um lugar de respiro. Um nome se relê quando há chão para isso — e não há relógio nisso."],ponte:null};
+      if(leve)return{tipo:'espelho',devolver:"Olhando o que você trouxe: "+this._FRASE[fr]+".",repare:null,costura:null,abrir:this._ABRIR,ponte:this._PONTE_LEVE};
+      return{tipo:'espelho',devolver:"Olhando o que você trouxe: "+this._FRASE[fr]+". E você a "+this._RESP[g]+".",repare:"Repare: a frase é uma coisa; o jeito de segurá-la é outra.",costura:this._COSTURA[this._FAMILIA[g]],abrir:this._ABRIR,ponte:this._PONTE_FULL};}
+  },
+
+  /* L7 · A Prisão Sem Muros — proposta (cortes travados) */
+  l7:{ id:'l7', livro:'L7 · A Prisão Sem Muros', dominio:'eu', voz:'aprovada', status:'Arquitetura real (o milímetro; cortes travados vs L5/CCR); voz aprovada.',
+    saudacao:{h:'Aquilo que lhe prende, também pode lhe libertar?', s:'Entre o que te atinge e o que você responde há um espaço — às vezes zerado. Isto é um espelho do instante, não um veredito.'},
+    marcacoes:[
+      {id:'choque',cap:'O que te atingiu',cenas:[
+        {k:'palavra',b:'Uma palavra',s:'Algo que alguém disse — um tom, uma crítica.'},
+        {k:'fato',b:'Um fato',s:'Um contratempo, uma notícia, algo que aconteceu.'},
+        {k:'interno',b:'Um gatilho interno',s:'Uma lembrança, um pensamento que veio de dentro.'},
+        {k:'tomou',b:'Me tomou por inteiro',s:'Não houve milímetro nenhum — me levou.'}]},
+      {id:'reacao',cap:'O que aconteceu no milímetro',cenas:[
+        {k:'colado',b:'Reagi colado (calor)',s:'Respondi grudado no choque, sem intervalo.'},
+        {k:'tarde',b:'Percebi depois',s:'Só vi o espaço quando já tinha reagido.'},
+        {k:'fresta',b:'Abri uma fresta',s:'Houve um instante — hesitei antes de responder.'},
+        {k:'luz',b:'Abri espaço (luz)',s:'Vi o intervalo e escolhi dentro dele.'}]}],
+    _CHOQUE:{palavra:"uma palavra que te atingiu",fato:"um fato que aconteceu",interno:"um gatilho que veio de dentro"},
+    _REACAO:{colado:"reagiu colado, sem intervalo",tarde:"só viu o espaço depois de já ter reagido",fresta:"abriu uma fresta antes de responder",luz:"abriu espaço e escolheu dentro dele"},
+    _FAMILIA:{colado:"colapso",tarde:"colapso",fresta:"fresta",luz:"espaco"},
+    _COSTURA:{colapso:"No calor, o estímulo e a resposta viraram a mesma coisa — o espaço entre eles zerou. Isso não é defeito de caráter; é o milímetro que ainda não foi aberto, e ele se abre com treino, não com culpa.",fresta:"Você abriu uma fresta — um instante entre o choque e a resposta. É pouco e é tudo: a prisão não tem muro, tem espaço colapsado, e você acabou de mostrar que ele cede.",espaco:"Você viu o intervalo e respondeu de dentro dele — luz, não calor. A porta esteve aberta o tempo todo; hoje você passou por ela."},
+    _ABRIR:"Isto é só o que você me mostrou hoje — um retrato de agora, não uma sentença. O espaço se abre aos poucos, e a Pausa é onde ele cabe. Sem cobrança.",
+    _PONTE_FULL:'Hoje isso é um <b>instante</b>. Com o tempo, o milímetro entre o choque e a resposta pode virar um <b>espaço</b> onde você mora.',
+    _PONTE_LEVE:'Hoje isso é o que te atingiu. Com o tempo, dá pra ver o <b>milímetro</b> entre o choque e a sua resposta.',
+    gerar(m,o={}){const c=m.choque,r=m.reacao,leve=o.leve||!r;
+      if(c==='tomou')return{tipo:'acolhimento',paragrafos:["Olhando o que você trouxe: algo que te tomou por inteiro, sem deixar milímetro nenhum. Quando o choque é grande assim, não havia espaço a abrir — e isso não é falha sua.","Não é verdade que \u201Csempre há um instante de escolha\u201D. Às vezes o instante some, e exigir que ele estivesse lá seria injusto com você.","Não precisa treinar nada agora. A Pausa é um lugar de respiro. O espaço volta quando o chão volta — no seu tempo."],ponte:null};
+      if(leve)return{tipo:'espelho',devolver:"Olhando o que você trouxe: "+this._CHOQUE[c]+".",repare:null,costura:null,abrir:this._ABRIR,ponte:this._PONTE_LEVE};
+      return{tipo:'espelho',devolver:"Olhando o que você trouxe: "+this._CHOQUE[c]+". E, no milímetro, você "+this._REACAO[r]+".",repare:"Repare: o choque e a resposta não são a mesma coisa — há um espaço entre eles.",costura:this._COSTURA[this._FAMILIA[r]],abrir:this._ABRIR,ponte:this._PONTE_FULL};}
+  },
+
+  /* L8 · A Economia da Atenção — cards do V2 verbatim; voz do reflexo proposta */
+  l8:{ id:'l8', livro:'L8 · A Economia da Atenção', dominio:'eu', voz:'aprovada', status:'Cards do V2 verbatim; voz aprovada. Preocupação→acolhimento confirmado.',
+    saudacao:{h:'Atenção! Você escolhe ou está sendo escolhido?', s:'Marque o que puxa e o que você faz quando puxa. Não é teste nem nota — é um espelho: eu devolvo o que você me mostrar.'},
+    marcacoes:[
+      {id:'estimulo',cap:'O que está puxando sua atenção',cenas:[
+        {k:'tela',b:'📱 Uma tela / aplicativo',s:'Notificações, aplicativos ou conteúdos.'},
+        {k:'pessoa',b:'💬 Uma pessoa ou mensagem',s:'Conversas, respostas ou expectativas.'},
+        {k:'pensamento',b:'🧠 Meus pensamentos',s:'Ideias, lembranças ou preocupações.'},
+        {k:'preocupacao',b:'⚡ Uma preocupação',s:'Algo que continua ocupando a mente.'},
+        {k:'tarefa',b:'📋 Uma tarefa',s:'Uma demanda que pede atenção.'},
+        {k:'descoberta',b:'🌐 Algo que quero descobrir',s:'Curiosidade, informação ou novidade.'}]},
+      {id:'resposta',cap:'O que acontece quando ela puxa',cenas:[
+        {k:'segue',b:'Eu sigo imediatamente',s:'Vou junto com o estímulo.'},
+        {k:'paro',b:'Eu paro o que estava fazendo',s:'O foco anterior perde espaço.'},
+        {k:'alterno',b:'Começo a alternar entre coisas',s:'Meu foco passa de uma coisa para outra.'},
+        {k:'resisto',b:'Tento resistir',s:'Percebo o estímulo e tento não acompanhá-lo.'},
+        {k:'percebe',b:'Percebo e escolho',s:'Crio um intervalo antes de responder.'},
+        {k:'depois',b:'Só percebo depois',s:'Reconheço o padrão quando já aconteceu.'}]}],
+    _EST:{tela:"uma tela ou aplicativo",pessoa:"uma pessoa ou mensagem",pensamento:"seus próprios pensamentos",tarefa:"uma tarefa",descoberta:"algo que você quer descobrir"},
+    _RESP:{segue:"vai junto na hora",paro:"larga o que estava fazendo",alterno:"passa a alternar entre as coisas",resisto:"tenta resistir",percebe:"percebe e escolhe",depois:"só percebe depois"},
+    _FAMILIA:{segue:"capturado",paro:"capturado",depois:"capturado",alterno:"fragmentado",resisto:"resistindo",percebe:"espaco"},
+    _COSTURA:{capturado:"Aqui o estímulo e a resposta viraram um só movimento — a atenção foi antes de você escolher. Não é falta de força de vontade; é um estado de uso, não um defeito seu. E entre os dois cabe um espaço.",fragmentado:"Sua atenção não foi capturada por uma coisa — foi repartida entre várias. O cansaço aí não é de fazer demais; é de trocar de foco o tempo todo. O espaço consciente começa em escolher uma.",resistindo:"Você percebeu o estímulo e tentou não ir junto — já há um espaço aí, mesmo em forma de luta. Resistir gasta; escolher descansa. O próximo passo não é resistir mais, é escolher antes.",espaco:"Você viu o intervalo entre o estímulo e a sua resposta e escolheu dentro dele. Isso é o Espaço Consciente — e prova que a atenção é sua para dirigir, não só algo que te acontece."},
+    _ABRIR:"Isto é só o que você me mostrou hoje — um retrato de agora, não um veredito. Não existe usuário bom ou ruim; existem estados de uso. Quando quiser, a Pausa é onde o espaço cabe.",
+    _PONTE_FULL:'Hoje isso é um <b>retrato</b> da sua atenção. Com o tempo, o espaço entre o estímulo e a sua resposta vira o lugar de onde você <b>escolhe</b>.',
+    _PONTE_LEVE:'Hoje isso é o que puxa sua atenção. Com o tempo, dá pra ver <b>quem está escolhendo</b> — o estímulo ou você.',
+    gerar(m,o={}){const e=m.estimulo,r=m.resposta,leve=o.leve||!r;
+      if(e==='preocupacao')return{tipo:'acolhimento',paragrafos:["Olhando o que você trouxe: uma preocupação que continua ocupando a mente. Quando algo pesa de verdade, a atenção vai pra lá sozinha — isso não é falta de disciplina.","Não é hora de treinar foco. Uma mente ocupada por um cuidado real está fazendo o que faz sentido: cuidando.","Se quiser, a Pausa é um lugar de respiro. O espaço para escolher volta quando o peso afrouxa — no seu tempo."],ponte:null};
+      if(leve)return{tipo:'espelho',devolver:"Olhando o que você trouxe: sua atenção puxada por "+this._EST[e]+".",repare:null,costura:null,abrir:this._ABRIR,ponte:this._PONTE_LEVE};
+      return{tipo:'espelho',devolver:"Olhando o que você trouxe: sua atenção puxada por "+this._EST[e]+". E, quando ela puxa, você "+this._RESP[r]+".",repare:"Repare: entre o que puxa e o que você faz existe um espaço.",costura:this._COSTURA[this._FAMILIA[r]],abrir:this._ABRIR,ponte:this._PONTE_FULL};}
+  },
+
+  /* L9 · O Sistema — proposta (Conceito); sem acolhimento */
+  l9:{ id:'l9', livro:'L9 · O Sistema', dominio:'eu', voz:'aprovada', status:'Arquitetura em Conceito (herdado→operado, sem vilão); voz aprovada. Sem acolhimento (por desenho).',
+    saudacao:{h:'O sistema que você roda, pode não ser totalmente seu?', s:'Você o executa sem ter assinado. Isto é um espelho para ver o código e assumir o console — nunca para derrubar a máquina.'},
+    marcacoes:[
+      {id:'codigo',cap:'O código herdado que você percebe rodando',cenas:[
+        {k:'certo_errado',b:'Certo e errado prontos',s:'Recebi feito o que é certo e o que é errado.'},
+        {k:'merecer',b:'Uma régua de merecer',s:'Executo uma medida de valer que não escrevi.'},
+        {k:'papel',b:'Um papel atribuído',s:'O que eu "devo" ser, dado antes de eu chegar.'},
+        {k:'ritmo',b:'Um ritmo de produzir',s:'Um jeito de correr e valer que nunca escolhi.'}]},
+      {id:'travessia',cap:'Onde você está na travessia',cenas:[
+        {k:'executado',b:'Sou executado por ele',s:'Rodo o código sem ver que é código.'},
+        {k:'vejo',b:'Vejo que é herdado',s:'Percebo que recebi, não escolhi.'},
+        {k:'reconheco',b:'Reconheço o que protegeu',s:'Vejo que me serviu um dia — e já não preciso.'},
+        {k:'opero',b:'Começo a operar o meu',s:'Assino o sistema que sustenta minhas respostas.'}]}],
+    _CODIGO:{certo_errado:"um código de certo e errado que veio pronto",merecer:"uma régua de merecer que você executa sem ter escrito",papel:"um papel que te foi atribuído antes de você chegar",ritmo:"um ritmo de produzir que você nunca escolheu"},
+    _TRAV:{executado:"é executado por ele, sem ver que é código",vejo:"já vê que ele foi herdado, não escolhido",reconheco:"reconhece o que ele protegeu — e já não precisa",opero:"começa a operar o seu, assinando as próprias respostas"},
+    _FAMILIA:{executado:"executado",vejo:"visto",reconheco:"reconhecido",opero:"operado"},
+    _COSTURA:{executado:"Um código que roda sem ser visto não é um vilão — é uma fábrica que girou antes de você chegar. Ela te executou; culpá-la seria só \u201Ca culpa é dos outros\u201D em tamanho grande. Vê-la já tira você do piloto automático.",visto:"Você já vê que o código foi herdado, não escrito por você. Isso não acusa ninguém — só desfaz a ilusão de que \u201Csempre foi assim\u201D é o mesmo que \u201Ctem que ser assim\u201D.",reconhecido:"Reconhecer que o sistema herdado te protegeu um dia — e agradecer — é o que te livra de virar réu ou juiz. O que protegeu pode ser superado sem ser acusado. Aí a caneta volta para a sua mão.",operado:"Você começa a operar o seu sistema em vez de ser executado pelo herdado — assume o console. Isso não derruba máquina nenhuma nem muda o mundo por decreto; muda quem conduz o seu."},
+    _ABRIR:"Isto é só o que você me mostrou hoje — um retrato de agora, não uma sentença. O sistema herdado não é réu; é ponto de partida. Quando quiser, a Pausa é um bom lugar para ficar um instante com isso.",
+    _PONTE_FULL:'Hoje isso é um <b>código herdado</b>. Com o tempo, dá pra ver a travessia — de ser <b>executado</b> por ele a <b>operar</b> o seu.',
+    _PONTE_LEVE:'Hoje isso é um código que você reconheceu rodando. Com o tempo, dá pra ver se você o executa — ou o opera.',
+    gerar(m,o={}){const c=m.codigo,t=m.travessia,leve=o.leve||!t;
+      if(leve)return{tipo:'espelho',devolver:"Olhando o que você trouxe: "+this._CODIGO[c]+".",repare:null,costura:null,abrir:this._ABRIR,ponte:this._PONTE_LEVE};
+      return{tipo:'espelho',devolver:"Olhando o que você trouxe: "+this._CODIGO[c]+". E, na travessia, você "+this._TRAV[t]+".",repare:"Repare: ser executado pelo sistema e operar o seu não são a mesma coisa.",costura:this._COSTURA[this._FAMILIA[t]],abrir:this._ABRIR,ponte:this._PONTE_FULL};}
+  },
+};
+
+const ORDEM=[{k:'m1',rot:'M1 · Causa'},{k:'l5',rot:'L5 · Resposta'},{k:'l6',rot:'L6 · Nome'},{k:'l7',rot:'L7 · Prisão'},{k:'l8',rot:'L8 · Atenção'},{k:'l9',rot:'L9 · Sistema'}];
+
+/* ================= MOTOR — um só, para todos os pacotes ================= */
+function montarEspelho(pack, modo='completo'){
+  const esp=document.getElementById('esp');
+  const passos = modo==='leve' ? pack.marcacoes.slice(0,1) : pack.marcacoes;
+  const marks={}; let step=0;
+  esp.innerHTML=`
+    <div class="top"><div class="mode"><button data-m="completo"${modo==='completo'?' class="on"':''}>Completo</button><button data-m="leve"${modo==='leve'?' class="on"':''}>Leve</button></div></div>
+    <div class="prop ${pack.voz==='aprovada'?'aprovada':'proposta'}"><b>${pack.voz==='aprovada'?'Voz aprovada':'Proposta de voz'}</b> — ${ESC(pack.status)}</div>
+    <div class="saud"><p class="h">${ESC(pack.saudacao.h)}</p><p class="s">${ESC(pack.saudacao.s)}</p></div>
+    <div id="fluxo"></div><div class="gate" id="gate"></div>`;
+  esp.querySelectorAll('.mode button').forEach(b=>b.onclick=()=>montarEspelho(pack,b.dataset.m));
+  const fluxo=esp.querySelector('#fluxo');
+  function render(){
+    if(step<passos.length){
+      const m=passos[step];
+      fluxo.innerHTML=`<div class="stepcap">${ESC(m.cap)} — marque o que você reconhece</div>
+        <div class="cenas">${m.cenas.map(c=>`<button class="cena" data-k="${ESC(c.k)}"><b>${ESC(c.b)}</b><span>${ESC(c.s)}</span></button>`).join('')}</div>
+        <div class="bar">${step>0?'<button class="btn" data-back>Voltar</button>':''}<button class="btn primary" data-next disabled>${step<passos.length-1?'Continuar':'Ver o espelho'}</button></div>`;
+      let sel=null;
+      fluxo.querySelectorAll('.cena').forEach(el=>el.onclick=()=>{fluxo.querySelectorAll('.cena').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');sel=el.dataset.k;fluxo.querySelector('[data-next]').disabled=false;});
+      fluxo.querySelector('[data-next]').onclick=()=>{marks[m.id]=sel;step++;render();};
+      const back=fluxo.querySelector('[data-back]');if(back)back.onclick=()=>{step--;render();};
+    } else {
+      const r=pack.gerar(marks,{leve:modo==='leve'});
+      fluxo.innerHTML=cardHTML(r)+`<div class="bar"><button class="btn" data-again>Olhar de novo</button></div>`;
+      fluxo.querySelector('[data-again]').onclick=()=>montarEspelho(pack,modo);
+      nucleo.dominio(pack.dominio).gravar({espelho:pack.id,modo,reconhecido:marks,tipo:r.tipo,quando:new Date().toISOString()});
+    }
+  }
+  function cardHTML(r){
+    if(r.tipo==='acolhimento')return `<div class="espM1-card acolhe"><div class="espM1-cap">um espelho do seu momento</div>${r.paragrafos.map(p=>`<p class="espM1-acolhe-p">${ESC(p)}</p>`).join('')}</div>`;
+    return `<div class="espM1-card"><div class="espM1-cap">um espelho do que você trouxe</div>`+
+      `<p class="espM1-devolver">${ESC(r.devolver)}</p>`+(r.repare?`<p class="espM1-repare">${ESC(r.repare)}</p>`:'')+
+      (r.costura?`<p class="espM1-costura">${ESC(r.costura)}</p>`:'')+`<p class="espM1-abrir">${ESC(r.abrir)}</p>`+
+      `<p class="espM1-ponte">${r.ponte}</p></div>`;
+  }
+  render();
+  nucleo.isPro().then(()=>{esp.querySelector('#gate').innerHTML=`Marcar leva ao espelho (livre). Escrever leva ao Mentor <b>Pro</b>.`;});
+}
+
+/* ================= SELETOR DA SÉRIE ================= */
+function serie(atual){
+  const nav=document.getElementById('serienav');
+  nav.innerHTML=ORDEM.map(o=>`<button data-k="${o.k}"${o.k===atual?' class="on"':''}>${o.rot}</button>`).join('');
+  nav.querySelectorAll('button').forEach(b=>b.onclick=()=>{serie(b.dataset.k);montarEspelho(PACKS[b.dataset.k]);});
+}
+
+/* ===== shell: roteador + telas ===== */
+let espInit=false;
+function ir(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id));
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.s===id));
+  if(id==='s-espelhos'&&!espInit){espInit=true;serie('m1');montarEspelho(PACKS.m1);}
+  if(id==='s-diario')renderDiario();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function irEspelho(k){ if(!espInit){espInit=true;} ir('s-espelhos'); serie(k); montarEspelho(PACKS[k]); }
+function renderDiario(){
+  const el=document.getElementById('diario'); if(!el)return;
+  if(!DIARIO.length){el.innerHTML='<div class="empty">Seus espelhos aparecem aqui — um retrato de cada vez que você se olhou.</div>';return;}
+  el.innerHTML='<div class="dseq">'+DIARIO.slice().reverse().map(e=>{
+    const nome=(PACKS[e.espelho]||{}).livro||e.espelho;
+    const marcas=Object.values(e.reconhecido||{}).join(' · ');
+    const q=new Date(e.quando).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+    return `<div class="dentry"><div class="h">${nome} · ${e.tipo==='acolhimento'?'acolhimento':'espelho'}</div><div class="m">${marcas||'—'}</div><div class="w">${q}</div></div>`;
+  }).join('')+'</div>';
+}
+renderDiario();
+
+let avrsSharedContext=null;
+window.addEventListener('message',e=>{
+  if(!e.data||e.data.type!=='avrs:shared-context')return;
+  avrsSharedContext=e.data;
+  const estado=document.getElementById('estado');
+  if(estado&&e.data.user&&e.data.user.email)estado.textContent='Núcleo pessoal · conectado';
+});
+if(window.parent&&window.parent!==window)window.parent.postMessage({type:'avrs:journey-ready'},'*');
+</script></body></html>
