@@ -80,7 +80,61 @@ body{padding-bottom:74px}
 .nav button{flex:1;background:none;border:1px solid transparent;border-radius:12px;color:var(--text3);font-family:'DM Sans';font-size:10px;padding:10px 2px 11px;cursor:pointer;letter-spacing:.3px;transition:.2s;min-height:62px}.nav button:hover{background:rgba(126,200,195,.07);color:var(--text2)}
 .nav button .i{display:block;font-size:17px;margin-bottom:2px;filter:grayscale(1) opacity(.7)}
 .nav button.on{color:var(--federation2);background:rgba(126,200,195,.10);border-color:rgba(126,200,195,.18)}.nav button.on .i{filter:none}
-</style></head><body>
+</style><script type="module">
+/* ===== FIREBASE REAL — mesma config do app principal (sessão chega pronta, mesma origem) =====
+   Diário deste app é SEPARADO do app grande: grava em localStorage 'avrs4_espelhos_e'
+   e num campo próprio no Firestore ('espelhos'), sem tocar no documento principal do usuário.
+   isPro é lido (nunca escrito) do mesmo campo que o app grande usa — a assinatura é da conta,
+   não do app. */
+import{initializeApp}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import{getFirestore,doc,setDoc,getDoc}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import{getAuth,onAuthStateChanged}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+const firebaseConfig={apiKey:"AIzaSyBy13fDtxYQlkMozofoIoYS27VykHMMuDw",authDomain:"avrs-app.firebaseapp.com",projectId:"avrs-app",storageBucket:"avrs-app.firebasestorage.app",messagingSenderId:"1036042586771",appId:"1:1036042586771:web:b4a9bac3dcc7c0ce461b66"};
+const _app=initializeApp(firebaseConfig);
+const _db=getFirestore(_app);
+const _auth=getAuth(_app);
+
+window._avrsEspelhos={pronto:false, uid:null, email:null, isPro:false};
+
+async function _carregarNuvem(uid){
+  try{
+    const d=await getDoc(doc(_db,'users',uid));
+    if(d.exists()){
+      const data=d.data();
+      window._avrsEspelhos.isPro = !!(data.isPro && (!data.proExpira || data.proExpira>Date.now()));
+      const cloudEsp = data.espelhos && data.espelhos.entries || [];
+      if(cloudEsp.length){
+        const local=JSON.parse(localStorage.getItem('avrs4_espelhos_e')||'[]');
+        const ids=new Set(local.map(e=>e.id));
+        const novos=cloudEsp.filter(e=>!ids.has(e.id));
+        if(novos.length){
+          const merged=[...local,...novos].sort((a,b)=>b.id-a.id);
+          localStorage.setItem('avrs4_espelhos_e', JSON.stringify(merged));
+        }
+      }
+    }
+  }catch(e){ console.error('[Espelhos] Falha ao ler Firestore:', e); }
+}
+
+window._avrsEspelhosSalvarNuvem=async function(entries){
+  if(!window._avrsEspelhos.uid) return;
+  try{
+    await setDoc(doc(_db,'users',window._avrsEspelhos.uid), {espelhos:{entries, lastSync:Date.now()}}, {merge:true});
+  }catch(e){ console.error('[Espelhos] Falha ao gravar no Firestore:', e); }
+};
+
+onAuthStateChanged(_auth, async (user)=>{
+  if(user){
+    const uid=user.email.replace(/[^a-zA-Z0-9]/g,'_');
+    window._avrsEspelhos.uid=uid; window._avrsEspelhos.email=user.email;
+    await _carregarNuvem(uid);
+  }
+  window._avrsEspelhos.pronto=true;
+  if(typeof window._avrsEspelhosOnReady==='function') window._avrsEspelhosOnReady();
+});
+</script>
+</head><body>
 
 <div class="wrap">
   <div class="appbar"><div class="b">AVR-S <span style="font-size:10px;letter-spacing:.08em;color:var(--text3);font-weight:400">REDE DE ESPELHOS</span></div><div class="chip"><span class="d"></span><span id="estado">Núcleo pessoal</span></div></div>
@@ -92,12 +146,12 @@ body{padding-bottom:74px}
   </section>
 
   <section class="screen" id="s-jornada">
-    <p class="hero">Jornada da Reconstrução</p>
+    <p class="hero">Sua Jornada</p>
     <p class="lead">Por contagem, não por data — faltar nunca pune. Um passo de cada vez.</p>
-    <button class="tile" onclick="irEspelho('m1')"><span class="t">M1 · A Causa <span class="tag free">livre</span></span><span class="d">Efeito → Padrão → Crença → Conexão. O mini-espelho.</span></button>
-    <div class="tile locked"><span class="t">M2 · O Padrão <span class="tag pro">Pro</span></span><span class="d">Aprofundar exige Pro.</span></div>
-    <div class="tile locked"><span class="t">M3 · A Crença <span class="tag pro">Pro</span></span><span class="d">A escrita vai ao Mentor, não ao espelho grátis.</span></div>
-    <div class="tile locked"><span class="t">M4 · A Reconstrução <span class="tag pro">Pro</span></span><span class="d">Aprofundar exige Pro.</span></div>
+    <button class="tile" onclick="irEspelho('m1')"><span class="t">A Causa <span class="tag free">começar aqui</span></span><span class="d">O efeito que você vive, e o padrão por baixo dele.</span></button>
+    <div class="tile locked"><span class="t">O Padrão <span class="tag pro">Pro</span></span><span class="d">Quando quiser ir mais fundo, ele continua de onde a Causa parou.</span></div>
+    <div class="tile locked"><span class="t">A Crença <span class="tag pro">Pro</span></span><span class="d">O que sustenta o padrão, escrito com calma — não pressa.</span></div>
+    <div class="tile locked"><span class="t">A Reconstrução <span class="tag pro">Pro</span></span><span class="d">O espelho se refaz aqui, um passo de cada vez.</span></div>
   </section>
 
   <section class="screen" id="s-espelhos">
@@ -112,6 +166,14 @@ body{padding-bottom:74px}
     <p class="lead">A sequência do que você reconheceu — ao longo do período. É o que o Mentor lê depois.</p>
     <div id="diario"></div>
   </section>
+  <section class="screen" id="s-evolucao">
+    <p class="hero">Quadro Evolutivo</p>
+    <p class="lead">Cada nó é um espelho. Ele acende conforme você volta a olhar por ali.</p>
+    <div id="evoMapa"></div>
+    <div id="evoMetrics" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0"></div>
+    <div id="evoEixo"></div>
+  </section>
+
 
   <section class="screen" id="s-pausa">
     <p class="hero">Pausa</p>
@@ -125,14 +187,40 @@ body{padding-bottom:74px}
   <button data-s="s-jornada" onclick="ir('s-jornada')"><span class="i">◌</span>Jornada</button>
   <button data-s="s-espelhos" onclick="ir('s-espelhos')"><span class="i">◈</span>Espelhos</button>
   <button data-s="s-diario" onclick="ir('s-diario')"><span class="i">≡</span>Diário</button>
+  <button data-s="s-evolucao" onclick="ir('s-evolucao')"><span class="i">◇</span>Evolução</button>
   <button data-s="s-pausa" onclick="ir('s-pausa')"><span class="i">·</span>Pausa</button>
 </nav>
 
 <script>
-const DIARIO=[];
-const nucleo={auth:{usuarioAtual:()=>({uid:'demo-uid'})},isPro:async()=>true,
-  dominio:(c)=>({gravar:async(r)=>{DIARIO.push({campo:c,...r});renderDiario();return{ok:true};}}),
-  mentor:{aprofundar:(e)=>console.log('[Mentor Pro]',e)}};
+let DIARIO=[]; try{ DIARIO=JSON.parse(localStorage.getItem('avrs4_espelhos_e')||'[]'); }catch(e){ DIARIO=[]; }
+function _persistirDiario(){
+  try{ localStorage.setItem('avrs4_espelhos_e', JSON.stringify(DIARIO)); }catch(e){}
+  if(typeof window._avrsEspelhosSalvarNuvem==='function') window._avrsEspelhosSalvarNuvem(DIARIO);
+}
+const nucleo={
+  auth:{usuarioAtual:()=>(window._avrsEspelhos&&window._avrsEspelhos.uid)?{uid:window._avrsEspelhos.uid}:null},
+  isPro:async()=>!!(window._avrsEspelhos&&window._avrsEspelhos.isPro),
+  dominio:(c)=>({gravar:async(r)=>{
+    if(!r.id)r.id=Date.now();
+    DIARIO.push({campo:c,...r});
+    _persistirDiario();
+    renderDiario();
+    if(typeof renderEvolucao==='function')renderEvolucao();
+    return{ok:true};
+  }}),
+  mentor:{aprofundar:(e)=>console.log('[Mentor Pro]',e)}
+};
+/* tela aguarda a sessão do Firebase antes de qualquer render que dependa de auth/isPro */
+window._avrsEspelhosOnReady=function(){
+  if(!window._avrsEspelhos.uid){
+    const el=document.getElementById('s-inicio');
+    if(el) el.insertAdjacentHTML('afterbegin','<div style="background:rgba(224,168,106,.1);border:1px solid rgba(224,168,106,.3);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:13px;color:#e0a86a">Você ainda não está conectado. Abra este espaço pelo app principal para entrar com sua conta.</div>');
+  } else {
+    if(typeof renderEvolucao==='function')renderEvolucao();
+    renderDiario();
+  }
+};
+if(window._avrsEspelhos && window._avrsEspelhos.pronto) window._avrsEspelhosOnReady();
 const ESC=s=>(s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 /* ================= PACOTES — só o conteúdo muda; o motor é um só ================= */
@@ -332,7 +420,7 @@ function montarEspelho(pack, modo='completo'){
       const r=pack.gerar(marks,{leve:modo==='leve'});
       fluxo.innerHTML=cardHTML(r)+`<div class="bar"><button class="btn" data-again>Olhar de novo</button></div>`;
       fluxo.querySelector('[data-again]').onclick=()=>montarEspelho(pack,modo);
-      nucleo.dominio(pack.dominio).gravar({espelho:pack.id,modo,reconhecido:marks,tipo:r.tipo,quando:new Date().toISOString()});
+      var _entryConversa={espelho:pack.id,modo,reconhecido:marks,tipo:r.tipo,quando:new Date().toISOString(),conversa:null};nucleo.dominio(pack.dominio).gravar(_entryConversa);if(typeof montarConvite==='function')fluxo.insertAdjacentHTML('beforeend',montarConvite(_entryConversa));if(typeof ligarConvite==='function')ligarConvite(_entryConversa,fluxo);
     }
   }
   function cardHTML(r){
@@ -360,18 +448,32 @@ function ir(id){
   document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.s===id));
   if(id==='s-espelhos'&&!espInit){espInit=true;serie('m1');montarEspelho(PACKS.m1);}
   if(id==='s-diario')renderDiario();
+  if(id==='s-evolucao'&&typeof renderEvolucao==='function')renderEvolucao();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function irEspelho(k){ if(!espInit){espInit=true;} ir('s-espelhos'); serie(k); montarEspelho(PACKS[k]); }
 function renderDiario(){
   const el=document.getElementById('diario'); if(!el)return;
   if(!DIARIO.length){el.innerHTML='<div class="empty">Seus espelhos aparecem aqui — um retrato de cada vez que você se olhou.</div>';return;}
+  window._diarioConviteHost=el;
   el.innerHTML='<div class="dseq">'+DIARIO.slice().reverse().map(e=>{
     const nome=(PACKS[e.espelho]||{}).livro||e.espelho;
     const marcas=Object.values(e.reconhecido||{}).join(' · ');
     const q=new Date(e.quando).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
-    return `<div class="dentry"><div class="h">${nome} · ${e.tipo==='acolhimento'?'acolhimento':'espelho'}</div><div class="m">${marcas||'—'}</div><div class="w">${q}</div></div>`;
+    const idx=DIARIO.indexOf(e);
+    return `<div class="dentry" data-diario-idx="${idx}" style="cursor:pointer"><div class="h">${nome} · ${e.tipo==='acolhimento'?'acolhimento':'espelho'}</div><div class="m">${marcas||'—'}</div><div class="w">${q}</div><div data-conv-slot></div></div>`;
   }).join('')+'</div>';
+  el.querySelectorAll('[data-diario-idx]').forEach(card=>{
+    card.addEventListener('click',ev=>{
+      if(ev.target.closest('[data-conv-slot]'))return;
+      const idx=+card.dataset.diarioIdx, entry=DIARIO[idx], slot=card.querySelector('[data-conv-slot]');
+      if(slot.dataset.aberto)return;
+      slot.dataset.aberto='1';
+      if(entry.conversa===undefined)entry.conversa=null;
+      slot.innerHTML=(typeof montarConvite==='function')?montarConvite(entry):'';
+      if(typeof ligarConvite==='function')ligarConvite(entry,slot);
+    });
+  });
 }
 renderDiario();
 
@@ -383,4 +485,109 @@ window.addEventListener('message',e=>{
   if(estado&&e.data.user&&e.data.user.email)estado.textContent='Núcleo pessoal · conectado';
 });
 if(window.parent&&window.parent!==window)window.parent.postMessage({type:'avrs:journey-ready'},'*');
-</script></body></html>
+</script>
+<style>
+.evo-mapa{background:linear-gradient(180deg,#19201e,#121716);border:1px solid var(--border,#26332f);border-radius:16px;padding:20px 14px;margin:12px 0}
+.evo-mapa svg{width:100%;height:auto;display:block}
+.evo-card{background:#19201e;border:1px solid var(--border,#26332f);border-radius:12px;padding:12px 8px;text-align:center}
+.evo-card .n{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold-lt,#ebd49e)}
+.evo-card .l{font-size:9px;text-transform:uppercase;color:var(--text3,#899891);margin-top:4px}
+.evo-eixo{background:#121716;border:1px solid var(--border,#26332f);border-radius:14px;padding:14px;margin-top:12px}
+.convite-espelho{border:1px solid var(--border2,#3a4b45);border-radius:14px;padding:14px;margin-top:12px;background:rgba(126,200,195,.04)}
+.convite-espelho p{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--text2,#b8bdb3);margin:0 0 10px}
+.convite-espelho .row{display:flex;gap:8px}
+.convite-espelho button{flex:1;font-size:12.5px;font-weight:600;border-radius:9px;padding:9px;cursor:pointer}
+.cv-sim{border:1px solid var(--gold,#d4b87a);background:var(--gold,#d4b87a);color:#0b0d0d}
+.cv-nao{border:1px solid var(--border2,#3a4b45);background:transparent;color:var(--text3,#899891)}
+.cv-thread{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.cv-msg{max-width:85%;padding:9px 12px;border-radius:11px;font-size:13px}
+.cv-msg.user{align-self:flex-end;background:#242019;border:1px solid var(--border2,#3a4b45)}
+.cv-msg.eco{align-self:flex-start;background:rgba(212,184,122,.08);border:1px solid rgba(212,184,122,.2);font-family:'Cormorant Garamond',serif;font-size:14.5px}
+.cv-composer{display:flex;gap:6px;margin-top:8px}
+.cv-composer input{flex:1;background:#19201e;border:1px solid var(--border2,#3a4b45);border-radius:9px;padding:9px 11px;color:#f5f0e8;font-size:13px}
+.cv-composer button{border:1px solid var(--gold,#d4b87a);background:var(--gold,#d4b87a);color:#0b0d0d;border-radius:9px;padding:0 13px;font-weight:600;cursor:pointer}
+</style>
+<script>
+/* ===== QUADRO EVOLUTIVO — mapa dos 6 espelhos + métricas + linha do tempo ===== */
+var EVO_LIVROS=(function(){
+  var out=[]; for(var k in PACKS){ out.push({id:k, nome:(PACKS[k].livro||k)}); }
+  return out;
+})();
+function evoLer(){
+  var porLivro={}; EVO_LIVROS.forEach(function(l){porLivro[l.id]=0;});
+  (DIARIO||[]).forEach(function(e){ if(porLivro.hasOwnProperty(e.espelho)) porLivro[e.espelho]++; });
+  var total=(DIARIO||[]).length;
+  var abertos=Object.keys(porLivro).filter(function(k){return porLivro[k]>0;}).length;
+  return {porLivro:porLivro, total:total, abertos:abertos};
+}
+function renderEvolucaoMapa(q){
+  var n=EVO_LIVROS.length||1, cx=280,cy=150,R=105;
+  var pts=EVO_LIVROS.map(function(l,i){
+    var ang=(-90+i*(360/n))*Math.PI/180;
+    return {x:cx+R*Math.cos(ang), y:cy+R*Math.sin(ang), l:l, n:q.porLivro[l.id]};
+  });
+  var linhas=pts.map(function(p,i){var p2=pts[(i+1)%pts.length];var acesa=p.n>0&&p2.n>0;
+    return '<line x1="'+p.x+'" y1="'+p.y+'" x2="'+p2.x+'" y2="'+p2.y+'" stroke="'+(acesa?'rgba(212,184,122,.35)':'rgba(255,255,255,.06)')+'" stroke-width="1.4"/>';}).join('');
+  var nos=pts.map(function(p){var acesa=p.n>0,r=acesa?22:17;
+    return '<g>'+(acesa?'<circle cx="'+p.x+'" cy="'+p.y+'" r="'+(r+8)+'" fill="rgba(212,184,122,.10)"/>':'')
+      +'<circle cx="'+p.x+'" cy="'+p.y+'" r="'+r+'" fill="'+(acesa?'#ebd49e':'#1c2220')+'" stroke="'+(acesa?'#d4b87a':'#3a4b45')+'" stroke-width="1.3"/>'
+      +'<circle cx="'+p.x+'" cy="'+p.y+'" r="3.5" fill="'+(acesa?'#0b0d0d':'#3a4b45')+'" opacity=".6"/>'
+      +'<text x="'+p.x+'" y="'+(p.y+r+15)+'" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="11" fill="'+(acesa?'#ebd49e':'#5c6864')+'">'+p.l.nome+(p.n>1?' · '+p.n+'x':'')+'</text></g>';}).join('');
+  return '<div class="evo-mapa"><svg viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg">'+linhas+nos+'</svg></div>';
+}
+function renderEvolucaoMetricas(q){
+  var maisRev=null,mn=0; EVO_LIVROS.forEach(function(l){if(q.porLivro[l.id]>mn){mn=q.porLivro[l.id];maisRev=l.nome;}});
+  return '<div class="evo-card"><div class="n">'+q.total+'</div><div class="l">espelhos<br>realizados</div></div>'
+    +'<div class="evo-card"><div class="n">'+q.abertos+'/'+EVO_LIVROS.length+'</div><div class="l">livros<br>abertos</div></div>'
+    +'<div class="evo-card"><div class="n">'+(maisRev||'—')+'</div><div class="l">mais<br>revisitado</div></div>';
+}
+function renderEvolucaoEixo(){
+  var esp=(DIARIO||[]).slice().sort(function(a,b){return new Date(a.quando)-new Date(b.quando);});
+  var ultimos=esp.slice(-7);
+  if(!ultimos.length) return '<div class="evo-eixo" style="text-align:center;color:var(--text3,#899891);font-size:12.5px">Ainda não há espelhos suficientes para uma linha do tempo.</div>';
+  var contador={}; var pontos=ultimos.map(function(e){contador[e.espelho]=(contador[e.espelho]||0)+1;return{data:new Date(e.quando),n:contador[e.espelho]};});
+  var W=560,H=150,padL=30,padR=16,padT=14,padB=26,maxN=Math.max.apply(null,pontos.map(function(p){return p.n;}).concat([1]));
+  var stepX=pontos.length>1?(W-padL-padR)/(pontos.length-1):0;
+  var xy=pontos.map(function(p,i){return{x:padL+stepX*i,y:padT+(H-padT-padB)*(1-(p.n/maxN)),p:p};});
+  var path=xy.map(function(pt,i){return(i===0?'M':'L')+pt.x.toFixed(1)+','+pt.y.toFixed(1);}).join(' ');
+  var pts=xy.map(function(pt){return '<circle cx="'+pt.x+'" cy="'+pt.y+'" r="4" fill="#ebd49e" stroke="#121716" stroke-width="1.4"/>';}).join('');
+  var lbls=xy.map(function(pt){var d=pt.p.data;return '<text x="'+pt.x+'" y="'+(H-6)+'" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#899891">'+d.getDate()+'/'+(d.getMonth()+1)+'</text>';}).join('');
+  return '<div class="evo-eixo"><svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg"><path d="'+path+'" fill="none" stroke="#d4b87a" stroke-width="2"/>'+pts+lbls+'</svg>'
+    +'<div style="font-size:10px;color:#899891;text-align:center;margin-top:6px">Mais antigo → mais recente · altura = nº de vezes já revisitado</div></div>';
+}
+function renderEvolucao(){
+  var m=document.getElementById('evoMapa'), me=document.getElementById('evoMetrics'), ex=document.getElementById('evoEixo');
+  if(!m)return; var q=evoLer();
+  m.innerHTML=renderEvolucaoMapa(q); me.innerHTML=renderEvolucaoMetricas(q); ex.innerHTML=renderEvolucaoEixo();
+}
+
+/* ===== CONVERSE COM SEU ESPELHO — convite ancorado; reflete, nunca aconselha ===== */
+function respostaEco(msgUsuario, historico){
+  var bancos=['Repare que você mesmo chegou a isso. O que muda se você deixar essa frase valer por um instante, sem corrigi-la?',
+    'Tem algo aí que parece pedir uma solução. E se, por ora, ela só pedisse ser vista?',
+    'Você trouxe isso de novo, de um jeito diferente. O que é igual das duas vezes?'];
+  return bancos[(historico?historico.length:0)%bancos.length];
+}
+function montarConvite(entry){
+  if(entry.conversa && entry.conversa.length){
+    return '<div class="cv-thread" data-thread>'+entry.conversa.map(function(m){return '<div class="cv-msg '+(m.role==='user'?'user':'eco')+'">'+m.texto+'</div>';}).join('')
+      +'</div><div class="cv-composer"><input placeholder="Fala..." data-cv-input/><button data-cv-enviar>Enviar</button></div>';
+  }
+  return '<div class="convite-espelho" data-convite><p>Fala. Eu te escuto.</p>'
+    +'<div class="row"><button class="cv-sim" data-cv-sim>Quero falar sobre isso</button><button class="cv-nao" data-cv-nao>Agora não</button></div></div>';
+}
+function ligarConvite(entry, host){
+  var sim=host.querySelector('[data-cv-sim]'), nao=host.querySelector('[data-cv-nao]');
+  if(sim) sim.onclick=function(){ entry.conversa=[]; var wrap=host.querySelector('[data-convite]'); wrap.outerHTML=montarConvite(entry); ligarConvite(entry,host); };
+  if(nao) nao.onclick=function(){ host.querySelector('[data-convite]').innerHTML='<p style="font-family:\'Cormorant Garamond\',serif;color:var(--text3,#899891);font-size:13.5px;margin:0">Tudo bem. Quando quiser falar, eu continuo aqui.</p>'; };
+  var env=host.querySelector('[data-cv-enviar]'), inp=host.querySelector('[data-cv-input]');
+  if(env) env.onclick=function(){
+    var v=(inp.value||'').trim(); if(!v)return;
+    entry.conversa.push({role:'user',texto:v}); entry.conversa.push({role:'eco',texto:respostaEco(v,entry.conversa)});
+    inp.value=''; var wrap=host.querySelector('[data-thread]')?host.querySelector('[data-thread]').parentElement:host;
+    var novo=montarConvite(entry); host.querySelectorAll('[data-thread],[data-convite],.cv-composer').forEach(function(x){x.remove();});
+    host.insertAdjacentHTML('beforeend',novo); ligarConvite(entry,host);
+  };
+}
+</script>
+</body></html>
