@@ -1,0 +1,135 @@
+<!-- ============================================================
+     A NOITE DO AMANHECER — Incremento 1: captura da noite
+     Aditivo e reversível. NÃO edita nenhuma função existente:
+       • injeta 2 campos (a linha + a frase-estado) dentro de #fechOverlay,
+         logo depois da reflexão;
+       • envolve salvarFechamentoDoDia() para guardar o que foi escrito;
+       • grava só em chaves próprias (avrs4_amanhecer_*), sem tocar no Diário.
+     A metade da manhã (devolução no Despertar) é o incremento 2.
+     Cole este bloco inteiro antes de </body>. Para remover, apague o bloco.
+============================================================ -->
+<style>
+  #ndaNight .nda-sep{height:1px;background:var(--border,rgba(200,169,109,.14));margin:18px 0 16px}
+  #ndaNight .nda-eyebrow{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold,#d4b87a);margin-bottom:14px;text-align:center}
+  #ndaNight .nda-field{margin-bottom:14px}
+  #ndaNight .nda-label{display:block;font-size:13px;color:var(--text2,#c0b8b0);line-height:1.5;margin-bottom:8px}
+  #ndaNight .nda-input{width:100%;box-sizing:border-box;background:var(--bg2,#232120);border:1px solid var(--border,rgba(200,169,109,.14));border-radius:12px;color:var(--cream,#f5f0e8);font-family:'DM Sans',sans-serif;font-size:15px;padding:12px 13px;outline:none;transition:border-color .2s}
+  #ndaNight .nda-input:focus{border-color:var(--gold,#d4b87a)}
+  #ndaNight .nda-input::placeholder{color:var(--text3,#8a8278)}
+  #ndaNight textarea.nda-input{resize:none;line-height:1.5;min-height:46px;overflow:hidden}
+  #ndaNight .nda-serif{font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;font-style:italic}
+  #ndaNight .nda-quote{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:19px;color:var(--gold2,#ebd49e);line-height:1.45;margin:0 0 12px;padding-left:12px;border-left:2px solid var(--border2,rgba(200,169,109,.28))}
+  #ndaNight .nda-confirm-row{display:flex;gap:8px}
+  #ndaNight .nda-chip{flex:0 0 auto;background:none;border:1px solid var(--border,rgba(200,169,109,.14));color:var(--text2,#c0b8b0);border-radius:20px;padding:8px 16px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:border-color .2s,background .2s,color .2s}
+  #ndaNight .nda-chip:hover{border-color:var(--gold,#d4b87a)}
+  #ndaNight .nda-chip.on{background:var(--gold,#d4b87a);border-color:var(--gold,#d4b87a);color:#1a1408;font-weight:600}
+</style>
+
+<script>
+(function(){
+  var K={frase:'avrs4_amanhecer_frase',linha:'avrs4_amanhecer_linha',seen:'avrs4_amanhecer_seen',ts:'avrs4_amanhecer_ts'};
+  function get(k){try{return localStorage.getItem(k)||'';}catch(e){return '';}}
+  function set(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+
+  var HTML=''
+    +'<div class="nda-sep"></div>'
+    +'<div class="nda-eyebrow">A noite do amanhecer</div>'
+    +'<div class="nda-field">'
+    +'  <label class="nda-label" for="ndaLinha">O que você quer deixar organizado para não ter que carregar?</label>'
+    +'  <input id="ndaLinha" class="nda-input" type="text" maxlength="140" placeholder="uma linha, e pronto" autocomplete="off">'
+    +'</div>'
+    +'<div class="nda-field" id="ndaFraseInput">'
+    +'  <label class="nda-label" for="ndaFrase">Amanhã pode começar puxando você para fora. Quando puxar, com que versão sua você quer estar?</label>'
+    +'  <textarea id="ndaFrase" class="nda-input nda-serif" rows="1" maxlength="180" placeholder="nas suas palavras"></textarea>'
+    +'</div>'
+    +'<div class="nda-field" id="ndaFraseConfirm" style="display:none">'
+    +'  <label class="nda-label">Da última vez, você escolheu estar assim:</label>'
+    +'  <p class="nda-quote" id="ndaFraseLast">—</p>'
+    +'  <div class="nda-confirm-row">'
+    +'    <button type="button" class="nda-chip on" id="ndaKeep">Ainda é essa</button>'
+    +'    <button type="button" class="nda-chip" id="ndaChange">Mudar</button>'
+    +'  </div>'
+    +'</div>';
+
+  function el(id){return document.getElementById(id);}
+
+  function autogrow(t){if(!t)return;t.style.height='auto';t.style.height=t.scrollHeight+'px';}
+
+  function renderMode(){
+    var input=el('ndaFraseInput'), confirm=el('ndaFraseConfirm');
+    if(!input||!confirm)return;
+    if(get(K.seen)==='1' && get(K.frase)){
+      el('ndaFraseLast').textContent='“'+get(K.frase)+'”';
+      el('ndaKeep').classList.add('on');
+      confirm.style.display='';
+      input.style.display='none';
+    }else{
+      confirm.style.display='none';
+      input.style.display='';
+      el('ndaFrase').value='';
+      autogrow(el('ndaFrase'));
+    }
+  }
+
+  function toEdit(){
+    el('ndaFraseConfirm').style.display='none';
+    var inp=el('ndaFraseInput'); inp.style.display='';
+    var ta=el('ndaFrase'); ta.value=get(K.frase); autogrow(ta); ta.focus();
+  }
+
+  function bind(){
+    var ta=el('ndaFrase');
+    if(ta)ta.addEventListener('input',function(){autogrow(ta);});
+    var ch=el('ndaChange'); if(ch)ch.addEventListener('click',toEdit);
+    var kp=el('ndaKeep'); if(kp)kp.addEventListener('click',function(){kp.classList.add('on');});
+  }
+
+  function inject(){
+    var ref=el('fechReflexao');
+    if(!ref||el('ndaNight'))return false;
+    var host=ref.closest('.fech-input')||ref.parentNode;
+    var box=document.createElement('div'); box.id='ndaNight'; box.innerHTML=HTML;
+    host.insertAdjacentElement('afterend', box);
+    bind(); renderMode();
+    return true;
+  }
+
+  // Envolve o save existente para capturar os dois campos antes de gravar.
+  function wrapSave(){
+    if(typeof window.salvarFechamentoDoDia!=='function'||window.salvarFechamentoDoDia.__nda)return;
+    var orig=window.salvarFechamentoDoDia;
+    window.salvarFechamentoDoDia=function(){
+      try{
+        var linha=(el('ndaLinha')||{}).value||'';
+        set(K.linha, linha.trim());
+        var confirmVisible=el('ndaFraseConfirm') && el('ndaFraseConfirm').style.display!=='none';
+        if(!confirmVisible){
+          var f=((el('ndaFrase')||{}).value||'').trim();
+          if(f){ set(K.frase,f); set(K.seen,'1'); }
+        }
+        set(K.ts, String(Date.now()));
+      }catch(e){ console.error('[NDA noite]',e); }
+      return orig.apply(this,arguments);
+    };
+    window.salvarFechamentoDoDia.__nda=true;
+  }
+
+  function boot(){
+    inject(); wrapSave();
+    var ov=el('fechOverlay');
+    if(ov){
+      new MutationObserver(function(){
+        if(ov.classList.contains('open')){
+          if(!el('ndaNight'))inject();
+          var l=el('ndaLinha'); if(l)l.value='';   // depósito é fresco a cada noite
+          renderMode();
+        }
+      }).observe(ov,{attributes:true,attributeFilter:['class']});
+    }
+  }
+
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);
+  else boot();
+})();
+</script>
+<!-- ===================== fim: A Noite do Amanhecer (noite) ===================== -->
