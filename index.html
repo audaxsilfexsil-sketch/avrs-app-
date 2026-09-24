@@ -6676,7 +6676,8 @@ function renderJornadaMinima(){
   // ---- endereços dos campos no ar ----
   var CAMPOS={
     espelhos:{titulo:'Espelhos', src:'AVRS_App_Federado.html'},
-    finance :{titulo:'Finance',  src:'finance.html'}
+    finance :{titulo:'Finance',  src:'finance.html'},
+    campo   :{titulo:'Campo',    src:'campo.html'}
   };
 
   function el(id){return document.getElementById(id);}
@@ -6700,7 +6701,9 @@ function renderJornadaMinima(){
      ic:'<rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v10"/>'},
     {k:'finance', nome:'Finance', linha:'escolhas conscientes', on:true,
      ic:'<circle cx="12" cy="12" r="8"/><path d="M12 8v8M9.5 10.5h3.5a2 2 0 010 4H9"/>'},
-    {k:'ccrnet', nome:'CCR-NET', linha:'como você se relaciona', on:false,
+    {k:'campo', nome:'CCR', linha:'como você se relaciona', on:true,
+     ic:'<circle cx="12" cy="12" r="2.2"/><ellipse cx="12" cy="12" rx="9.5" ry="4.8"/><circle cx="19.2" cy="9.2" r="1.4"/>'},
+    {k:'ccrnet', nome:'CCR-NET', linha:'o campo compartilhado', on:false,
      ic:'<circle cx="12" cy="5" r="2.2"/><circle cx="5" cy="18" r="2.2"/><circle cx="19" cy="18" r="2.2"/><path d="M12 7.2v4M10.5 12.5l-4 4M13.5 12.5l4 4"/>'},
     {k:'ccrconecta', nome:'CCR-Conecta', linha:'conexões que transformam', on:false,
      ic:'<path d="M9 12a3 3 0 013-3h2a3 3 0 010 6h-1M15 12a3 3 0 01-3 3h-2a3 3 0 010-6h1"/>'}
